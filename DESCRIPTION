@@ -1,0 +1,15 @@
+Package: pepr
+Type: Package
+Title: Reading Portable Encapsulated Projects
+Version: 0.0.1
+Date: 2017-08-09
+Authors@R: c(person("Nathan", "Sheffield", email = "nathan@code.databio.org",
+    role = c("aut", "cre")))
+Maintainer: Nathan Sheffield <nathan@code.databio.org>
+Description: Reads standardized project configuration files into R.
+Imports:
+    yaml
+Suggests:
+	knitr
+VignetteBuilder: knitr
+License: GPL-3
