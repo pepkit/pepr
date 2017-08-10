@@ -47,11 +47,6 @@ loadConfigNew = function(project=NULL, sp=NULL, filename=NULL, usesPathsSection=
 
 
 
-#' Alias for backwards compatibility
-#'
-#' @export
-load.config = loadConfig
-
 
 #' Mapper of organism name to genomic assembly name
 #'
@@ -257,6 +252,14 @@ loadConfig = function(filename=NULL, project=NULL, sp=NULL) {
 
 	return(cfg)
 }
+
+
+#' Alias for backwards compatibility
+#'
+#' @export
+load.config = loadConfig
+
+
 
 #' used for my internal project naming scheme. 
 #' returns a config file at a default location,
