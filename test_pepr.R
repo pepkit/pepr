@@ -1,7 +1,7 @@
 
 source('pepr.R')
 
-p = Prj(file = "hello")
+p = Project(file = "hello")
 
 
 p
@@ -22,4 +22,7 @@ cfg = yaml::yaml.load_file("code/microtest/config/microtest_config.yaml")
 cfg
 
 refreshPackage('pepr')
-p = Project(file = "code/microtest/config/microtest_config.yaml")
+library('pepr')
+p = Project(file = "~/code/microtest/config/microtest_config.yaml")
+
+samples(p)
