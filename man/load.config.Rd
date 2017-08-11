@@ -4,7 +4,7 @@
 \alias{load.config}
 \title{Alias for backwards compatibility}
 \usage{
-load.config(filename = NULL, project = NULL, sp = NULL)
+load.config(filename = NULL, sp = NULL)
 }
 \description{
 Alias for backwards compatibility

@@ -38,7 +38,7 @@ loadConfig = function(filename=NULL, sp=NULL) {
 	# This used to be all metadata columns; now it's just: results_subdir
 	mdn = names(cfg$metadata)
 
-	cfg$metadata = makeMetadataSectionAbsolute(cfg, parent=dirname(cfgFile))
+	cfg$metadata = makeMetadataSectionAbsolute(cfg, parent=dirname(filename))
 
 	return(cfg)
 }
@@ -126,7 +126,7 @@ makeMetadataSectionAbsolute = function(config, parent) {
 	for (metadataAttribute in names(config$metadata)) {
 		value = config$metadata[[metadataAttribute]]
 
-		if (metadataAttribute %in% kRelativeSections) {
+		if (metadataAttribute %in% kRelativeMetadataSections) {
 			if (metadataAttribute == kOldPipelinesSection) {
 				warning(sprintf(
 					"Config contains old pipeline location specification section: '%s'", 
@@ -140,7 +140,7 @@ makeMetadataSectionAbsolute = function(config, parent) {
 		else { value = absViaParent(value) }    # No special handling
 
 		# Check for and warn about nonexistent path before setting value.
-		if (!(fileExists(value) | dir.exists(value))) {
+		if (!(file.exists(value) | dir.exists(value))) {
 			warning(sprintf("Value for '%s' doesn't exist: '%s'", metadataAttribute, value))
 		}
 		absoluteMetadata[[metadataAttribute]] = value

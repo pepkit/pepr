@@ -4,14 +4,12 @@
 \alias{loadConfig}
 \title{Loads a project_config.yaml file}
 \usage{
-loadConfig(filename = NULL, project = NULL, sp = NULL)
+loadConfig(filename = NULL, sp = NULL)
 }
 \arguments{
-\item{project}{A project (use default config file names for this project)}
+\item{filename}{file path to config file}
 
 \item{sp}{Subproject to activate}
-
-\item{file}{file path to config file, allows you to specify an exact file.}
 }
 \description{
 Loads a project_config.yaml file
