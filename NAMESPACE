@@ -2,10 +2,13 @@
 
 export(Project)
 export(assemblyByOrganism)
+export(expandPath)
+export(fmt)
 export(load.config)
 export(loadConfig)
 export(printNestedList)
 exportClasses(Project)
 exportMethods(config)
 exportMethods(samples)
+import(stringr)
 import(yaml)

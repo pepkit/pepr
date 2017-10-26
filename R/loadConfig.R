@@ -114,10 +114,10 @@ expandPath = function(path) {
 	return(fullPath)
 }
 
-#' Format a string like python's format() function
-#' #' 
+#' Format a string like python's format function
+#' 
 #' Given a string with environment varibles (encoded like ${VAR}) and other
-#' variables (encoded like {VAR}}), this function will substitute both of these
+#' variables (encoded like {VAR}), this function will substitute both of these
 #' and return the formatted string, like the python string format(). Other
 #' variables are populated from a list of arguments
 
@@ -127,7 +127,7 @@ expandPath = function(path) {
 #' @examples
 #' fmt("${SRARAW}{SRR}", list(SRR="blah"))
 fmt = function(string, args) {
-	x = pepr:::expandPath(x)
+	x = pepr:::expandPath(string)
 	# str_interp requires variables encoded like ${var}, so we substitute
 	# the {var} syntax here.
 	x = stringr::str_replace(x, "\\{", "${")
