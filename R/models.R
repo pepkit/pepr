@@ -50,7 +50,10 @@ setMethod("samples",
 
 setMethod("initialize", "Project", function(.Object, ...) {
 	.Object = callNextMethod()  # calls generic initialize
+
 	.Object@config = loadConfig(.Object@file)
+
+	# Can use fread if data.table is installed, otherwise use read.table
 	if (requireNamespace("data.table")) {
 		sampleReadFunc = data.table::fread
 	} else {
@@ -59,22 +62,26 @@ setMethod("initialize", "Project", function(.Object, ...) {
 	.Object@samples = sampleReadFunc(.Object@config$metadata$sample_annotation)
 
 	# Set default derived columns
-	.Object@config$derived_columns = as.list(unique(append(.Object@config$derived_columns, "data_source")))
-	cfg = .Object@config
+	dc = as.list(unique(append(.Object@config$derived_columns, "data_source")))
+	.Object@config$derived_columns = dc
 
-	# Now we should process derived columns
-	s = .Object@samples
-	l <- split(s, seq(nrow(s)))
+	# Convert samples table into list of individual samples for processing
+	cfg = .Object@config
+	tempSamples = .Object@samples
+	listOfSamples = split(tempSamples, seq(nrow(tempSamples)))
+
+	# Process derived columns
 	for (column in cfg$derived_columns) {
-		for (iSamp in seq_along(l)) {
-			samp = l[[iSamp]]
+		for (iSamp in seq_along(listOfSamples)) {
+			samp = listOfSamples[[iSamp]]
 			regex = cfg$data_sources[[ samp[[column]] ]]
 			samp[[column]] = fmt(regex, as.list(samp))
-			l[[iSamp]] = samp
+			listOfSamples[[iSamp]] = samp
 		}
 	}
-	s2 = do.call(rbind,l)
-	.Object@samples = s2
+
+	# Reformat listOfSamples to a table
+	.Object@samples = do.call(rbind, listOfSamples)
 
 	.Object
 	})
