@@ -35,6 +35,7 @@ setMethod("config",
 	signature = "Project",
 	definition = function(object) {
 		printNestedList(object@config)
+		invisible(object@config)
 	})
 
 setGeneric("samples", function(object, ...) standardGeneric("samples"))
@@ -43,7 +44,8 @@ setGeneric("samples", function(object, ...) standardGeneric("samples"))
 setMethod("samples",
 	signature = "Project",
 	definition = function(object) {
-		return(object@samples)
+		print(object@samples)
+		invisible(object@samples)
 	})
 
 setMethod("initialize", "Project", function(.Object, ...) {
@@ -55,6 +57,25 @@ setMethod("initialize", "Project", function(.Object, ...) {
 		sampleReadFunc = read.table
 	}
 	.Object@samples = sampleReadFunc(.Object@config$metadata$sample_annotation)
+
+	# Set default derived columns
+	.Object@config$derived_columns = as.list(unique(append(.Object@config$derived_columns, "data_source")))
+	cfg = .Object@config
+
+	# Now we should process derived columns
+	s = .Object@samples
+	l <- split(s, seq(nrow(s)))
+	for (column in cfg$derived_columns) {
+		for (iSamp in seq_along(l)) {
+			samp = l[[iSamp]]
+			regex = cfg$data_sources[[ samp[[column]] ]]
+			samp[[column]] = fmt(regex, as.list(samp))
+			l[[iSamp]] = samp
+		}
+	}
+	s2 = do.call(rbind,l)
+	.Object@samples = s2
+
 	.Object
 	})
 

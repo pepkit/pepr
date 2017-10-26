@@ -1,0 +1,32 @@
+---
+title: "Getting Started with pepr"
+author: "Nathan Sheffield"
+date: "`r Sys.Date()`"
+output: 
+  BiocStyle::html_document
+vignette: >
+  %\VignetteIndexEntry{Getting Started with pepr}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+Load `pepr` and read in your project.
+
+```{r}
+library('pepr')
+p = Project(file = "~/code/microtest/config/microtest_config.yaml")
+```
+
+Here's how you can access the metadata:
+
+```{r}
+samples(p)
+config(p)
+```
+
+For now you can also use slots (don't do this, as these may change):
+
+```{r}
+p@config
+p@samples
+```

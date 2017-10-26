@@ -87,6 +87,7 @@ assemblyByOrganism = function(config) {
 }
 
 # implementation of python's expandpath ?
+#' @export
 expandPath = function(path) {
 	# Handle null/empty input.
 	if (!.isDefined(path)) { return(path) }
@@ -111,6 +112,16 @@ expandPath = function(path) {
 	# Expand any environment variables and return the complete path.
 	fullPath = do.call(file.path, lapply(parts, expand))
 	return(fullPath)
+}
+
+#' Format a string like python's format() function
+#' @export
+#' @examples
+#' fmt("${SRARAW}{SRR}", list(SRR="blah"))
+fmt = function(x, args) {
+	x = pepr:::expandPath(x)
+	x = stringr::str_replace(x, "\\{", "${")
+	stringr::str_interp(x, args)
 }
 
 
