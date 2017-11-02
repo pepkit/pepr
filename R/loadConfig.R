@@ -18,21 +18,12 @@ loadConfig = function(filename=NULL, sp=NULL) {
 	}
 
 	message("Loaded config file: ", filename)
-	
-	# Update based on subproject if one is specified.
-	if (! is.null(sp)) {
-		if (is.null(cfg$subprojects[[sp]])) {
-			message("Subproject not found: ", sp)
-			return()
-		}
-		cfg = modifyList(cfg, cfg$subprojects[[sp]])
-		message("Loading subproject: ", sp)
-	}
 
 	# Show available subprojects
-	if (length(names(cfg$subprojects)) > 1) {
-		message("Available subprojects: ", paste0(names(cfg$subprojects), collapse=","))
-	}
+	listSubprojects(cfg)
+	
+	# Update based on subproject if one is specified.
+	cfg = .updateSubconfig(cfg, sp)
 
 	# Ensure that metadata paths are absolute and return the config.
 	# This used to be all metadata columns; now it's just: results_subdir
@@ -41,6 +32,27 @@ loadConfig = function(filename=NULL, sp=NULL) {
 	cfg$metadata = makeMetadataSectionAbsolute(cfg, parent=dirname(filename))
 
 	return(cfg)
+}
+
+.updateSubconfig = function(cfg, sp=NULL) {
+	if (! is.null(sp)) {
+		if (is.null(cfg$subprojects[[sp]])) {
+			message("Subproject not found: ", sp)
+			return()
+		}
+		cfg = modifyList(cfg, cfg$subprojects[[sp]])
+		message("Loading subproject: ", sp)
+	}
+	return(cfg)
+}
+
+#' @export
+listSubprojects = function(cfg) {
+	# Show available subprojects
+	if (length(names(cfg$subprojects)) > 1) {
+		message("  subprojects: ", paste0(names(cfg$subprojects), collapse=","))
+	}
+	invisible(names(cfg$subprojects))
 }
 
 

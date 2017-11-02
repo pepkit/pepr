@@ -32,3 +32,7 @@
 	firstChar = substr(path, 1, 1)
 	return(identical("/", firstChar) | identical("~", firstChar))
 }
+
+.safeFileExists = function(path) {
+	( (! is.null(path)) && file.exists(path) )
+}
