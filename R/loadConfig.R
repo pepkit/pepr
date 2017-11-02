@@ -46,6 +46,13 @@ loadConfig = function(filename=NULL, sp=NULL) {
 	return(cfg)
 }
 
+
+#' Lists subprojects in a config file 
+#' 
+#' Lists subprojects in an R list representation of a yaml config file read by
+#' pepr
+#'
+#' @param cfg Configuration section of a project
 #' @export
 listSubprojects = function(cfg) {
 	# Show available subprojects

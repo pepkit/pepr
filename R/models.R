@@ -11,7 +11,8 @@
 setClass("Project", representation(
 		file="character",
 		samples="data.frame",
-		config="list"))
+		config="list")
+)
 
 
 #' @export Project
@@ -22,12 +23,13 @@ Project = function(file, samples=list(), config=list()) {
 setMethod("show",
 	signature = "Project",
 	definition = function(object) {
-	message("PEP project object. Class: ", class(object))
-	message("  file: ", object@file)
-	message("  samples: ", NROW(object@samples))
-	listSubprojects(object@config)
-	invisible(NULL)}
-	)
+		message("PEP project object. Class: ", class(object))
+		message("  file: ", object@file)
+		message("  samples: ", NROW(object@samples))
+		listSubprojects(object@config)
+		invisible(NULL)
+	}
+)
 
 
 setGeneric("config", function(object, ...) standardGeneric("config"))
@@ -38,7 +40,8 @@ setMethod("config",
 	definition = function(object) {
 		printNestedList(object@config)
 		invisible(object@config)
-	})
+	}
+)
 
 setGeneric("samples", function(object, ...) standardGeneric("samples"))
 
@@ -48,7 +51,8 @@ setMethod("samples",
 	definition = function(object) {
 		print(object@samples)
 		invisible(object@samples)
-	})
+	}
+)
 
 setMethod("initialize", "Project", function(.Object, sp=NULL, ...) {
 	.Object = callNextMethod()  # calls generic initialize
