@@ -82,7 +82,9 @@ setMethod("initialize", "Project", function(.Object, sp=NULL, ...) {
 		for (iSamp in seq_along(listOfSamples)) {
 			samp = listOfSamples[[iSamp]]
 			regex = cfg$data_sources[[ samp[[column]] ]]
-			samp[[column]] = fmt(regex, as.list(samp))
+			if (! is.null(regex) ) {
+				samp[[column]] = fmt(regex, as.list(samp))
+			}
 			listOfSamples[[iSamp]] = samp
 		}
 	}
