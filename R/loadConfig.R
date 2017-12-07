@@ -144,12 +144,12 @@ expandPath = function(path) {
 #' @param args named list of arguments to use to populate the string
 #' @export
 #' @examples
-#' fmt("${SRARAW}{SRR}", list(SRR="blah"))
+#' fmt("{SRARAW}{SRR}_file", list(SRARAW = "hi", SRR="hello"))
 fmt = function(string, args) {
 	x = pepr:::expandPath(string)
 	# str_interp requires variables encoded like ${var}, so we substitute
 	# the {var} syntax here.
-	x = stringr::str_replace(x, "\\{", "${")
+	x = stringr::str_replace_all(x, "\\{", "${")
 	stringr::str_interp(x, args)
 }
 
