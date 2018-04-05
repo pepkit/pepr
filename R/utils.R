@@ -9,7 +9,7 @@
 	if (.isAbsolute(perhapsRelative)) {
 		abspath = perhapsRelative
 	} else {
-		abspath = file.path(parent, perhapsRelative)
+		abspath = file.path(normalizePath(parent), perhapsRelative)
 	}
 	if (!.isAbsolute(abspath)) {
 		errmsg = sprintf("Relative path '%s' and parent '%s' failed to create
