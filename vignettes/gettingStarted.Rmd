@@ -14,7 +14,7 @@ Load `pepr` and read in your project.
 
 ```{r}
 library('pepr')
-projectConfig = system.file("extdata", "example1" "project_config.yaml", package="pepr")
+projectConfig = system.file("extdata", "example1", "project_config.yaml", package="pepr")
 p = Project(file = projectConfig)
 ```
 

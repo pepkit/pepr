@@ -1,12 +1,18 @@
 # The `pepr` package: Portable Encapsulated Projects in R
 
-`pepr` is an R package for reading Portable Encapsulated Projects. Portable Encapsulated Projects (PEP) are sample-heavy datasets that subscribe to the [standard PEP metadata definition](https://pepkit.github.io/docs/home/) (see some [examples of PEPs](https://pepkit.github.io/docs/example_PEPs/)). If you describe your project (configuration and samples) according to this format, you can load all project metadata into R using the `pepr` package. These projects can also be used for any PEP-compatible pipeline (see [this list of compatible pipelines](https://github.com/pepkit/hello_looper/blob/master/looper_pipelines.md)).
+`pepr` is an R package for reading **Portable Encapsulated Projects**, or **PEP**s, in R. `pepr` is currently in _alpha_ and should not be used production projects. It is made available for conceptual and testing purposes only.
 
-`pepr` is currently in _alpha_ mode and should not be used production projects. It is made available for conceptual and testing purposes only.
+If you describe your project (configuration and samples) according to this format, you can load all project metadata into R using the `pepr` package. 
 
-## Documentation
+These projects can also be used for any PEP-compatible pipeline (see [this list of compatible pipelines](https://github.com/pepkit/hello_looper/blob/master/looper_pipelines.md)).
 
-Complete documentation and vignettes can be found at http://code.databio.org/pepr/.
+
+
+
+Links to complete documentation:
+* Complete documentation and API for the `pepr` R package is at [code.databio.org/pepr](http://code.databio.org/pepr/).
+* Reference documentation for standard **PEP** format at [pepkit.github.io](https://pepkit.github.io/).
+* Example PEPs for testing `pepr` are in the [example_peps repository](https://github.com/pepkit/example_peps) or in [other examples of PEPs](https://pepkit.github.io/docs/example_PEPs/).
 
 ## Install
 
@@ -25,16 +31,4 @@ config(p)
 
 p@config
 p@samples
-```
-
-
-
-
-
-* [Basic R pepr tutorial](tutorial.html) - use `pepr` to load up a minimal example PEP.
-
-## Rendering the vignettes:
-
-```
-R -e "rmarkdown::render('$CODE/example_peps/tutorial.Rmd')"
 ```
