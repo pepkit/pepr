@@ -27,3 +27,14 @@ p@config
 p@samples
 ```
 
+
+
+
+
+* [Basic R pepr tutorial](tutorial.html) - use `pepr` to load up a minimal example PEP.
+
+## Rendering the vignettes:
+
+```
+R -e "rmarkdown::render('$CODE/example_peps/tutorial.Rmd')"
+```

@@ -14,7 +14,8 @@ Load `pepr` and read in your project.
 
 ```{r}
 library('pepr')
-p = Project(file = "~/code/microtest/config/microtest_config.yaml")
+projectConfig = system.file("extdata", "example1" "project_config.yaml", package="pepr")
+p = Project(file = projectConfig)
 ```
 
 Here's how you can access the metadata:
