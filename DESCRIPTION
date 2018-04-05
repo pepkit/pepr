@@ -8,7 +8,8 @@ Authors@R: c(person("Nathan", "Sheffield", email = "nathan@code.databio.org",
 Maintainer: Nathan Sheffield <nathan@code.databio.org>
 Description: Reads standardized project configuration files into R.
 Imports:
-    yaml
+    yaml,
+    stringr
 Suggests:
 	knitr
 VignetteBuilder: knitr
