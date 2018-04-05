@@ -190,10 +190,3 @@ makeMetadataSectionAbsolute = function(config, parent) {
 }
 
 
-
-#' Alias for backwards compatibility
-#'
-#' @export
-load.config = loadConfig
-
-
