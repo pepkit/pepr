@@ -9,9 +9,12 @@ Maintainer: Nathan Sheffield <nathan@code.databio.org>
 Description: Reads standardized project configuration files into R.
 Imports:
     yaml,
-    stringr
+    stringr,
+    pryr
 Suggests:
 	knitr
+Enhances:
+    data.table
 VignetteBuilder: knitr
 License: GPL-3
 RoxygenNote: 6.0.1
