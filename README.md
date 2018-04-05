@@ -1,3 +1,6 @@
+
+[![Build Status](https://travis-ci.org/pepkit/pepr.svg?branch=master)](https://travis-ci.org/databio/pepr)
+
 # The `pepr` package: Portable Encapsulated Projects in R
 
 `pepr` is an R package for reading **Portable Encapsulated Projects**, or **PEP**s, in R. `pepr` is currently in _alpha_ and should not be used production projects. It is made available for conceptual and testing purposes only.
