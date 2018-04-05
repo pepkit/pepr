@@ -3,9 +3,9 @@
 #' Provides an in-memory representation and functions to access project
 #' configuration and sample annotation values for a PEP.
 #'
-#' @slot file A logical keeping track of something.
-#' @slot samples An integer specifying something else.
-#' @slot config A data.frame holding some data.
+#' @slot file character vector path to config file on disk.
+#' @slot samples a data table object holding the sample metadata
+#' @slot config a list object holding contents of the config file
 #'
 #' @exportClass Project
 setClass("Project", representation(
@@ -14,7 +14,11 @@ setClass("Project", representation(
 		config="list")
 )
 
-
+#' A class representing a Portable Encapsulated Project
+#' This is a helper that creates the project with empty samples and config slots
+#' @param file project configuration yaml file
+#' @samples a data table object holding the sample metadata
+#' @config a list object holding contents of the config file
 #' @export Project
 Project = function(file, samples=list(), config=list()) {
 	new("Project", file=file)
@@ -128,6 +132,9 @@ activateSubproject = function(.Object, sp, ...) {
 	.Object
 }
 
+#' Prints a nested list in a way that looks nice
+#' 
+#' @param lst list object to print
 #' @export
 printNestedList = function(lst, level=0) {
 	for(itemName in names(lst)) {
