@@ -1,5 +1,5 @@
 
-[![Build Status](https://travis-ci.org/pepkit/pepr.svg?branch=master)](https://travis-ci.org/databio/pepr)
+[![Build Status](https://travis-ci.org/pepkit/pepr.svg?branch=master)](https://travis-ci.org/pepkit/pepr)
 
 # The `pepr` package: Portable Encapsulated Projects in R
 
