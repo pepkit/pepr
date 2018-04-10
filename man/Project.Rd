@@ -9,6 +9,10 @@ Project(file, samples = list(), config = list())
 }
 \arguments{
 \item{file}{project configuration yaml file}
+
+\item{samples}{a data table object holding the sample metadata}
+
+\item{config}{a list object holding contents of the config file}
 }
 \description{
 A class representing a Portable Encapsulated Project

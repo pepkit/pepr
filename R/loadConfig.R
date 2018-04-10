@@ -106,7 +106,7 @@ assemblyByOrganism = function(config) {
 }
 
 #' Implementation of python's expandpath
-#' @path file path to expand
+#' @param path file path to expand
 #' @export
 expandPath = function(path) {
 	# Handle null/empty input.

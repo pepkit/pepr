@@ -17,8 +17,8 @@ setClass("Project", representation(
 #' A class representing a Portable Encapsulated Project
 #' This is a helper that creates the project with empty samples and config slots
 #' @param file project configuration yaml file
-#' @samples a data table object holding the sample metadata
-#' @config a list object holding contents of the config file
+#' @param samples a data table object holding the sample metadata
+#' @param config a list object holding contents of the config file
 #' @export Project
 Project = function(file, samples=list(), config=list()) {
 	new("Project", file=file)

@@ -6,6 +6,9 @@
 \usage{
 expandPath(path)
 }
+\arguments{
+\item{path}{file path to expand}
+}
 \description{
 Implementation of python's expandpath
 }
