@@ -18,5 +18,5 @@ and return the formatted string, like the python string format(). Other
 variables are populated from a list of arguments
 }
 \examples{
-fmt("${SRARAW}{SRR}", list(SRR="blah"))
+fmt("{SRARAW}{SRR}_file", list(SRARAW = "hi", SRR="hello"))
 }

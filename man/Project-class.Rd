@@ -11,10 +11,10 @@ configuration and sample annotation values for a PEP.
 \section{Slots}{
 
 \describe{
-\item{\code{file}}{A logical keeping track of something.}
+\item{\code{file}}{character vector path to config file on disk.}
 
-\item{\code{samples}}{An integer specifying something else.}
+\item{\code{samples}}{a data table object holding the sample metadata}
 
-\item{\code{config}}{A data.frame holding some data.}
+\item{\code{config}}{a list object holding contents of the config file}
 }}
 
