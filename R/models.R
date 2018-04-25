@@ -87,7 +87,7 @@ setMethod("initialize", "Project", function(.Object, sp=NULL, ...) {
 			samp = listOfSamples[[iSamp]]
 			regex = cfg$data_sources[[ samp[[column]] ]]
 			if (! is.null(regex) ) {
-				samp[[column]] = fmt(regex, as.list(samp))
+				samp[[column]] = strformat(regex, as.list(samp))
 			}
 			listOfSamples[[iSamp]] = samp
 		}
