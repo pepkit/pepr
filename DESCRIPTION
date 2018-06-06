@@ -12,7 +12,8 @@ Imports:
     stringr,
     pryr
 Suggests:
-	knitr
+    knitr,
+    testthat
 Enhances:
     data.table
 VignetteBuilder: knitr
