@@ -85,7 +85,12 @@ setMethod("initialize", "Project", function(.Object, sp=NULL, ...) {
 	for (column in cfg$derived_columns) {
 		for (iSamp in seq_along(listOfSamples)) {
 			samp = listOfSamples[[iSamp]]
-			regex = cfg$data_sources[[ samp[[column]] ]]
+			sampDataSource = samp[[column]]
+			if (is.null(sampDataSource)) {
+				# This sample lacks this derived column
+				next
+			}
+			regex = cfg$data_sources[[ sampDataSource ]]
 			if (! is.null(regex) ) {
 				samp[[column]] = strformat(regex, as.list(samp))
 			}
