@@ -31,6 +31,19 @@ loadConfig = function(filename=NULL, sp=NULL) {
 
 	cfg$metadata = makeMetadataSectionAbsolute(cfg, parent=dirname(filename))
 
+	# Infer default project name
+
+	if (is.null(cfg$name)) {
+		# Default project name is the name of the folder containing the config file
+		maybeProjectName = basename(dirname(normalizePath(filename)))
+		if (maybeProjectName == "metadata") {
+			# Unless it's in a 'metadata' folder, then it's the name of the folder
+			# one level up
+			maybeProjectName = basename(dirname(dirname(normalizePath(filename))))
+		}
+		cfg$name = maybeProjectName
+	}
+
 	return(cfg)
 }
 
