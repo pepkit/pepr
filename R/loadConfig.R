@@ -10,7 +10,7 @@ loadConfig = function(filename=NULL, sp=NULL) {
 		return()
 	}
 
-	cfg = yaml::yaml.load_file(filename)
+	cfg = new("Config", yaml::yaml.load_file(filename))
 
 	if (is.null(cfg)) {
 		message("Config file not loaded.")

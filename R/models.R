@@ -8,7 +8,7 @@
 #' @slot config a list object holding contents of the config file
 #'
 #' @exportClass Project
-setClass("Project", representation(
+setClass("Project", slots = c(
 		file="character",
 		samples="data.frame",
 		config="list")
@@ -24,9 +24,26 @@ Project = function(file, samples=list(), config=list()) {
 	new("Project", file=file)
 }
 
+#' Config objects are specialized list objects
+#' 
+#' @exportClass Config
+setClass("Config", contains="list")
+
+
+# Override the standard generic show function for our config-style lists
 setMethod("show",
-	signature = "Project",
-	definition = function(object) {
+	signature="Config",
+	definition=function(object) {
+		message("PEP project object. Class: ", class(object))
+		printNestedList(object)
+		invisible(NULL)
+	}
+)
+
+
+setMethod("show",
+	signature="Project",
+	definition=function(object) {
 		message("PEP project object. Class: ", class(object))
 		message("  file: ", object@file)
 		message("  samples: ", NROW(object@samples))
@@ -42,10 +59,10 @@ setGeneric("config", function(object, ...) standardGeneric("config"))
 setMethod("config",
 	signature = "Project",
 	definition = function(object) {
-		printNestedList(object@config)
-		invisible(object@config)
+		object@config
 	}
 )
+
 
 setGeneric("samples", function(object, ...) standardGeneric("samples"))
 
