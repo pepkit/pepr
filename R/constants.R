@@ -1,3 +1,5 @@
 kOldPipelinesSection = "pipelines_dir"
-kRelativeMetadataSections = c("output_dir", kOldPipelinesSection, 
-	"pipeline_interfaces", "results_subdir", "submission_subdir")
+kRelativeToOutputDirMetadataSections = c("results_subdir", "submission_subdir")
+
+kRelativeToConfigSections = c("metadata", "pipeline_config")
+

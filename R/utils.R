@@ -6,6 +6,8 @@
 #
 #' @return	Target itself if already absolute, else target nested within parent.
 .makeAbsPath = function(perhapsRelative, parent) {
+	if (!.isDefined(perhapsRelative)) { return(perhapsRelative)}
+	perhapsRelative = expandPath(perhapsRelative)
 	if (.isAbsolute(perhapsRelative)) {
 		abspath = perhapsRelative
 	} else {
@@ -19,7 +21,9 @@
 	return(abspath)
 }
 
-.isDefined = function(var) { ! (is.na(var) | is.null(var)) }
+# Must test for is.null first, since is.na(NULL) returns a logical(0) which is
+# not a boolean
+.isDefined = function(var) { ! (is.null(var) || is.na(var)) }
 
 # Filesystem utilities
 

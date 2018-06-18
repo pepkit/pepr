@@ -180,7 +180,7 @@ makeMetadataSectionAbsolute = function(config, parent) {
 	for (metadataAttribute in names(config$metadata)) {
 		value = config$metadata[[metadataAttribute]]
 
-		if (metadataAttribute %in% kRelativeMetadataSections) {
+		if (metadataAttribute %in% kRelativeToOutputDirMetadataSections) {
 			if (metadataAttribute == kOldPipelinesSection) {
 				warning(sprintf(
 					"Config contains old pipeline location specification section: '%s'", 
@@ -194,7 +194,7 @@ makeMetadataSectionAbsolute = function(config, parent) {
 		else { value = absViaParent(value) }    # No special handling
 
 		# Check for and warn about nonexistent path before setting value.
-		if (!(file.exists(value) | dir.exists(value))) {
+		if (!(!.isDefined(value) || file.exists(value) || dir.exists(value))) {
 			warning(sprintf("Value for '%s' doesn't exist: '%s'", metadataAttribute, value))
 		}
 		absoluteMetadata[[metadataAttribute]] = value
