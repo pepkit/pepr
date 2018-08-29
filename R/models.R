@@ -128,9 +128,16 @@ setMethod("initialize", "Project", function(.Object, sp=NULL, ...) {
   } else{
     if (is.list(.Object@config$implied_columns)) {
       # the implied_columns in project's config is a list, so the columns can be implied
-      
+      primaryColumn=names(.Object@config$implied_columns) 
+      for (iColumn in primaryColumn) {
+        primaryValues=names(.Object@config$implied_columns[[iColumn]])
+        for(iValue in primaryValues) {
+          newColumns=.Object@config$implied_columns[[iColumn]][[iValue]]
+          # TODO: Bind the new column with the samples table in the .Object
+        }
+      }
     } else{
-      # the implied_columns in project's config isn't NULL and list
+      # the implied_columns in project's config is neither NULL nor list
       message("The implied_columns key-value pairs in project config are invalid!")
     }
   }
