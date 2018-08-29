@@ -118,7 +118,10 @@ assemblyByOrganism = function(config) {
 	return(assemblies)
 }
 
-#' Implementation of python's expandpath
+#' Expand relative path
+#' 
+#'  Implementation of python's \href{https://docs.python.org/3/library/os.path.html#os.path.expanduser}{os.path.expanduser}.
+#'  
 #' @param path file path to expand
 #' @export
 expandPath = function(path) {

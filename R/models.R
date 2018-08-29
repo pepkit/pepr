@@ -121,6 +121,22 @@ setMethod("initialize", "Project", function(.Object, sp=NULL, ...) {
 }
 
 
+.implyColumns = function(.Object) {
+  if (is.null(.Object@config$implied_columns)) {
+    # if the implied_columns in project's config is NULL, there is nothing that can be done
+    return(.Object)
+  } else{
+    if (is.list(.Object@config$implied_columns)) {
+      # the implied_columns in project's config is a list, so the columns can be implied
+      
+    } else{
+      # the implied_columns in project's config isn't NULL and list
+      message("The implied_columns key-value pairs in project config are invalid!")
+    }
+  }
+}
+
+
 .loadSampleAnnotation = function(sampleAnnotationPath) {
 	# Can use fread if data.table is installed, otherwise use read.table
 	if (requireNamespace("data.table")) {
