@@ -80,6 +80,7 @@ setMethod("initialize", "Project", function(.Object, sp=NULL, ...) {
 	.Object@config = loadConfig(.Object@file, sp)
 	.Object@samples = .loadSampleAnnotation(.Object@config$metadata$sample_annotation)
 	.Object = .deriveColumns(.Object)
+	.Object = .implyColumns(.Object)
 	.Object
 })
 
