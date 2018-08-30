@@ -127,13 +127,27 @@ setMethod("initialize", "Project", function(.Object, sp=NULL, ...) {
     return(.Object)
   } else{
     if (is.list(.Object@config$implied_columns)) {
+      samplesDims = dim(.Object@samples)
       # the implied_columns in project's config is a list, so the columns can be implied
-      primaryColumn=names(.Object@config$implied_columns) 
+      primaryColumn = names(.Object@config$implied_columns)
       for (iColumn in primaryColumn) {
-        primaryValues=names(.Object@config$implied_columns[[iColumn]])
-        for(iValue in primaryValues) {
-          newColumns=.Object@config$implied_columns[[iColumn]][[iValue]]
-          # TODO: Bind the new column with the samples table in the .Object
+        primaryKeys = names(.Object@config$implied_columns[[iColumn]])
+        for (iKey in primaryKeys) {
+          newValues = names(.Object@config$implied_columns[[iColumn]][[iKey]])
+          for (iValue in newValues) {
+            samplesColumns = names(.Object@samples)
+            if (any(samplesColumns == iValue)) {
+              # The implied column has been already added, populating
+              .Object@samples[[iValue]][which(.Object@samples[[iColumn]] ==
+                                                iKey)] = .Object@config$implied_columns[[iColumn]][[iKey]][[iValue]]
+            } else{
+              # The implied column is still missing, adding column and populating
+              names(toBeAdded) = iValue
+              toBeAdded = data.frame(rep("", samplesDims[1]))
+              toBeAdded[[iValue]][which(.Object@samples[[iColumn]] == iKey)] = .Object@config$implied_columns[[iColumn]][[iKey]][[iValue]]
+              .Object@samples = cbind(.Object@samples, toBeAdded)
+            }
+          }
         }
       }
     } else{
@@ -162,7 +176,7 @@ setMethod("initialize", "Project", function(.Object, sp=NULL, ...) {
 }
 
 #' @export
-activateSubproject = function(.Object, sp, ...) {
+activateSubproject = function(.Object, sp, ...)  { 
 
 	.Object@config = .updateSubconfig(.Object@config, sp)
 
