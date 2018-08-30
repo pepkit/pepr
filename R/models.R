@@ -143,9 +143,9 @@ setMethod("initialize", "Project", function(.Object, sp=NULL, ...) {
                                                 iKey)] = .Object@config$implied_columns[[iColumn]][[iKey]][[iValue]]
             } else{
               # The implied column is still missing, adding column and populating
-              names(toBeAdded) = iValue
               toBeAdded = data.frame(rep("", samplesDims[1]))
               toBeAdded[[iValue]][which(.Object@samples[[iColumn]] == iKey)] = .Object@config$implied_columns[[iColumn]][[iKey]][[iValue]]
+              names(toBeAdded) = iValue
               .Object@samples = cbind(.Object@samples, toBeAdded)
             }
           }
