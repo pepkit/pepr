@@ -142,10 +142,10 @@ setMethod("initialize", "Project", function(.Object, sp=NULL, ...) {
               .Object@samples[[iValue]][which(.Object@samples[[iColumn]] ==
                                                 iKey)] = .Object@config$implied_columns[[iColumn]][[iKey]][[iValue]]
             } else{
-              # The implied column is still missing, adding column and populating
-              toBeAdded = data.frame(rep("", samplesDims[1]))
-              toBeAdded[[iValue]][which(.Object@samples[[iColumn]] == iKey)] = .Object@config$implied_columns[[iColumn]][[iKey]][[iValue]]
+              # The implied column is missing, adding column and populating
+              toBeAdded = data.frame(rep("", samplesDims[1]),stringsAsFactors=FALSE)
               names(toBeAdded) = iValue
+              toBeAdded[which(.Object@samples[[iColumn]] == iKey),1] = .Object@config$implied_columns[[iColumn]][[iKey]][[iValue]]
               .Object@samples = cbind(.Object@samples, toBeAdded)
             }
           }
@@ -155,6 +155,7 @@ setMethod("initialize", "Project", function(.Object, sp=NULL, ...) {
       # the implied_columns in project's config is neither NULL nor list
       message("The implied_columns key-value pairs in project config are invalid!")
     }
+    return(.Object)
   }
 }
 
