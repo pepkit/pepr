@@ -191,24 +191,44 @@ setMethod("initialize", "Project", function(.Object, sp = NULL, ...) {
   return(samples)
 }
 
-.loadSampleSubannotation = function(sampleSubannotationPath){
-  # The data.frame columns can be lists, which implies the possibility of storing multiple elements in one "cell" of the samples table
-  # https://www.r-bloggers.com/populating-data-frame-cells-with-more-than-one-value/
-  # This funtion could amend appropriate columns of the data.frame produced by the .loadSampleAnnotation and be called when initializing the object of Project class
-  # Can use fread if data.table is installed, otherwise use read.table
+.loadSampleSubannotation = function(sampleSubannotationPath, samples) {
+  # Reading sample subannonataion table, just like in annotation table
   if (requireNamespace("data.table")) {
-    sampleReadFunc = data.table::fread
+    sampleSubReadFunc = data.table::fread
   } else {
-    sampleReadFunc = read.table
+    sampleSubReadFunc = read.table
   }
-  
-  if (.safeFileExists(sampleAnnotationPath)) {
-    samples = sampleReadFunc(sampleAnnotationPath)
+  if (.safeFileExists(sampleSubannotationPath)) {
+    samplesSubannotation = sampleSubReadFunc(sampleSubannotationPath)
   } else{
-    message("No sample annotation file:", sampleAnnotationPath)
-    samples = data.frame()
+    samplesSubannotation = data.frame()
   }
-  
+  subNames = unique(samplesSubannotation$sample_name)
+  rowNum = nrow(samples)
+  # Creating a list to be populate in the loop and inserted into the samples data.frame as a column. This way the "cells" in the samples table can consist of multiple elements
+  colList = vector("list", rowNum)
+  for (iName in subNames) {
+    whichNames = which(samplesSubannotation$sample_name == iName)
+    subTable = samplesSubannotation[whichNames,]
+    dropCol = which(names(samplesSubannotation[whichNames,]) == "sample_name")
+    subTable = subset(subTable, select = -dropCol)
+    for (iColumn in seq_len(ncol(subTable))) {
+      colName = names(subset(subTable, select = iColumn))
+      if (!any(names(samples) == colName)) {
+        # The column doesn't exist, creating
+        samples[, colName] = NA
+      }
+      # The column exists
+      whichColSamples = which(names(samples) == colName)
+      whichRowSamples = which(samples$sample_name == iName)
+      samples[, whichColSamples] = colList
+      # Inserting element(s) into the list
+      colList[[whichRowSamples]] = unname(unlist(subTable))
+      # Inserting the list as a column in the data.frame
+      samples[, whichColSamples] = colList
+    }
+  }
+  return(samples)
 }
 
 #' @export
