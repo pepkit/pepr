@@ -163,11 +163,23 @@ expandPath = function(path) {
 #' @examples
 #' strformat("{VAR1}{VAR2}_file", list(VAR1="hi", VAR2="hello"))
 strformat = function(string, args) {
-	x = pepr:::expandPath(string)
-	# str_interp requires variables encoded like ${var}, so we substitute
-	# the {var} syntax here.
-	x = stringr::str_replace_all(x, "\\{", "${")
-	stringr::str_interp(x, args)
+  result=c()
+  x = pepr:::expandPath(string)
+  # str_interp requires variables encoded like ${var}, so we substitute
+  # the {var} syntax here.
+  x = stringr::str_replace_all(x, "\\{", "${")
+  argsUnlisted=lapply(args, unlist)
+  argsLengths=lapply(argsUnlisted, length)
+  if(any(argsLengths>1)){
+    pluralID=which(argsLengths>1)
+    for(iPlural in unlist(argsUnlisted[pluralID])){
+      argsUnlisted[[pluralID]] = iPlural
+      result=append(result,stringr::str_interp(x, argsUnlisted))
+    }
+    return(result)
+  }else{
+  	return(stringr::str_interp(x, argsUnlisted))
+  }
 }
 
 

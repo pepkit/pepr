@@ -105,6 +105,7 @@ setMethod("initialize", "Project", function(.Object, sp = NULL, ...) {
   # Convert samples table into list of individual samples for processing
   cfg = .Object@config
   tempSamples = .Object@samples
+  tempSamples[is.na(tempSamples)] = ""
   numSamples = nrow(tempSamples)
   if (numSamples == 0) {
     return(.Object)
@@ -116,14 +117,14 @@ setMethod("initialize", "Project", function(.Object, sp = NULL, ...) {
   for (column in cfg$derived_columns) {
     for (iSamp in seq_along(listOfSamples)) {
       samp = listOfSamples[[iSamp]]
-      sampDataSource = samp[[column]]
+      sampDataSource = unlist(samp[[column]])
       if (is.null(sampDataSource)) {
         # This sample lacks this derived column
         next
       }
       regex = cfg$data_sources[[sampDataSource]]
       if (!is.null(regex)) {
-        samp[[column]] = strformat(regex, as.list(samp))
+        samp[[column]] = list(strformat(regex, as.list(samp)))
       }
       listOfSamples[[iSamp]] = samp
     }
@@ -221,19 +222,21 @@ setMethod("initialize", "Project", function(.Object, sp = NULL, ...) {
       colName = names(subset(subTable, select = iColumn))
       if (!any(names(samples) == colName)) {
         # The column doesn't exist, creating
-        samples[, colName] = NA
+        samples[, colName] = NULL
       }else{
-        colList=as.list(unname(samples[, ..colName]))[[1]]
+        # colList=as.list(unname(samples[, ..colName]))[[1]]
+        colList = samples[[colName]]
       }
       # The column exists
       whichColSamples = which(names(samples) == colName)
       whichRowSamples = which(samples$sample_name == iName)
       # Inserting element(s) into the list
-      colList[[whichRowSamples]] = unname(unlist(subTable[,..iColumn]))
+      colList[[whichRowSamples]] = unname(unlist(subTable[[colName]]))
       # Inserting the list as a column in the data.frame
       samples[, whichColSamples] = colList
     }
   }
+  samples[is.na(samples)] = ""
   return(samples)
 }
 
