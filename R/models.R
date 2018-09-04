@@ -198,11 +198,11 @@ setMethod("initialize", "Project", function(.Object, sp = NULL, ...) {
   samples = .Object@samples
   samples = .listifyDF(samples)
   # Reading sample subannonataion table, just like in annotation table
-  if (requireNamespace("data.table")) {
-    sampleSubReadFunc = data.table::fread
-  } else {
+  # if (requireNamespace("data.table")) {
+  #   sampleSubReadFunc = data.table::fread
+  # } else {
     sampleSubReadFunc = read.table
-  }
+  # }
   if (.safeFileExists(sampleSubannotationPath)) {
     samplesSubannotation = sampleSubReadFunc(sampleSubannotationPath)
   } else{
@@ -231,9 +231,9 @@ setMethod("initialize", "Project", function(.Object, sp = NULL, ...) {
       whichColSamples = which(names(samples) == colName)
       whichRowSamples = which(samples$sample_name == iName)
       # Inserting element(s) into the list
-      colList[[whichRowSamples]] = unname(unlist(subTable[[colName]]))
+      colList[[whichRowSamples]] = subTable[[colName]]
       # Inserting the list as a column in the data.frame
-      samples[, whichColSamples] = colList
+      samples[[colName]] = colList
     }
   }
   samples[is.na(samples)] = ""

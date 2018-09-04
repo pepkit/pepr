@@ -44,7 +44,7 @@
 .listifyDF = function(DF){
   colNames =  names(DF)
   for(iColumn in colNames){
-    DF[,iColumn]=as.list(unname(unlist(DF[, ..iColumn])))
+    DF[,iColumn]=as.list(DF[[iColumn]])
   }
   return(DF)
 }
