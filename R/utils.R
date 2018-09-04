@@ -40,3 +40,11 @@
 .safeFileExists = function(path) {
 	( (! is.null(path)) && file.exists(path) )
 }
+
+.listifyDF = function(DF){
+  colNames =  names(DF)
+  for(iColumn in colNames){
+    DF[,iColumn]=as.list(unname(unlist(DF[, ..iColumn])))
+  }
+  return(DF)
+}

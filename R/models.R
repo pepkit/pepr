@@ -88,14 +88,14 @@ setMethod("initialize", "Project", function(.Object, sp = NULL, ...) {
   .Object = callNextMethod()  # calls generic initialize
   .Object@config = loadConfig(.Object@file, sp)
   .Object@samples = .loadSampleAnnotation(.Object@config$metadata$sample_annotation)
-  .Object = .deriveColumns(.Object)
-  .Object = .implyColumns(.Object)
-  # .Object@samples = .loadSampleSubnnotation(.Object@config$metadata$sample_subannotation)
+  # .Object = .implyColumns(.Object)
+  .Object@samples = .loadSampleSubannotation(.Object)
+  # .Object = .deriveColumns(.Object)
   .Object
 })
 
 .deriveColumns = function(.Object) {
-  # TODO: probably will need to rewrite this function after adding the sample subannotations functionality
+  # TODO: need to rewrite this function after adding the sample subannotations functionality
   # Set default derived columns
   dc = as.list(unique(append(
     .Object@config$derived_columns, "data_source"
@@ -191,7 +191,11 @@ setMethod("initialize", "Project", function(.Object, sp = NULL, ...) {
   return(samples)
 }
 
-.loadSampleSubannotation = function(sampleSubannotationPath, samples) {
+.loadSampleSubannotation = function(.Object) {
+  # Extracting needed slots
+  sampleSubannotationPath = .Object@config$metadata$sample_subannotation
+  samples = .Object@samples
+  samples = .listifyDF(samples)
   # Reading sample subannonataion table, just like in annotation table
   if (requireNamespace("data.table")) {
     sampleSubReadFunc = data.table::fread
@@ -208,6 +212,7 @@ setMethod("initialize", "Project", function(.Object, sp = NULL, ...) {
   # Creating a list to be populate in the loop and inserted into the samples data.frame as a column. This way the "cells" in the samples table can consist of multiple elements
   colList = vector("list", rowNum)
   for (iName in subNames) {
+    
     whichNames = which(samplesSubannotation$sample_name == iName)
     subTable = samplesSubannotation[whichNames,]
     dropCol = which(names(samplesSubannotation[whichNames,]) == "sample_name")
@@ -217,13 +222,14 @@ setMethod("initialize", "Project", function(.Object, sp = NULL, ...) {
       if (!any(names(samples) == colName)) {
         # The column doesn't exist, creating
         samples[, colName] = NA
+      }else{
+        colList=as.list(unname(samples[, ..colName]))[[1]]
       }
       # The column exists
       whichColSamples = which(names(samples) == colName)
       whichRowSamples = which(samples$sample_name == iName)
-      samples[, whichColSamples] = colList
       # Inserting element(s) into the list
-      colList[[whichRowSamples]] = unname(unlist(subTable))
+      colList[[whichRowSamples]] = unname(unlist(subTable[,..iColumn]))
       # Inserting the list as a column in the data.frame
       samples[, whichColSamples] = colList
     }
