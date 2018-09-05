@@ -163,6 +163,7 @@ expandPath = function(path) {
 #' @examples
 #' strformat("{VAR1}{VAR2}_file", list(VAR1="hi", VAR2="hello"))
 strformat = function(string, args) {
+  # TODO: In case there are two derived columns in the secon round the previous multiplied elements mess up the subsequent result. See example6
   result=c()
   x = pepr:::expandPath(string)
   # str_interp requires variables encoded like ${var}, so we substitute

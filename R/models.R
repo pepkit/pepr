@@ -88,9 +88,9 @@ setMethod("initialize", "Project", function(.Object, sp = NULL, ...) {
   .Object = callNextMethod()  # calls generic initialize
   .Object@config = loadConfig(.Object@file, sp)
   .Object@samples = .loadSampleAnnotation(.Object@config$metadata$sample_annotation)
-  # .Object = .implyColumns(.Object)
   .Object@samples = .loadSampleSubannotation(.Object)
   # .Object = .deriveColumns(.Object)
+  # .Object = .implyColumns(.Object)
   .Object
 })
 
@@ -197,12 +197,12 @@ setMethod("initialize", "Project", function(.Object, sp = NULL, ...) {
   sampleSubannotationPath = .Object@config$metadata$sample_subannotation
   samples = .Object@samples
   samples = .listifyDF(samples)
-  # Reading sample subannonataion table, just like in annotation table
-  # if (requireNamespace("data.table")) {
-  #   sampleSubReadFunc = data.table::fread
-  # } else {
+  #Reading sample subannonataion table, just like in annotation table
+  if (requireNamespace("data.table")) {
+    sampleSubReadFunc = data.table::fread
+  } else {
     sampleSubReadFunc = read.table
-  # }
+  }
   if (.safeFileExists(sampleSubannotationPath)) {
     samplesSubannotation = sampleSubReadFunc(sampleSubannotationPath)
   } else{
