@@ -8,12 +8,11 @@
 #' @slot config a list object holding contents of the config file
 #'
 #' @exportClass Project
-setClass("Project",
-         slots = c(
-           file = "character",
-           samples = "data.frame",
-           config = "list"
-         ))
+setClass("Project", slots = c(
+  file="character",
+  samples="data.frame",
+  config="list")
+)
 
 #' A class representing a Portable Encapsulated Project
 #' This is a helper that creates the project with empty samples and config slots
@@ -21,67 +20,59 @@ setClass("Project",
 #' @param samples a data table object holding the sample metadata
 #' @param config a list object holding contents of the config file
 #' @export Project
-Project = function(file,
-                   samples = list(),
-                   config = list()) {
-  new("Project", file = file)
+Project = function(file, samples=list(), config=list()) {
+  new("Project", file=file)
 }
 
 #' Config objects are specialized list objects
-#'
+#' 
 #' @exportClass Config
-setClass("Config", contains = "list")
+setClass("Config", contains="list")
 
 
 # Override the standard generic show function for our config-style lists
-setMethod(
-  "show",
-  signature = "Config",
-  definition = function(object) {
-    message("PEP project object. Class: ", class(object))
-    printNestedList(object)
-    invisible(NULL)
-  }
+setMethod("show",
+          signature="Config",
+          definition=function(object) {
+            message("PEP project object. Class: ", class(object))
+            printNestedList(object)
+            invisible(NULL)
+          }
 )
 
 
-setMethod(
-  "show",
-  signature = "Project",
-  definition = function(object) {
-    message("PEP project object. Class: ", class(object))
-    message("  file: ", object@file)
-    message("  samples: ", NROW(object@samples))
-    listSubprojects(object@config)
-    invisible(NULL)
-  }
+setMethod("show",
+          signature="Project",
+          definition=function(object) {
+            message("PEP project object. Class: ", class(object))
+            message("  file: ", object@file)
+            message("  samples: ", NROW(object@samples))
+            listSubprojects(object@config)
+            invisible(NULL)
+          }
 )
 
 
-setGeneric("config", function(object, ...)
-  standardGeneric("config"))
+setGeneric("config", function(object, ...) standardGeneric("config"))
 
 #' @export
-setMethod(
-  "config",
-  signature = "Project",
-  definition = function(object) {
-    object@config
-  }
+setMethod("config",
+          signature = "Project",
+          definition = function(object) {
+            object@config
+          }
 )
 
 
-setGeneric("samples", function(object, ...)
-  standardGeneric("samples"))
+setGeneric("samples", function(object, ...) standardGeneric("samples"))
 
 #' @export
-setMethod(
-  "samples",
-  signature = "Project",
-  definition = function(object) {
-    print(object@samples)
-    invisible(object@samples)
-  }
+setMethod("samples",
+          signature = "Project",
+          definition = function(object) {
+            print(object@samples)
+            invisible(object@samples)
+          }
 )
 
 setMethod("initialize", "Project", function(.Object, sp = NULL, ...) {
@@ -89,13 +80,13 @@ setMethod("initialize", "Project", function(.Object, sp = NULL, ...) {
   .Object@config = loadConfig(.Object@file, sp)
   .Object@samples = .loadSampleAnnotation(.Object@config$metadata$sample_annotation)
   .Object@samples = .loadSampleSubannotation(.Object)
-  # .Object = .deriveColumns(.Object)
-  # .Object = .implyColumns(.Object)
+  .Object = .deriveColumns(.Object)
+  .Object = .implyColumns(.Object)
   .Object
 })
 
+
 .deriveColumns = function(.Object) {
-  # TODO: need to rewrite this function after adding the sample subannotations functionality
   # Set default derived columns
   dc = as.list(unique(append(
     .Object@config$derived_columns, "data_source"
@@ -135,7 +126,6 @@ setMethod("initialize", "Project", function(.Object, sp = NULL, ...) {
   .Object@samples = do.call(rbind, listOfSamples)
   .Object
 }
-
 
 .implyColumns = function(.Object) {
   if (is.null(.Object@config$implied_columns)) {
@@ -202,7 +192,7 @@ setMethod("initialize", "Project", function(.Object, sp = NULL, ...) {
   if (requireNamespace("data.table")) {
     sampleSubReadFunc = data.table::fread
   } else {
-    sampleSubReadFunc = read.table
+    sampleSubReadFunc = utils::read.table
   }
   if (.safeFileExists(sampleSubannotationPath)) {
     samplesSubannotation = sampleSubReadFunc(sampleSubannotationPath)
@@ -242,35 +232,36 @@ setMethod("initialize", "Project", function(.Object, sp = NULL, ...) {
 }
 
 #' @export
-activateSubproject = function(.Object, sp, ...)  {
+activateSubproject = function(.Object, sp, ...) {
+  
   .Object@config = .updateSubconfig(.Object@config, sp)
   
   # Ensure that metadata paths are absolute and return the config.
   # This used to be all metadata columns; now it's just: results_subdir
   mdn = names(.Object@config$metadata)
   
-  .Object@config$metadata = makeMetadataSectionAbsolute(.Object@config, parent =
-                                                          dirname(.Object@file))
+  .Object@config$metadata = makeMetadataSectionAbsolute(.Object@config, parent=dirname(.Object@file))
   
   .Object@samples = .loadSampleAnnotation(.Object@config$metadata$sample_annotation)
   .Object = .deriveColumns(.Object)
-  .Object = .implyColumns(.Object)
   .Object
 }
 
+
+
+
 #' Prints a nested list in a way that looks nice
-#'
+#' 
 #' @param lst list object to print
 #' @export
-printNestedList = function(lst, level = 0) {
-  for (itemName in names(lst)) {
+printNestedList = function(lst, level=0) {
+  for(itemName in names(lst)) {
     item = lst[[itemName]]
     if (class(item) == "list") {
       message(rep(" ", level), itemName, ":")
-      printNestedList(item, level + 2)
+      printNestedList(item, level+2)
     } else {
-      if (is.null(item))
-        item = "null"
+      if (is.null(item)) item = "null"
       message(rep(" ", level), itemName, ": ", item)
     }
   }
