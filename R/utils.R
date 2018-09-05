@@ -41,10 +41,22 @@
   ( (! is.null(path)) && file.exists(path) )
 }
 
-.listifyDF = function(DF){
+#' Listify data frame columns
+#'
+#' This function turns each data frame column into a list, so that its cells can contain multiple elements
+#' 
+#' @param DF an object of class data.frame
+#'
+#' @return an object of class data.frame
+#' @export
+#'
+#' @examples
+#' dataFrame=mtcars
+#' listifiedDataFrame=listifyDF(dataFrame)
+listifyDF = function(DF){
   colNames =  names(DF)
   for(iColumn in colNames){
-    DF[,iColumn]=as.list(DF[[iColumn]])
+    DF[[iColumn]]=as.list(DF[[iColumn]])
   }
   return(DF)
 }

@@ -187,7 +187,7 @@ setMethod("initialize", "Project", function(.Object, sp = NULL, ...) {
   # Extracting needed slots
   sampleSubannotationPath = .Object@config$metadata$sample_subannotation
   samples = .Object@samples
-  samples = .listifyDF(samples)
+  samples = listifyDF(samples)
   #Reading sample subannonataion table, just like in annotation table
   if (requireNamespace("data.table")) {
     sampleSubReadFunc = data.table::fread
