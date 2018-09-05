@@ -159,11 +159,11 @@ expandPath = function(path) {
 
 #' @param string String with variables encoded
 #' @param args named list of arguments to use to populate the string
+#' @param exclude character vector of args that should be excluded from the interpolation. The elements in the vector should match the names of the elements in the args list
 #' @export
 #' @examples
 #' strformat("{VAR1}{VAR2}_file", list(VAR1="hi", VAR2="hello"))
-strformat = function(string, args) {
-  # TODO: In case there are two derived columns in the secon round the previous multiplied elements mess up the subsequent result. See example6
+strformat = function(string, args, exclude) {
   result=c()
   x = pepr:::expandPath(string)
   # str_interp requires variables encoded like ${var}, so we substitute
@@ -173,6 +173,10 @@ strformat = function(string, args) {
   argsLengths=lapply(argsUnlisted, length)
   if(any(argsLengths>1)){
     pluralID=which(argsLengths>1)
+    # Remove the previously interpolated, thus plural elements from another round of interpolation
+    if(any(names(pluralID) %in% exclude)){
+      pluralID=pluralID[-which(names(pluralID) %in% exclude)]
+    }
     for(iPlural in unlist(argsUnlisted[pluralID])){
       argsUnlisted[[pluralID]] = iPlural
       result=append(result,stringr::str_interp(x, argsUnlisted))

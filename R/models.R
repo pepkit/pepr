@@ -112,7 +112,7 @@ setMethod("initialize", "Project", function(.Object, sp = NULL, ...) {
   }
   
   listOfSamples = split(tempSamples, seq(numSamples))
-  
+  exclude=c()
   # Process derived columns
   for (column in cfg$derived_columns) {
     for (iSamp in seq_along(listOfSamples)) {
@@ -124,10 +124,11 @@ setMethod("initialize", "Project", function(.Object, sp = NULL, ...) {
       }
       regex = cfg$data_sources[[sampDataSource]]
       if (!is.null(regex)) {
-        samp[[column]] = list(strformat(regex, as.list(samp)))
+        samp[[column]] = list(strformat(regex, as.list(samp),exclude))
       }
       listOfSamples[[iSamp]] = samp
     }
+    exclude = append(exclude,column)
   }
   
   # Reformat listOfSamples to a table
