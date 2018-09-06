@@ -1,0 +1,20 @@
+---
+title: "Derieved columns and Implied columns in `pepr`"
+author: "Michal Stolarczyk"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+This vignette will show you how and why to use both the derieved and implied columns functionality of the `pepr` package. For introductory information about the package visit the [documentation page](http://code.databio.org/pepr/index.html). For the basic information about the PEP concept visit the [project website](https://pepkit.github.io/).
+

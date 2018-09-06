@@ -13,7 +13,8 @@ Imports:
     pryr
 Suggests:
     knitr,
-    testthat
+    testthat,
+    rmarkdown
 Enhances:
     data.table
 VignetteBuilder: knitr
