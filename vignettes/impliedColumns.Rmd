@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-This vignette will show you how and why to use the implied columns functionality of the `pepr` package. For introductory information about the package visit the [documentation page](http://code.databio.org/pepr/index.html). For the basic information about the PEP concept visit the [project website](https://pepkit.github.io/).
+This vignette will show you how and why to use the implied columns functionality of the `pepr` package. For introductory information about the package visit the [documentation page](http://code.databio.org/pepr/index.html). For the basic information about the PEP concept visit the [project website](https://pepkit.github.io/). For a broader theoretical description of implied columns click [here](https://pepkit.github.io/docs/implied_columns/).
 
 ### Problem/Goal
 The example below demonstrates how and why to use implied columns functionality to **save your time and effort** in case multiple sample attributes need to be defined for many samples and they **follow certain patterns**. Please consider the example below for reference:
@@ -30,7 +30,7 @@ knitr::kable(sampleAnnotationDF,format = "html")
 ```
 ----
 ### Solution
-Noticeably, the samples with attributes `human` nad `mouse` (in the `organism` column) follow two separate patterns here. They have specified additional attributes in columns `genome` and `genome_size` in the `sample_annotation.csv` file. Consequently you can use implied columns to add those attributes to the sample annotations. The way how this process is carried out is indicated explicitly in the `project_config.yaml` file (presented below).
+Noticeably, the samples with attributes `human`and `mouse` (in the `organism` column) follow two distinct patterns here. They have additional attributes in columns `genome` and `genome_size` in the `sample_annotation.csv` file. Consequently you can use implied columns to add those attributes to the sample annotations (set global, species-level attributes at the project level instead of duplicating that information for every sample that belongs to a species). The way how this process is carried out is indicated explicitly in the `project_config.yaml` file (presented below).
 
 ```{yaml, highlight=TRUE}
 metadata:
@@ -52,8 +52,6 @@ Consequently, you can design an `implied_columns` multi-level key-value section 
 Let's introduce a few modifications to the original `sample_annotation.csv` file to use the `implied_columns` section of the config. Simply skip the columns that will be implied and let the `pepr` do the work for you.
 
 ```{r ,echo=FALSE}
-library(knitr)
-library(kableExtra)
 sampleAnnotation = system.file("extdata", "example_implied", "sample_annotation.csv", package="pepr")
 sampleAnnotationDF=read.table(sampleAnnotation,sep = ",",header = T)
 kable(sampleAnnotationDF,format = "html") 
