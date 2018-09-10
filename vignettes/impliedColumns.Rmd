@@ -30,7 +30,7 @@ knitr::kable(sampleAnnotationDF,format = "html")
 ```
 ----
 ### Solution
-Noticeably, the samples with attributes `human`and `mouse` (in the `organism` column) follow two distinct patterns here. They have additional attributes in columns `genome` and `genome_size` in the `sample_annotation.csv` file. Consequently you can use implied columns to add those attributes to the sample annotations (set global, species-level attributes at the project level instead of duplicating that information for every sample that belongs to a species). The way how this process is carried out is indicated explicitly in the `project_config.yaml` file (presented below).
+Noticeably, the samples with attributes `human` and `mouse` (in the `organism` column) follow two distinct patterns here. They have additional attributes in columns `genome` and `genome_size` in the `sample_annotation.csv` file. Consequently you can use implied columns to add those attributes to the sample annotations (set global, species-level attributes at the project level instead of duplicating that information for every sample that belongs to a species). The way how this process is carried out is indicated explicitly in the `project_config.yaml` file (presented below).
 
 ```{yaml, highlight=TRUE}
 metadata:

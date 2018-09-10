@@ -8,11 +8,12 @@
 #' @slot config a list object holding contents of the config file
 #'
 #' @exportClass Project
-setClass("Project", slots = c(
-  file="character",
-  samples="data.frame",
-  config="list")
-)
+setClass("Project",
+         slots = c(
+           file = "character",
+           samples = "data.frame",
+           config = "list"
+         ))
 
 #' A class representing a Portable Encapsulated Project
 #' This is a helper that creates the project with empty samples and config slots
@@ -20,59 +21,67 @@ setClass("Project", slots = c(
 #' @param samples a data table object holding the sample metadata
 #' @param config a list object holding contents of the config file
 #' @export Project
-Project = function(file, samples=list(), config=list()) {
-  new("Project", file=file)
+Project = function(file,
+                   samples = list(),
+                   config = list()) {
+  new("Project", file = file)
 }
 
 #' Config objects are specialized list objects
-#' 
+#'
 #' @exportClass Config
-setClass("Config", contains="list")
+setClass("Config", contains = "list")
 
 
 # Override the standard generic show function for our config-style lists
-setMethod("show",
-          signature="Config",
-          definition=function(object) {
-            message("PEP project object. Class: ", class(object))
-            printNestedList(object)
-            invisible(NULL)
-          }
+setMethod(
+  "show",
+  signature = "Config",
+  definition = function(object) {
+    message("PEP project object. Class: ", class(object))
+    printNestedList(object)
+    invisible(NULL)
+  }
 )
 
 
-setMethod("show",
-          signature="Project",
-          definition=function(object) {
-            message("PEP project object. Class: ", class(object))
-            message("  file: ", object@file)
-            message("  samples: ", NROW(object@samples))
-            listSubprojects(object@config)
-            invisible(NULL)
-          }
+setMethod(
+  "show",
+  signature = "Project",
+  definition = function(object) {
+    message("PEP project object. Class: ", class(object))
+    message("  file: ", object@file)
+    message("  samples: ", NROW(object@samples))
+    listSubprojects(object@config)
+    invisible(NULL)
+  }
 )
 
 
-setGeneric("config", function(object, ...) standardGeneric("config"))
-
-#' @export 
-setMethod("config",
-          signature = "Project",
-          definition = function(object) {
-            object@config
-          }
-)
-
-
-setGeneric("samples", function(object, ...) standardGeneric("samples"))
+setGeneric("config", function(object, ...)
+  standardGeneric("config"))
 
 #' @export
-setMethod("samples",
-          signature = "Project",
-          definition = function(object) {
-            print(object@samples)
-            invisible(object@samples)
-          }
+setMethod(
+  "config",
+  signature = "Project",
+  definition = function(object) {
+    object@config
+  }
+)
+
+
+setGeneric("samples", function(object, ...)
+  standardGeneric("samples"))
+
+#' @export
+setMethod(
+  "samples",
+  signature = "Project",
+  definition = function(object) {
+    print(object@samples)
+    invisible(object@samples)
+  }
 )
 
 setMethod("initialize", "Project", function(.Object, sp = NULL, ...) {
@@ -80,32 +89,46 @@ setMethod("initialize", "Project", function(.Object, sp = NULL, ...) {
   .Object@config = loadConfig(.Object@file, sp)
   .Object@samples = .loadSampleAnnotation(.Object@config$metadata$sample_annotation)
   .Object@samples = .loadSampleSubannotation(.Object)
-  .Object = .deriveColumns(.Object)
   .Object = .implyColumns(.Object)
+  .Object = .deriveColumns(.Object)
   .Object
 })
 
-setGeneric(name="getSubsample", function(.Object, sampleName,subsampleName) standardGeneric("getSubsample"))
+setGeneric(name = "getSubsample", function(.Object, sampleName, subsampleName)
+  standardGeneric("getSubsample"))
 
-#' @export 
-setMethod(f="getSubsample",signature(.Object="Project",sampleName = "character",subsampleName="character"),definition = function(.Object, sampleName, subsampleName){
-  if(is.null(.Object@samples$subsample_name)) stop("There is no subsample_name attribute in the subannotation table, therefore this method cannot be called.")
-  sampleNames = unlist(.Object@samples$sample_name)
-  rowNumber = which(sampleNames == sampleName)
-  if (length(rowNumber)==0) stop("Such sample name does not exist.")
-  subsampleNames = .Object@samples$subsample_name[[rowNumber]]
-  sampleNumber = which(subsampleNames == subsampleName)
-  if (length(sampleNumber)==0) stop("Such sample and sub sample name combination does not exist.")
-  result=.Object@samples[1,]
-  for(iColumn in names(result)){
-    if(length(.Object@samples[[iColumn]][[rowNumber]]) > 1){
-      result[[iColumn]] = .Object@samples[[iColumn]][[rowNumber]][[sampleNumber]]
-    }else{
-      result[[iColumn]] = .Object@samples[[iColumn]][[rowNumber]][[1]]
+#' @export
+setMethod(
+  f = "getSubsample",
+  signature(
+    .Object = "Project",
+    sampleName = "character",
+    subsampleName = "character"
+  ),
+  definition = function(.Object, sampleName, subsampleName) {
+    if (is.null(.Object@samples$subsample_name))
+      stop(
+        "There is no subsample_name attribute in the subannotation table, therefore this method cannot be called."
+      )
+    sampleNames = unlist(.Object@samples$sample_name)
+    rowNumber = which(sampleNames == sampleName)
+    if (length(rowNumber) == 0)
+      stop("Such sample name does not exist.")
+    subsampleNames = .Object@samples$subsample_name[[rowNumber]]
+    sampleNumber = which(subsampleNames == subsampleName)
+    if (length(sampleNumber) == 0)
+      stop("Such sample and sub sample name combination does not exist.")
+    result = .Object@samples[1, ]
+    for (iColumn in names(result)) {
+      if (length(.Object@samples[[iColumn]][[rowNumber]]) > 1) {
+        result[[iColumn]] = .Object@samples[[iColumn]][[rowNumber]][[sampleNumber]]
+      } else{
+        result[[iColumn]] = .Object@samples[[iColumn]][[rowNumber]][[1]]
+      }
     }
+    return(result)
   }
-  return(result)
-})
+)
 
 
 .deriveColumns = function(.Object) {
@@ -125,7 +148,7 @@ setMethod(f="getSubsample",signature(.Object="Project",sampleName = "character",
   }
   
   listOfSamples = split(tempSamples, seq(numSamples))
-  exclude=c()
+  exclude = c()
   # Process derived columns
   for (column in cfg$derived_columns) {
     for (iSamp in seq_along(listOfSamples)) {
@@ -137,11 +160,11 @@ setMethod(f="getSubsample",signature(.Object="Project",sampleName = "character",
       }
       regex = cfg$data_sources[[sampDataSource]]
       if (!is.null(regex)) {
-        samp[[column]] = list(strformat(regex, as.list(samp),exclude))
+        samp[[column]] = list(strformat(regex, as.list(samp), exclude))
       }
       listOfSamples[[iSamp]] = samp
     }
-    exclude = append(exclude,column)
+    exclude = append(exclude, column)
   }
   
   # Reformat listOfSamples to a table
@@ -226,17 +249,16 @@ setMethod(f="getSubsample",signature(.Object="Project",sampleName = "character",
   # Creating a list to be populate in the loop and inserted into the samples data.frame as a column. This way the "cells" in the samples table can consist of multiple elements
   colList = vector("list", rowNum)
   for (iName in subNames) {
-    
     whichNames = which(samplesSubannotation$sample_name == iName)
-    subTable = samplesSubannotation[whichNames,]
-    dropCol = which(names(samplesSubannotation[whichNames,]) == "sample_name")
+    subTable = samplesSubannotation[whichNames, ]
+    dropCol = which(names(samplesSubannotation[whichNames, ]) == "sample_name")
     subTable = subset(subTable, select = -dropCol)
     for (iColumn in seq_len(ncol(subTable))) {
       colName = names(subset(subTable, select = iColumn))
       if (!any(names(samples) == colName)) {
         # The column doesn't exist, creating
         samples[, colName] = NULL
-      }else{
+      } else{
         # colList=as.list(unname(samples[, ..colName]))[[1]]
         colList = samples[[colName]]
       }
@@ -255,14 +277,14 @@ setMethod(f="getSubsample",signature(.Object="Project",sampleName = "character",
 
 #' @export
 activateSubproject = function(.Object, sp, ...) {
-  
   .Object@config = .updateSubconfig(.Object@config, sp)
   
   # Ensure that metadata paths are absolute and return the config.
   # This used to be all metadata columns; now it's just: results_subdir
   mdn = names(.Object@config$metadata)
   
-  .Object@config$metadata = makeMetadataSectionAbsolute(.Object@config, parent=dirname(.Object@file))
+  .Object@config$metadata = makeMetadataSectionAbsolute(.Object@config, parent =
+                                                          dirname(.Object@file))
   
   .Object@samples = .loadSampleAnnotation(.Object@config$metadata$sample_annotation)
   .Object = .deriveColumns(.Object)
@@ -273,17 +295,18 @@ activateSubproject = function(.Object, sp, ...) {
 
 
 #' Prints a nested list in a way that looks nice
-#' 
+#'
 #' @param lst list object to print
 #' @export
-printNestedList = function(lst, level=0) {
-  for(itemName in names(lst)) {
+printNestedList = function(lst, level = 0) {
+  for (itemName in names(lst)) {
     item = lst[[itemName]]
     if (class(item) == "list") {
       message(rep(" ", level), itemName, ":")
-      printNestedList(item, level+2)
+      printNestedList(item, level + 2)
     } else {
-      if (is.null(item)) item = "null"
+      if (is.null(item))
+        item = "null"
       message(rep(" ", level), itemName, ": ", item)
     }
   }
