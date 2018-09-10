@@ -1,5 +1,5 @@
 ---
-title: "Sample subannotations in `pepr`"
+title: "Sample subannotations in pepr"
 author: "Michal Stolarczyk & Nathan Sheffield"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette

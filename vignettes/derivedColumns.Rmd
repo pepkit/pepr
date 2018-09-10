@@ -1,5 +1,5 @@
 ---
-title: "Derieved columns in `pepr`"
+title: "Derieved columns in pepr"
 author: "Michal Stolarczyk"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
