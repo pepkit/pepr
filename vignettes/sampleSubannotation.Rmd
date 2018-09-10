@@ -20,13 +20,13 @@ This vignette will show you how and why to use the sample subannotation function
 
 ### Problem/Goal
 
-This series of examples below demonstrate how and why to use sample subannoatation functionality in multiple cases to **provide multiple input files of the same type for a single sample**.
+This series of examples below demonstrates how and why to use sample subannoatation functionality in multiple cases to **provide multiple input files of the same type for a single sample**.
 
 ### Solutions
 
 #### Example 1: basic sample subannotation table
 
-This example demonstrates how the sample_subannotation functionality is used. In this example, 2 samples have multiple input files that need merging (`frog_1` and `frog_2`), while 1 sample (`frog_3`) does not. Therefore, `frog_3` specifies its file in the sample_annotation table, while the others leave that field blank and instead specify several files in the `sample_subannotation`.
+This example demonstrates how the sample subannotation functionality is used. In this example, 2 samples have multiple input files that need merging (`frog_1` and `frog_2`), while 1 sample (`frog_3`) does not. Therefore, `frog_3` specifies its file in the `sample_annotation.csv` file, while the others leave that field blank and instead specify several files in the `sample_subannotation.csv` file.
 
 This example is made up of these components:
 
@@ -51,6 +51,7 @@ sampleAnnotation = system.file("extdata", "examples_subannotation","example1", "
 sampleAnnotationDF=read.table(sampleAnnotation,sep = ",",header = T)
 kable(sampleAnnotationDF,format = "html") 
 ```
+
 Let's load the project config, create the Project object and see if multiple files are present 
 ```{r}
 library(pepr)
@@ -65,10 +66,17 @@ And inspect the whole table in `p1@samples` slot
 ```{r,echo=FALSE}
 kable(p1@samples)
 ```
+You can also access a single subsample if you call the `getSubsample` method with appropriate `sample_name` - `subsample_name` attribute combination. Note, that this is only possible if the `subsample_name` column is defined in the `sub_annotation.csv` file.
+```{r}
+sampleName="frog_1"
+subsampleName="sub_a"
+getSubsample(p1,sampleName,subsampleName)
+```
+
 
 #### Example 2: subannotations and derived columns
 
-This example uses a `sample_subannotation` table and a derived column to point to files. This is a rather complex example. Notice we must include the `file_id` column in the `sample_annotation` table, and leave it blank; this is then populated by just some of the samples (`frog_1` and `frog_2`) in the `sample_subannotation`, but is left empty for the samples that are not merged.
+This example uses a `sample_subannotation.csv` file and a derived column to point to files. This is a rather complex example. Notice we must include the `file_id` column in the `sample_annotation.csv` file, and leave it blank; this is then populated by just some of the samples (`frog_1` and `frog_2`) in the `sample_subannotation.csv`, but is left empty for the samples that are not merged.
 
 This example is made up of these components:
 
@@ -114,7 +122,7 @@ kable(p2@samples)
 
 #### Example 3: subannotations and expansion characters
 
-This example gives the exact same results as Example 2, but in this case, uses a wildcard for `frog_2` instead of including it in the `sample_subannotation` table. Since we can't use a wildcard and a subannotation for the same sample, this necessitates specifying a second data source class (`local_files_unmerged`) that uses an asterisk (*). The outcome is the same.
+This example gives the exact same results as Example 2, but in this case, uses a wildcard for `frog_2` instead of including it in the `sample_subannotation.csv` file. Since we can't use a wildcard and a subannotation for the same sample, this necessitates specifying a second data source class (`local_files_unmerged`) that uses an asterisk (*). The outcome is the same.
 
 This example is made up of these components:
 

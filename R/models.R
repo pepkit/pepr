@@ -55,7 +55,7 @@ setMethod("show",
 
 setGeneric("config", function(object, ...) standardGeneric("config"))
 
-#' @export
+#' @export 
 setMethod("config",
           signature = "Project",
           definition = function(object) {
@@ -83,6 +83,28 @@ setMethod("initialize", "Project", function(.Object, sp = NULL, ...) {
   .Object = .deriveColumns(.Object)
   .Object = .implyColumns(.Object)
   .Object
+})
+
+setGeneric(name="getSubsample", function(.Object, sampleName,subsampleName) standardGeneric("getSubsample"))
+
+#' @export 
+setMethod(f="getSubsample",signature(.Object="Project",sampleName = "character",subsampleName="character"),definition = function(.Object, sampleName, subsampleName){
+  if(is.null(.Object@samples$subsample_name)) stop("There is no subsample_name attribute in the subannotation table, therefore this method cannot be called.")
+  sampleNames = unlist(.Object@samples$sample_name)
+  rowNumber = which(sampleNames == sampleName)
+  if (length(rowNumber)==0) stop("Such sample name does not exist.")
+  subsampleNames = .Object@samples$subsample_name[[rowNumber]]
+  sampleNumber = which(subsampleNames == subsampleName)
+  if (length(sampleNumber)==0) stop("Such sample and sub sample name combination does not exist.")
+  result=.Object@samples[1,]
+  for(iColumn in names(result)){
+    if(length(.Object@samples[[iColumn]][[rowNumber]]) > 1){
+      result[[iColumn]] = .Object@samples[[iColumn]][[rowNumber]][[sampleNumber]]
+    }else{
+      result[[iColumn]] = .Object@samples[[iColumn]][[rowNumber]][[1]]
+    }
+  }
+  return(result)
 })
 
 
