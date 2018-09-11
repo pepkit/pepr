@@ -24,7 +24,7 @@ The example below demonstrates how and why to use implied columns functionality 
 ```{r ,echo=FALSE}
 library(knitr)
 library(kableExtra)
-sampleAnnotation = system.file("extdata", "example_implied", "sample_annotation_pre.csv", package="pepr")
+sampleAnnotation = system.file("extdata", "example_peps-master", "example_implied", "sample_annotation_pre.csv", package="pepr")
 sampleAnnotationDF=read.table(sampleAnnotation,sep = ",",header = T)
 knitr::kable(sampleAnnotationDF,format = "html") 
 ```
@@ -32,19 +32,10 @@ knitr::kable(sampleAnnotationDF,format = "html")
 ### Solution
 Noticeably, the samples with attributes `human` and `mouse` (in the `organism` column) follow two distinct patterns here. They have additional attributes in columns `genome` and `genome_size` in the `sample_annotation.csv` file. Consequently you can use implied columns to add those attributes to the sample annotations (set global, species-level attributes at the project level instead of duplicating that information for every sample that belongs to a species). The way how this process is carried out is indicated explicitly in the `project_config.yaml` file (presented below).
 
-```{yaml, highlight=TRUE}
-metadata:
-  sample_annotation: sample_annotation.csv
-  output_dir: $HOME/hello_looper_results
-
-implied_columns:
-  organism:
-    human:
-      genome: "hg38"
-      macs_genome_size: "hs"
-    mouse:
-      genome: "mm10"
-      macs_genome_size: "mm"
+```{r, echo=FALSE,message=TRUE,collapse=TRUE,comment=" "}
+library(pepr)
+project_config = system.file("extdata", "example_peps-master","example_implied", "project_config.yaml", package="pepr")
+printNestedList(yaml::read_yaml(project_config))
 ```
 
 Consequently, you can design an `implied_columns` multi-level key-value section in the `project_config.yaml` file. Note that the keys must match the column names and attributes in the `sample_annotations.csv` file. 
@@ -52,7 +43,7 @@ Consequently, you can design an `implied_columns` multi-level key-value section 
 Let's introduce a few modifications to the original `sample_annotation.csv` file to use the `implied_columns` section of the config. Simply skip the columns that will be implied and let the `pepr` do the work for you.
 
 ```{r ,echo=FALSE}
-sampleAnnotation = system.file("extdata", "example_implied", "sample_annotation.csv", package="pepr")
+sampleAnnotation = system.file("extdata","example_peps-master", "example_implied", "sample_annotation.csv", package="pepr")
 sampleAnnotationDF=read.table(sampleAnnotation,sep = ",",header = T)
 kable(sampleAnnotationDF,format = "html") 
 ```
@@ -63,7 +54,7 @@ Load `pepr` and read in the project metadata by specifying the path to the `proj
 
 ```{r}
 library(pepr)
-projectConfig = system.file("extdata", "example_implied", "project_config.yaml", package="pepr")
+projectConfig = system.file("extdata", "example_peps-master","example_implied", "project_config.yaml", package="pepr")
 p=Project(projectConfig)
 ```
 

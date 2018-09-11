@@ -27,7 +27,7 @@ The example below demonstrates how to use the derived columns to **flexibly defi
 ```{r ,echo=FALSE}
 library(knitr)
 library(kableExtra)
-sampleAnnotation = system.file("extdata", "example_derived", "sample_annotation_pre.csv", package="pepr")
+sampleAnnotation = system.file("extdata", "example_peps-master","example_derived", "sample_annotation_pre.csv", package="pepr")
 sampleAnnotationDF=read.table(sampleAnnotation,sep = ",",header = T)
 knitr::kable(sampleAnnotationDF,format = "html") 
 ```
@@ -36,23 +36,20 @@ knitr::kable(sampleAnnotationDF,format = "html")
 ### Solution
 As the name suggests the attributes in the specified columns (here: `file_path`) can be derived from other ones. The way how this process is carried out is indicated explicitly in the `project_config.yaml` file (presented below). The name of the column is determined in the `derived_columns` key-value pair, whereas the pattern for the attributes construction - in the `data_sources` one. Note that the second level key (here: `source`) has to exactly match the attributes in the `file_path` column of the modified `sample_annotation.csv` (presented below).
 
-```{yaml, highlight=TRUE}
-metadata:
-    sample_annotation: sample_annotation.csv
-    output_dir: $HOME/hello_looper_results
 
-derived_columns: [file_path]
-data_sources:
-    source1: /data/lab/project/{organism}_{time}h.fastq
-    source2: /path/from/collaborator/weirdNamingScheme_{external_id}.fastq
+```{r, echo=FALSE,message=TRUE,collapse=TRUE,comment=" "}
+library(pepr)
+project_config = system.file("extdata", "example_peps-master","example_derived", "project_config.yaml", package="pepr")
+printNestedList(yaml::read_yaml(project_config))
 ```
+
 
 Let's introduce a few modifications to the original `sample_annotation.csv` file to map the appropriate data sources from the `project_config.yaml` with attributes in the derived column - `[file_path]`:
 
 ```{r ,echo=FALSE}
 library(knitr)
 library(kableExtra)
-sampleAnnotation = system.file("extdata", "example_derived", "sample_annotation.csv", package="pepr")
+sampleAnnotation = system.file("extdata", "example_peps-master","example_derived", "sample_annotation.csv", package="pepr")
 sampleAnnotationDF=read.table(sampleAnnotation,sep = ",",header = T)
 kable(sampleAnnotationDF,format = "html") 
 ```
@@ -62,7 +59,7 @@ Load `pepr` and read in the project metadata by specifying the path to the `proj
 
 ```{r}
 library(pepr)
-projectConfig = system.file("extdata", "example_derived", "project_config.yaml", package="pepr")
+projectConfig = system.file("extdata", "example_peps-master","example_derived", "project_config.yaml", package="pepr")
 p=Project(projectConfig)
 ```
 

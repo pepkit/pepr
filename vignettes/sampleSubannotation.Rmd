@@ -31,23 +31,22 @@ This example demonstrates how the sample subannotation functionality is used. In
 This example is made up of these components:
 
 * Project config file:
-```{yaml}
-metadata:
-  sample_annotation: sample_annotation.csv
-  sample_subannotation: sample_subannotation.csv
-  output_dir: $HOME/hello_looper_results
+```{r, echo=FALSE,message=TRUE,collapse=TRUE,comment=" "}
+library(pepr)
+project_config = system.file("extdata","example_peps-master", "examples_subannotation","example1", "project_config.yaml", package="pepr")
+printNestedList(yaml::read_yaml(project_config))
 ```
 * Sample annotation table:
 ```{r ,echo=FALSE}
 library(knitr)
 library(kableExtra)
-sampleAnnotation = system.file("extdata", "examples_subannotation","example1", "sample_annotation.csv", package="pepr")
+sampleAnnotation = system.file("extdata","example_peps-master", "examples_subannotation","example1", "sample_annotation.csv", package="pepr")
 sampleAnnotationDF=read.table(sampleAnnotation,sep = ",",header = T)
 kable(sampleAnnotationDF,format = "html") 
 ```
 * Sample subannotation table:
 ```{r ,echo=FALSE}
-sampleAnnotation = system.file("extdata", "examples_subannotation","example1", "sample_subannotation.csv", package="pepr")
+sampleAnnotation = system.file("extdata","example_peps-master", "examples_subannotation","example1", "sample_subannotation.csv", package="pepr")
 sampleAnnotationDF=read.table(sampleAnnotation,sep = ",",header = T)
 kable(sampleAnnotationDF,format = "html") 
 ```
@@ -55,7 +54,7 @@ kable(sampleAnnotationDF,format = "html")
 Let's load the project config, create the Project object and see if multiple files are present 
 ```{r}
 library(pepr)
-projectConfig1=system.file("extdata", "examples_subannotation","example1", "project_config.yaml", package="pepr")
+projectConfig1=system.file("extdata", "example_peps-master","examples_subannotation","example1", "project_config.yaml", package="pepr")
 p1=Project(projectConfig1)
 # Check the files
 p1@samples$file
@@ -81,36 +80,29 @@ This example uses a `sample_subannotation.csv` file and a derived column to poin
 This example is made up of these components:
 
 * Project config file:
-```{yaml}
-metadata:
-  sample_annotation: sample_annotation.csv
-  sample_subannotation: sample_subannotation.csv
-  output_dir: $HOME/hello_looper_results
-  pipeline_interfaces: [../pipeline/pipeline_interface.yaml]
-
-derived_columns: [file]
-
-data_sources:
-  local_files: "../data/{identifier}{file_id}_data.txt"
+```{r, echo=FALSE,message=TRUE,collapse=TRUE,comment=" "}
+library(pepr)
+project_config = system.file("extdata", "example_peps-master","examples_subannotation","example2", "project_config.yaml", package="pepr")
+printNestedList(yaml::read_yaml(project_config))
 ```
 * Sample annotation table:
 ```{r ,echo=FALSE}
 library(knitr)
 library(kableExtra)
-sampleAnnotation = system.file("extdata", "examples_subannotation","example2", "sample_annotation.csv", package="pepr")
+sampleAnnotation = system.file("extdata", "example_peps-master","examples_subannotation","example2", "sample_annotation.csv", package="pepr")
 sampleAnnotationDF=read.table(sampleAnnotation,sep = ",",header = T)
 kable(sampleAnnotationDF,format = "html") 
 ```
 * Sample subannotation table:
 ```{r ,echo=FALSE}
-sampleAnnotation = system.file("extdata", "examples_subannotation","example2", "sample_subannotation.csv", package="pepr")
+sampleAnnotation = system.file("extdata", "example_peps-master","examples_subannotation","example2", "sample_subannotation.csv", package="pepr")
 sampleAnnotationDF=read.table(sampleAnnotation,sep = ",",header = T)
 kable(sampleAnnotationDF,format = "html") 
 ```
 Let's load the project config, create the Project object and see if multiple files are present 
 ```{r}
 library(pepr)
-projectConfig2=system.file("extdata", "examples_subannotation","example2", "project_config.yaml", package="pepr")
+projectConfig2=system.file("extdata", "example_peps-master","examples_subannotation","example2", "project_config.yaml", package="pepr")
 p2=Project(projectConfig2)
 # Check the files
 p2@samples$file
@@ -127,37 +119,29 @@ This example gives the exact same results as Example 2, but in this case, uses a
 This example is made up of these components:
 
 * Project config file:
-```{yaml}
-metadata:
-  sample_annotation: sample_annotation.csv
-  sample_subannotation: sample_subannotation.csv
-  output_dir: $HOME/hello_looper_results
-  pipeline_interfaces: [../pipeline/pipeline_interface.yaml]
-
-derived_columns: [file]
-
-data_sources:
-  local_files: "../data/{identifier}{file_id}_data.txt"
-  local_files_unmerged: "../data/{identifier}*_data.txt"
+```{r, echo=FALSE,message=TRUE,collapse=TRUE,comment=" "}
+library(pepr)
+project_config = system.file("extdata", "example_peps-master","examples_subannotation","example3", "project_config.yaml", package="pepr")
+printNestedList(yaml::read_yaml(project_config))
 ```
 * Sample annotation table:
 ```{r ,echo=FALSE}
 library(knitr)
 library(kableExtra)
-sampleAnnotation = system.file("extdata", "examples_subannotation","example3", "sample_annotation.csv", package="pepr")
+sampleAnnotation = system.file("extdata", "example_peps-master","examples_subannotation","example3", "sample_annotation.csv", package="pepr")
 sampleAnnotationDF=read.table(sampleAnnotation,sep = ",",header = T)
 kable(sampleAnnotationDF,format = "html") 
 ```
 * Sample subannotation table:
 ```{r ,echo=FALSE}
-sampleAnnotation = system.file("extdata", "examples_subannotation","example3", "sample_subannotation.csv", package="pepr")
+sampleAnnotation = system.file("extdata", "example_peps-master","examples_subannotation","example3", "sample_subannotation.csv", package="pepr")
 sampleAnnotationDF=read.table(sampleAnnotation,sep = ",",header = T)
 kable(sampleAnnotationDF,format = "html") 
 ```
 Let's load the project config, create the Project object and see if multiple files are present 
 ```{r}
 library(pepr)
-projectConfig3=system.file("extdata", "examples_subannotation","example3", "project_config.yaml", package="pepr")
+projectConfig3=system.file("extdata", "example_peps-master","examples_subannotation","example3", "project_config.yaml", package="pepr")
 p3=Project(projectConfig3)
 # Check the files
 p3@samples$file
@@ -173,31 +157,29 @@ Merging is for same class inputs (like, multiple files for read1). Different-cla
 This example is made up of these components:
 
 * Project config file:
-```{yaml}
-metadata:
-  sample_annotation: sample_annotation.csv
-  sample_subannotation: sample_subannotation.csv
-  output_dir: $HOME/hello_looper_results
-  pipeline_interfaces: [../pipeline/pipeline_interface.yaml]
+```{r, echo=FALSE,message=TRUE,collapse=TRUE,comment=" "}
+library(pepr)
+project_config = system.file("extdata", "example_peps-master","examples_subannotation","example4", "project_config.yaml", package="pepr")
+printNestedList(yaml::read_yaml(project_config))
 ```
 * Sample annotation table:
 ```{r ,echo=FALSE}
 library(knitr)
 library(kableExtra)
-sampleAnnotation = system.file("extdata", "examples_subannotation","example4", "sample_annotation.csv", package="pepr")
+sampleAnnotation = system.file("extdata", "example_peps-master","examples_subannotation","example4", "sample_annotation.csv", package="pepr")
 sampleAnnotationDF=read.table(sampleAnnotation,sep = ",",header = T)
 kable(sampleAnnotationDF,format = "html") 
 ```
 * Sample subannotation table:
 ```{r ,echo=FALSE}
-sampleAnnotation = system.file("extdata", "examples_subannotation","example4", "sample_subannotation.csv", package="pepr")
+sampleAnnotation = system.file("extdata", "example_peps-master","examples_subannotation","example4", "sample_subannotation.csv", package="pepr")
 sampleAnnotationDF=read.table(sampleAnnotation,sep = ",",header = T)
 kable(sampleAnnotationDF,format = "html") 
 ```
 Let's load the project config, create the Project object and see if multiple files are present 
 ```{r}
 library(pepr)
-projectConfig4=system.file("extdata", "examples_subannotation","example4", "project_config.yaml", package="pepr")
+projectConfig4=system.file("extdata", "example_peps-master","examples_subannotation","example4", "project_config.yaml", package="pepr")
 p4=Project(projectConfig4)
 # Check the read1 and read2 columns
 p4@samples$read1
@@ -214,37 +196,29 @@ Merging is for same class inputs (like, multiple files for read1). Different-cla
 This example is made up of these components:
 
 * Project config file:
-```{yaml}
-metadata:
-  sample_annotation: sample_annotation.csv
-  sample_subannotation: sample_subannotation.csv
-  output_dir: $HOME/hello_looper_results
-  pipeline_interfaces: [../pipeline/pipeline_interface.yaml]
-
-derived_columns: [read1, read2]
-
-data_sources:
-  R1: "../data/{identifier}{file_id}_R1.fq.gz"
-  R2: "../data/{identifier}{file_id}_R2.fq.gz"
+```{r, echo=FALSE,message=TRUE,collapse=TRUE,comment=" "}
+library(pepr)
+project_config = system.file("extdata", "example_peps-master","examples_subannotation","example5", "project_config.yaml", package="pepr")
+printNestedList(yaml::read_yaml(project_config))
 ```
 * Sample annotation table:
 ```{r ,echo=FALSE}
 library(knitr)
 library(kableExtra)
-sampleAnnotation = system.file("extdata", "examples_subannotation","example5", "sample_annotation.csv", package="pepr")
+sampleAnnotation = system.file("extdata", "example_peps-master","examples_subannotation","example5", "sample_annotation.csv", package="pepr")
 sampleAnnotationDF=read.table(sampleAnnotation,sep = ",",header = T)
 kable(sampleAnnotationDF,format = "html") 
 ```
 * Sample subannotation table:
 ```{r ,echo=FALSE}
-sampleAnnotation = system.file("extdata", "examples_subannotation","example5", "sample_subannotation.csv", package="pepr")
+sampleAnnotation = system.file("extdata", "example_peps-master","examples_subannotation","example5", "sample_subannotation.csv", package="pepr")
 sampleAnnotationDF=read.table(sampleAnnotation,sep = ",",header = T)
 kable(sampleAnnotationDF,format = "html") 
 ```
 Let's load the project config, create the Project object and see if multiple files are present 
 ```{r}
 library(pepr)
-projectConfig5=system.file("extdata", "examples_subannotation","example5", "project_config.yaml", package="pepr")
+projectConfig5=system.file("extdata", "example_peps-master","examples_subannotation","example5", "project_config.yaml", package="pepr")
 p5=Project(projectConfig5)
 # Check the read1 and read2 columns
 p5@samples$read1

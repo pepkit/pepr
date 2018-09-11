@@ -3,6 +3,7 @@ metadata:
     output_dir: $HOME/hello_looper_results
 
 derived_columns: [file_path]
+
 data_sources:
     source1: /data/lab/project/{organism}_{genome}_{condition}.fastq
 
