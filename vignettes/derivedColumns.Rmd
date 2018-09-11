@@ -21,7 +21,7 @@ knitr::opts_chunk$set(
 This vignette will show you how and why to use the derieved columns functionality of the `pepr` package. For introductory information about the package visit the [documentation page](http://code.databio.org/pepr/index.html). For the basic information about the PEP concept visit the [project website](https://pepkit.github.io/). For a broader theoretical description of derived columns click [here](https://pepkit.github.io/docs/derived_columns/).
 
 ### Problem/Goal
-The example below demonstrates how to use the derived columns to **simplify and unclutter the `file_path` columns** of the `sample_annotation.csv` file, please consider the example below for reference:
+The example below demonstrates how to use the derived columns to **flexibly define the samples attributes the `file_path` column** of the `sample_annotation.csv` file to match the file names in  your project. Please consider the example below for reference:
 
 
 ```{r ,echo=FALSE}

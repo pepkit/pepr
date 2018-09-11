@@ -97,6 +97,12 @@ setMethod("initialize", "Project", function(.Object, sp = NULL, ...) {
 setGeneric(name = "getSubsample", function(.Object, sampleName, subsampleName)
   standardGeneric("getSubsample"))
 
+#' @param .Object An object of Project class
+#'
+#' @param sampleName character the name of the sample
+#' @param subsampleName character the name of the subsample
+#'
+#' @return data.table one row data table with the subsample associated metadata
 #' @export
 setMethod(
   f = "getSubsample",
