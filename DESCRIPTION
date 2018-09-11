@@ -1,10 +1,10 @@
 Package: pepr
 Type: Package
 Title: Reading Portable Encapsulated Projects
-Version: 0.0.2
+Version: 0.0.3
 Date: 2017-08-09
 Authors@R: c(person("Nathan", "Sheffield", email = "nathan@code.databio.org",
-    role = c("aut", "cre")))
+    role = c("aut", "cre")),person("Michal","Stolarczyk",email="mjs5kd@virginia.edu",role=c("ctb")))
 Maintainer: Nathan Sheffield <nathan@code.databio.org>
 Description: Reads standardized project configuration files into R.
 Imports:
@@ -13,9 +13,10 @@ Imports:
     pryr
 Suggests:
     knitr,
-    testthat
+    testthat,
+    rmarkdown
 Enhances:
     data.table
 VignetteBuilder: knitr
 License: GPL-3
-RoxygenNote: 6.0.1
+RoxygenNote: 6.1.0

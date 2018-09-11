@@ -3,7 +3,7 @@ title: "Getting Started with pepr"
 author: "Nathan Sheffield"
 date: "`r Sys.Date()`"
 output: 
-  BiocStyle::html_document
+  rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Getting Started with pepr}
   %\VignetteEngine{knitr::rmarkdown}
@@ -12,22 +12,22 @@ vignette: >
 
 Load `pepr` and read in your project.
 
-```{r}
+```{r,collapse=TRUE}
 library('pepr')
-projectConfig = system.file("extdata", "example1", "project_config.yaml", package="pepr")
+projectConfig = system.file("extdata", "example_peps-master","example_basic", "project_config.yaml", package="pepr")
 p = Project(file = projectConfig)
 ```
 
 Here's how you can access the metadata:
 
-```{r}
+```{r,collapse=TRUE}
 samples(p)
 config(p)
 ```
 
 For now you can also use slots (don't do this, as these may change):
 
-```{r}
+```{r,collapse=TRUE}
 p@config
 p@samples
 ```

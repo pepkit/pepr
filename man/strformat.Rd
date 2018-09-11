@@ -4,9 +4,15 @@
 \alias{strformat}
 \title{Format a string like python's format function}
 \usage{
-strformat(string, args)
+strformat(string, args, exclude)
 }
 \arguments{
+\item{string}{String with variables encoded}
+
+\item{args}{named list of arguments to use to populate the string}
+
+\item{exclude}{character vector of args that should be excluded from the interpolation. The elements in the vector should match the names of the elements in the args list}
+
 \item{string}{String with variables encoded}
 
 \item{args}{named list of arguments to use to populate the string}
