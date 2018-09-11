@@ -16,7 +16,6 @@ While either derived columns or implied columns functionalities alone are often 
 
 ```{r ,echo=FALSE}
 library(knitr)
-library(kableExtra)
 sampleAnnotation = system.file("extdata", "example_peps-master","example_derived_implied", "sample_annotation_pre.csv", package="pepr")
 sampleAnnotationDF=read.table(sampleAnnotation,sep = ",",header = T)
 knitr::kable(sampleAnnotationDF,format = "html") 

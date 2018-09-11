@@ -10,13 +10,12 @@ Description: Reads standardized project configuration files into R.
 Imports:
     yaml,
     stringr,
-    pryr
+    pryr,
+    data.table
 Suggests:
     knitr,
     testthat,
     rmarkdown
-Enhances:
-    data.table
 VignetteBuilder: knitr
 License: GPL-3
 RoxygenNote: 6.1.0

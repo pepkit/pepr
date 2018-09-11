@@ -39,7 +39,6 @@ printNestedList(yaml::read_yaml(project_config))
 * Sample annotation table:
 ```{r ,echo=FALSE}
 library(knitr)
-library(kableExtra)
 sampleAnnotation = system.file("extdata","example_peps-master", "examples_subannotation","example1", "sample_annotation.csv", package="pepr")
 sampleAnnotationDF=read.table(sampleAnnotation,sep = ",",header = T)
 kable(sampleAnnotationDF,format = "html") 
@@ -65,7 +64,9 @@ And inspect the whole table in `p1@samples` slot
 ```{r,echo=FALSE}
 kable(p1@samples)
 ```
+
 You can also access a single subsample if you call the `getSubsample` method with appropriate `sample_name` - `subsample_name` attribute combination. Note, that this is only possible if the `subsample_name` column is defined in the `sub_annotation.csv` file.
+
 ```{r}
 sampleName="frog_1"
 subsampleName="sub_a"
@@ -88,7 +89,6 @@ printNestedList(yaml::read_yaml(project_config))
 * Sample annotation table:
 ```{r ,echo=FALSE}
 library(knitr)
-library(kableExtra)
 sampleAnnotation = system.file("extdata", "example_peps-master","examples_subannotation","example2", "sample_annotation.csv", package="pepr")
 sampleAnnotationDF=read.table(sampleAnnotation,sep = ",",header = T)
 kable(sampleAnnotationDF,format = "html") 
@@ -127,7 +127,6 @@ printNestedList(yaml::read_yaml(project_config))
 * Sample annotation table:
 ```{r ,echo=FALSE}
 library(knitr)
-library(kableExtra)
 sampleAnnotation = system.file("extdata", "example_peps-master","examples_subannotation","example3", "sample_annotation.csv", package="pepr")
 sampleAnnotationDF=read.table(sampleAnnotation,sep = ",",header = T)
 kable(sampleAnnotationDF,format = "html") 
@@ -150,6 +149,7 @@ And inspect the whole table in `p3@samples` slot
 ```{r,echo=FALSE}
 kable(p3@samples)
 ```
+
 #### Example 4: subannotations and multiple (separate-class) inputs
 
 Merging is for same class inputs (like, multiple files for read1). Different-class inputs (like read1 vs read2) are handled by different attributes (or columns). This example shows you how to handle paired-end data, while also merging within each.
@@ -165,7 +165,6 @@ printNestedList(yaml::read_yaml(project_config))
 * Sample annotation table:
 ```{r ,echo=FALSE}
 library(knitr)
-library(kableExtra)
 sampleAnnotation = system.file("extdata", "example_peps-master","examples_subannotation","example4", "sample_annotation.csv", package="pepr")
 sampleAnnotationDF=read.table(sampleAnnotation,sep = ",",header = T)
 kable(sampleAnnotationDF,format = "html") 
@@ -189,6 +188,7 @@ And inspect the whole table in `p4@samples` slot
 ```{r,echo=FALSE}
 kable(p4@samples)
 ```
+
 #### Example 5: subannotations and multiple (separate-class) inputs with derived columns
 
 Merging is for same class inputs (like, multiple files for read1). Different-class inputs (like read1 vs read2) are handled by different attributes (or columns). This example shows you how to handle paired-end data, while also merging within each. Additionally, in this example the derived columns are used to create `read1` and `read2` attributes.
@@ -204,7 +204,6 @@ printNestedList(yaml::read_yaml(project_config))
 * Sample annotation table:
 ```{r ,echo=FALSE}
 library(knitr)
-library(kableExtra)
 sampleAnnotation = system.file("extdata", "example_peps-master","examples_subannotation","example5", "sample_annotation.csv", package="pepr")
 sampleAnnotationDF=read.table(sampleAnnotation,sep = ",",header = T)
 kable(sampleAnnotationDF,format = "html") 
