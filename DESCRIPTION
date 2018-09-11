@@ -4,7 +4,7 @@ Title: Reading Portable Encapsulated Projects
 Version: 0.0.3
 Date: 2017-08-09
 Authors@R: c(person("Nathan", "Sheffield", email = "nathan@code.databio.org",
-    role = c("aut", "cre")))
+    role = c("aut", "cre")),person("Michal","Stolarczyk",email="mjs5kd@virginia.edu",role=c("ctb")))
 Maintainer: Nathan Sheffield <nathan@code.databio.org>
 Description: Reads standardized project configuration files into R.
 Imports:
