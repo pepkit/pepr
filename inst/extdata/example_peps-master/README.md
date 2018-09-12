@@ -9,21 +9,9 @@ Your basic python workflow uses the [peppy](http://github.com/pepkit/peppy) pack
 
 ```{python}
 import peppy
-proj1 = peppy.Project("example1/project_config.yaml")
+proj1 = peppy.Project("example_basic/project_config.yaml")
 ```
-
-These Jupyter notebooks show you how to explore these examples interactively in python. You can view the rendered notebooks right here:
-
-* [Basic peppy tutorial](tutorial.ipynb) - use `peppy` to load up a minimal example PEP.
-* [Sample subannotation](subannotation.ipynb) - how to use subannotations.
-
-If you want to run them interactively with `jupyter`, just start it on the command line like this:
-
-```
-jupyter notebook subannotation.ipynb
-```
-
-
+More detailed Python vignettes are available as part of the [documentation for the peppy package](https://peppy.readthedocs.io/en/latest/index.html).
 
 ## R
 
@@ -31,7 +19,7 @@ Your basic `R` workflow uses the [pepr](http://github.com/pepkit/pepr) package a
 
 ```{r}
 library('pepr')
-p = pepr::Project("example1/project_config.yaml")
+p = pepr::Project("example_basic/project_config.yaml")
 ```
 
 More detailed R vignettes are available as part of the [documentation for the pepr package](http://code.databio.org/pepr).
