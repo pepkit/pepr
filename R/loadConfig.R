@@ -142,7 +142,13 @@ expandPath = function(path) {
   if (length(parts) < 2) { return(parts) }
   if (identical(".", parts[1])) { parts = parts[2:length(parts)] }
   
-  # Expand any environment variables and return the complete path.
+  # Expand any environment variables and return the complete path
+  if(.Platform$OS.type=="unix") {
+    # Prevent double slashes
+    if(any(parts=="/")){
+      parts[which(parts=="/")]=""
+    }
+  }
   fullPath = do.call(file.path, lapply(parts, expand))
   return(fullPath)
 }
