@@ -76,48 +76,6 @@ listSubprojects = function(cfg) {
 }
 
 
-#' Mapper of organism name to genomic assembly name
-#'
-#' \code{assemblyByOrganism} uses the data in a project config object to 
-#' map organism name to genomic assembly name, supporting both the direct 
-#' mapping within a \code{genome} section, or an encoding of this data in 
-#' an \code{implied_columns} section.
-#'
-#' @param config A project configuration object (parsed from a file with 
-#'        \code{yaml::yaml.load_file}).
-#' @return Mapping (as \code{list}) in which each name is an organism, and 
-#'         each list element is the corresponding genomic assembly name.
-#' @seealso \url{http://looper.readthedocs.io/en/latest/implied-columns.html}
-#' @export
-assemblyByOrganism = function(config) {
-  # Basic case, in which the project config directly maps organism name 
-  # to genomic assembly name
-  if (!is.null(config$genome)) { return(config$genome) }
-  
-  # If neither direct mapping nor column implications, we can't do anything.
-  organismImplications = config$implied_columns$organism
-  if (is.null(organismImplications)) {
-    warning("Project config lacks 'genome' and 'organism' section within 
-            'implied_columns' section, so derivation of genome assembly mapping 
-            is not possible.")
-    return(NULL)
-  }
-  
-  # Build up the organism-to-assembly mapping, skipping each organism 
-  # for which such a mapping isn't defined.
-  assemblies = list()
-  for (organismName in names(organismImplications)) {
-    assembly = organismImplications[[organismName]][["genome"]]
-    if (is.null(assembly)) {
-      warning(sprintf("No 'genome' for '%s'", organismName))
-    } else {
-      assemblies[[organismName]] = assembly
-    }
-  }
-  
-  return(assemblies)
-}
-
 #' Implementation of python's expandpath
 #' @param path file path to expand
 #' @export

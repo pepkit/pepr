@@ -2,7 +2,6 @@
 
 export(Project)
 export(activateSubproject)
-export(assemblyByOrganism)
 export(expandPath)
 export(listSubprojects)
 export(listifyDF)
