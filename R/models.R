@@ -87,7 +87,7 @@ setMethod(
 setMethod("initialize", "Project", function(.Object, sp = NULL, ...) {
   .Object = callNextMethod()  # calls generic initialize
   .Object@config = loadConfig(.Object@file, sp)
-  .Object@samples = .loadSampleAnnotation(.Object@config$metadata$sample_annotation)
+  .Object@samples = .loadSampleAnnotation(.Object)
   .Object@samples = .loadSampleSubannotation(.Object)
   .Object = .implyColumns(.Object)
   .Object = .deriveColumns(.Object)
@@ -217,14 +217,14 @@ setMethod(
 }
 
 
-.loadSampleAnnotation = function(sampleAnnotationPath) {
+.loadSampleAnnotation = function(.Object) {
   # Can use fread if data.table is installed, otherwise use read.table
   if (requireNamespace("data.table")) {
     sampleReadFunc = data.table::fread
   } else {
     sampleReadFunc = read.table
   }
-  
+  sampleAnnotationPath = .Object@config$metadata$sample_annotation
   if (.safeFileExists(sampleAnnotationPath)) {
     samples = sampleReadFunc(sampleAnnotationPath)
   } else{
@@ -292,7 +292,9 @@ activateSubproject = function(.Object, sp, ...) {
   .Object@config$metadata = makeMetadataSectionAbsolute(.Object@config, parent =
                                                           dirname(.Object@file))
   
-  .Object@samples = .loadSampleAnnotation(.Object@config$metadata$sample_annotation)
+  .Object@samples = .loadSampleAnnotation(.Object)
+  .Object@samples = .loadSampleSubannotation(.Object)
+  .Object = .implyColumns(.Object)
   .Object = .deriveColumns(.Object)
   .Object
 }
