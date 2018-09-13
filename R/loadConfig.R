@@ -6,11 +6,11 @@
 loadConfig = function(filename=NULL, sp=NULL) {
   
   if (!file.exists(filename)) {
-    message("No config file found: ", filename)
-    return()
+    stop("No config file found")
   }
-  
-  cfg = new("Config", yaml::yaml.load_file(filename))
+  config_file = yaml::yaml.load_file(filename)
+  if(!is.list(config_file)) stop("The config file has to be a YAML formatted file. See: http://yaml.org/start.html")
+  cfg = new("Config", config_file)
   
   if (is.null(cfg)) {
     message("Config file not loaded.")
@@ -69,10 +69,14 @@ loadConfig = function(filename=NULL, sp=NULL) {
 #' @export
 listSubprojects = function(cfg) {
   # Show available subprojects
-  if (length(names(cfg$subprojects)) > 1) {
+  if (length(names(cfg$subprojects)) > 0) {
+    # If there are any show a message and return if needed
     message("  subprojects: ", paste0(names(cfg$subprojects), collapse=","))
+    invisible(names(cfg$subprojects))
+  }else{
+    # Otherwise return NULL for testing purposes
+    invisible(NULL)
   }
-  invisible(names(cfg$subprojects))
 }
 
 

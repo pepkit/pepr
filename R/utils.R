@@ -33,6 +33,7 @@
 #' @return Flag indicating whether the \code{path} appears to be absolute.
 #' @family path operations
 .isAbsolute = function(path) {
+  if(!is.character(path)) stop("The path must be character.")
   firstChar = substr(path, 1, 1)
   return(identical("/", firstChar) | identical("~", firstChar))
 }
@@ -54,6 +55,7 @@
 #' dataFrame=mtcars
 #' listifiedDataFrame=listifyDF(dataFrame)
 listifyDF = function(DF){
+  if(!is.data.frame(DF)) stop("The input object must be a data.frame.")
   colNames =  names(DF)
   for(iColumn in colNames){
     DF[[iColumn]]=as.list(DF[[iColumn]])

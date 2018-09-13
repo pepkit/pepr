@@ -307,6 +307,7 @@ activateSubproject = function(.Object, sp, ...) {
 #' @param lst list object to print
 #' @export
 printNestedList = function(lst, level = 0) {
+  if(!is.list(lst)) stop("The input is not a list, cannot be displayed.")
   for (itemName in names(lst)) {
     item = lst[[itemName]]
     if (class(item) == "list") {
