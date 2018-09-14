@@ -31,7 +31,4 @@ p = Project(file = "~/code/microtest/config/microtest_config.yaml")
 
 samples(p)
 config(p)
-
-p@config
-p@samples
 ```
