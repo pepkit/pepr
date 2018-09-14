@@ -229,6 +229,7 @@ setMethod(
     samples = sampleReadFunc(sampleAnnotationPath)
   } else{
     message("No sample annotation file:", sampleAnnotationPath)
+    stop()
     samples = data.frame()
   }
   return(samples)
