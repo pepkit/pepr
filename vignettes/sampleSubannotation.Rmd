@@ -33,44 +33,69 @@ This example is made up of these components:
 * Project config file:
 ```{r, echo=FALSE,message=TRUE,collapse=TRUE,comment=" "}
 library(pepr)
-project_config = system.file("extdata","example_peps-master", "example_subannotation1", "project_config.yaml", package="pepr")
-printNestedList(yaml::read_yaml(project_config))
+projectConfig = system.file(
+"extdata",
+"example_peps-master",
+"example_subannotation1",
+"project_config.yaml",
+package = "pepr"
+)
+printNestedList(yaml::read_yaml(projectConfig))
 ```
 * Sample annotation table:
 ```{r ,echo=FALSE}
 library(knitr)
-sampleAnnotation = system.file("extdata","example_peps-master", "example_subannotation1", "sample_annotation.csv", package="pepr")
-sampleAnnotationDF=read.table(sampleAnnotation,sep = ",",header = T)
-kable(sampleAnnotationDF,format = "html") 
+sampleAnnotation = system.file(
+"extdata",
+"example_peps-master",
+"example_subannotation1",
+"sample_annotation.csv",
+package = "pepr"
+)
+sampleAnnotationDF = read.table(sampleAnnotation, sep = ",", header = T)
+kable(sampleAnnotationDF, format = "html") 
 ```
 * Sample subannotation table:
 ```{r ,echo=FALSE}
-sampleAnnotation = system.file("extdata","example_peps-master", "example_subannotation1", "sample_subannotation.csv", package="pepr")
-sampleAnnotationDF=read.table(sampleAnnotation,sep = ",",header = T)
-kable(sampleAnnotationDF,format = "html") 
+sampleAnnotation = system.file(
+  "extdata",
+  "example_peps-master",
+  "example_subannotation1",
+  "sample_subannotation.csv",
+  package = "pepr"
+  )
+  sampleAnnotationDF = read.table(sampleAnnotation, sep = ",", header = T)
+  kable(sampleAnnotationDF, format = "html") 
 ```
 
 Let's load the project config, create the Project object and see if multiple files are present 
 ```{r}
 library(pepr)
-projectConfig1=system.file("extdata", "example_peps-master","example_subannotation1", "project_config.yaml", package="pepr")
-p1=Project(projectConfig1)
+projectConfig1 = system.file(
+"extdata",
+"example_peps-master",
+"example_subannotation1",
+"project_config.yaml",
+package = "pepr"
+)
+p1 = Project(projectConfig1)
 # Check the files
-p1@samples$file
+p1Samples = samples(p1)
+p1Samples$file
 # Check the subsample names
-p1@samples$subsample_name
+p1Samples$subsample_name
 ```
 And inspect the whole table in `p1@samples` slot
 ```{r,echo=FALSE}
-kable(p1@samples)
+kable(p1Samples)
 ```
 
 You can also access a single subsample if you call the `getSubsample` method with appropriate `sample_name` - `subsample_name` attribute combination. Note, that this is only possible if the `subsample_name` column is defined in the `sub_annotation.csv` file.
 
 ```{r}
-sampleName="frog_1"
-subsampleName="sub_a"
-getSubsample(p1,sampleName,subsampleName)
+sampleName = "frog_1"
+subsampleName = "sub_a"
+getSubsample(p1, sampleName, subsampleName)
 ```
 
 
@@ -83,33 +108,58 @@ This example is made up of these components:
 * Project config file:
 ```{r, echo=FALSE,message=TRUE,collapse=TRUE,comment=" "}
 library(pepr)
-project_config = system.file("extdata", "example_peps-master","example_subannotation2", "project_config.yaml", package="pepr")
-printNestedList(yaml::read_yaml(project_config))
+projectConfig = system.file(
+"extdata",
+"example_peps-master",
+"example_subannotation2",
+"project_config.yaml",
+package = "pepr"
+)
+printNestedList(yaml::read_yaml(projectConfig))
 ```
 * Sample annotation table:
 ```{r ,echo=FALSE}
 library(knitr)
-sampleAnnotation = system.file("extdata", "example_peps-master","example_subannotation2", "sample_annotation.csv", package="pepr")
-sampleAnnotationDF=read.table(sampleAnnotation,sep = ",",header = T)
-kable(sampleAnnotationDF,format = "html") 
+sampleAnnotation = system.file(
+"extdata",
+"example_peps-master",
+"example_subannotation2",
+"sample_annotation.csv",
+package = "pepr"
+)
+sampleAnnotationDF = read.table(sampleAnnotation, sep = ",", header = T)
+kable(sampleAnnotationDF, format = "html") 
 ```
 * Sample subannotation table:
 ```{r ,echo=FALSE}
-sampleAnnotation = system.file("extdata", "example_peps-master","example_subannotation2", "sample_subannotation.csv", package="pepr")
-sampleAnnotationDF=read.table(sampleAnnotation,sep = ",",header = T)
-kable(sampleAnnotationDF,format = "html") 
+sampleAnnotation = system.file(
+  "extdata",
+  "example_peps-master",
+  "example_subannotation2",
+  "sample_subannotation.csv",
+  package = "pepr"
+  )
+  sampleAnnotationDF = read.table(sampleAnnotation, sep = ",", header = T)
+  kable(sampleAnnotationDF, format = "html") 
 ```
 Let's load the project config, create the Project object and see if multiple files are present 
 ```{r}
 library(pepr)
-projectConfig2=system.file("extdata", "example_peps-master","example_subannotation2", "project_config.yaml", package="pepr")
-p2=Project(projectConfig2)
+projectConfig2 = system.file(
+"extdata",
+"example_peps-master",
+"example_subannotation2",
+"project_config.yaml",
+package = "pepr"
+)
+p2 = Project(projectConfig2)
 # Check the files
-p2@samples$file
+p2Samples = samples(p2)
+p2Samples$file
 ```
 And inspect the whole table in `p2@samples` slot
 ```{r,echo=FALSE}
-kable(p2@samples)
+kable(p2Samples)
 ```
 
 #### Example 3: subannotations and expansion characters
@@ -121,33 +171,58 @@ This example is made up of these components:
 * Project config file:
 ```{r, echo=FALSE,message=TRUE,collapse=TRUE,comment=" "}
 library(pepr)
-project_config = system.file("extdata", "example_peps-master","example_subannotation3", "project_config.yaml", package="pepr")
-printNestedList(yaml::read_yaml(project_config))
+projectConfig = system.file(
+"extdata",
+"example_peps-master",
+"example_subannotation3",
+"project_config.yaml",
+package = "pepr"
+)
+printNestedList(yaml::read_yaml(projectConfig))
 ```
 * Sample annotation table:
 ```{r ,echo=FALSE}
 library(knitr)
-sampleAnnotation = system.file("extdata", "example_peps-master","example_subannotation3", "sample_annotation.csv", package="pepr")
-sampleAnnotationDF=read.table(sampleAnnotation,sep = ",",header = T)
-kable(sampleAnnotationDF,format = "html") 
+sampleAnnotation = system.file(
+"extdata",
+"example_peps-master",
+"example_subannotation3",
+"sample_annotation.csv",
+package = "pepr"
+)
+sampleAnnotationDF = read.table(sampleAnnotation, sep = ",", header = T)
+kable(sampleAnnotationDF, format = "html") 
 ```
 * Sample subannotation table:
 ```{r ,echo=FALSE}
-sampleAnnotation = system.file("extdata", "example_peps-master","example_subannotation3", "sample_subannotation.csv", package="pepr")
-sampleAnnotationDF=read.table(sampleAnnotation,sep = ",",header = T)
-kable(sampleAnnotationDF,format = "html") 
+sampleAnnotation = system.file(
+  "extdata",
+  "example_peps-master",
+  "example_subannotation3",
+  "sample_subannotation.csv",
+  package = "pepr"
+  )
+  sampleAnnotationDF = read.table(sampleAnnotation, sep = ",", header = T)
+  kable(sampleAnnotationDF, format = "html") 
 ```
 Let's load the project config, create the Project object and see if multiple files are present 
 ```{r}
 library(pepr)
-projectConfig3=system.file("extdata", "example_peps-master","example_subannotation3", "project_config.yaml", package="pepr")
-p3=Project(projectConfig3)
+projectConfig3 = system.file(
+"extdata",
+"example_peps-master",
+"example_subannotation3",
+"project_config.yaml",
+package = "pepr"
+)
+p3 = Project(projectConfig3)
 # Check the files
-p3@samples$file
+p3Samples = samples(p3)
+p3Samples$file
 ```
 And inspect the whole table in `p3@samples` slot
 ```{r,echo=FALSE}
-kable(p3@samples)
+kable(p3Samples)
 ```
 
 #### Example 4: subannotations and multiple (separate-class) inputs
@@ -159,34 +234,59 @@ This example is made up of these components:
 * Project config file:
 ```{r, echo=FALSE,message=TRUE,collapse=TRUE,comment=" "}
 library(pepr)
-project_config = system.file("extdata", "example_peps-master","example_subannotation4", "project_config.yaml", package="pepr")
+project_config = system.file(
+"extdata",
+"example_peps-master",
+"example_subannotation4",
+"project_config.yaml",
+package = "pepr"
+)
 printNestedList(yaml::read_yaml(project_config))
 ```
 * Sample annotation table:
 ```{r ,echo=FALSE}
 library(knitr)
-sampleAnnotation = system.file("extdata", "example_peps-master","example_subannotation4", "sample_annotation.csv", package="pepr")
-sampleAnnotationDF=read.table(sampleAnnotation,sep = ",",header = T)
-kable(sampleAnnotationDF,format = "html") 
+sampleAnnotation = system.file(
+"extdata",
+"example_peps-master",
+"example_subannotation4",
+"sample_annotation.csv",
+package = "pepr"
+)
+sampleAnnotationDF = read.table(sampleAnnotation, sep = ",", header = T)
+kable(sampleAnnotationDF, format = "html") 
 ```
 * Sample subannotation table:
 ```{r ,echo=FALSE}
-sampleAnnotation = system.file("extdata", "example_peps-master","example_subannotation4", "sample_subannotation.csv", package="pepr")
-sampleAnnotationDF=read.table(sampleAnnotation,sep = ",",header = T)
-kable(sampleAnnotationDF,format = "html") 
+sampleAnnotation = system.file(
+  "extdata",
+  "example_peps-master",
+  "example_subannotation4",
+  "sample_subannotation.csv",
+  package = "pepr"
+  )
+  sampleAnnotationDF = read.table(sampleAnnotation, sep = ",", header = T)
+  kable(sampleAnnotationDF, format = "html") 
 ```
 Let's load the project config, create the Project object and see if multiple files are present 
 ```{r}
 library(pepr)
-projectConfig4=system.file("extdata", "example_peps-master","example_subannotation4", "project_config.yaml", package="pepr")
-p4=Project(projectConfig4)
+projectConfig4 = system.file(
+"extdata",
+"example_peps-master",
+"example_subannotation4",
+"project_config.yaml",
+package = "pepr"
+)
+p4 = Project(projectConfig4)
 # Check the read1 and read2 columns
-p4@samples$read1
-p4@samples$read2
+p4Samples = samples(p4)
+p4Samples$read1
+p4Samples$read2
 ```
 And inspect the whole table in `p4@samples` slot
 ```{r,echo=FALSE}
-kable(p4@samples)
+kable(p4Samples)
 ```
 
 #### Example 5: subannotations and multiple (separate-class) inputs with derived columns
@@ -198,33 +298,58 @@ This example is made up of these components:
 * Project config file:
 ```{r, echo=FALSE,message=TRUE,collapse=TRUE,comment=" "}
 library(pepr)
-project_config = system.file("extdata", "example_peps-master","example_subannotation5", "project_config.yaml", package="pepr")
+project_config = system.file(
+"extdata",
+"example_peps-master",
+"example_subannotation5",
+"project_config.yaml",
+package = "pepr"
+)
 printNestedList(yaml::read_yaml(project_config))
 ```
 * Sample annotation table:
 ```{r ,echo=FALSE}
 library(knitr)
-sampleAnnotation = system.file("extdata", "example_peps-master","example_subannotation5", "sample_annotation.csv", package="pepr")
-sampleAnnotationDF=read.table(sampleAnnotation,sep = ",",header = T)
-kable(sampleAnnotationDF,format = "html") 
+sampleAnnotation = system.file(
+"extdata",
+"example_peps-master",
+"example_subannotation5",
+"sample_annotation.csv",
+package = "pepr"
+)
+sampleAnnotationDF = read.table(sampleAnnotation, sep = ",", header = T)
+kable(sampleAnnotationDF, format = "html") 
 ```
 * Sample subannotation table:
 ```{r ,echo=FALSE}
-sampleAnnotation = system.file("extdata", "example_peps-master","example_subannotation5", "sample_subannotation.csv", package="pepr")
-sampleAnnotationDF=read.table(sampleAnnotation,sep = ",",header = T)
-kable(sampleAnnotationDF,format = "html") 
+sampleAnnotation = system.file(
+  "extdata",
+  "example_peps-master",
+  "example_subannotation5",
+  "sample_subannotation.csv",
+  package = "pepr"
+  )
+  sampleAnnotationDF = read.table(sampleAnnotation, sep = ",", header = T)
+  kable(sampleAnnotationDF, format = "html") 
 ```
 Let's load the project config, create the Project object and see if multiple files are present 
 ```{r}
 library(pepr)
-projectConfig5=system.file("extdata", "example_peps-master","example_subannotation5", "project_config.yaml", package="pepr")
-p5=Project(projectConfig5)
+projectConfig5 = system.file(
+"extdata",
+"example_peps-master",
+"example_subannotation5",
+"project_config.yaml",
+package = "pepr"
+)
+p5 = Project(projectConfig5)
 
 # Check the read1 and read2 columns
-p5@samples$read1
-p5@samples$read2
+p5Samples = samples(p5)
+p5Samples$read1
+p5Samples$read2
 ```
 And inspect the whole table in `p5@samples` slot
 ```{r,echo=FALSE}
-kable(p5@samples)
+kable(p5Samples)
 ```

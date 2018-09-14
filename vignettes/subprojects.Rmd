@@ -24,9 +24,15 @@ The example below demonstrates how and why to use implied columns functionality 
 
 ```{r ,echo=FALSE}
 library(knitr)
-sampleAnnotation = system.file("extdata", "example_peps-master", "example_subprojects1", "sample_annotation.csv", package="pepr")
-sampleAnnotationDF=read.table(sampleAnnotation,sep = ",",header = T)
-knitr::kable(sampleAnnotationDF,format = "html") 
+sampleAnnotation = system.file(
+"extdata",
+"example_peps-master",
+"example_subprojects1",
+"sample_annotation.csv",
+package = "pepr"
+)
+sampleAnnotationDF = read.table(sampleAnnotation, sep = ",", header = T)
+knitr::kable(sampleAnnotationDF, format = "html") 
 ```
 
 ----
@@ -37,8 +43,14 @@ This can be achieved by using subprojects section of `project_config.yaml` file 
 
 ```{r, echo=FALSE,message=TRUE,collapse=TRUE,comment=" "}
 library(pepr)
-project_config = system.file("extdata", "example_peps-master","example_subprojects1", "project_config.yaml", package="pepr")
-printNestedList(yaml::read_yaml(project_config))
+projectConfig = system.file(
+"extdata",
+"example_peps-master",
+"example_subprojects1",
+"project_config.yaml",
+package = "pepr"
+)
+printNestedList(yaml::read_yaml(projectConfig))
 ```
 
 Obviously, the subprojects functionality can be combined with other `pepr` package options, e.g. implied and derieved columns. The derived columns functionality is used in the example considered here (`derived_columns` and `data_soures` keys in the config file).
@@ -48,16 +60,28 @@ Files `sample_annotation_newLib.csv` and `sample_annotation_newLib2.csv` introdu
 
 ```{r ,echo=FALSE}
 library(knitr)
-sampleAnnotation = system.file("extdata", "example_peps-master", "example_subprojects1", "sample_annotation_newLib.csv", package="pepr")
-sampleAnnotationDF=read.table(sampleAnnotation,sep = ",",header = T)
-knitr::kable(sampleAnnotationDF,format = "html") 
+sampleAnnotation = system.file(
+  "extdata",
+  "example_peps-master",
+  "example_subprojects1",
+  "sample_annotation_newLib.csv",
+  package = "pepr"
+  )
+  sampleAnnotationDF = read.table(sampleAnnotation, sep = ",", header = T)
+  knitr::kable(sampleAnnotationDF, format = "html") 
 ```
 
 ```{r ,echo=FALSE}
 library(knitr)
-sampleAnnotation = system.file("extdata", "example_peps-master", "example_subprojects1", "sample_annotation_newLib2.csv", package="pepr")
-sampleAnnotationDF=read.table(sampleAnnotation,sep = ",",header = T)
-knitr::kable(sampleAnnotationDF,format = "html") 
+sampleAnnotation = system.file(
+"extdata",
+"example_peps-master",
+"example_subprojects1",
+"sample_annotation_newLib2.csv",
+package = "pepr"
+)
+sampleAnnotationDF = read.table(sampleAnnotation, sep = ",", header = T)
+knitr::kable(sampleAnnotationDF, format = "html") 
 ```
 
 ----
@@ -76,7 +100,7 @@ An appropriate message is displayed, which informs you what are the names of the
 Let's inspect it:
 
 ```{r}
-p@samples
+samples(p)
 ```
 
 The column `file_path` was derived and the `library` column holds the original attributes: `RRBS` for each sample.
@@ -84,13 +108,13 @@ The column `file_path` was derived and the `library` column holds the original a
 To "activate" any of the subprojects just run the following line:
 
 ```{r}
-p_newLib = activateSubproject(p,"newLib")
+pNewLib = activateSubproject(p,"newLib")
 ```
 
 Let's inspect it:
 
 ```{r}
-p_newLib@samples
+samples(pNewLib)
 ```
 
 As you can see, the `library` columns consists of new attributes (`ABCD`), which were defined in the `sample_annotation_newLib.csv` file.
@@ -98,14 +122,14 @@ As you can see, the `library` columns consists of new attributes (`ABCD`), which
 The second subproject can be activated in a similar way:
 
 ```{r}
-p_newLib2 = activateSubproject(p,"newLib2")
-p_newLib2@samples
+pNewLib2 = activateSubproject(p, "newLib2")
+samples(pNewLib2)
 ```
 
 What is more, the `p` object consists of all the information from the project config file (`project_config.yaml`). Run the following line to explore it:
 
 ```{r}
-p@config
+config(p)
 ```
 
 
