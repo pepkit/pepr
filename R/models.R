@@ -89,8 +89,8 @@ setMethod("initialize", "Project", function(.Object, sp = NULL, ...) {
   .Object@config = loadConfig(.Object@file, sp)
   .Object@samples = .loadSampleAnnotation(.Object)
   .Object@samples = .loadSampleSubannotation(.Object)
-  .Object = .implyColumns(.Object)
-  .Object = .deriveColumns(.Object)
+  .Object = .implyAttributes(.Object)
+  .Object = .deriveAttributes(.Object)
   .Object
 })
 
@@ -137,7 +137,7 @@ setMethod(
 )
 
 
-.deriveColumns = function(.Object) {
+.deriveAttributes = function(.Object) {
   
   # Set default derived columns
   # dc = as.list(unique(append(
@@ -145,12 +145,13 @@ setMethod(
   # )))
   # .Object@config$derived_attributes = dc
   
-  # Backwards compatibility derived attributes
+  # Backwards compatibility after change of derived columns to derived attributes
   if(is.null(.Object@config$derived_attributes)){
     if(is.null(.Object@config$derived_columns)){
       # If no derived columns and attributes found - return the unchanged object
       return(.Object)
     }else{
+      # If the old naming scheme is used - copy the derived columns 
       .Object@config$derived_attributes = .Object@config$derived_columns
     }
   }
@@ -190,44 +191,47 @@ setMethod(
   .Object
 }
 
-.implyColumns = function(.Object) {
-  if (is.null(.Object@config$implied_columns)) {
-    # if the implied_columns in project's config is NULL, there is nothing that can be done
-    return(.Object)
-  } else{
-    if (is.list(.Object@config$implied_columns)) {
-      # the implied_columns in project's config is a list, so the columns can be implied
+.implyAttributes = function(.Object) {
+  if (is.null(.Object@config$implied_attributes)) {
+    # Backwards compatibility after change of implied columns to implied attributes
+    if (is.null(.Object@config$implied_columns)) {  
+      # if the implied_attributes and implied_columns in project's config are NULL, there is nothing that can be done
+      return(.Object)
+    }else{
+      .Object@config$implied_attributes = .Object@config$implied_columns
+    }
+  }
+    if (is.list(.Object@config$implied_attributes)) {
+      # the implied_attributes in project's config is a list, so the columns can be implied
       samplesDims = dim(.Object@samples)
-      primaryColumn = names(.Object@config$implied_columns)
+      primaryColumn = names(.Object@config$implied_attributes)
       for (iColumn in primaryColumn) {
-        primaryKeys = names(.Object@config$implied_columns[[iColumn]])
+        primaryKeys = names(.Object@config$implied_attributes[[iColumn]])
         for (iKey in primaryKeys) {
-          newValues = names(.Object@config$implied_columns[[iColumn]][[iKey]])
+          newValues = names(.Object@config$implied_attributes[[iColumn]][[iKey]])
           for (iValue in newValues) {
             samplesColumns = names(.Object@samples)
             if (any(samplesColumns == iValue)) {
               # The implied column has been already added, populating
               .Object@samples[[iValue]][which(.Object@samples[[iColumn]] ==
-                                                iKey)] = .Object@config$implied_columns[[iColumn]][[iKey]][[iValue]]
+                                                iKey)] = .Object@config$implied_attributes[[iColumn]][[iKey]][[iValue]]
             } else{
               # The implied column is missing, adding column and populating
               toBeAdded = data.frame(rep("", samplesDims[1]), stringsAsFactors =
                                        FALSE)
               names(toBeAdded) = iValue
-              toBeAdded[which(.Object@samples[[iColumn]] == iKey), 1] = .Object@config$implied_columns[[iColumn]][[iKey]][[iValue]]
+              toBeAdded[which(.Object@samples[[iColumn]] == iKey), 1] = .Object@config$implied_attributes[[iColumn]][[iKey]][[iValue]]
               .Object@samples = cbind(.Object@samples, toBeAdded)
             }
           }
         }
       }
     } else{
-      # the implied_columns in project's config is neither NULL nor list
-      message("The implied_columns key-value pairs in project config are invalid!")
+      # the implied_attributes in project's config is neither NULL nor list
+      message("The implied_attributes key-value pairs in project config are invalid!")
     }
     return(.Object)
   }
-}
-
 
 .loadSampleAnnotation = function(.Object) {
   # Can use fread if data.table is installed, otherwise use read.table
@@ -307,8 +311,8 @@ activateSubproject = function(.Object, sp, ...) {
   
   .Object@samples = .loadSampleAnnotation(.Object)
   .Object@samples = .loadSampleSubannotation(.Object)
-  .Object = .implyColumns(.Object)
-  .Object = .deriveColumns(.Object)
+  .Object = .implyAttributes(.Object)
+  .Object = .deriveAttributes(.Object)
   .Object
 }
 

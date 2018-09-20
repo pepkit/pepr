@@ -20,7 +20,7 @@ This vignette will show you how and why to use the subbprojects functionality of
 
 ### Problem/Goal
 
-The example below demonstrates how and why to use implied columns functionality to **define numerous similar projects in a single project config file**. This functionality is extremely convenient when one has to define projects with small settings discreptancies, like different attributes in the annotation sheet. For example libraries `ABCD` and `EFGH` instead of the original `RRBS`.
+The example below demonstrates how and why to use implied attributes functionality to **define numerous similar projects in a single project config file**. This functionality is extremely convenient when one has to define projects with small settings discreptancies, like different attributes in the annotation sheet. For example libraries `ABCD` and `EFGH` instead of the original `RRBS`.
 
 ```{r ,echo=FALSE}
 library(knitr)
@@ -53,7 +53,7 @@ package = "pepr"
 printNestedList(yaml::read_yaml(projectConfig))
 ```
 
-Obviously, the subprojects functionality can be combined with other `pepr` package options, e.g. implied and derieved columns. The derived columns functionality is used in the example considered here (`derived_columns` and `data_soures` keys in the config file).
+Obviously, the subprojects functionality can be combined with other `pepr` package options, e.g. implied and derieved attributes. The derived attributes functionality is used in the example considered here (`derived_attributes` and `data_soures` keys in the config file).
 
 
 Files `sample_annotation_newLib.csv` and `sample_annotation_newLib2.csv` introduce different the `library` attributes. They are used in the subprojects `newLib` and `newLib2`, respectively.

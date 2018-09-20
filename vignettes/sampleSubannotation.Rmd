@@ -99,9 +99,9 @@ getSubsample(p1, sampleName, subsampleName)
 ```
 
 
-#### Example 2: subannotations and derived columns
+#### Example 2: subannotations and derived attributes
 
-This example uses a `sample_subannotation.csv` file and a derived column to point to files. This is a rather complex example. Notice we must include the `file_id` column in the `sample_annotation.csv` file, and leave it blank; this is then populated by just some of the samples (`frog_1` and `frog_2`) in the `sample_subannotation.csv`, but is left empty for the samples that are not merged.
+This example uses a `sample_subannotation.csv` file and a derived attributes to point to files. This is a rather complex example. Notice we must include the `file_id` column in the `sample_annotation.csv` file, and leave it blank; this is then populated by just some of the samples (`frog_1` and `frog_2`) in the `sample_subannotation.csv`, but is left empty for the samples that are not merged.
 
 This example is made up of these components:
 
@@ -289,9 +289,9 @@ And inspect the whole table in `p4@samples` slot
 kable(p4Samples)
 ```
 
-#### Example 5: subannotations and multiple (separate-class) inputs with derived columns
+#### Example 5: subannotations and multiple (separate-class) inputs with derived attributes
 
-Merging is for same class inputs (like, multiple files for read1). Different-class inputs (like read1 vs read2) are handled by different attributes (or columns). This example shows you how to handle paired-end data, while also merging within each. Additionally, in this example the derived columns are used to create `read1` and `read2` attributes.
+Merging is for same class inputs (like, multiple files for read1). Different-class inputs (like read1 vs read2) are handled by different attributes (or columns). This example shows you how to handle paired-end data, while also merging within each. Additionally, in this example the derived attributes are used to create `read1` and `read2` attributes.
 
 This example is made up of these components:
 
