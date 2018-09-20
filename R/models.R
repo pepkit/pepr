@@ -138,11 +138,23 @@ setMethod(
 
 
 .deriveColumns = function(.Object) {
+  
   # Set default derived columns
-  dc = as.list(unique(append(
-    .Object@config$derived_columns, "data_source"
-  )))
-  .Object@config$derived_columns = dc
+  # dc = as.list(unique(append(
+  #   .Object@config$derived_attributes, "data_source"
+  # )))
+  # .Object@config$derived_attributes = dc
+  
+  # Backwards compatibility derived attributes
+  if(is.null(.Object@config$derived_attributes)){
+    if(is.null(.Object@config$derived_columns)){
+      # If no derived columns and attributes found - return the unchanged object
+      return(.Object)
+    }else{
+      .Object@config$derived_attributes = .Object@config$derived_columns
+    }
+  }
+  
   
   # Convert samples table into list of individual samples for processing
   cfg = .Object@config
@@ -155,13 +167,13 @@ setMethod(
   
   listOfSamples = split(tempSamples, seq(numSamples))
   exclude = c()
-  # Process derived columns
-  for (column in cfg$derived_columns) {
+  # Process derived attributes
+  for (column in cfg$derived_attributes) {
     for (iSamp in seq_along(listOfSamples)) {
       samp = listOfSamples[[iSamp]]
       sampDataSource = unlist(samp[[column]])
       if (is.null(sampDataSource)) {
-        # This sample lacks this derived column
+        # This sample lacks this derived attribute
         next
       }
       regex = cfg$data_sources[[sampDataSource]]
