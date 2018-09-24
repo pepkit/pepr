@@ -84,13 +84,15 @@ setMethod(
   }
 )
 
-setMethod("initialize", "Project", function(.Object, sp = NULL, ...) {
+setMethod("initialize", "Project", function(.Object, sp = NULL, file=NULL) {
   .Object = callNextMethod()  # calls generic initialize
-  .Object@config = loadConfig(.Object@file, sp)
-  .Object@samples = .loadSampleAnnotation(.Object)
-  .Object@samples = .loadSampleSubannotation(.Object)
-  .Object = .implyAttributes(.Object)
-  .Object = .deriveAttributes(.Object)
+  if(length(.Object@file)!=0){
+    .Object@config = loadConfig(.Object@file, sp)
+    .Object@samples = .loadSampleAnnotation(.Object)
+    .Object@samples = .loadSampleSubannotation(.Object)
+    .Object = .implyAttributes(.Object)
+    .Object = .deriveAttributes(.Object)
+  }
   .Object
 })
 
