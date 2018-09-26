@@ -1,0 +1,121 @@
+---
+title: "pepr - SummarizedExperiment interface"
+author: "Michal Stolarczyk"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+### Introduction
+
+The [`pepr`](https://pepkit.github.io/docs/pepr/) package implements a class that provides an interface for the `Project` and [`SummarizedExperiment`](https://bioconductor.org/packages/release/bioc/html/SummarizedExperiment.html) classes. This way the users of `SummarizedExperiment` can benefit from the utilties and ideology of the [PEP](https://pepkit.github.io/) toolkit. Such as: 
+
+* description of all projects the same way, so you only have to learn one metadata structure
+* collaborative work, since the organization is standardized
+* sharing the project with others, who are already familiar with the standard
+* employment of a variety of tools or pipelines without restructuring the metadata
+* analyis attributes of your project in the data analysis environment of your choice (R/python).
+
+### How to create the interface?
+
+Load the package
+```{r echo=T,message=FALSE,warning=FALSE}
+# Loading of packages and sourcing the file with the interface class will be substituded by loading of the final package in the future
+library(pepr)
+library(SummarizedExperiment)
+source(file = "../interface_class.R")
+
+```
+Let's create an empty `Interface` and see how it looks like
+```{r}
+i = Interface()
+i
+slotNames(i)
+```
+As you can see, `inter` the object of class `Interface` consists of the attributes of the `SummarizedExperiment` objects (such as `assays`, `colData` etc.) and an object of class `Project` that is an in-memory representation of a PEP.
+
+Obviously, an empty object of `Interface` class is useless, so let's consider the following example:
+
+1. Generate the data for `SummarizedExperiment`
+
+```{r}
+nrows = 200
+ncols = 6
+counts = matrix(runif(nrows * ncols, 1, 1e4), nrows)
+rowRanges = GRanges(rep(c("chr1", "chr2"), c(50, 150)),
+                    IRanges(floor(runif(200, 1e5, 1e6)), width=100),
+                    strand=sample(c("+", "-"), 200, TRUE),
+                    feature_id=sprintf("ID%03d", 1:200))
+colData = DataFrame(Treatment=rep(c("ChIP", "Input"), 3),
+                    row.names=LETTERS[1:6])
+
+```
+
+2. Generate an object of class `Project` that holds a PEP.
+
+```{r}
+projectConfig = system.file(
+"extdata",
+"example_peps-master",
+"example_implied",
+"project_config.yaml",
+package = "pepr"
+)
+pep=Project(projectConfig)
+```
+
+3. Create the `Interface` object and inspect it
+
+```{r}
+i = Interface(pep=pep, assays=list(counts=counts), rowRanges=rowRanges, colData=colData)
+i
+
+```
+
+### How to integrate the `SummarizedExperiment` and `Project`?
+
+Currently, there are 2 methods that can integrate the data from `Project` object with the `SummarizedExperiment` within the `Interface` obejcts: `getColData()` and `getMetadata()`.
+
+The former one copies the data about samples from `samples` slot in objects of `Project` class to the `colData` slot in the `SummarizedExperiment` objects. See the example below:
+
+The current (generated) `colData`:
+
+```{r}
+colData(i)
+```
+
+Copying the colData with the `Interface` methods:
+
+```{r}
+iModified = getColData(i)
+colData(iModified)
+```
+
+Please note, that the "getters and setters" methods associated with the `SummarizedExperiment` class (`rowRanges()`, `rowData()`, `colData()`, `metadata()`) are inherited and work with the `Interface` class objects.
+
+The `getMetadata()` method enriches the current `metadata` section of `SummarizedExperiment` with the path to the config file that was used to create the `Project` obejct (PEP).
+
+The current (generated) `metadata`:
+
+```{r}
+metadata(i)
+```
+
+Enriched `metadata`:
+
+```{r}
+iModified = getMetadata(i)
+metadata(iModified)
+```
+
+

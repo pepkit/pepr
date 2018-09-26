@@ -142,10 +142,10 @@ setMethod(
 .deriveAttributes = function(.Object) {
   
   # Set default derived columns
-  # dc = as.list(unique(append(
-  #   .Object@config$derived_attributes, "data_source"
-  # )))
-  # .Object@config$derived_attributes = dc
+  dc = as.list(unique(append(
+    .Object@config$derived_attributes, "data_source"
+  )))
+  .Object@config$derived_attributes = dc
   
   # Backwards compatibility after change of derived columns to derived attributes
   if(is.null(.Object@config$derived_attributes)){
