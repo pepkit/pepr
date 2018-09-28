@@ -81,13 +81,12 @@ setMethod(
   definition = function(object) {
     print(object@samples)
     invisible(object@samples)
-  }
-)
+  })
 
-setMethod("initialize", "Project", function(.Object, sp = NULL, file=NULL) {
+setMethod("initialize", "Project", function(.Object, file=NULL) {
   .Object = callNextMethod()  # calls generic initialize
   if(length(.Object@file)!=0){
-    .Object@config = loadConfig(.Object@file, sp)
+    .Object@config = loadConfig(.Object@file)
     .Object@samples = .loadSampleAnnotation(.Object)
     .Object@samples = .loadSampleSubannotation(.Object)
     .Object = .implyAttributes(.Object)
