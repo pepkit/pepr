@@ -87,6 +87,7 @@ setMethod("initialize", "Project", function(.Object, file=NULL) {
   .Object = callNextMethod()  # calls generic initialize
   if(length(.Object@file)!=0){
     .Object@config = loadConfig(.Object@file)
+    .Object@samples = .applyConstants(.Object)
     .Object@samples = .loadSampleAnnotation(.Object)
     .Object@samples = .loadSampleSubannotation(.Object)
     .Object = .implyAttributes(.Object)
@@ -297,6 +298,25 @@ setMethod(
   }
   samples[is.na(samples)] = ""
   return(samples)
+}
+
+.applyConstants <- function(.Object) {
+  # Extracting needed slots
+  constants=.Object@config$constants
+  if(is.list(constants)){
+    # get bames
+    constantsNames=names(constants)
+    # get a copy of samples to get the dimensions
+    samplesDF=.Object@samples
+    colLen=dim(samplesDF)[1]
+    for(iConst in seq_along(constants)){
+      # create a data.table - one column and glue it with the current samples data.table
+      constantCol = data.table::data.table(rep(constants[[iConst]],colLen))
+      names(constantCol) = constantsNames[iConst]
+      .Object@samples = cbind(.Object@samples,constantCol)
+    }
+  }
+  return(Object@samples)
 }
 
 #' @export
