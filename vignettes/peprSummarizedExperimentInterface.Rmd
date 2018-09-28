@@ -5,8 +5,10 @@ date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Vignette Title}
-  %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  chunk_output_type: console
 ---
 
 ```{r setup, include = FALSE}
@@ -33,16 +35,23 @@ Load the package
 # Loading of packages and sourcing the file with the interface class will be substituded by loading of the final package in the future
 library(pepr)
 library(SummarizedExperiment)
-source(file = "../interface_class.R")
+source(file = "../interfaceClassDoubleInheritance.R")
 
 ```
-Let's create an empty `Interface` and see how it looks like
+Let's create an `Interface` object with just the one required argument (PEP config file) and see how it looks like
 ```{r}
-i = Interface()
+projectConfig = system.file(
+"extdata",
+"example_peps-master",
+"example_implied",
+"project_config.yaml",
+package = "pepr"
+)
+i = Interface(file=projectConfig)
 i
 slotNames(i)
 ```
-As you can see, `inter` the object of class `Interface` consists of the attributes of the `SummarizedExperiment` objects (such as `assays`, `colData` etc.) and an object of class `Project` that is an in-memory representation of a PEP.
+As you can see, `inter` the object of class `Interface` consists of the slots of the `SummarizedExperiment` objects (such as `assays`, `colData` etc.) and of class `Project` (such as `samples`, `config` etc.) that are an in-memory representation of a PEP.
 
 Obviously, an empty object of `Interface` class is useless, so let's consider the following example:
 
@@ -61,32 +70,29 @@ colData = DataFrame(Treatment=rep(c("ChIP", "Input"), 3),
 
 ```
 
-2. Generate an object of class `Project` that holds a PEP.
-
-```{r}
-projectConfig = system.file(
-"extdata",
-"example_peps-master",
-"example_implied",
-"project_config.yaml",
-package = "pepr"
-)
-pep=Project(projectConfig)
-```
-
 3. Create the `Interface` object and inspect it
 
 ```{r}
-i = Interface(pep=pep, assays=list(counts=counts), rowRanges=rowRanges, colData=colData)
+i = Interface(file=projectConfig, assays=list(counts=counts), rowRanges=rowRanges, colData=colData)
 i
 
 ```
 
 ### How to integrate the `SummarizedExperiment` and `Project`?
 
-Currently, there are 2 methods that can integrate the data from `Project` object with the `SummarizedExperiment` within the `Interface` obejcts: `getColData()` and `getMetadata()`.
+Currently, there are 2 new methods that can integrate the data from `Project` object with the `SummarizedExperiment` within the `Interface` objects: 
+<dl>
+  <dt>`getColData()`</dt>
+  <dd>It copies the data about samples from `samples` slot in objects of `Project` class to the `colData` slot in the `SummarizedExperiment` objects.</dd>
 
-The former one copies the data about samples from `samples` slot in objects of `Project` class to the `colData` slot in the `SummarizedExperiment` objects. See the example below:
+  <dt>`getMetadata()`</dt>
+  <dd>It enriches the current `metadata` section of `SummarizedExperiment` with the config file that was used to create the `Project` obejct (PEP).</dd>
+  
+  <dt>All inherited methods</dt>
+  <dd>Please note, that the "getters and setters" methods associated with the `SummarizedExperiment` class (`rowRanges()`, `rowData()`, `colData()` etc.) as well as ones associate with the `Project` class (`samples()`, `config()` etc.) are inherited and work with the `Interface` class objects.</dd>
+</dl>
+
+To see the above-mentioned methods in use, see the section below:
 
 The current (generated) `colData`:
 
@@ -101,9 +107,6 @@ iModified = getColData(i)
 colData(iModified)
 ```
 
-Please note, that the "getters and setters" methods associated with the `SummarizedExperiment` class (`rowRanges()`, `rowData()`, `colData()`, `metadata()`) are inherited and work with the `Interface` class objects.
-
-The `getMetadata()` method enriches the current `metadata` section of `SummarizedExperiment` with the path to the config file that was used to create the `Project` obejct (PEP).
 
 The current (generated) `metadata`:
 
