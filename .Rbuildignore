@@ -3,3 +3,5 @@
 ^\.travis\.yml$
 ^_pkgdown\.yml$
 ^interface_class\.R$
+^vignettes/peprSummarizedExperimentInterface\.Rmd$
+^interfaceClassDoubleInheritance\.R$
