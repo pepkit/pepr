@@ -12,17 +12,12 @@ setMethod(
   f = "initialize",
   signature = "Interface",
   definition = function(.Object, file, ...) {
-    ellipsisArgs = list(...); cat("Ellipsis args:\n"); print(ellipsisArgs)
+    ellipsisArgs = list(...)
     .Object=callNextMethod(.Object, file)
     argsNames=names(ellipsisArgs)
-    # for(arg in seq_along(ellipsisArgs)){
-    #   print(argsNames[arg])
-    #   if(argsNames[arg] == "assay") ellipsisArgs[[argsNames[arg]]] = Assays(ellipsisArgs[[argsNames[arg]]])
-    #   slot(.Object,argsNames[arg]) = ellipsisArgs[[argsNames[arg]]]
-    # }
-    .Object@assays=Assays(assays = assays)
-    .Object@colData=colData
-    .Object@rowRanges=rowRanges
+    if(any(argsNames=="assays")) .Object@assays=Assays(ellipsisArgs$assays)
+    if(any(argsNames=="colData")) .Object@colData=ellipsisArgs$colData
+    if(any(argsNames=="rowRanges")) .Object@rowRanges=ellipsisArgs$rowRanges
     return(.Object)
   }
 )
