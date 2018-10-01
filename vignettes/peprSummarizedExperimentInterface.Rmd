@@ -56,7 +56,7 @@ As you can see, `inter` the object of class `Interface` consists of the slots of
 Obviously, an empty object of `Interface` class is useless, so let's consider the following example:
 
 1. Generate the data for `SummarizedExperiment`
-
+gitcgit 
 ```{r}
 nrows = 200
 ncols = 6

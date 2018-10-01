@@ -87,13 +87,13 @@ setMethod("initialize", "Project", function(.Object, file=NULL) {
   .Object = callNextMethod()  # calls generic initialize
   if(length(.Object@file)!=0){
     .Object@config = loadConfig(.Object@file)
-    .Object@samples = .applyConstants(.Object)
     .Object@samples = .loadSampleAnnotation(.Object)
     .Object@samples = .loadSampleSubannotation(.Object)
+    .Object@samples = .applyConstants(.Object)
     .Object = .implyAttributes(.Object)
     .Object = .deriveAttributes(.Object)
   }
-  .Object
+  return(.Object)
 })
 
 setGeneric(name = "getSubsample", function(.Object, sampleName, subsampleName)
@@ -304,7 +304,7 @@ setMethod(
   # Extracting needed slots
   constants=.Object@config$constants
   if(is.list(constants)){
-    # get bames
+    # get names
     constantsNames=names(constants)
     # get a copy of samples to get the dimensions
     samplesDF=.Object@samples
@@ -316,7 +316,7 @@ setMethod(
       .Object@samples = cbind(.Object@samples,constantCol)
     }
   }
-  return(Object@samples)
+  return(.Object@samples)
 }
 
 #' @export

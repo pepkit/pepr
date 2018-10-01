@@ -1,7 +1,24 @@
+
+#' A class representing a Portable Encapsulated Project and Summarized Experiment objects interface
+#'
+#' Provides a representation and functions to access project
+#' configuration and sample annotation values for a PEP as well as functions concerning experimental results organization provided by the \linkS4class{SummarizedExperiment} class.
+#' Additionally, this class privides an interfece that connects them.
+#' 
+#' This class inherits from classes \linkS4class{Project} and \linkS4class{RangedSummarizedExperiment}
+#'
+#' @exportClass Interface
 setClass("Interface",
          # Inherits from Project and SummarizedExperiment objects
          contains = c("RangedSummarizedExperiment", "Project"))
 
+#' A class representing a Portable Encapsulated Project and Summarized Experiment objects interface
+#' This is a helper that creates the Interface with empty Project and SummarizedExperiment objects included
+#'
+#' @param file a string with a path to the config file as in \linkS4class{Project}
+#' @inheritParams  SummarizedExperiment::SummarizedExperiment 
+#'
+#' @export Interface
 Interface <- function(file, ...) {
   new("Interface", file, ...)
 }
@@ -13,6 +30,7 @@ setMethod(
     ellipsisArgs = list(...)
     .Object = callNextMethod(.Object, file)
     argsNames = names(ellipsisArgs)
+    # Adds slots depending on the provided arguments in the constructor call
     if (any(argsNames == "assays"))
       .Object@assays = Assays(ellipsisArgs$assays)
     if (any(argsNames == "colData"))
@@ -100,20 +118,24 @@ setMethod(
   }
 )
 
-# setGeneric("metadata", function(.Object, ...)
-#   standardGeneric("metadata"))
 
 setMethod("metadata",
           signature = "Interface",
           definition = function(x) {
+            # gets the metadata into variable
             met=do.call(selectMethod(f = "metadata",signature = "SummarizedExperiment"),list(x))
+            # if there is any metadata
             if(length(met)>0){
+              # extract the PEP config data
               met=met[[1]]
               config=met@other$`PEP config file`
               met@other=list()
+              # print the remaining part
               show(met)
+              # print the config 
               printNestedList(config)
             }else{
+              # if no metadata, print empty list
               do.call(selectMethod(f = "metadata",signature = "SummarizedExperiment"),list(x))
             }
           })

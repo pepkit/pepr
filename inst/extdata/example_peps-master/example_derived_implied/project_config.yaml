@@ -2,7 +2,7 @@ metadata:
     sample_annotation: sample_annotation.csv
     output_dir: $HOME/hello_looper_results
 
-derived_attributes: [file_path]
+derived_columns: [file_path]
 
 data_sources:
     source1: /data/lab/project/{organism}_{genome}_{condition}.fastq
