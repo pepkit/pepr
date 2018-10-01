@@ -154,24 +154,24 @@ test_that("getSubsample method returns a correct size DF", {
   expect_equal(dim(getSubsample(p_sub, "frog_1", "sub_a")), c(1, 4))
 })
 
-test_that(".loadSampleAnnotation returns a data.frame", {
-  expect_is(.loadSampleAnnotation(p), 'data.frame')
+test_that(".loadSampleAnnotation returns a Project object", {
+  expect_is(.loadSampleAnnotation(p), 'Project')
 })
 
 test_that(".loadSampleAnnotation thorws an error when file not fond", {
   expect_error(.loadSampleAnnotation(p_file_missing))
 })
 
-test_that(".loadSamplesubnnotation always returns a data.frame", {
-  expect_is(.loadSampleSubannotation(p), 'data.frame')
-  expect_is(.loadSampleSubannotation(p_subproj2), 'data.frame')
-  expect_is(.loadSampleSubannotation(p_sub), 'data.frame')
+test_that(".loadSamplesubnnotation always returns a Project", {
+  expect_is(.loadSampleSubannotation(p), 'Project')
+  expect_is(.loadSampleSubannotation(p_subproj2), 'Project')
+  expect_is(.loadSampleSubannotation(p_sub), 'Project')
 })
 
 test_that(".implyColumns returns Project object", {
-  expect_is(.implyColumns(p_implied), 'Project')
+  expect_is(.implyAttributes(p_implied), 'Project')
 })
 
 test_that(".implyColumns returns Project object", {
-  expect_is(.deriveColumns(p), 'Project')
+  expect_is(.deriveAttributes(p), 'Project')
 })
