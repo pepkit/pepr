@@ -21,7 +21,7 @@ setClass("Project",
 #' @param samples a data table object holding the sample metadata
 #' @param config a list object holding contents of the config file
 #' @export Project
-Project = function(file,
+Project = function(file = character(),
                    samples = list(),
                    config = list()) {
   new("Project", file = file)
@@ -84,7 +84,7 @@ setMethod(
   }
 )
 
-setMethod("initialize", "Project", function(.Object, file = NULL) {
+setMethod("initialize", "Project", function(.Object, file) {
   .Object = callNextMethod()  # calls generic initialize
   if (length(.Object@file) != 0) {
     .Object@config = loadConfig(.Object@file)
