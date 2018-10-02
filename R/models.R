@@ -38,7 +38,7 @@ setMethod(
   "show",
   signature = "Config",
   definition = function(object) {
-    message("PEP project object. Class: ", class(object))
+    cat("PEP project object. Class:", class(object),fill = T)
     printNestedList(object)
     invisible(NULL)
   }
@@ -49,9 +49,9 @@ setMethod(
   "show",
   signature = "Project",
   definition = function(object) {
-    message("PEP project object. Class: ", class(object))
-    message("  file: ", object@file)
-    message("  samples: ", NROW(object@samples))
+    cat("PEP project object. Class: ", class(object),fill = T)
+    cat("  file: ", object@file,fill = T)
+    cat("  samples: ", NROW(object@samples),fill = T)
     listSubprojects(object@config)
     invisible(NULL)
   }
@@ -230,7 +230,7 @@ setMethod(
     }
   } else{
     # the implied_attributes in project's config is neither NULL nor list
-    message("The implied_attributes key-value pairs in project config are invalid!")
+    cat("The implied_attributes key-value pairs in project config are invalid!",fill = T)
   }
   return(.Object)
 }
@@ -246,7 +246,7 @@ setMethod(
   if (.safeFileExists(sampleAnnotationPath)) {
     samples = sampleReadFunc(sampleAnnotationPath)
   } else{
-    message("No sample annotation file:", sampleAnnotationPath)
+    cat("No sample annotation file:", sampleAnnotationPath,fill = T)
     stop()
     samples = data.frame()
   }
@@ -352,12 +352,12 @@ printNestedList = function(lst, level = 0) {
   for (itemName in names(lst)) {
     item = lst[[itemName]]
     if (class(item) == "list") {
-      message(rep(" ", level), itemName, ":")
+      cat(rep(" ", level), paste0(itemName, ":"),fill = T)
       printNestedList(item, level + 2)
     } else {
       if (is.null(item))
         item = "null"
-      message(rep(" ", level), itemName, ": ", item)
+      cat(rep(" ", level), paste0(itemName, ":"),item,fill = T)
     }
   }
 }

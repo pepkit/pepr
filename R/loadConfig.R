@@ -13,11 +13,11 @@ loadConfig = function(filename=NULL, sp=NULL) {
   cfg = new("Config", config_file)
   
   if (is.null(cfg)) {
-    message("Config file not loaded.")
+    cat("Config file not loaded.",fill = T)
     return()
   }
   
-  message("Loaded config file: ", filename)
+  cat("Loaded config file: ", filename,fill = T)
   
   # Show available subprojects
   listSubprojects(cfg)
@@ -50,11 +50,11 @@ loadConfig = function(filename=NULL, sp=NULL) {
 .updateSubconfig = function(cfg, sp=NULL) {
   if (! is.null(sp)) {
     if (is.null(cfg$subprojects[[sp]])) {
-      message("Subproject not found: ", sp)
+      cat("Subproject not found: ", sp,fill = T)
       return()
     }
     cfg = modifyList(cfg, cfg$subprojects[[sp]])
-    message("Loading subproject: ", sp)
+    cat("Loading subproject: ", sp,fill = T)
   }
   return(cfg)
 }
@@ -70,8 +70,8 @@ loadConfig = function(filename=NULL, sp=NULL) {
 listSubprojects = function(cfg) {
   # Show available subprojects
   if (length(names(cfg$subprojects)) > 0) {
-    # If there are any show a message and return if needed
-    message("  subprojects: ", paste0(names(cfg$subprojects), collapse=","))
+    # If there are any show a cat and return if needed
+    cat("  subprojects: ", paste0(names(cfg$subprojects), collapse=","),fill = T)
     invisible(names(cfg$subprojects))
   }else{
     # Otherwise return NULL for testing purposes
