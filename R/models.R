@@ -141,12 +141,7 @@ setMethod(
 
 
 .deriveAttributes = function(.Object) {
-  # Set default derived columns
-  dc = as.list(unique(append(
-    .Object@config$derived_attributes, "data_source"
-  )))
-  .Object@config$derived_attributes = dc
-  
+
   # Backwards compatibility after change of derived columns to derived attributes
   if (is.null(.Object@config$derived_attributes)) {
     if (is.null(.Object@config$derived_columns)) {
@@ -155,9 +150,14 @@ setMethod(
     } else{
       # If the old naming scheme is used - copy the derived columns
       .Object@config$derived_attributes = .Object@config$derived_columns
+      .Object@config[[which(names(.Object@config) == "derived_columns")]] = NULL
     }
   }
-  
+  # Set default derived columns - deprecated, to be deleted
+  dc = unique(append(
+    .Object@config$derived_attributes, "data_source"
+  ))
+  .Object@config$derived_attributes = dc
   
   # Convert samples table into list of individual samples for processing
   cfg = .Object@config
@@ -201,6 +201,7 @@ setMethod(
       return(.Object)
     } else{
       .Object@config$implied_attributes = .Object@config$implied_columns
+      .Object@config[[which(names(.Object@config) == "implied_columns")]] = NULL
     }
   }
   if (is.list(.Object@config$implied_attributes)) {
