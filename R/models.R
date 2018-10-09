@@ -38,7 +38,7 @@ setMethod(
   "show",
   signature = "Config",
   definition = function(object) {
-    cat("PEP project object. Class:", class(object),fill = T)
+    cat("PEP project object. Class:", class(object), fill = T)
     printNestedList(object)
     invisible(NULL)
   }
@@ -49,9 +49,9 @@ setMethod(
   "show",
   signature = "Project",
   definition = function(object) {
-    cat("PEP project object. Class: ", class(object),fill = T)
-    cat("  file: ", object@file,fill = T)
-    cat("  samples: ", NROW(object@samples),fill = T)
+    cat("PEP project object. Class: ", class(object), fill = T)
+    cat("  file: ", object@file, fill = T)
+    cat("  samples: ", NROW(object@samples), fill = T)
     listSubprojects(object@config)
     invisible(NULL)
   }
@@ -61,6 +61,14 @@ setMethod(
 setGeneric("config", function(object, ...)
   standardGeneric("config"))
 
+#' View PEP config of the object of \code{\link{Project}} class
+#'
+#' This method can be used to view the config slot of the \code{\link{Project}} class
+#'
+#' @param object an object of \code{\link{Project}} class
+#'
+#' @return a list with the config file
+#'
 #' @export
 setMethod(
   "config",
@@ -74,6 +82,14 @@ setMethod(
 setGeneric("samples", function(object, ...)
   standardGeneric("samples"))
 
+#' View samples in the objects of \code{\link{Project}} class
+#'
+#' This method can be used to view the samples slot of the \code{\link{Project}} class
+#'
+#' @param object an object of \code{\link{Project}} class
+#'
+#' @return a data.table with the config file
+#'
 #' @export
 setMethod(
   "samples",
@@ -100,6 +116,8 @@ setMethod("initialize", "Project", function(.Object, file) {
 setGeneric(name = "getSubsample", function(.Object, sampleName, subsampleName)
   standardGeneric("getSubsample"))
 
+#' This method extracts the subsample from the \code{\link{Project}} object
+#'
 #' @param .Object An object of Project class
 #'
 #' @param sampleName character the name of the sample
@@ -127,7 +145,7 @@ setMethod(
     sampleNumber = which(subsampleNames == subsampleName)
     if (length(sampleNumber) == 0)
       stop("Such sample and sub sample name combination does not exist.")
-    result = .Object@samples[1,]
+    result = .Object@samples[1, ]
     for (iColumn in names(result)) {
       if (length(.Object@samples[[iColumn]][[rowNumber]]) > 1) {
         result[[iColumn]] = .Object@samples[[iColumn]][[rowNumber]][[sampleNumber]]
@@ -141,7 +159,6 @@ setMethod(
 
 
 .deriveAttributes = function(.Object) {
-
   # Backwards compatibility after change of derived columns to derived attributes
   if (is.null(.Object@config$derived_attributes)) {
     if (is.null(.Object@config$derived_columns)) {
@@ -154,9 +171,7 @@ setMethod(
     }
   }
   # Set default derived columns - deprecated, to be deleted
-  dc = unique(append(
-    .Object@config$derived_attributes, "data_source"
-  ))
+  dc = unique(append(.Object@config$derived_attributes, "data_source"))
   .Object@config$derived_attributes = dc
   
   # Convert samples table into list of individual samples for processing
@@ -231,7 +246,8 @@ setMethod(
     }
   } else{
     # the implied_attributes in project's config is neither NULL nor list
-    cat("The implied_attributes key-value pairs in project config are invalid!",fill = T)
+    cat("The implied_attributes key-value pairs in project config are invalid!",
+        fill = T)
   }
   return(.Object)
 }
@@ -247,7 +263,7 @@ setMethod(
   if (.safeFileExists(sampleAnnotationPath)) {
     samples = sampleReadFunc(sampleAnnotationPath)
   } else{
-    cat("No sample annotation file:", sampleAnnotationPath,fill = T)
+    cat("No sample annotation file:", sampleAnnotationPath, fill = T)
     stop()
     samples = data.frame()
   }
@@ -277,8 +293,8 @@ setMethod(
   colList = vector("list", rowNum)
   for (iName in subNames) {
     whichNames = which(samplesSubannotation$sample_name == iName)
-    subTable = samplesSubannotation[whichNames,]
-    dropCol = which(names(samplesSubannotation[whichNames,]) == "sample_name")
+    subTable = samplesSubannotation[whichNames, ]
+    dropCol = which(names(samplesSubannotation[whichNames, ]) == "sample_name")
     subTable = subset(subTable, select = -dropCol)
     for (iColumn in seq_len(ncol(subTable))) {
       colName = names(subset(subTable, select = iColumn))
@@ -322,23 +338,39 @@ setMethod(
   return(.Object)
 }
 
+setGeneric("activateSubproject", function(.Object, sp, ...)
+  standardGeneric("activateSubproject"))
+
+#' Activate other subproject in objects of \code{\link{Project}} class
+#'
+#' This method switches the between the subprojects within the \code{\link{Project}} object
+#'
+#' To check what are the subproject names call \code{listSubprojects(config(p))}, where \code{p} is the object of \code{\link{Project}} class
+#'
+#' @param .Object an object of class \code{\link{Project}}
+#' @param sp character with the subproject name
+#'
 #' @export
-activateSubproject = function(.Object, sp, ...) {
-  .Object@config = .updateSubconfig(.Object@config, sp)
-  
-  # Ensure that metadata paths are absolute and return the config.
-  # This used to be all metadata columns; now it's just: results_subdir
-  mdn = names(.Object@config$metadata)
-  
-  .Object@config$metadata = makeMetadataSectionAbsolute(.Object@config, parent =
-                                                          dirname(.Object@file))
-  
-  .Object = .loadSampleAnnotation(.Object)
-  .Object = .loadSampleSubannotation(.Object)
-  .Object = .implyAttributes(.Object)
-  .Object = .deriveAttributes(.Object)
-  .Object
-}
+setMethod(
+  f = "activateSubproject",
+  signature = signature(.Object = "Project", sp = "character"),
+  definition = function(.Object, sp, ...) {
+    .Object@config = .updateSubconfig(.Object@config, sp)
+    
+    # Ensure that metadata paths are absolute and return the config.
+    # This used to be all metadata columns; now it's just: results_subdir
+    mdn = names(.Object@config$metadata)
+    
+    .Object@config$metadata = makeMetadataSectionAbsolute(.Object@config, parent =
+                                                            dirname(.Object@file))
+    
+    .Object = .loadSampleAnnotation(.Object)
+    .Object = .loadSampleSubannotation(.Object)
+    .Object = .implyAttributes(.Object)
+    .Object = .deriveAttributes(.Object)
+    .Object
+  }
+)
 
 
 
@@ -353,12 +385,12 @@ printNestedList = function(lst, level = 0) {
   for (itemName in names(lst)) {
     item = lst[[itemName]]
     if (class(item) == "list") {
-      cat(rep(" ", level), paste0(itemName, ":"),fill = T)
+      cat(rep(" ", level), paste0(itemName, ":"), fill = T)
       printNestedList(item, level + 2)
     } else {
       if (is.null(item))
         item = "null"
-      cat(rep(" ", level), paste0(itemName, ":"),item,fill = T)
+      cat(rep(" ", level), paste0(itemName, ":"), item, fill = T)
     }
   }
 }

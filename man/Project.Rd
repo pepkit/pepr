@@ -5,7 +5,7 @@
 \title{A class representing a Portable Encapsulated Project
 This is a helper that creates the project with empty samples and config slots}
 \usage{
-Project(file, samples = list(), config = list())
+Project(file = character(), samples = list(), config = list())
 }
 \arguments{
 \item{file}{project configuration yaml file}
