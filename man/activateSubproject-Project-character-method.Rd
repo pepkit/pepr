@@ -3,7 +3,7 @@
 \docType{methods}
 \name{activateSubproject,Project,character-method}
 \alias{activateSubproject,Project,character-method}
-\title{Activate another subproject in objects of \code{\link{Project}} class}
+\title{Activate other subproject in objects of \code{\link{Project}} class}
 \usage{
 \S4method{activateSubproject}{Project,character}(.Object, sp, ...)
 }

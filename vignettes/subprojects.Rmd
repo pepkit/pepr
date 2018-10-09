@@ -105,10 +105,17 @@ samples(p)
 
 The column `file_path` was derived and the `library` column holds the original attributes: `RRBS` for each sample.
 
-To "activate" any of the subprojects just run the following line:
+To "activate" any of the subprojects just pass the name of the desired to the `subproject` argument in the `Project` object constructor. 
+
+In case you don't remember the subproject names run the `listSubprojects()` function on the config of the `Project` object, just like that:
 
 ```{r}
-pNewLib = activateSubproject(p,"newLib")
+listSubprojects(config(p))
+```
+
+
+```{r}
+pNewLib = Project(file = projectConfig, subproject = "newLib")
 ```
 
 Let's inspect it:
@@ -122,7 +129,7 @@ As you can see, the `library` columns consists of new attributes (`ABCD`), which
 The second subproject can be activated in a similar way:
 
 ```{r}
-pNewLib2 = activateSubproject(p, "newLib2")
+pNewLib2 = Project(file = projectConfig, subproject = "newLib2")
 samples(pNewLib2)
 ```
 

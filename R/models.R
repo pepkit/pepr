@@ -6,25 +6,29 @@
 #' @slot file character vector path to config file on disk.
 #' @slot samples a data table object holding the sample metadata
 #' @slot config a list object holding contents of the config file
+#' @slot subproject a character vector with the name of the activated subproject
 #'
 #' @exportClass Project
 setClass("Project",
          slots = c(
            file = "character",
            samples = "data.frame",
-           config = "list"
+           config = "list",
+           subproject = "character"
          ))
 
 #' A class representing a Portable Encapsulated Project
 #' This is a helper that creates the project with empty samples and config slots
-#' @param file project configuration yaml file
+#' @param file a character with project configuration yaml file
 #' @param samples a data table object holding the sample metadata
 #' @param config a list object holding contents of the config file
+#' @patam subproject a character with the subproject name to be activated
 #' @export Project
 Project = function(file = character(),
                    samples = list(),
-                   config = list()) {
-  new("Project", file = file)
+                   config = list(),
+                   subproject = character()) {
+  new("Project", file = file, subproject = subproject)
 }
 
 #' Config objects are specialized list objects
@@ -100,15 +104,19 @@ setMethod(
   }
 )
 
-setMethod("initialize", "Project", function(.Object, file) {
+setMethod("initialize", "Project", function(.Object, file, subproject) {
   .Object = callNextMethod()  # calls generic initialize
-  if (length(.Object@file) != 0) {
+  if (length(.Object@file) != 0) { # check if file path provided
     .Object@config = loadConfig(.Object@file)
-    .Object = .loadSampleAnnotation(.Object)
-    .Object = .loadSampleSubannotation(.Object)
-    .Object = .applyConstants(.Object)
-    .Object = .implyAttributes(.Object)
-    .Object = .deriveAttributes(.Object)
+    if(length(subproject) != 0){ # check if subproject should be activated
+      .Object=activateSubproject(.Object, subproject)
+    }else{ 
+      .Object = .loadSampleAnnotation(.Object)
+      .Object = .loadSampleSubannotation(.Object)
+      .Object = .applyConstants(.Object)
+      .Object = .implyAttributes(.Object)
+      .Object = .deriveAttributes(.Object)
+    }
   }
   return(.Object)
 })
@@ -366,6 +374,7 @@ setMethod(
     
     .Object = .loadSampleAnnotation(.Object)
     .Object = .loadSampleSubannotation(.Object)
+    .Object = .applyConstants(.Object)
     .Object = .implyAttributes(.Object)
     .Object = .deriveAttributes(.Object)
     .Object
