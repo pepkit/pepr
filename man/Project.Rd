@@ -4,8 +4,7 @@
 \alias{Project}
 \title{The constructor of a class representing a Portable Encapsulated Project}
 \usage{
-Project(file = character(), samples = list(), config = list(),
-  subproject = character())
+Project(file = character(), subproject = character())
 }
 \arguments{
 \item{file}{a character with project configuration yaml file}

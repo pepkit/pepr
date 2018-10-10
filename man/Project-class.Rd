@@ -16,7 +16,5 @@ configuration and sample annotation values for a PEP.
 \item{\code{samples}}{a data table object holding the sample metadata}
 
 \item{\code{config}}{a list object holding contents of the config file}
-
-\item{\code{subproject}}{a character vector with the name of the activated subproject}
 }}
 

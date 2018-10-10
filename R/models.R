@@ -6,27 +6,25 @@
 #' @slot file character vector path to config file on disk.
 #' @slot samples a data table object holding the sample metadata
 #' @slot config a list object holding contents of the config file
-#' @slot subproject a character vector with the name of the activated subproject
 #'
 #' @exportClass Project
 setClass("Project",
          slots = c(
            file = "character",
            samples = "data.frame",
-           config = "list",
-           subproject = "character"
+           config = "list"
          ))
 
-#' A class representing a Portable Encapsulated Project
+#' The constructor of a class representing a Portable Encapsulated Project
+#' 
 #' This is a helper that creates the project with empty samples and config slots
+#' 
 #' @param file a character with project configuration yaml file
-#' @param samples a data table object holding the sample metadata
-#' @param config a list object holding contents of the config file
-#' @patam subproject a character with the subproject name to be activated
+#' @param subproject a character with the subproject name to be activated
 #' @export Project
 Project = function(file = character(),
-                   samples = list(),
-                   config = list(),
+                   # samples = list(),
+                   # config = list(),
                    subproject = character()) {
   new("Project", file = file, subproject = subproject)
 }
@@ -104,12 +102,14 @@ setMethod(
   }
 )
 
-setMethod("initialize", "Project", function(.Object, file, subproject) {
-  .Object = callNextMethod()  # calls generic initialize
-  if (length(.Object@file) != 0) { # check if file path provided
-    .Object@config = loadConfig(.Object@file)
-    if(length(subproject) != 0){ # check if subproject should be activated
-      .Object=activateSubproject(.Object, subproject)
+setMethod("initialize", "Project", function(.Object, ...) {
+  .Object = callNextMethod(.Object)  # calls generic initialize
+  ellipsis <- list(...)
+  if (length(ellipsis$file) != 0) { # check if file path provided
+    .Object@file = ellipsis$file
+    .Object@config = loadConfig(ellipsis$file)
+    if(length(ellipsis$subproject) != 0){ # check if subproject provided
+      .Object=activateSubproject(.Object, ellipsis$subproject)
     }else{ 
       .Object = .loadSampleAnnotation(.Object)
       .Object = .loadSampleSubannotation(.Object)
