@@ -1,0 +1,21 @@
+# Change log
+All notable changes to this project will be documented in this file. Here we
+will document changes to major new releases only (not point releases).
+
+## [0.0.4] -- Unreleased
+
+	- change the Project object construction, the subproject can be activated at construction time
+	- change implied/derived columns to implied/derived attributes. Backwards compatible
+
+## [0.0.3] -- 2018-09-12
+
+	- add derived columns functionality
+	- add implied columns functionality
+	- add subannotation functionality
+
+## [0.0.2] -- 2018-09-06
+
+	- first release, includes basic PEP reading functions
+
+
+
