@@ -18,3 +18,7 @@ This method switches the between the subprojects within the \code{\link{Project}
 \details{
 To check what are the subproject names call \code{listSubprojects(config(p))}, where \code{p} is the object of \code{\link{Project}} class
 }
+\examples{
+
+
+}

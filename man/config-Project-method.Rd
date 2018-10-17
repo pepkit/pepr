@@ -16,3 +16,9 @@ a list with the config file
 \description{
 This method can be used to view the config slot of the \code{\link{Project}} class
 }
+\examples{
+projectConfig = system.file("extdata", "example_peps-master","example_subprojects1", "project_config.yaml", package="pepr")
+p=Project(projectConfig)
+config(p)
+
+}

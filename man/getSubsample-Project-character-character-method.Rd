@@ -21,3 +21,16 @@ data.table one row data table with the subsample associated metadata
 \description{
 This method extracts the subsample from the \code{\link{Project}} object
 }
+\examples{
+projectConfig = system.file(
+"extdata",
+"example_peps-master",
+"example_subannotation1",
+"project_config.yaml",
+package = "pepr"
+)
+p = Project(projectConfig)
+sampleName = "frog_1"
+subsampleName = "sub_a"
+getSubsample(p, sampleName, subsampleName)
+}

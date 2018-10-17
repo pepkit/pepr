@@ -1,4 +1,6 @@
-#' Loads a project_config.yaml file
+#' Load the config of a PEP
+#' 
+#' Loads a \code{project_config.yaml} file
 #'
 #' @param sp Subproject to activate
 #' @param filename file path to config file
@@ -114,19 +116,6 @@ expandPath = function(path) {
   fullPath = do.call(file.path, lapply(parts, expand))
   return(fullPath)
 }
-
-#' Format a string like python's format function
-#' 
-#' Given a string with environment variables (encoded like ${VAR}) and other
-#' variables (encoded like {VAR}), this function will substitute both of these
-#' and return the formatted string, like the python string format(). Other
-#' variables are populated from a list of arguments
-
-#' @param string String with variables encoded
-#' @param args named list of arguments to use to populate the string
-#' @export
-#' @examples
-#' strformat("{VAR1}{VAR2}_file", list(VAR1="hi", VAR2="hello"))
 
 #' Format a string like python's format function
 #' 

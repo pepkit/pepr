@@ -21,6 +21,9 @@ setClass("Project",
 #' 
 #' @param file a character with project configuration yaml file
 #' @param subproject a character with the subproject name to be activated
+#' @examples
+#' projectConfig = system.file("extdata", "example_peps-master","example_subprojects1", "project_config.yaml", package="pepr")
+#' p=Project(projectConfig)
 #' @export Project
 Project = function(file = character(),
                    # samples = list(),
@@ -70,6 +73,11 @@ setGeneric("config", function(object, ...)
 #' @param object an object of \code{\link{Project}} class
 #'
 #' @return a list with the config file
+#' 
+#' @examples 
+#' projectConfig = system.file("extdata", "example_peps-master","example_subprojects1", "project_config.yaml", package="pepr")
+#' p=Project(projectConfig)
+#' config(p)
 #'
 #' @export
 setMethod(
@@ -91,6 +99,10 @@ setGeneric("samples", function(object, ...)
 #' @param object an object of \code{\link{Project}} class
 #'
 #' @return a data.table with the config file
+#' @examples 
+#' projectConfig = system.file("extdata", "example_peps-master","example_subprojects1", "project_config.yaml", package="pepr")
+#' p=Project(projectConfig)
+#' samples(p)
 #'
 #' @export
 setMethod(
@@ -132,6 +144,18 @@ setGeneric(name = "getSubsample", function(.Object, sampleName, subsampleName)
 #' @param subsampleName character the name of the subsample
 #'
 #' @return data.table one row data table with the subsample associated metadata
+#' @examples 
+#' projectConfig = system.file(
+#' "extdata",
+#' "example_peps-master",
+#' "example_subannotation1",
+#' "project_config.yaml",
+#' package = "pepr"
+#' )
+#' p = Project(projectConfig)
+#' sampleName = "frog_1"
+#' subsampleName = "sub_a"
+#' getSubsample(p, sampleName, subsampleName)
 #' @export
 setMethod(
   f = "getSubsample",
@@ -357,6 +381,8 @@ setGeneric("activateSubproject", function(.Object, sp, ...)
 #'
 #' @param .Object an object of class \code{\link{Project}}
 #' @param sp character with the subproject name
+#' @examples 
+#'
 #'
 #' @export
 setMethod(
@@ -384,9 +410,22 @@ setMethod(
 
 
 
+#' Print a nested list
+#' 
 #' Prints a nested list in a way that looks nice
+#' 
+#' Useful for displaying the config of a PEP
 #'
 #' @param lst list object to print
+#' 
+#' @examples 
+#' projectConfig = system.file("extdata",
+#' "example_peps-master",
+#' "example_basic",
+#' "project_config.yaml",
+#' package = "pepr")
+#' p = Project(file = projectConfig)
+#' printNestedList(config(p))
 #' @export
 printNestedList = function(lst, level = 0) {
   if (!is.list(lst))

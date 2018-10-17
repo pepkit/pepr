@@ -9,10 +9,12 @@ Project(file = character(), subproject = character())
 \arguments{
 \item{file}{a character with project configuration yaml file}
 
-\item{samples}{a data table object holding the sample metadata}
-
-\item{config}{a list object holding contents of the config file}
+\item{subproject}{a character with the subproject name to be activated}
 }
 \description{
 This is a helper that creates the project with empty samples and config slots
+}
+\examples{
+projectConfig = system.file("extdata", "example_peps-master","example_subprojects1", "project_config.yaml", package="pepr")
+p=Project(projectConfig)
 }
