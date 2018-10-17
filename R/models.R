@@ -109,8 +109,7 @@ setMethod(
   "samples",
   signature = "Project",
   definition = function(object) {
-    print(object@samples)
-    invisible(object@samples)
+    object@samples
   }
 )
 
