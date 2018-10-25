@@ -82,39 +82,51 @@ listSubprojects = function(cfg) {
 }
 
 
-#' Implementation of python's expandpath
-#' @param path file path to expand
+#' Expand system path
+#' 
+#' This function expands system paths (the non-absolute paths become absolute) and replaces the enviornment variables (e.g, ${HOME}) with their vaules.
+#' 
+#' Most importantly strings that are not system paths are returned untouched 
+#' 
+#' @param path file path to expand. Potentially any string
+#' @return Expanded path or untouched string
 #' @export
+
+# helper functions
 expandPath = function(path) {
-  # Handle null/empty input.
+  removeNonWords = function(str){
+    # can be used to get rid of the non-word chars in the env vars strings
+    strsplit(gsub("[^[:alnum:] ]", "", str), " +")[[1]]
+  }
+    
+  # handle null/empty input.
   if (!.isDefined(path)) { return(path) }
   
-  # Helper functions
-  chopPath = function(p) { 
-    if (p == dirname(p)) p else c(chopPath(dirname(p)), basename(p)) 
-  }
-  expand = function(pathPart) { 
-    if (startsWith(pathPart, "$")) {
-      return(system(sprintf("echo %s", pathPart), intern = TRUE))
-    } else {
-      return(pathPart)
+  # if it's a path, make it absolute
+  path = path.expand(path)
+  # search for env vars
+  matches = gregexpr("\\$\\{\\w+\\}", path, perl = T)
+  if(all(attr(matches[[1]],"match.length") != -1)){
+    # at this point we know it's a path
+    # extract env vars
+    parts = unlist(regmatches(x = path, matches, invert=F))
+    replacements = c()
+    for(i in seq_along(attr(matches[[1]],"match.length"))) {
+      # get the values of the env vars
+      replacements[i] = Sys.getenv(removeNonWords(parts[i]))
+    }
+    # replace env vars with their system values
+    regmatches(x = path,matches,invert=F) = replacements
+    # if UNIX, make sure the root's in the path
+    if(.Platform$OS.type=="unix") {
+      if(!startsWith(path,"/")){
+        path = paste0("/",path)
+      }
+      # prevent double slashes
+      path = gsub("//","/",path)
     }
   }
-  
-  # Split path; short-circuit return or ensure no reference to this folder.
-  parts = chopPath(path)
-  if (length(parts) < 2) { return(parts) }
-  if (identical(".", parts[1])) { parts = parts[2:length(parts)] }
-  
-  # Expand any environment variables and return the complete path
-  if(.Platform$OS.type=="unix") {
-    # Prevent double slashes
-    if(any(parts=="/")){
-      parts[which(parts=="/")]=""
-    }
-  }
-  fullPath = do.call(file.path, lapply(parts, expand))
-  return(fullPath)
+  return(path)
 }
 
 #' Format a string like python's format function
