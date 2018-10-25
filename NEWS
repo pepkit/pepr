@@ -2,10 +2,11 @@
 All notable changes to this project will be documented in this file. Here we
 will document changes to major new releases only (not point releases).
 
-## [0.0.4] -- Unreleased
+## [0.0.4] -- 2018-10-25
 
 	- change the Project object construction, the subproject can be activated at construction time
 	- change implied/derived columns to implied/derived attributes. Backwards compatible
+	- fix expandPath function
 
 ## [0.0.3] -- 2018-09-12
 
