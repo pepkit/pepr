@@ -24,6 +24,6 @@ Most importantly strings that are not system paths are returned untouched
 
 string = "https://www.r-project.org/"
 expandPath(string)
-path = "${HOME}/my/path/string.txt"
+path = "$HOME/my/path/string.txt"
 expandPath(path)
 }
