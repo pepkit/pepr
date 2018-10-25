@@ -99,7 +99,7 @@ listSubprojects = function(cfg) {
 #'
 #' string = "https://www.r-project.org/"
 #' expandPath(string)
-#' path = "${HOME}/my/path/string.txt"
+#' path = "$HOME/my/path/string.txt"
 #' expandPath(path)
 #' @export
 
@@ -118,7 +118,8 @@ expandPath = function(path) {
   # if it's a path, make it absolute
   path = path.expand(path)
   # search for env vars
-  matches = gregexpr("\\$\\{\\w+\\}", path, perl = T)
+  # matches = gregexpr("\\$\\{\\w+\\}", path, perl = T)
+  matches = gregexpr("\\$\\w+", path, perl = T)
   if (all(attr(matches[[1]], "match.length") != -1)) {
     # at this point we know it's a path
     # extract env vars
