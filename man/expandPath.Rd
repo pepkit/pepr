@@ -2,13 +2,26 @@
 % Please edit documentation in R/loadConfig.R
 \name{expandPath}
 \alias{expandPath}
-\title{Implementation of python's expandpath}
+\title{Expand system path}
 \usage{
 expandPath(path)
 }
 \arguments{
-\item{path}{file path to expand}
+\item{path}{file path to expand. Potentially any string}
+}
+\value{
+Expanded path or untouched string
 }
 \description{
-Implementation of python's expandpath
+This function expands system paths (the non-absolute paths become absolute) and replaces the enviornment variables (e.g, \code{${HOME}}) with their vaules.
+}
+\details{
+Most importantly strings that are not system paths are returned untouched
+}
+\examples{
+
+string = "https://www.r-project.org/"
+expandPath(string)
+path = "${HOME}/my/path/string.txt"
+expandPath(path)
 }

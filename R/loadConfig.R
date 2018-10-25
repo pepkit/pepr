@@ -84,12 +84,19 @@ listSubprojects = function(cfg) {
 
 #' Expand system path
 #' 
-#' This function expands system paths (the non-absolute paths become absolute) and replaces the enviornment variables (e.g, ${HOME}) with their vaules.
+#' This function expands system paths (the non-absolute paths become absolute) and replaces the enviornment variables (e.g, \code{${HOME}}) with their vaules.
 #' 
 #' Most importantly strings that are not system paths are returned untouched 
 #' 
 #' @param path file path to expand. Potentially any string
 #' @return Expanded path or untouched string
+#' 
+#' @examples 
+#' 
+#' string = "https://www.r-project.org/"
+#' expandPath(string)
+#' path = "${HOME}/my/path/string.txt"
+#' expandPath(path)
 #' @export
 
 # helper functions

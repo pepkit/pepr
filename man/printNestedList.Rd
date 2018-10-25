@@ -22,5 +22,5 @@ projectConfig = system.file("extdata",
 "project_config.yaml",
 package = "pepr")
 p = Project(file = projectConfig)
-printNestedList(p@config)
+printNestedList(config(p))
 }
