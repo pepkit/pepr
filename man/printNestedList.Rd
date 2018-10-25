@@ -2,7 +2,7 @@
 % Please edit documentation in R/models.R
 \name{printNestedList}
 \alias{printNestedList}
-\title{Prints a nested list in a way that looks nice}
+\title{Print a nested list}
 \usage{
 printNestedList(lst, level = 0)
 }
@@ -11,4 +11,16 @@ printNestedList(lst, level = 0)
 }
 \description{
 Prints a nested list in a way that looks nice
+}
+\details{
+Useful for displaying the config of a PEP
+}
+\examples{
+projectConfig = system.file("extdata",
+"example_peps-master",
+"example_basic",
+"project_config.yaml",
+package = "pepr")
+p = Project(file = projectConfig)
+printNestedList(config(p))
 }

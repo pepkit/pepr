@@ -16,17 +16,21 @@ setClass("Project",
          ))
 
 #' The constructor of a class representing a Portable Encapsulated Project
-#' 
+#'
 #' This is a helper that creates the project with empty samples and config slots
-#' 
+#'
 #' @param file a character with project configuration yaml file
 #' @param subproject a character with the subproject name to be activated
+#' @examples
+#' projectConfig = system.file("extdata", "example_peps-master",
+#' "example_subprojects1", "project_config.yaml", package="pepr")
+#' p=Project(projectConfig)
 #' @export Project
 Project = function(file = character(),
                    # samples = list(),
                    # config = list(),
                    subproject = character()) {
-  new("Project", file = file, subproject = subproject)
+  methods::new("Project", file = file, subproject = subproject)
 }
 
 #' Config objects are specialized list objects
@@ -65,11 +69,18 @@ setGeneric("config", function(object, ...)
 
 #' View PEP config of the object of \code{\link{Project}} class
 #'
-#' This method can be used to view the config slot of the \code{\link{Project}} class
+#' This method can be used to view the config slot of
+#' the \code{\link{Project}} class
 #'
 #' @param object an object of \code{\link{Project}} class
 #'
 #' @return a list with the config file
+#'
+#' @examples
+#' projectConfig = system.file("extdata", "example_peps-master",
+#' "example_subprojects1", "project_config.yaml", package="pepr")
+#' p=Project(projectConfig)
+#' config(p)
 #'
 #' @export
 setMethod(
@@ -86,31 +97,38 @@ setGeneric("samples", function(object, ...)
 
 #' View samples in the objects of \code{\link{Project}} class
 #'
-#' This method can be used to view the samples slot of the \code{\link{Project}} class
+#' This method can be used to view the samples slot
+#' of the \code{\link{Project}} class
 #'
 #' @param object an object of \code{\link{Project}} class
 #'
 #' @return a data.table with the config file
+#' @examples
+#' projectConfig = system.file("extdata", "example_peps-master",
+#' "example_subprojects1", "project_config.yaml", package="pepr")
+#' p=Project(projectConfig)
+#' samples(p)
 #'
 #' @export
 setMethod(
   "samples",
   signature = "Project",
   definition = function(object) {
-    print(object@samples)
-    invisible(object@samples)
+    object@samples
   }
 )
 
 setMethod("initialize", "Project", function(.Object, ...) {
-  .Object = callNextMethod(.Object)  # calls generic initialize
+  .Object = methods::callNextMethod(.Object)  # calls generic initialize
   ellipsis <- list(...)
-  if (length(ellipsis$file) != 0) { # check if file path provided
+  if (length(ellipsis$file) != 0) {
+    # check if file path provided
     .Object@file = ellipsis$file
     .Object@config = loadConfig(ellipsis$file)
-    if(length(ellipsis$subproject) != 0){ # check if subproject provided
-      .Object=activateSubproject(.Object, ellipsis$subproject)
-    }else{ 
+    if (length(ellipsis$subproject) != 0) {
+      # check if subproject provided
+      .Object = activateSubproject(.Object, ellipsis$subproject)
+    } else{
       .Object = .loadSampleAnnotation(.Object)
       .Object = .loadSampleSubannotation(.Object)
       .Object = .applyConstants(.Object)
@@ -132,6 +150,18 @@ setGeneric(name = "getSubsample", function(.Object, sampleName, subsampleName)
 #' @param subsampleName character the name of the subsample
 #'
 #' @return data.table one row data table with the subsample associated metadata
+#' @examples
+#' projectConfig = system.file(
+#' "extdata",
+#' "example_peps-master",
+#' "example_subannotation1",
+#' "project_config.yaml",
+#' package = "pepr"
+#' )
+#' p = Project(projectConfig)
+#' sampleName = "frog_1"
+#' subsampleName = "sub_a"
+#' getSubsample(p, sampleName, subsampleName)
 #' @export
 setMethod(
   f = "getSubsample",
@@ -143,7 +173,8 @@ setMethod(
   definition = function(.Object, sampleName, subsampleName) {
     if (is.null(.Object@samples$subsample_name))
       stop(
-        "There is no subsample_name attribute in the subannotation table, therefore this method cannot be called."
+        "There is no subsample_name attribute in the subannotation
+        table, therefore this method cannot be called."
       )
     sampleNames = unlist(.Object@samples$sample_name)
     rowNumber = which(sampleNames == sampleName)
@@ -220,7 +251,8 @@ setMethod(
   if (is.null(.Object@config$implied_attributes)) {
     # Backwards compatibility after change of implied columns to implied attributes
     if (is.null(.Object@config$implied_columns)) {
-      # if the implied_attributes and implied_columns in project's config are NULL, there is nothing that can be done
+      # if the implied_attributes and implied_columns in project's config are
+      # NULL, there is nothing that can be done
       return(.Object)
     } else{
       .Object@config$implied_attributes = .Object@config$implied_columns
@@ -228,7 +260,8 @@ setMethod(
     }
   }
   if (is.list(.Object@config$implied_attributes)) {
-    # the implied_attributes in project's config is a list, so the columns can be implied
+    # the implied_attributes in project's config is a list,
+    # so the columns can be implied
     samplesDims = dim(.Object@samples)
     primaryColumn = names(.Object@config$implied_attributes)
     for (iColumn in primaryColumn) {
@@ -239,14 +272,15 @@ setMethod(
           samplesColumns = names(.Object@samples)
           if (any(samplesColumns == iValue)) {
             # The implied column has been already added, populating
-            .Object@samples[[iValue]][which(.Object@samples[[iColumn]] ==
-                                              iKey)] = .Object@config$implied_attributes[[iColumn]][[iKey]][[iValue]]
+            .Object@samples[[iValue]][which(.Object@samples[[iColumn]] == iKey)] = 
+              .Object@config$implied_attributes[[iColumn]][[iKey]][[iValue]]
           } else{
             # The implied column is missing, adding column and populating
             toBeAdded = data.frame(rep("", samplesDims[1]), stringsAsFactors =
                                      FALSE)
             names(toBeAdded) = iValue
-            toBeAdded[which(.Object@samples[[iColumn]] == iKey), 1] = .Object@config$implied_attributes[[iColumn]][[iKey]][[iValue]]
+            toBeAdded[which(.Object@samples[[iColumn]] == iKey), 1] = 
+              .Object@config$implied_attributes[[iColumn]][[iKey]][[iValue]]
             .Object@samples = cbind(.Object@samples, toBeAdded)
           }
         }
@@ -265,7 +299,7 @@ setMethod(
   if (requireNamespace("data.table")) {
     sampleReadFunc = data.table::fread
   } else {
-    sampleReadFunc = read.table
+    sampleReadFunc = utils::read.table
   }
   sampleAnnotationPath = .Object@config$metadata$sample_annotation
   if (.safeFileExists(sampleAnnotationPath)) {
@@ -297,7 +331,9 @@ setMethod(
   }
   subNames = unique(samplesSubannotation$sample_name)
   rowNum = nrow(samples)
-  # Creating a list to be populate in the loop and inserted into the samples data.frame as a column. This way the "cells" in the samples table can consist of multiple elements
+  # Creating a list to be populated in the loop and inserted
+  # into the samples data.frame as a column. This way the "cells"
+  # in the samples table can consist of multiple elements
   colList = vector("list", rowNum)
   for (iName in subNames) {
     whichNames = which(samplesSubannotation$sample_name == iName)
@@ -337,7 +373,8 @@ setMethod(
     samplesDF = .Object@samples
     colLen = dim(samplesDF)[1]
     for (iConst in seq_along(constants)) {
-      # create a data.table - one column and glue it with the current samples data.table
+      # create a data.table - one column and glue
+      # it with the current samples data.table
       constantCol = data.table::data.table(rep(constants[[iConst]], colLen))
       names(constantCol) = constantsNames[iConst]
       .Object@samples = cbind(.Object@samples, constantCol)
@@ -351,12 +388,16 @@ setGeneric("activateSubproject", function(.Object, sp, ...)
 
 #' Activate other subproject in objects of \code{\link{Project}} class
 #'
-#' This method switches the between the subprojects within the \code{\link{Project}} object
+#' This method switches the between the subprojects
+#' within the \code{\link{Project}} object
 #'
-#' To check what are the subproject names call \code{listSubprojects(config(p))}, where \code{p} is the object of \code{\link{Project}} class
+#' To check what are the subproject names
+#' call \code{listSubprojects(config(p))}, where \code{p} is the object
+#' of \code{\link{Project}} class
 #'
 #' @param .Object an object of class \code{\link{Project}}
 #' @param sp character with the subproject name
+#' @examples
 #'
 #' @export
 setMethod(
@@ -369,8 +410,8 @@ setMethod(
     # This used to be all metadata columns; now it's just: results_subdir
     mdn = names(.Object@config$metadata)
     
-    .Object@config$metadata = makeMetadataSectionAbsolute(.Object@config, parent =
-                                                            dirname(.Object@file))
+    .Object@config$metadata = 
+      makeMetadataSectionAbsolute(.Object@config, parent = dirname(.Object@file))
     
     .Object = .loadSampleAnnotation(.Object)
     .Object = .loadSampleSubannotation(.Object)
@@ -384,9 +425,22 @@ setMethod(
 
 
 
+#' Print a nested list
+#'
 #' Prints a nested list in a way that looks nice
 #'
+#' Useful for displaying the config of a PEP
+#'
 #' @param lst list object to print
+#'
+#' @examples
+#' projectConfig = system.file("extdata",
+#' "example_peps-master",
+#' "example_basic",
+#' "project_config.yaml",
+#' package = "pepr")
+#' p = Project(file = projectConfig)
+#' printNestedList(config(p))
 #' @export
 printNestedList = function(lst, level = 0) {
   if (!is.list(lst))

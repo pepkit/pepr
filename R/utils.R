@@ -44,7 +44,8 @@
 
 #' Listify data frame columns
 #'
-#' This function turns each data frame column into a list, so that its cells can contain multiple elements
+#' This function turns each data frame column into a list,
+#' so that its cells can contain multiple elements
 #' 
 #' @param DF an object of class data.frame
 #'

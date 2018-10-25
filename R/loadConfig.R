@@ -1,23 +1,26 @@
-#' Loads a project_config.yaml file
+#' Load the config of a PEP
+#'
+#' Loads a \code{project_config.yaml} file
 #'
 #' @param sp Subproject to activate
 #' @param filename file path to config file
 #' @export
-loadConfig = function(filename=NULL, sp=NULL) {
-  
+loadConfig = function(filename = NULL, sp = NULL) {
   if (!file.exists(filename)) {
     stop("No config file found")
   }
   config_file = yaml::yaml.load_file(filename)
-  if(!is.list(config_file)) stop("The config file has to be a YAML formatted file. See: http://yaml.org/start.html")
+  if (!is.list(config_file))
+    stop("The config file has to be a YAML formatted file.
+         See: http://yaml.org/start.html")
   cfg = new("Config", config_file)
   
   if (is.null(cfg)) {
-    cat("Config file not loaded.",fill = T)
+    cat("Config file not loaded.", fill = T)
     return()
   }
   
-  cat("Loaded config file: ", filename,fill = T)
+  cat("Loaded config file: ", filename, fill = T)
   
   # Show available subprojects
   listSubprojects(cfg)
@@ -29,7 +32,7 @@ loadConfig = function(filename=NULL, sp=NULL) {
   # This used to be all metadata columns; now it's just: results_subdir
   mdn = names(cfg$metadata)
   
-  cfg$metadata = makeMetadataSectionAbsolute(cfg, parent=dirname(filename))
+  cfg$metadata = makeMetadataSectionAbsolute(cfg, parent = dirname(filename))
   
   # Infer default project name
   
@@ -47,21 +50,21 @@ loadConfig = function(filename=NULL, sp=NULL) {
   return(cfg)
 }
 
-.updateSubconfig = function(cfg, sp=NULL) {
-  if (! is.null(sp)) {
+.updateSubconfig = function(cfg, sp = NULL) {
+  if (!is.null(sp)) {
     if (is.null(cfg$subprojects[[sp]])) {
-      cat("Subproject not found: ", sp,fill = T)
+      cat("Subproject not found: ", sp, fill = T)
       return()
     }
-    cfg = modifyList(cfg, cfg$subprojects[[sp]])
-    cat("Loading subproject: ", sp,fill = T)
+    cfg = utils::modifyList(cfg, cfg$subprojects[[sp]])
+    cat("Loading subproject: ", sp, fill = T)
   }
   return(cfg)
 }
 
 
-#' Lists subprojects in a config file 
-#' 
+#' Lists subprojects in a config file
+#'
 #' Lists subprojects in an R list representation of a yaml config file read by
 #' pepr
 #'
@@ -71,96 +74,111 @@ listSubprojects = function(cfg) {
   # Show available subprojects
   if (length(names(cfg$subprojects)) > 0) {
     # If there are any show a cat and return if needed
-    cat("  subprojects: ", paste0(names(cfg$subprojects), collapse=","),fill = T)
+    cat("  subprojects: ", paste0(names(cfg$subprojects), 
+                                  collapse = ","), fill = T)
     invisible(names(cfg$subprojects))
-  }else{
+  } else{
     # Otherwise return NULL for testing purposes
     invisible(NULL)
   }
 }
 
 
-#' Implementation of python's expandpath
-#' @param path file path to expand
+#' Expand system path
+#'
+#' This function expands system paths (the non-absolute paths become absolute) 
+#' and replaces the enviornment variables (e.g, \code{${HOME}}) 
+#' with their vaules.
+#'
+#' Most importantly strings that are not system paths are returned untouched
+#'
+#' @param path file path to expand. Potentially any string
+#' @return Expanded path or untouched string
+#'
+#' @examples
+#'
+#' string = "https://www.r-project.org/"
+#' expandPath(string)
+#' path = "${HOME}/my/path/string.txt"
+#' expandPath(path)
 #' @export
+
+# helper functions
 expandPath = function(path) {
-  # Handle null/empty input.
-  if (!.isDefined(path)) { return(path) }
-  
-  # Helper functions
-  chopPath = function(p) { 
-    if (p == dirname(p)) p else c(chopPath(dirname(p)), basename(p)) 
+  removeNonWords = function(str) {
+    # can be used to get rid of the non-word chars in the env vars strings
+    strsplit(gsub("[^[:alnum:] ]", "", str), " +")[[1]]
   }
-  expand = function(pathPart) { 
-    if (startsWith(pathPart, "$")) {
-      return(system(sprintf("echo %s", pathPart), intern = TRUE))
-    } else {
-      return(pathPart)
+  
+  # handle null/empty input.
+  if (!.isDefined(path)) {
+    return(path)
+  }
+  
+  # if it's a path, make it absolute
+  path = path.expand(path)
+  # search for env vars
+  matches = gregexpr("\\$\\{\\w+\\}", path, perl = T)
+  if (all(attr(matches[[1]], "match.length") != -1)) {
+    # at this point we know it's a path
+    # extract env vars
+    parts = unlist(regmatches(x = path, matches, invert = F))
+    replacements = c()
+    for (i in seq_along(attr(matches[[1]], "match.length"))) {
+      # get the values of the env vars
+      replacements[i] = Sys.getenv(removeNonWords(parts[i]))
+    }
+    # replace env vars with their system values
+    regmatches(x = path, matches, invert = F) = replacements
+    # if UNIX, make sure the root's in the path
+    if (.Platform$OS.type == "unix") {
+      if (!startsWith(path, "/")) {
+        path = paste0("/", path)
+      }
+      # prevent double slashes
+      path = gsub("//", "/", path)
     }
   }
-  
-  # Split path; short-circuit return or ensure no reference to this folder.
-  parts = chopPath(path)
-  if (length(parts) < 2) { return(parts) }
-  if (identical(".", parts[1])) { parts = parts[2:length(parts)] }
-  
-  # Expand any environment variables and return the complete path
-  if(.Platform$OS.type=="unix") {
-    # Prevent double slashes
-    if(any(parts=="/")){
-      parts[which(parts=="/")]=""
-    }
-  }
-  fullPath = do.call(file.path, lapply(parts, expand))
-  return(fullPath)
+  return(path)
 }
 
 #' Format a string like python's format function
-#' 
+#'
 #' Given a string with environment variables (encoded like ${VAR}) and other
 #' variables (encoded like {VAR}), this function will substitute both of these
 #' and return the formatted string, like the python string format(). Other
-#' variables are populated from a list of arguments
+#' variables are populated from a list of arguments. Additonally, if the string
+#' is a non-absolute path, it will be expanded.
 
 #' @param string String with variables encoded
 #' @param args named list of arguments to use to populate the string
+#' @param exclude character vector of args that should be excluded from 
+#' the interpolation. The elements in the vector should match the names of the
+#' elements in the args list
 #' @export
 #' @examples
-#' strformat("{VAR1}{VAR2}_file", list(VAR1="hi", VAR2="hello"))
-
-#' Format a string like python's format function
-#' 
-#' Given a string with environment variables (encoded like ${VAR}) and other
-#' variables (encoded like {VAR}), this function will substitute both of these
-#' and return the formatted string, like the python string format(). Other
-#' variables are populated from a list of arguments
-
-#' @param string String with variables encoded
-#' @param args named list of arguments to use to populate the string
-#' @param exclude character vector of args that should be excluded from the interpolation. The elements in the vector should match the names of the elements in the args list
-#' @export
-#' @examples
-#' strformat("{VAR1}{VAR2}_file", list(VAR1="hi", VAR2="hello"))
+#' strformat("~/{VAR1}{VAR2}_file", list(VAR1="hi", VAR2="hello"))
 strformat = function(string, args, exclude) {
-  result=c()
-  x = pepr:::expandPath(string)
+  result = c()
+  x = expandPath(string)
   # str_interp requires variables encoded like ${var}, so we substitute
   # the {var} syntax here.
   x = stringr::str_replace_all(x, "\\{", "${")
-  argsUnlisted=lapply(args, unlist)
-  argsLengths=lapply(argsUnlisted, length)
-  if(any(argsLengths>1)){
-    pluralID=which(argsLengths>1)
-    # Remove the previously interpolated, thus plural elements from another round of interpolation
-    if(any(names(pluralID) %in% exclude)){
-      pluralID=pluralID[-which(names(pluralID) %in% exclude)]
+  argsUnlisted = lapply(args, unlist)
+  argsLengths = lapply(argsUnlisted, length)
+  if (any(argsLengths > 1)) {
+    pluralID = which(argsLengths > 1)
+    # Remove the previously interpolated, 
+    # thus plural elements from another round of interpolation
+    if (any(names(pluralID) %in% exclude)) {
+      pluralID = pluralID[-which(names(pluralID) %in% exclude)]
     }
-    for(iPlural in unlist(argsUnlisted[pluralID])){
+    for (iPlural in unlist(argsUnlisted[pluralID])) {
       argsUnlisted[[pluralID]] = iPlural
-      result=append(result,stringr::str_interp(x, argsUnlisted))
+      result = append(result, stringr::str_interp(x, argsUnlisted))
     }
     return(result)
-  }else{
+  } else{
     return(stringr::str_interp(x, argsUnlisted))
   }
 }
@@ -179,24 +197,33 @@ makeMetadataSectionAbsolute = function(config, parent) {
     
     if (metadataAttribute %in% kRelativeToOutputDirMetadataSections) {
       if (metadataAttribute == kOldPipelinesSection) {
-        warning(sprintf(
-          "Config contains old pipeline location specification section: '%s'", 
-          kOldPipelinesSection))
+        warning(
+          sprintf(
+            "Config contains old pipeline location specification section: '%s'",
+            kOldPipelinesSection
+          )
+        )
       }
       value = expandPath(value)
       if (!.isAbsolute(value)) {
         value = file.path(expandPath(config$metadata[["output_dir"]]), value)
       }
     }
-    else { value = absViaParent(value) }    # No special handling
+    else {
+      value = absViaParent(value)
+    }    # No special handling
     
     # Check for and warn about nonexistent path before setting value.
-    if (!(!.isDefined(value) || file.exists(value) || dir.exists(value))) {
-      warning(sprintf("Value for '%s' doesn't exist: '%s'", metadataAttribute, value))
+    if (!(!.isDefined(value) ||
+          file.exists(value) || dir.exists(value))) {
+      warning(sprintf(
+        "Value for '%s' doesn't exist: '%s'",
+        metadataAttribute,
+        value
+      ))
     }
     absoluteMetadata[[metadataAttribute]] = value
   }
   
   return(absoluteMetadata)
 }
-

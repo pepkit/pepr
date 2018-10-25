@@ -2,7 +2,7 @@
 % Please edit documentation in R/loadConfig.R
 \name{loadConfig}
 \alias{loadConfig}
-\title{Loads a project_config.yaml file}
+\title{Load the config of a PEP}
 \usage{
 loadConfig(filename = NULL, sp = NULL)
 }
@@ -12,5 +12,5 @@ loadConfig(filename = NULL, sp = NULL)
 \item{sp}{Subproject to activate}
 }
 \description{
-Loads a project_config.yaml file
+Loads a \code{project_config.yaml} file
 }

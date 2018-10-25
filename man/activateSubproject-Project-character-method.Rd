@@ -13,8 +13,14 @@
 \item{sp}{character with the subproject name}
 }
 \description{
-This method switches the between the subprojects within the \code{\link{Project}} object
+This method switches the between the subprojects
+within the \code{\link{Project}} object
 }
 \details{
-To check what are the subproject names call \code{listSubprojects(config(p))}, where \code{p} is the object of \code{\link{Project}} class
+To check what are the subproject names
+call \code{listSubprojects(config(p))}, where \code{p} is the object
+of \code{\link{Project}} class
+}
+\examples{
+
 }
