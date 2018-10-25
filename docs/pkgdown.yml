@@ -1,0 +1,12 @@
+pandoc: 2.3.1
+pkgdown: 1.1.0
+pkgdown_sha: ~
+articles:
+  constants: constants.html
+  derivedAttributes: derivedAttributes.html
+  derivedImpliedAttributes: derivedImpliedAttributes.html
+  gettingStarted: gettingStarted.html
+  impliedAttributes: impliedAttributes.html
+  sampleSubannotation: sampleSubannotation.html
+  subprojects: subprojects.html
+
