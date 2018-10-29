@@ -26,9 +26,4 @@ articles:
       - gettingStarted
   - title: Learn "pepr" Portability features
     contents:
-      - Constants in pepr
-      - Derived attributes in pepr
-      - Implied attributes in pepr
-      - Mixed implied and derived attributes in pepr
-      - Sample sunannotations in pepr
-      - Subprojects
+      - starts_with("feature")
