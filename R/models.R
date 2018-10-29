@@ -187,7 +187,8 @@ setMethod(
     result = .Object@samples[1, ]
     for (iColumn in names(result)) {
       if (length(.Object@samples[[iColumn]][[rowNumber]]) > 1) {
-        result[[iColumn]] = .Object@samples[[iColumn]][[rowNumber]][[sampleNumber]]
+        result[[iColumn]] = 
+          .Object@samples[[iColumn]][[rowNumber]][[sampleNumber]]
       } else{
         result[[iColumn]] = .Object@samples[[iColumn]][[rowNumber]][[1]]
       }
@@ -198,7 +199,8 @@ setMethod(
 
 
 .deriveAttributes = function(.Object) {
-  # Backwards compatibility after change of derived columns to derived attributes
+  # Backwards compatibility 
+  # after change of derived columns to derived attributes
   if (is.null(.Object@config$derived_attributes)) {
     if (is.null(.Object@config$derived_columns)) {
       # If no derived columns and attributes found - return the unchanged object
@@ -249,7 +251,8 @@ setMethod(
 
 .implyAttributes = function(.Object) {
   if (is.null(.Object@config$implied_attributes)) {
-    # Backwards compatibility after change of implied columns to implied attributes
+    # Backwards compatibility 
+    # after change of implied columns to implied attributes
     if (is.null(.Object@config$implied_columns)) {
       # if the implied_attributes and implied_columns in project's config are
       # NULL, there is nothing that can be done
@@ -411,7 +414,8 @@ setMethod(
     mdn = names(.Object@config$metadata)
     
     .Object@config$metadata = 
-      makeMetadataSectionAbsolute(.Object@config, parent = dirname(.Object@file))
+      makeMetadataSectionAbsolute(.Object@config,
+                                  parent = dirname(.Object@file))
     
     .Object = .loadSampleAnnotation(.Object)
     .Object = .loadSampleSubannotation(.Object)
