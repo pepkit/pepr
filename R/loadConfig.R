@@ -103,26 +103,16 @@ listSubprojects = function(cfg) {
 #' expandPath(path)
 #' @export
 
-# helper functions
 expandPath = function(path) {
+  # helper function
   removeNonWords = function(str) {
     # can be used to get rid of the non-word chars in the env vars strings
     strsplit(gsub("[^[:alnum:] ]", "", str), " +")[[1]]
   }
   
-  # handle null/empty input.
-  if (!.isDefined(path)) {
-    return(path)
-  }
-  
-  # if it's a path, make it absolute
-  path = path.expand(path)
-  # search for env vars
-  # matches = gregexpr("\\$\\{\\w+\\}", path, perl = T)
-  matches = gregexpr("\\$\\w+", path, perl = T)
-  if (all(attr(matches[[1]], "match.length") != -1)) {
-    # at this point we know it's a path
-    # extract env vars
+  # helper function
+  replaceEnvVars = function(path, matches){
+    # the core of the expandPath function
     parts = unlist(regmatches(x = path, matches, invert = F))
     replacements = c()
     for (i in seq_along(attr(matches[[1]], "match.length"))) {
@@ -140,6 +130,23 @@ expandPath = function(path) {
       path = gsub("//", "/", path)
     }
   }
+  
+  # handle null/empty input.
+  if (!.isDefined(path)) {
+    return(path)
+  }
+  
+  # if it's a path, make it absolute
+  path = path.expand(path)
+  # search for env vars, both bracketed and not 
+  matchesBracket = gregexpr("\\$\\{\\w+\\}", path, perl = T)
+  matches = gregexpr("\\$\\w+", path, perl = T)
+  
+  # perform two rounds of env var replacement
+  # this way both bracketed and not bracketed ones will be replaced
+  if(all(attr(matchesBracket[[1]], "match.length") != -1)) path = replaceEnvVars(path, matchesBracket)
+  if(all(attr(matches[[1]], "match.length") != -1)) path = replaceEnvVars(path, matches)
+  
   return(path)
 }
 
