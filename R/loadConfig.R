@@ -87,7 +87,7 @@ listSubprojects = function(cfg) {
 #' Expand system path
 #'
 #' This function expands system paths (the non-absolute paths become absolute) 
-#' and replaces the environment variables (e.g, \code{{HOME}}) 
+#' and replaces the environment variables (e.g, \code{${HOME}}) 
 #' with their values.
 #'
 #' Most importantly strings that are not system paths are returned untouched
@@ -152,12 +152,11 @@ expandPath = function(path) {
 
 #' Format a string like python's format function
 #'
-#' Given a string with environment variables (encoded like \code{$\{VAR\}}), 
-#' and other variables (encoded like \code{\{VAR\}})
-#' this function will substitute both of these
-#' and return the formatted string, like the python string format(). Other
-#' variables are populated from a list of arguments. Additonally, if the string
-#' is a non-absolute path, it will be expanded.
+#' Given a string with environment variables (encoded like \code{${VAR}}), and
+#' other variables (encoded like \code{{VAR}}) this function will substitute
+#' both of these and return the formatted string, like the python string
+#' \code{format()}. Other variables are populated from a list of arguments.
+#' Additionally, if the string is a non-absolute path, it will be expanded.
 
 #' @param string String with variables encoded
 #' @param args named list of arguments to use to populate the string

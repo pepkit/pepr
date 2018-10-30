@@ -1,5 +1,6 @@
 
-[![Build Status](https://travis-ci.org/pepkit/pepr.svg?branch=master)](https://travis-ci.org/pepkit/pepr)
+[![Build Status](https://travis-ci.org/pepkit/pepr.svg?branch=master)](https://travis-ci.org/pepkit/pepr) 
+[![PEP compatible](http://pepkit.github.io/img/PEP-compatible-green.svg)](http://pepkit.github.io)
 
 `pepr` is not yet released, but we are planning to do so shortly. Complete documentation and API for the `pepr` R package is at [code.databio.org/pepr](http://code.databio.org/pepr/).
 
@@ -7,7 +8,6 @@
 
 `pepr` is an R package for reading [Portable Encapsulated Projects](https://pepkit.github.io/), or **PEP**s, in R. If you describe your project (configuration and samples) according to this format, you can load all project metadata into R using the `pepr` package. To test `pepr`, you can try loading one of the [examples PEPs](https://pepkit.github.io/docs/example_PEPs/).
 
-PEP format is also useful for other purposes, like running a PEP-compatible pipeline (see [this list of compatible pipelines](https://github.com/pepkit/hello_looper/blob/master/looper_pipelines.md)).
 
 ## Quick start:
 

@@ -14,8 +14,8 @@ Expanded path or untouched string
 }
 \description{
 This function expands system paths (the non-absolute paths become absolute) 
-and replaces the enviornment variables (e.g, \code{${HOME}}) 
-with their vaules.
+and replaces the environment variables (e.g, \code{${HOME}}) 
+with their values.
 }
 \details{
 Most importantly strings that are not system paths are returned untouched
