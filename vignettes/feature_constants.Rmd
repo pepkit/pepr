@@ -18,7 +18,7 @@ knitr::opts_chunk$set(
 
 # Learn constants in `pepr`
 
-This vignette will show you how and why to use the constants functionality of the `pepr` package. For introductory information about the package visit the [documentation page](http://code.databio.org/pepr/index.html). For the basic information about the PEP concept visit the [project website](https://pepkit.github.io/).
+This vignette will show you how and why to use the constants functionality of the `pepr` package.For the basic information about the PEP concept visit the [project website](https://pepkit.github.io/).
 
 ## Problem/Goal
 The example below demonstrates how to use the constants to **define the samples attributes in the `read_type` column** of the `sample_annotation.csv` file. This functionality is extremely useful when there are many samples that are characterized by identical values of certain attribute (here: value `SINGLE` in `read_type` attribute). Please consider the example below for reference:

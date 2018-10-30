@@ -18,7 +18,7 @@ knitr::opts_chunk$set(
 
 # Learn sample subannotations in `pepr`
 
-This vignette will show you how and why to use the sample subannotation functionality of the `pepr` package. For introductory information about the package visit the [documentation page](http://code.databio.org/pepr/index.html). For the basic information about the PEP concept visit the [project website](https://pepkit.github.io/). For a broader theoretical description of sample subannotation click [here](https://pepkit.github.io/docs/sample_subannotation/).
+This vignette will show you how and why to use the sample subannotation functionality of the `pepr` package. For the basic information about the PEP concept visit the [project website](https://pepkit.github.io/). For a broader theoretical description of sample subannotation click [here](https://pepkit.github.io/docs/sample_subannotation/).
 
 ## Problem/Goal
 
