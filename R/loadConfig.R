@@ -145,7 +145,8 @@ expandPath = function(path) {
 
 #' Format a string like python's format function
 #'
-#' Given a string with environment variables (encoded like {VAR}), 
+#' Given a string with environment variables (encoded like \code{$\{VAR\}}), 
+#' and other variables (encoded like \code{\{VAR\}})
 #' this function will substitute both of these
 #' and return the formatted string, like the python string format(). Other
 #' variables are populated from a list of arguments. Additonally, if the string
