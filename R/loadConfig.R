@@ -212,7 +212,10 @@ makeMetadataSectionAbsolute = function(config, parent) {
   # Process each metadata item, handling each value according to attribute name.
   for (metadataAttribute in names(config$metadata)) {
     value = config$metadata[[metadataAttribute]]
-    
+    values=c()
+    # loop through all values, supports multiple 
+    # values in the config key-value pairs
+    for(iValue in value){
     if (metadataAttribute %in% kRelativeToOutputDirMetadataSections) {
       if (metadataAttribute == kOldPipelinesSection) {
         warning(
@@ -222,18 +225,17 @@ makeMetadataSectionAbsolute = function(config, parent) {
           )
         )
       }
-      value = expandPath(value)
-      if (!.isAbsolute(value)) {
-        # value = file.path(expandPath(config$metadata[["output_dir"]]), value)
-        value = expandPath(config$metadata[["output_dir"]])
+      iValue = expandPath(iValue)
+      if (!.isAbsolute(iValue)) {
+        iValue = file.path(expandPath(config$metadata[["output_dir"]]), iValue)
       }
     }
     else {
-      value = absViaParent(value)
-    }    # No special handling
-    
-    absoluteMetadata[[metadataAttribute]] = value
+      iValue = absViaParent(iValue)
+    }
+    values=append(values,iValue)
   }
-  
+    absoluteMetadata[[metadataAttribute]] = values
+  }
   return(absoluteMetadata)
 }
