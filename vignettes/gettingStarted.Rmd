@@ -24,7 +24,7 @@ devtools::install_github('pepkit/pepr')
 
 ## Loading an example project
 
-Load `pepr` and read in your project. We have provided a basic example to show you how it works. You can use this get the path to the load the project configuration `yaml` file:
+Load `pepr` and read in your project. We have provided a basic example to show you how it works. You can use this to get the file path to a built-in example project configuration `yaml` file:
 
 
 ```{r,collapse=TRUE}
