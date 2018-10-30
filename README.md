@@ -1,29 +1,23 @@
 
 [![Build Status](https://travis-ci.org/pepkit/pepr.svg?branch=master)](https://travis-ci.org/pepkit/pepr)
 
+`pepr` is not yet released, but we are planning to do so shortly. Complete documentation and API for the `pepr` R package is at [code.databio.org/pepr](http://code.databio.org/pepr/).
+
 # The `pepr` package: Portable Encapsulated Projects in R
 
-`pepr` is an R package for reading **Portable Encapsulated Projects**, or **PEP**s, in R. `pepr` is currently in _alpha_ and should not be used production projects. It is made available for conceptual and testing purposes only.
+`pepr` is an R package for reading [Portable Encapsulated Projects](https://pepkit.github.io/), or **PEP**s, in R. If you describe your project (configuration and samples) according to this format, you can load all project metadata into R using the `pepr` package. To test `pepr`, you can try loading one of the [examples PEPs](https://pepkit.github.io/docs/example_PEPs/).
 
-If you describe your project (configuration and samples) according to this format, you can load all project metadata into R using the `pepr` package. 
+PEP format is also useful for other purposes, like running a PEP-compatible pipeline (see [this list of compatible pipelines](https://github.com/pepkit/hello_looper/blob/master/looper_pipelines.md)).
 
-These projects can also be used for any PEP-compatible pipeline (see [this list of compatible pipelines](https://github.com/pepkit/hello_looper/blob/master/looper_pipelines.md)).
+## Quick start:
 
-
-
-
-Links to complete documentation:
-* Complete documentation and API for the `pepr` R package is at [code.databio.org/pepr](http://code.databio.org/pepr/).
-* Reference documentation for standard **PEP** format at [pepkit.github.io](https://pepkit.github.io/).
-* Example PEPs for testing `pepr` are in the [example_peps repository](https://github.com/pepkit/example_peps) or in [other examples of PEPs](https://pepkit.github.io/docs/example_PEPs/).
-
-## Install
+Install from GitHub:
 
 ```R
 devtools::install_github("pepkit/pepr")
 ```
 
-## Quick start:
+Load a project and explore metadata like this:
 
 ```R
 library('pepr')
