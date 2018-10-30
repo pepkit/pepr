@@ -221,15 +221,6 @@ makeMetadataSectionAbsolute = function(config, parent) {
       value = absViaParent(value)
     }    # No special handling
     
-    # Check for and warn about nonexistent path before setting value.
-    if (!(!.isDefined(value) ||
-          file.exists(value) || dir.exists(value))) {
-      warning(sprintf(
-        "Value for '%s' doesn't exist: '%s'",
-        metadataAttribute,
-        value
-      ))
-    }
     absoluteMetadata[[metadataAttribute]] = value
   }
   
