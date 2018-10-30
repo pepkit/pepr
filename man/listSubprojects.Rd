@@ -2,14 +2,20 @@
 % Please edit documentation in R/loadConfig.R
 \name{listSubprojects}
 \alias{listSubprojects}
-\title{Lists subprojects in a config file}
+\title{Lists subprojects in a Projec object}
 \usage{
-listSubprojects(cfg)
+listSubprojects(project)
 }
 \arguments{
-\item{cfg}{Configuration section of a project}
+\item{project}{an object of \code{\link{Project-class}} class}
+}
+\value{
+names of the available subprojects
 }
 \description{
-Lists subprojects in an R list representation of a yaml config file read by
-pepr
+Lists avialable subprojects within a \code{\link{Project-class}} object.
+}
+\details{
+The subprojects can be activated by passing their names 
+to the \code{\link{Project-class}} object constructor (\code{\link{Project-class}})
 }

@@ -2,6 +2,8 @@
 #'
 #' Provides an in-memory representation and functions to access project
 #' configuration and sample annotation values for a PEP.
+#' 
+#' Can be created with the constructor: \code{\link{Project}} 
 #'
 #' @slot file character vector path to config file on disk.
 #' @slot samples a data table object holding the sample metadata
@@ -67,12 +69,12 @@ setMethod(
 setGeneric("config", function(object, ...)
   standardGeneric("config"))
 
-#' View PEP config of the object of \code{\link{Project}} class
+#' View PEP config of the object of \code{\link{Project-class}} class
 #'
 #' This method can be used to view the config slot of
-#' the \code{\link{Project}} class
+#' the \code{\link{Project-class}} class
 #'
-#' @param object an object of \code{\link{Project}} class
+#' @param object an object of \code{\link{Project-class}} class
 #'
 #' @return a list with the config file
 #'
@@ -95,12 +97,12 @@ setMethod(
 setGeneric("samples", function(object, ...)
   standardGeneric("samples"))
 
-#' View samples in the objects of \code{\link{Project}} class
+#' View samples in the objects of \code{\link{Project-class}} class
 #'
 #' This method can be used to view the samples slot
-#' of the \code{\link{Project}} class
+#' of the \code{\link{Project-class}} class
 #'
-#' @param object an object of \code{\link{Project}} class
+#' @param object an object of \code{\link{Project-class}} class
 #'
 #' @return a data.table with the config file
 #' @examples
@@ -142,7 +144,7 @@ setMethod("initialize", "Project", function(.Object, ...) {
 setGeneric(name = "getSubsample", function(.Object, sampleName, subsampleName)
   standardGeneric("getSubsample"))
 
-#' This method extracts the subsample from the \code{\link{Project}} object
+#' This method extracts the subsample from the \code{\link{Project-class}} object
 #'
 #' @param .Object An object of Project class
 #'
@@ -389,16 +391,16 @@ setMethod(
 setGeneric("activateSubproject", function(.Object, sp, ...)
   standardGeneric("activateSubproject"))
 
-#' Activate other subproject in objects of \code{\link{Project}} class
+#' Activate other subproject in objects of \code{\link{Project-class}} class
 #'
 #' This method switches the between the subprojects
-#' within the \code{\link{Project}} object
+#' within the \code{\link{Project-class}} object
 #'
 #' To check what are the subproject names
 #' call \code{listSubprojects(config(p))}, where \code{p} is the object
-#' of \code{\link{Project}} class
+#' of \code{\link{Project-class}} class
 #'
-#' @param .Object an object of class \code{\link{Project}}
+#' @param .Object an object of class \code{\link{Project-class}}
 #' @param sp character with the subproject name
 #' @examples
 #'

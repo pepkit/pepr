@@ -3,23 +3,23 @@
 \docType{methods}
 \name{activateSubproject,Project,character-method}
 \alias{activateSubproject,Project,character-method}
-\title{Activate other subproject in objects of \code{\link{Project}} class}
+\title{Activate other subproject in objects of \code{\link{Project-class}} class}
 \usage{
 \S4method{activateSubproject}{Project,character}(.Object, sp, ...)
 }
 \arguments{
-\item{.Object}{an object of class \code{\link{Project}}}
+\item{.Object}{an object of class \code{\link{Project-class}}}
 
 \item{sp}{character with the subproject name}
 }
 \description{
 This method switches the between the subprojects
-within the \code{\link{Project}} object
+within the \code{\link{Project-class}} object
 }
 \details{
 To check what are the subproject names
 call \code{listSubprojects(config(p))}, where \code{p} is the object
-of \code{\link{Project}} class
+of \code{\link{Project-class}} class
 }
 \examples{
 

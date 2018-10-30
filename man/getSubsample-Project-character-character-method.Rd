@@ -3,7 +3,7 @@
 \docType{methods}
 \name{getSubsample,Project,character,character-method}
 \alias{getSubsample,Project,character,character-method}
-\title{This method extracts the subsample from the \code{\link{Project}} object}
+\title{This method extracts the subsample from the \code{\link{Project-class}} object}
 \usage{
 \S4method{getSubsample}{Project,character,character}(.Object, sampleName,
   subsampleName)
@@ -19,7 +19,7 @@
 data.table one row data table with the subsample associated metadata
 }
 \description{
-This method extracts the subsample from the \code{\link{Project}} object
+This method extracts the subsample from the \code{\link{Project-class}} object
 }
 \examples{
 projectConfig = system.file(

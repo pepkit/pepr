@@ -63,15 +63,25 @@ loadConfig = function(filename = NULL, sp = NULL) {
 }
 
 
-#' Lists subprojects in a config file
+#' Lists subprojects in a Projec object
 #'
-#' Lists subprojects in an R list representation of a yaml config file read by
-#' pepr
-#'
-#' @param cfg Configuration section of a project
+#' Lists avialable subprojects within a \code{\link{Project-class}} object.
+#' 
+#' The subprojects can be activated by passing their names 
+#' to the \code{\link{Project-class}} object constructor (\code{\link{Project-class}})
+#' 
+#' @param project an object of \code{\link{Project-class}} class
+#' @return names of the available subprojects
+#' 
 #' @export
-listSubprojects = function(cfg) {
-  # Show available subprojects
+listSubprojects = function(project) {
+  # get the config of the Project object, if provided
+  cfg = if(is(project,"Project")) config(project) else project
+  
+  # make sure the extracted config is of proper class
+  if(!is(cfg,"Config")) 
+    stop("The Project object does not contain a vaild config")
+  
   if (length(names(cfg$subprojects)) > 0) {
     # If there are any show a cat and return if needed
     cat("  subprojects: ", paste0(names(cfg$subprojects), 
@@ -214,7 +224,8 @@ makeMetadataSectionAbsolute = function(config, parent) {
       }
       value = expandPath(value)
       if (!.isAbsolute(value)) {
-        value = file.path(expandPath(config$metadata[["output_dir"]]), value)
+        # value = file.path(expandPath(config$metadata[["output_dir"]]), value)
+        value = expandPath(config$metadata[["output_dir"]])
       }
     }
     else {

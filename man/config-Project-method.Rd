@@ -3,19 +3,19 @@
 \docType{methods}
 \name{config,Project-method}
 \alias{config,Project-method}
-\title{View PEP config of the object of \code{\link{Project}} class}
+\title{View PEP config of the object of \code{\link{Project-class}} class}
 \usage{
 \S4method{config}{Project}(object)
 }
 \arguments{
-\item{object}{an object of \code{\link{Project}} class}
+\item{object}{an object of \code{\link{Project-class}} class}
 }
 \value{
 a list with the config file
 }
 \description{
 This method can be used to view the config slot of
-the \code{\link{Project}} class
+the \code{\link{Project-class}} class
 }
 \examples{
 projectConfig = system.file("extdata", "example_peps-master",

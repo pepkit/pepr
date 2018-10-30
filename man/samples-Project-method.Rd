@@ -3,19 +3,19 @@
 \docType{methods}
 \name{samples,Project-method}
 \alias{samples,Project-method}
-\title{View samples in the objects of \code{\link{Project}} class}
+\title{View samples in the objects of \code{\link{Project-class}} class}
 \usage{
 \S4method{samples}{Project}(object)
 }
 \arguments{
-\item{object}{an object of \code{\link{Project}} class}
+\item{object}{an object of \code{\link{Project-class}} class}
 }
 \value{
 a data.table with the config file
 }
 \description{
 This method can be used to view the samples slot
-of the \code{\link{Project}} class
+of the \code{\link{Project-class}} class
 }
 \examples{
 projectConfig = system.file("extdata", "example_peps-master",
