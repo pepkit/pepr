@@ -21,9 +21,9 @@ navbar:
     href: http://databio.org/software/
 
 articles: 
-  - title: Get started
+  - title: Introduction to `pepr`
     contents:
       - gettingStarted
-  - title: Learn "pepr" Portability features
+  - title: Advanced `pepr` features
     contents:
       - starts_with("feature")
