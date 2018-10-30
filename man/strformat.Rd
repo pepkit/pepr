@@ -16,8 +16,9 @@ the interpolation. The elements in the vector should match the names of the
 elements in the args list}
 }
 \description{
-Given a string with environment variables (encoded like ${VAR}) and other
-variables (encoded like {VAR}), this function will substitute both of these
+Given a string with environment variables (encoded like \code{$\{VAR\}}), 
+and other variables (encoded like \code{\{VAR\}})
+this function will substitute both of these
 and return the formatted string, like the python string format(). Other
 variables are populated from a list of arguments. Additonally, if the string
 is a non-absolute path, it will be expanded.
