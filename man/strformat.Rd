@@ -13,15 +13,16 @@ strformat(string, args, exclude)
 
 \item{exclude}{character vector of args that should be excluded from 
 the interpolation. The elements in the vector should match the names of the
-elements in the args list}
+elements in the \code{args} list}
 }
 \description{
-Given a string with environment variables (encoded like \code{${VAR}}), and
+Given a string with environment variables (encoded like \code{${VAR}} or \code{$VAR}), and
 other variables (encoded like \code{{VAR}}) this function will substitute
-both of these and return the formatted string, like the python string
-\code{format()}. Other variables are populated from a list of arguments.
+both of these and return the formatted string, like the Python
+\code{str.format()} method. Other variables are populated from a list of arguments.
 Additionally, if the string is a non-absolute path, it will be expanded.
 }
 \examples{
 strformat("~/{VAR1}{VAR2}_file", list(VAR1="hi", VAR2="hello"))
+strformat("$HOME/{VAR1}{VAR2}_file", list(VAR1="hi", VAR2="hello"))
 }

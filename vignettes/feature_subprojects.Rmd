@@ -18,7 +18,12 @@ knitr::opts_chunk$set(
 
 # Learn subprojects in `pepr`
 
-This vignette will show you how and why to use the subbprojects functionality of the `pepr` package. For the basic information about the PEP concept visit the [project website](https://pepkit.github.io/).
+This vignette will show you how and why to use the subbprojects functionality of the `pepr` package. 
+
+ - basic information about the PEP concept on the [project website](https://pepkit.github.io/).
+
+ - broader theoretical description in the subprojects [documentation section](https://pepkit.github.io/docs/subprojects/).
+
 
 ## Problem/Goal
 

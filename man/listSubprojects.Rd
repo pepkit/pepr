@@ -2,7 +2,7 @@
 % Please edit documentation in R/loadConfig.R
 \name{listSubprojects}
 \alias{listSubprojects}
-\title{Lists subprojects in a Projec object}
+\title{Lists subprojects in a \code{\link{Project-class}} object}
 \usage{
 listSubprojects(project)
 }
@@ -13,9 +13,9 @@ listSubprojects(project)
 names of the available subprojects
 }
 \description{
-Lists avialable subprojects within a \code{\link{Project-class}} object.
+Lists available subprojects within a \code{\link{Project-class}} object.
 }
 \details{
 The subprojects can be activated by passing their names 
-to the \code{\link{Project-class}} object constructor (\code{\link{Project-class}})
+to the \code{\link{Project-class}} object constructor (\code{\link{Project}})
 }

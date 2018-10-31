@@ -1,9 +1,11 @@
 #' Load the config of a PEP
 #'
-#' Loads a \code{project_config.yaml} file
+#' Loads a PEP config file
 #'
 #' @param sp Subproject to activate
 #' @param filename file path to config file
+#' 
+#' @seealso \url{https://pepkit.github.io/}
 #' @export
 loadConfig = function(filename = NULL, sp = NULL) {
   if (!file.exists(filename)) {
@@ -63,12 +65,12 @@ loadConfig = function(filename = NULL, sp = NULL) {
 }
 
 
-#' Lists subprojects in a Projec object
+#' Lists subprojects in a \code{\link{Project-class}} object
 #'
-#' Lists avialable subprojects within a \code{\link{Project-class}} object.
+#' Lists available subprojects within a \code{\link{Project-class}} object.
 #' 
 #' The subprojects can be activated by passing their names 
-#' to the \code{\link{Project-class}} object constructor (\code{\link{Project-class}})
+#' to the \code{\link{Project-class}} object constructor (\code{\link{Project}})
 #' 
 #' @param project an object of \code{\link{Project-class}} class
 #' @return names of the available subprojects
@@ -162,20 +164,21 @@ expandPath = function(path) {
 
 #' Format a string like python's format function
 #'
-#' Given a string with environment variables (encoded like \code{${VAR}}), and
+#' Given a string with environment variables (encoded like \code{${VAR}} or \code{$VAR}), and
 #' other variables (encoded like \code{{VAR}}) this function will substitute
-#' both of these and return the formatted string, like the python string
-#' \code{format()}. Other variables are populated from a list of arguments.
+#' both of these and return the formatted string, like the Python
+#' \code{str.format()} method. Other variables are populated from a list of arguments.
 #' Additionally, if the string is a non-absolute path, it will be expanded.
 
 #' @param string String with variables encoded
 #' @param args named list of arguments to use to populate the string
 #' @param exclude character vector of args that should be excluded from 
 #' the interpolation. The elements in the vector should match the names of the
-#' elements in the args list
+#' elements in the \code{args} list
 #' @export
 #' @examples
 #' strformat("~/{VAR1}{VAR2}_file", list(VAR1="hi", VAR2="hello"))
+#' strformat("$HOME/{VAR1}{VAR2}_file", list(VAR1="hi", VAR2="hello"))
 strformat = function(string, args, exclude) {
   result = c()
   x = expandPath(string)

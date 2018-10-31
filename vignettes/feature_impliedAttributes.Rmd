@@ -18,7 +18,11 @@ knitr::opts_chunk$set(
 
 # Learn implied attributes in `pepr`
 
-This vignette will show you how and why to use the implied attributes functionality of the `pepr` package. For the basic information about the PEP concept visit the [project website](https://pepkit.github.io/). For a broader theoretical description of implied attributes click [here](https://pepkit.github.io/docs/implied_attributes/).
+This vignette will show you how and why to use the implied attributes functionality of the `pepr` package. 
+
+ - basic information about the PEP concept on the [project website](https://pepkit.github.io/)
+ 
+ - broader theoretical description in the implied attributes [documentation section](https://pepkit.github.io/docs/implied_attributes/).
 
 ## Problem/Goal
 The example below demonstrates how and why to use implied attributes functionality to **save your time and effort** in case multiple sample attributes need to be defined for many samples and they **follow certain patterns**. Please consider the example below for reference:

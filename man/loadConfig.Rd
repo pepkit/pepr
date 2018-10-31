@@ -12,5 +12,8 @@ loadConfig(filename = NULL, sp = NULL)
 \item{sp}{Subproject to activate}
 }
 \description{
-Loads a \code{project_config.yaml} file
+Loads a PEP config file
+}
+\seealso{
+\url{https://pepkit.github.io/}
 }

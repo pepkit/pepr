@@ -36,6 +36,9 @@ Project = function(file = character(),
 }
 
 #' Config objects are specialized list objects
+#' 
+#' Config objects are used with the \code{\link{Project-class}} objects
+#' 
 #'
 #' @exportClass Config
 setClass("Config", contains = "list")
