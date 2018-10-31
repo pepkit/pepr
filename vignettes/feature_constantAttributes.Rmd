@@ -1,5 +1,5 @@
 ---
-title: "Constants in pepr"
+title: "Constant attributes in pepr"
 author: "Michal Stolarczyk"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
@@ -16,14 +16,14 @@ knitr::opts_chunk$set(
 )
 ```
 
-# Learn constants in `pepr`
+# Learn constant attributes in `pepr`
 
-This vignette will show you how and why to use the constants functionality of the `pepr` package. 
+This vignette will show you how and why to use the constant attributes functionality of the `pepr` package. 
 
  - basic information about the PEP concept on the [project website](https://pepkit.github.io/).
 
 ## Problem/Goal
-The example below demonstrates how to use the constants to **define the samples attributes in the `read_type` column** of the `sample_annotation.csv` file. This functionality is extremely useful when there are many samples that are characterized by identical values of certain attribute (here: value `SINGLE` in `read_type` attribute). Please consider the example below for reference:
+The example below demonstrates how to use the constant attributes to **define the samples attributes in the `read_type` column** of the `sample_annotation.csv` file. This functionality is extremely useful when there are many samples that are characterized by identical values of certain attribute (here: value `SINGLE` in `read_type` attribute). Please consider the example below for reference:
 
 ```{r ,echo=FALSE,warning=FALSE}
 library(knitr)
@@ -40,7 +40,7 @@ knitr::kable(sampleAnnotationDF, format = "html")
 
 ----
 ## Solution
-As the name suggests the attributes in the specified attributes (here: `read_type`) can be defined as constant ones. The way how this process is carried out is indicated explicitly in the `project_config.yaml` file (presented below). The name of the column is determined in the `constants` key-value pair. Note that definition of more than one constant attribure is possible.
+As the name suggests the attributes in the specified attributes (here: `read_type`) can be defined as constant ones. The way how this process is carried out is indicated explicitly in the `project_config.yaml` file (presented below). The name of the column is determined in the `constant_attributes` key-value pair. Note that definition of more than one constant attribute is possible.
 
 
 ```{r, echo=FALSE,message=TRUE,collapse=TRUE,comment=" "}
@@ -56,7 +56,7 @@ printNestedList(yaml::read_yaml(projectConfig))
 ```
 
 
-Let's introduce a few modifications to the original `sample_annotation.csv` file to use the `constants` section of the config. Simply skip the attributes that are set constant and let the `pepr` do the work for you.
+Let's introduce a few modifications to the original `sample_annotation.csv` file to use the `constant_attributes` section of the config. Simply skip the attributes that are set constant and let the `pepr` do the work for you.
 
 ```{r ,echo=FALSE,warning=FALSE}
 sampleAnnotation = system.file(

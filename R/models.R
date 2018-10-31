@@ -136,7 +136,7 @@ setMethod("initialize", "Project", function(.Object, ...) {
     } else{
       .Object = .loadSampleAnnotation(.Object)
       .Object = .loadSampleSubannotation(.Object)
-      .Object = .applyConstants(.Object)
+      .Object = .applyConstantAttributes(.Object)
       .Object = .implyAttributes(.Object)
       .Object = .deriveAttributes(.Object)
     }
@@ -371,7 +371,7 @@ setMethod(
   return(.Object)
 }
 
-.applyConstants <- function(.Object) {
+.applyConstantAttributes <- function(.Object) {
   # Extracting needed slots
   constants = .Object@config$constants
   if (is.list(constants)) {
@@ -424,7 +424,7 @@ setMethod(
     
     .Object = .loadSampleAnnotation(.Object)
     .Object = .loadSampleSubannotation(.Object)
-    .Object = .applyConstants(.Object)
+    .Object = .applyConstantAttributes(.Object)
     .Object = .implyAttributes(.Object)
     .Object = .deriveAttributes(.Object)
     .Object
