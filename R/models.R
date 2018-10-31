@@ -69,9 +69,6 @@ setMethod(
 )
 
 
-setGeneric("config", function(object, ...)
-  standardGeneric("config"))
-
 #' View PEP config of the object of \code{\link{Project-class}} class
 #'
 #' This method can be used to view the config slot of
@@ -88,6 +85,9 @@ setGeneric("config", function(object, ...)
 #' config(p)
 #'
 #' @export
+setGeneric("config", function(object, ...)
+  standardGeneric("config"))
+
 setMethod(
   "config",
   signature = "Project",
@@ -97,9 +97,6 @@ setMethod(
 )
 
 
-setGeneric("samples", function(object, ...)
-  standardGeneric("samples"))
-
 #' View samples in the objects of \code{\link{Project-class}} class
 #'
 #' This method can be used to view the samples slot
@@ -107,7 +104,7 @@ setGeneric("samples", function(object, ...)
 #'
 #' @param object an object of \code{\link{Project-class}} class
 #'
-#' @return a data.table with the config file
+#' @return a data.table with the with metadata about samples
 #' @examples
 #' projectConfig = system.file("extdata", "example_peps-master",
 #' "example_subprojects1", "project_config.yaml", package="pepr")
@@ -115,6 +112,9 @@ setGeneric("samples", function(object, ...)
 #' samples(p)
 #'
 #' @export
+setGeneric("samples", function(object, ...)
+  standardGeneric("samples"))
+
 setMethod(
   "samples",
   signature = "Project",
@@ -144,8 +144,6 @@ setMethod("initialize", "Project", function(.Object, ...) {
   return(.Object)
 })
 
-setGeneric(name = "getSubsample", function(.Object, sampleName, subsampleName)
-  standardGeneric("getSubsample"))
 
 #' This method extracts the subsample from the \code{\link{Project-class}} object
 #'
@@ -168,6 +166,9 @@ setGeneric(name = "getSubsample", function(.Object, sampleName, subsampleName)
 #' subsampleName = "sub_a"
 #' getSubsample(p, sampleName, subsampleName)
 #' @export
+setGeneric(name = "getSubsample", function(.Object, sampleName, subsampleName)
+  standardGeneric("getSubsample"))
+
 setMethod(
   f = "getSubsample",
   signature(
@@ -391,9 +392,6 @@ setMethod(
   return(.Object)
 }
 
-setGeneric("activateSubproject", function(.Object, sp, ...)
-  standardGeneric("activateSubproject"))
-
 #' Activate other subproject in objects of \code{\link{Project-class}} class
 #'
 #' This method switches the between the subprojects
@@ -405,13 +403,15 @@ setGeneric("activateSubproject", function(.Object, sp, ...)
 #'
 #' @param .Object an object of class \code{\link{Project-class}}
 #' @param sp character with the subproject name
-#' @examples
-#'
 #' @export
+setGeneric("activateSubproject", function(.Object, sp)
+  standardGeneric("activateSubproject"))
+
+
 setMethod(
   f = "activateSubproject",
   signature = signature(.Object = "Project", sp = "character"),
-  definition = function(.Object, sp, ...) {
+  definition = function(.Object, sp) {
     .Object@config = .updateSubconfig(.Object@config, sp)
     
     # Ensure that metadata paths are absolute and return the config.

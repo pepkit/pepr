@@ -15,7 +15,7 @@ loadConfig = function(filename = NULL, sp = NULL) {
   if (!is.list(config_file))
     stop("The config file has to be a YAML formatted file.
          See: http://yaml.org/start.html")
-  cfg = new("Config", config_file)
+  cfg = methods::new("Config", config_file)
   
   if (is.null(cfg)) {
     cat("Config file not loaded.", fill = T)
@@ -78,10 +78,10 @@ loadConfig = function(filename = NULL, sp = NULL) {
 #' @export
 listSubprojects = function(project) {
   # get the config of the Project object, if provided
-  cfg = if(is(project,"Project")) config(project) else project
+  cfg = if(methods::is(project,"Project")) config(project) else project
   
   # make sure the extracted config is of proper class
-  if(!is(cfg,"Config")) 
+  if(!methods::is(cfg,"Config")) 
     stop("The Project object does not contain a vaild config")
   
   if (length(names(cfg$subprojects)) > 0) {
@@ -91,7 +91,7 @@ listSubprojects = function(project) {
     invisible(names(cfg$subprojects))
   } else{
     # Otherwise return NULL for testing purposes
-    invisible(NULL)
+    NULL
   }
 }
 
@@ -130,6 +130,12 @@ expandPath = function(path) {
     for (i in seq_along(attr(matches[[1]], "match.length"))) {
       # get the values of the env vars
       replacements[i] = Sys.getenv(removeNonWords(parts[i]))
+      if(any(replacements == "")){
+        missingEnvVar = which(replacements=="")
+        stop(
+          paste("The environment variable",parts[missingEnvVar],"was not found")
+          )
+      }
     }
     # replace env vars with their system values
     regmatches(x = path, matches, invert = F) = replacements

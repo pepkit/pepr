@@ -1,5 +1,5 @@
 context("TEST ALL")
-
+library(yaml)
 # Prep data ---------------------------------------------------------------
 
 
@@ -52,8 +52,31 @@ p_implied = Project(
     package = "pepr"
   )
 )
+
+yaml = yaml.load_file(system.file(
+  "extdata",
+  "example_peps-master",
+  "example_subprojects2",
+  "project_config.yaml",
+  package = "pepr"
+))
+p_yaml=Project(system.file(
+  "extdata",
+  "example_peps-master",
+  "example_subprojects2",
+  "project_config.yaml",
+  package = "pepr"
+))
+
+
 # Test --------------------------------------------------------------------
 
+test_that("Project (loadConfig) produces a proper config file.
+          YAML read config has to consist of list elements of the same length
+          as the config processed with the Project constructor", {
+            expect_equal(unlist(lapply(config(p_yaml)$metadata,length)),
+                         unlist(lapply(yaml$metadata,length)))
+          })
 
 test_that("listifyDF returns correct object type and throws errors", {
   expect_is(listifyDF(DF = DF), 'data.frame')
@@ -68,14 +91,17 @@ test_that("listifyDF does not change the dimensions", {
 test_that("expandPath returns correct object type and throws errors", {
   expect_is(expandPath(path = "~/UVA/"), 'character')
   expect_error(expandPath(1))
+  expect_error(expandPath("~/$HOME/test/$NonExistentVar"))
 })
 
-test_that("listSubprojects returns correct object type, length and throws errors",
+test_that("listSubprojects returns correct object type, length and throws errors
+          and accepts both Project object and Config object",
           {
             expect_equal(length(listSubprojects(p_subproj1@config)), 2)
             expect_is(listSubprojects(p_subproj2@config), 'character')
-            expect_equal(listSubprojects(p@config), NULL)
+            expect_null(listSubprojects(p@config))
             expect_error(listSubprojects(1))
+            expect_equal(length(listSubprojects(p_subproj1)), 2)
           })
 
 test_that("loadConfig returns correct object type", {
@@ -175,3 +201,5 @@ test_that(".implyColumns returns Project object", {
 test_that(".implyColumns returns Project object", {
   expect_is(.deriveAttributes(p), 'Project')
 })
+
+

@@ -6,7 +6,7 @@ will document changes to major new releases only (not point releases).
 
 	- change the Project object construction, the subproject can be activated at construction time
 	- change implied/derived columns to implied/derived attributes. Backwards compatible
-	- fix expandPath function
+	- fix expandPath function, add error when environment variable not found
 
 ## [0.0.3] -- 2018-09-12
 
