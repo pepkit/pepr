@@ -1,4 +1,4 @@
-context("TEST ALL")
+
 library(yaml)
 # Prep data ---------------------------------------------------------------
 
@@ -70,39 +70,7 @@ p_yaml=Project(system.file(
 
 
 # Test --------------------------------------------------------------------
-
-test_that("Project (loadConfig) produces a proper config file.
-          YAML read config has to consist of list elements of the same length
-          as the config processed with the Project constructor", {
-            expect_equal(unlist(lapply(config(p_yaml)$metadata,length)),
-                         unlist(lapply(yaml$metadata,length)))
-          })
-
-test_that("listifyDF returns correct object type and throws errors", {
-  expect_is(listifyDF(DF = DF), 'data.frame')
-  expect_is(listifyDF(DF = DF)[[1]], 'list')
-  expect_error(listifyDF(DF = 1))
-})
-
-test_that("listifyDF does not change the dimensions", {
-  expect_equal(dim(listifyDF(DF)), dim(DF))
-})
-
-test_that("expandPath returns correct object type and throws errors", {
-  expect_is(expandPath(path = "~/UVA/"), 'character')
-  expect_error(expandPath(1))
-  expect_error(expandPath("~/$HOME/test/$NonExistentVar"))
-})
-
-test_that("listSubprojects returns correct object type, length and throws errors
-          and accepts both Project object and Config object",
-          {
-            expect_equal(length(listSubprojects(p_subproj1@config)), 2)
-            expect_is(listSubprojects(p_subproj2@config), 'character')
-            expect_null(listSubprojects(p@config))
-            expect_error(listSubprojects(1))
-            expect_equal(length(listSubprojects(p_subproj1)), 2)
-          })
+context("Project object creation/loadConfig")
 
 test_that("loadConfig returns correct object type", {
   expect_is(loadConfig(
@@ -128,6 +96,39 @@ test_that("loadConfig returns correct object type", {
 test_that("loadConfig throws errors", {
   expect_error(loadConfig(filename = "a"))
   expect_error(loadConfig(filename = p@config$metadata$sample_annotation))
+})
+
+test_that("Project throws errors", {
+  expect_error(Project(file = p@config$metadata$sample_annotation))
+})
+
+test_that("Project creates an object of class Project", {
+  expect_is(p, 'Project')
+})
+
+test_that("Project (loadConfig) produces a proper config file.
+          YAML read config has to consist of list elements of the same length
+          as the config processed with the Project constructor", {
+            expect_equal(unlist(lapply(config(p_yaml)$metadata,length)),
+                         unlist(lapply(yaml$metadata,length)))
+          })
+
+context("utils")
+
+test_that("listifyDF returns correct object type and throws errors", {
+  expect_is(listifyDF(DF = DF), 'data.frame')
+  expect_is(listifyDF(DF = DF)[[1]], 'list')
+  expect_error(listifyDF(DF = 1))
+})
+
+test_that("listifyDF does not change the dimensions", {
+  expect_equal(dim(listifyDF(DF)), dim(DF))
+})
+
+test_that("expandPath returns correct object type and throws errors", {
+  expect_is(expandPath(path = "~/UVA/"), 'character')
+  expect_error(expandPath(1))
+  expect_error(expandPath("~/$HOME/test/$NonExistentVar"))
 })
 
 test_that("strformat returns correct object type and throws errors", {
@@ -163,13 +164,7 @@ test_that("printNestedList throws errors", {
   expect_error(printNestedList(1))
 })
 
-test_that("Project throws errors", {
-  expect_error(Project(file = p@config$metadata$sample_annotation))
-})
-
-test_that("Project creates an object of class Project", {
-  expect_is(p, 'Project')
-})
+context("Project operations")
 
 test_that("getSubsample method throws errors", {
   expect_error(getSubsample(mtcars))
@@ -202,4 +197,13 @@ test_that(".implyColumns returns Project object", {
   expect_is(.deriveAttributes(p), 'Project')
 })
 
+test_that("listSubprojects returns correct object type, length and throws errors
+          and accepts both Project object and Config object",
+          {
+            expect_equal(length(listSubprojects(p_subproj1@config)), 2)
+            expect_is(listSubprojects(p_subproj2@config), 'character')
+            expect_null(listSubprojects(p@config))
+            expect_error(listSubprojects(1))
+            expect_equal(length(listSubprojects(p_subproj1)), 2)
+          })
 
