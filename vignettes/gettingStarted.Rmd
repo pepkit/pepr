@@ -42,7 +42,7 @@ Loading your project metadata into R is a single line of code:
 p = pepr::Project(file=projectConfigFile)
 ```
 
-That's it! YOu've now have a `Project` object, *p*, to interact with in `R`.
+That's it! You've now have a `Project` object, *p*, to interact with in `R`.
 
 ## Interfacing with your `pepr::Project` object in R
 

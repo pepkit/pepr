@@ -20,6 +20,8 @@ navbar:
   - text: Software & Data
     href: http://databio.org/software/
 
+
+
 articles: 
   - title: Introduction
     contents:
@@ -27,3 +29,13 @@ articles:
   - title: Advanced features
     contents:
       - starts_with("feature")
+
+# reference:
+#   - title: "pepr API"
+#     desc: "These functions can be used as an interface for `pepr`"
+#     contents:
+#       - config
+#   - title: "utilities"
+#     desc: "These functions cannot be used as an interface fot `pepr`, although we find them useful."
+#     contents:
+#       - starts_with("\\.")

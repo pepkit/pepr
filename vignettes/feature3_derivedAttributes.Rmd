@@ -57,7 +57,7 @@ projectConfig = system.file(
 "project_config.yaml",
 package = "pepr"
 )
-printNestedList(yaml::read_yaml(projectConfig))
+pepr::.printNestedList(yaml::read_yaml(projectConfig))
 ```
 
 

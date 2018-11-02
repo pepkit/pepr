@@ -50,7 +50,7 @@ setMethod(
   signature = "Config",
   definition = function(object) {
     cat("PEP project object. Class:", class(object), fill = T)
-    printNestedList(object)
+    .printNestedList(object)
     invisible(NULL)
   }
 )
@@ -63,7 +63,7 @@ setMethod(
     cat("PEP project object. Class: ", class(object), fill = T)
     cat("  file: ", object@file, fill = T)
     cat("  samples: ", NROW(object@samples), fill = T)
-    listSubprojects(object@config)
+    .listSubprojects(object@config)
     invisible(NULL)
   }
 )
@@ -129,10 +129,10 @@ setMethod("initialize", "Project", function(.Object, ...) {
   if (length(ellipsis$file) != 0) {
     # check if file path provided
     .Object@file = ellipsis$file
-    .Object@config = loadConfig(ellipsis$file)
+    .Object@config = .loadConfig(ellipsis$file)
     if (length(ellipsis$subproject) != 0) {
       # check if subproject provided
-      .Object = activateSubproject(.Object, ellipsis$subproject)
+      .Object = .activateSubproject(.Object, ellipsis$subproject)
     } else{
       .Object = .loadSampleAnnotation(.Object)
       .Object = .loadSampleSubannotation(.Object)
@@ -143,6 +143,45 @@ setMethod("initialize", "Project", function(.Object, ...) {
   }
   return(.Object)
 })
+
+
+#' This method extracts the sample from the \code{\link{Project-class}} object
+#'
+#' @param .Object An object of Project class
+#'
+#' @param sampleName character the name of the sample
+#'
+#' @return data.table one row data table with the sample associated metadata
+#' @examples
+#' projectConfig = system.file(
+#' "extdata",
+#' "example_peps-master",
+#' "example_basic",
+#' "project_config.yaml",
+#' package = "pepr"
+#' )
+#' p = Project(projectConfig)
+#' sampleName = "frog_1"
+#' getSample(p, sampleName, sampleName)
+#' @export
+setGeneric(name = "getSample", function(.Object, sampleName)
+  standardGeneric("getSample"))
+
+setMethod(
+  f = "getSample",
+  signature(
+    .Object = "Project",
+    sampleName = "character"
+  ),
+  definition = function(.Object, sampleName = NULL) {
+    sampleNames = unlist(.Object@samples$sample_name)
+    rowNumber = which(sampleNames == sampleName)
+    if (length(rowNumber) == 0)
+      stop("Such sample name does not exist.")
+    result = samples(.Object)[rowNumber,]
+    return(result)
+  }
+)
 
 
 #' This method extracts the subsample from the \code{\link{Project-class}} object
@@ -203,6 +242,67 @@ setMethod(
   }
 )
 
+#' Lists subprojects in a \code{\link{Project-class}} object
+#'
+#' Lists available subprojects within a \code{\link{Project-class}} object.
+#' 
+#' The subprojects can be activated by passing their names 
+#' to the \code{\link{Project-class}} object constructor (\code{\link{Project}})
+#' 
+#' @param project an object of \code{\link{Project-class}} class
+#' @return names of the available subprojects
+#' 
+#' @export
+setGeneric("listSubprojects", function(.Object)
+  standardGeneric("listSubprojects"))
+
+setMethod(
+  f = "listSubprojects",
+  signature = signature(.Object = "Project"),
+  definition = function(.Object) {
+    config = config(.Object)
+    .listSubprojects(cfg = config)
+  })
+
+
+#' Activate other subproject in objects of \code{\link{Project-class}} class
+#'
+#' This method switches the between the subprojects
+#' within the \code{\link{Project-class}} object
+#'
+#' To check what are the subproject names
+#' call \code{listSubprojects(config(p))}, where \code{p} is the object
+#' of \code{\link{Project-class}} class
+#'
+#' @param .Object an object of class \code{\link{Project-class}}
+#' @param sp character with the subproject name
+setGeneric(".activateSubproject", function(.Object, sp)
+  standardGeneric(".activateSubproject"))
+
+
+setMethod(
+  f = ".activateSubproject",
+  signature = signature(.Object = "Project", sp = "character"),
+  definition = function(.Object, sp) {
+    .Object@config = .updateSubconfig(.Object@config, sp)
+    
+    # Ensure that metadata paths are absolute and return the config.
+    # This used to be all metadata columns; now it's just: results_subdir
+    mdn = names(.Object@config$metadata)
+    
+    .Object@config$metadata = 
+      .makeMetadataSectionAbsolute(.Object@config,
+                                   parent = dirname(.Object@file))
+    
+    .Object = .loadSampleAnnotation(.Object)
+    .Object = .loadSampleSubannotation(.Object)
+    .Object = .applyConstantAttributes(.Object)
+    .Object = .implyAttributes(.Object)
+    .Object = .deriveAttributes(.Object)
+    .Object
+  }
+)
+
 
 .deriveAttributes = function(.Object) {
   # Backwards compatibility 
@@ -243,7 +343,7 @@ setMethod(
       }
       regex = cfg$data_sources[[sampDataSource]]
       if (!is.null(regex)) {
-        samp[[column]] = list(strformat(regex, as.list(samp), exclude))
+        samp[[column]] = list(.strformat(regex, as.list(samp), exclude))
       }
       listOfSamples[[iSamp]] = samp
     }
@@ -326,7 +426,7 @@ setMethod(
   # Extracting needed slots
   sampleSubannotationPath = .Object@config$metadata$sample_subannotation
   samples = .Object@samples
-  samples = listifyDF(samples)
+  samples = .listifyDF(samples)
   #Reading sample subannonataion table, just like in annotation table
   if (requireNamespace("data.table")) {
     sampleSubReadFunc = data.table::fread
@@ -398,48 +498,6 @@ setMethod(
   return(.Object)
 }
 
-#' Activate other subproject in objects of \code{\link{Project-class}} class
-#'
-#' This method switches the between the subprojects
-#' within the \code{\link{Project-class}} object
-#'
-#' To check what are the subproject names
-#' call \code{listSubprojects(config(p))}, where \code{p} is the object
-#' of \code{\link{Project-class}} class
-#'
-#' @param .Object an object of class \code{\link{Project-class}}
-#' @param sp character with the subproject name
-#' @export
-setGeneric("activateSubproject", function(.Object, sp)
-  standardGeneric("activateSubproject"))
-
-
-setMethod(
-  f = "activateSubproject",
-  signature = signature(.Object = "Project", sp = "character"),
-  definition = function(.Object, sp) {
-    .Object@config = .updateSubconfig(.Object@config, sp)
-    
-    # Ensure that metadata paths are absolute and return the config.
-    # This used to be all metadata columns; now it's just: results_subdir
-    mdn = names(.Object@config$metadata)
-    
-    .Object@config$metadata = 
-      makeMetadataSectionAbsolute(.Object@config,
-                                  parent = dirname(.Object@file))
-    
-    .Object = .loadSampleAnnotation(.Object)
-    .Object = .loadSampleSubannotation(.Object)
-    .Object = .applyConstantAttributes(.Object)
-    .Object = .implyAttributes(.Object)
-    .Object = .deriveAttributes(.Object)
-    .Object
-  }
-)
-
-
-
-
 #' Print a nested list
 #'
 #' Prints a nested list in a way that looks nice
@@ -457,14 +515,14 @@ setMethod(
 #' p = Project(file = projectConfig)
 #' printNestedList(config(p))
 #' @export
-printNestedList = function(lst, level = 0) {
+.printNestedList = function(lst, level = 0) {
   if (!is.list(lst))
     stop("The input is not a list, cannot be displayed.")
   for (itemName in names(lst)) {
     item = lst[[itemName]]
     if (class(item) == "list") {
       cat(rep(" ", level), paste0(itemName, ":"), fill = T)
-      printNestedList(item, level + 2)
+      .printNestedList(item, level + 2)
     } else {
       if (is.null(item))
         item = "null"

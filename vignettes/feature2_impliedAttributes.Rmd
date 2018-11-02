@@ -53,7 +53,7 @@ projectConfig = system.file(
 "project_config.yaml",
 package = "pepr"
 )
-printNestedList(yaml::read_yaml(projectConfig))
+.printNestedList(yaml::read_yaml(projectConfig))
 ```
 
 Consequently, you can design an `implied_attributes` multi-level key-value section in the `project_config.yaml` file. Note that the keys must match the column names and attributes in the `sample_annotations.csv` file. 

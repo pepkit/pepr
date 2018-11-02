@@ -57,7 +57,7 @@ projectConfig = system.file(
 "project_config.yaml",
 package = "pepr"
 )
-printNestedList(yaml::read_yaml(projectConfig))
+.printNestedList(yaml::read_yaml(projectConfig))
 ```
 
 Obviously, the subprojects functionality can be combined with other `pepr` package options, e.g. implied and derieved attributes. The derived attributes functionality is used in the example considered here (`derived_attributes` and `data_soures` keys in the config file).
@@ -114,10 +114,10 @@ The column `file_path` was derived and the `library` column holds the original a
 
 To "activate" any of the subprojects just pass the name of the desired to the `subproject` argument in the `Project` object constructor. 
 
-In case you don't remember the subproject names run the `listSubprojects()` function on the config of the `Project` object, just like that:
+In case you don't remember the subproject names run the `listSubprojects()` metohods on the `Project` object, just like that:
 
 ```{r}
-listSubprojects(config(p))
+listSubprojects(p)
 ```
 
 

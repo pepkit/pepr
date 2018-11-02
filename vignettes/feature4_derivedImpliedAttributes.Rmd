@@ -46,7 +46,7 @@ projectConfig = system.file(
 "project_config.yaml",
 package = "pepr"
 )
-printNestedList(yaml::read_yaml(projectConfig))
+.printNestedList(yaml::read_yaml(projectConfig))
 ```
 
 The `*_untreated` files are clearly associated with the samples that are labeled with `time` 0. Therefore the `untreated` attribute is implied for the samples which have 0 in the `time` columns. Similarly, the codes `susScr11` and `xenTro9` are associated with the attributes in the `oragnism` column. Therefore, the column `condion` that consists of those two codes is implied from the attributes in the `organism` column according to the `project_config.yaml`. 

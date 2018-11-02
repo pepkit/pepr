@@ -46,7 +46,7 @@ projectConfig = system.file(
 "project_config.yaml",
 package = "pepr"
 )
-printNestedList(yaml::read_yaml(projectConfig))
+.printNestedList(yaml::read_yaml(projectConfig))
 ```
 * Sample annotation table:
 ```{r ,echo=FALSE}
@@ -121,7 +121,7 @@ projectConfig = system.file(
 "project_config.yaml",
 package = "pepr"
 )
-printNestedList(yaml::read_yaml(projectConfig))
+.printNestedList(yaml::read_yaml(projectConfig))
 ```
 * Sample annotation table:
 ```{r ,echo=FALSE}
@@ -184,7 +184,7 @@ projectConfig = system.file(
 "project_config.yaml",
 package = "pepr"
 )
-printNestedList(yaml::read_yaml(projectConfig))
+.printNestedList(yaml::read_yaml(projectConfig))
 ```
 * Sample annotation table:
 ```{r ,echo=FALSE}
@@ -247,7 +247,7 @@ project_config = system.file(
 "project_config.yaml",
 package = "pepr"
 )
-printNestedList(yaml::read_yaml(project_config))
+.printNestedList(yaml::read_yaml(project_config))
 ```
 * Sample annotation table:
 ```{r ,echo=FALSE}
@@ -311,7 +311,7 @@ project_config = system.file(
 "project_config.yaml",
 package = "pepr"
 )
-printNestedList(yaml::read_yaml(project_config))
+.printNestedList(yaml::read_yaml(project_config))
 ```
 * Sample annotation table:
 ```{r ,echo=FALSE}

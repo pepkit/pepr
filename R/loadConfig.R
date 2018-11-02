@@ -6,8 +6,7 @@
 #' @param filename file path to config file
 #' 
 #' @seealso \url{https://pepkit.github.io/}
-#' @export
-loadConfig = function(filename = NULL, sp = NULL) {
+.loadConfig = function(filename = NULL, sp = NULL) {
   if (!file.exists(filename)) {
     stop("No config file found")
   }
@@ -25,7 +24,7 @@ loadConfig = function(filename = NULL, sp = NULL) {
   cat("Loaded config file: ", filename, fill = T)
   
   # Show available subprojects
-  listSubprojects(cfg)
+  .listSubprojects(cfg)
   
   # Update based on subproject if one is specified.
   cfg = .updateSubconfig(cfg, sp)
@@ -34,7 +33,7 @@ loadConfig = function(filename = NULL, sp = NULL) {
   # This used to be all metadata columns; now it's just: results_subdir
   mdn = names(cfg$metadata)
   
-  cfg$metadata = makeMetadataSectionAbsolute(cfg, parent = dirname(filename))
+  cfg$metadata = .makeMetadataSectionAbsolute(cfg, parent = dirname(filename))
   
   # Infer default project name
   
@@ -65,21 +64,8 @@ loadConfig = function(filename = NULL, sp = NULL) {
 }
 
 
-#' Lists subprojects in a \code{\link{Project-class}} object
-#'
-#' Lists available subprojects within a \code{\link{Project-class}} object.
-#' 
-#' The subprojects can be activated by passing their names 
-#' to the \code{\link{Project-class}} object constructor (\code{\link{Project}})
-#' 
-#' @param project an object of \code{\link{Project-class}} class
-#' @return names of the available subprojects
-#' 
-#' @export
-listSubprojects = function(project) {
-  # get the config of the Project object, if provided
-  cfg = if(methods::is(project,"Project")) config(project) else project
-  
+
+.listSubprojects = function(cfg) {
   # make sure the extracted config is of proper class
   if(!methods::is(cfg,"Config")) 
     stop("The Project object does not contain a vaild config")
@@ -95,7 +81,6 @@ listSubprojects = function(project) {
   }
 }
 
-
 #' Expand system path
 #'
 #' This function expands system paths (the non-absolute paths become absolute) 
@@ -110,12 +95,11 @@ listSubprojects = function(project) {
 #' @examples
 #'
 #' string = "https://www.r-project.org/"
-#' expandPath(string)
+#' .expandPath(string)
 #' path = "$HOME/my/path/string.txt"
-#' expandPath(path)
+#' .expandPath(path)
 #' @export
-
-expandPath = function(path) {
+.expandPath = function(path) {
   # helper function
   removeNonWords = function(str) {
     # can be used to get rid of the non-word chars in the env vars strings
@@ -183,11 +167,11 @@ expandPath = function(path) {
 #' elements in the \code{args} list
 #' @export
 #' @examples
-#' strformat("~/{VAR1}{VAR2}_file", list(VAR1="hi", VAR2="hello"))
-#' strformat("$HOME/{VAR1}{VAR2}_file", list(VAR1="hi", VAR2="hello"))
-strformat = function(string, args, exclude) {
+#' .strformat("~/{VAR1}{VAR2}_file", list(VAR1="hi", VAR2="hello"))
+#' .strformat("$HOME/{VAR1}{VAR2}_file", list(VAR1="hi", VAR2="hello"))
+.strformat = function(string, args, exclude) {
   result = c()
-  x = expandPath(string)
+  x = .expandPath(string)
   # str_interp requires variables encoded like ${var}, so we substitute
   # the {var} syntax here.
   x = stringr::str_replace_all(x, "\\{", "${")
@@ -210,7 +194,7 @@ strformat = function(string, args, exclude) {
   }
 }
 
-makeMetadataSectionAbsolute = function(config, parent) {
+.makeMetadataSectionAbsolute = function(config, parent) {
   # Enable creation of absolute path using given parent folder path.
   absViaParent = pryr::partial(.makeAbsPath, parent = parent)
   
@@ -234,9 +218,9 @@ makeMetadataSectionAbsolute = function(config, parent) {
           )
         )
       }
-      iValue = expandPath(iValue)
+      iValue = .expandPath(iValue)
       if (!.isAbsolute(iValue)) {
-        iValue = file.path(expandPath(config$metadata[["output_dir"]]), iValue)
+        iValue = file.path(.expandPath(config$metadata[["output_dir"]]), iValue)
       }
     }
     else {
