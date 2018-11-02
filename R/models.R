@@ -374,7 +374,13 @@ setMethod(
 
 .applyConstantAttributes <- function(.Object) {
   # Extracting needed slots
+  # backwards compatible with the "constants" key in the config YAML
   constants = .Object@config$constants
+  if(is.null(config(.Object)$constants)){
+    constants = config(.Object)$constant_attributes
+  }else{
+    constant = config(.Object)$constants
+  }
   if (is.list(constants)) {
     # get names
     constantsNames = names(constants)
