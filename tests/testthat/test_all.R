@@ -1,10 +1,10 @@
-
+library(pepr)
 library(yaml)
 # Prep data ---------------------------------------------------------------
 
 
 DF = mtcars
-newDF = listifyDF(DF)
+newDF = .listifyDF(DF)
 p = Project(
   file = system.file(
     "extdata",
@@ -73,7 +73,7 @@ p_yaml=Project(system.file(
 context("Project object creation/loadConfig")
 
 test_that("loadConfig returns correct object type", {
-  expect_is(loadConfig(
+  expect_is(.loadConfig(
     system.file(
       "extdata",
       "example_peps-master",
@@ -82,7 +82,7 @@ test_that("loadConfig returns correct object type", {
       package = "pepr"
     )
   ), 'Config')
-  expect_is(loadConfig(
+  expect_is(.loadConfig(
     system.file(
       "extdata",
       "example_peps-master",
@@ -94,8 +94,8 @@ test_that("loadConfig returns correct object type", {
 })
 
 test_that("loadConfig throws errors", {
-  expect_error(loadConfig(filename = "a"))
-  expect_error(loadConfig(filename = p@config$metadata$sample_annotation))
+  expect_error(.loadConfig(filename = "a"))
+  expect_error(.loadConfig(filename = p@config$metadata$sample_annotation))
 })
 
 test_that("Project throws errors", {
@@ -116,37 +116,37 @@ test_that("Project (loadConfig) produces a proper config file.
 context("utils")
 
 test_that("listifyDF returns correct object type and throws errors", {
-  expect_is(listifyDF(DF = DF), 'data.frame')
-  expect_is(listifyDF(DF = DF)[[1]], 'list')
-  expect_error(listifyDF(DF = 1))
+  expect_is(.listifyDF(DF = DF), 'data.frame')
+  expect_is(.listifyDF(DF = DF)[[1]], 'list')
+  expect_error(.listifyDF(DF = 1))
 })
 
 test_that("listifyDF does not change the dimensions", {
-  expect_equal(dim(listifyDF(DF)), dim(DF))
+  expect_equal(dim(.listifyDF(DF)), dim(DF))
 })
 
-test_that("expandPath returns correct object type and throws errors", {
-  expect_is(expandPath(path = "~/UVA/"), 'character')
-  expect_error(expandPath(1))
-  expect_error(expandPath("~/$HOME/test/$NonExistentVar"))
+test_that(".expandPath returns correct object type and throws errors", {
+  expect_is(.expandPath(path = "~/UVA/"), 'character')
+  expect_error(.expandPath(1))
+  expect_error(.expandPath("~/$HOME/test/$NonExistentVar"))
 })
 
 test_that("strformat returns correct object type and throws errors", {
-  expect_is(strformat("{VAR1}{VAR2}_file", list(VAR1 = "hi", VAR2 = "hello")), "character")
-  expect_error(strformat("{VAR1}{VAR2}_file", list(VAR1 = "hi")))
-  expect_error(strformat(1))
+  expect_is(.strformat("{VAR1}{VAR2}_file", list(VAR1 = "hi", VAR2 = "hello")), "character")
+  expect_error(.strformat("{VAR1}{VAR2}_file", list(VAR1 = "hi")))
+  expect_error(.strformat(1))
 })
 
 test_that("makeMetadataSectionAbsolute returns correct object type and throws errors",
           {
-            expect_is(makeMetadataSectionAbsolute(p@config, dirname(p@file)), 'list')
-            expect_error(makeMetadataSectionAbsolute(p@file, 1))
+            expect_is(.makeMetadataSectionAbsolute(p@config, dirname(p@file)), 'list')
+            expect_error(.makeMetadataSectionAbsolute(p@file, 1))
           })
 
 test_that("makeMetadataSectionAbsolute does not change the length(s) of the list",
           {
             expect_equal(as.numeric(lapply(p@config$metadata, length)), as.numeric(lapply(
-              makeMetadataSectionAbsolute(p@config, dirname(p@file)), length
+              .makeMetadataSectionAbsolute(p@config, dirname(p@file)), length
             )))
           })
 
@@ -161,7 +161,7 @@ test_that(".isAbsolute works properly", {
 })
 
 test_that("printNestedList throws errors", {
-  expect_error(printNestedList(1))
+  expect_error(.printNestedList(1))
 })
 
 context("Project operations")
@@ -197,12 +197,19 @@ test_that(".implyColumns returns Project object", {
   expect_is(.deriveAttributes(p), 'Project')
 })
 
-test_that("listSubprojects returns correct object type, length and throws errors
-          and accepts both Project object and Config object",
+test_that(".listSubprojects internal function returns correct object type, length and throws errors",
           {
-            expect_equal(length(listSubprojects(p_subproj1@config)), 2)
-            expect_is(listSubprojects(p_subproj2@config), 'character')
-            expect_null(listSubprojects(p@config))
+            expect_equal(length(.listSubprojects(p_subproj1@config)), 2)
+            expect_is(.listSubprojects(p_subproj2@config), 'character')
+            expect_null(.listSubprojects(p@config))
+            expect_error(.listSubprojects(1))
+          })
+
+test_that("listSubprojects exported method returns correct object type, length and throws errors",
+          {
+            expect_equal(length(listSubprojects(p_subproj1)), 2)
+            expect_is(listSubprojects(p_subproj1), 'character')
+            expect_null(listSubprojects(p))
             expect_error(listSubprojects(1))
             expect_equal(length(listSubprojects(p_subproj1)), 2)
           })

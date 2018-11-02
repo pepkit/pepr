@@ -48,8 +48,9 @@
 #' @return an object of class data.frame
 #'
 #' @examples
+#' @export
 #' dataFrame=mtcars
-#' listifiedDataFrame=listifyDF(dataFrame)
+#' listifiedDataFrame=.listifyDF(dataFrame)
 .listifyDF = function(DF){
   if(!is.data.frame(DF)) stop("The input object must be a data.frame.")
   colNames =  names(DF)

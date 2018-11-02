@@ -162,7 +162,7 @@ setMethod("initialize", "Project", function(.Object, ...) {
 #' )
 #' p = Project(projectConfig)
 #' sampleName = "frog_1"
-#' getSample(p, sampleName, sampleName)
+#' getSample(p, sampleName)
 #' @export
 setGeneric(name = "getSample", function(.Object, sampleName)
   standardGeneric("getSample"))
@@ -173,7 +173,7 @@ setMethod(
     .Object = "Project",
     sampleName = "character"
   ),
-  definition = function(.Object, sampleName = NULL) {
+  definition = function(.Object, sampleName) {
     sampleNames = unlist(.Object@samples$sample_name)
     rowNumber = which(sampleNames == sampleName)
     if (length(rowNumber) == 0)
@@ -513,7 +513,7 @@ setMethod(
 #' "project_config.yaml",
 #' package = "pepr")
 #' p = Project(file = projectConfig)
-#' printNestedList(config(p))
+#' .printNestedList(config(p))
 #' @export
 .printNestedList = function(lst, level = 0) {
   if (!is.list(lst))
