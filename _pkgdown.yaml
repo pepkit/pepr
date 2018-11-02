@@ -20,8 +20,6 @@ navbar:
   - text: Software & Data
     href: http://databio.org/software/
 
-
-
 articles: 
   - title: Introduction
     contents:
@@ -30,12 +28,14 @@ articles:
     contents:
       - starts_with("feature")
 
-# reference:
-#   - title: "pepr API"
-#     desc: "These functions can be used as an interface for `pepr`"
-#     contents:
-#       - config
-#   - title: "utilities"
-#     desc: "These functions cannot be used as an interface fot `pepr`, although we find them useful."
-#     contents:
-#       - starts_with("\\.")
+reference:
+  - title: "pepr API"
+    desc: "**These functions can be used as a *PEP* interface in `pepr`**"
+    contents:
+      - -matches("\\.")
+  - title: "utilities"
+    desc: "These functions are utilities that are not the interface, although we find them **useful**."
+    contents:
+      - .strformat
+      - .expandPath
+      - .printNestedList
