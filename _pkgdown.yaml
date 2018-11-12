@@ -30,11 +30,11 @@ articles:
 
 reference:
   - title: "pepr API"
-    desc: "**These functions can be used as a *PEP* interface in `pepr`**"
+    desc: "Exported functions of `pepr`."
     contents:
       - -matches("\\.")
   - title: "utilities"
-    desc: "These functions are utilities that are not the interface, although we find them **useful**."
+    desc: "Extra non-exported utility functions."
     contents:
       - .strformat
       - .expandPath
