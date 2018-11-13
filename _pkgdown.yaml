@@ -14,6 +14,9 @@ navbar:
   - text: GitHub
     icon: fa-github fa-lg
     href: https://github.com/pepkit/pepr
+  - text: Changelog
+    icon: fa-file-text
+    href: news/index.html
   right:
   - text: Databio.org
     href: http://databio.org
@@ -39,3 +42,5 @@ reference:
       - .strformat
       - .expandPath
       - .printNestedList
+news:
+- one_page: true

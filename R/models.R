@@ -63,7 +63,9 @@ setMethod(
     cat("PEP project object. Class: ", class(object), fill = T)
     cat("  file: ", object@file, fill = T)
     cat("  samples: ", NROW(object@samples), fill = T)
-    .listSubprojects(object@config)
+    if(length(object@config) != 0){
+      .listSubprojects(object@config)
+    }
     invisible(NULL)
   }
 )
