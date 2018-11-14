@@ -11,11 +11,36 @@ navbar:
   - text: Documentation
     icon: fa-pencil
     href: reference/index.html
+  - text: Changelog
+    icon: fa-file-text
+    href: news/index.html
+  right:
   - text: GitHub
     icon: fa-github fa-lg
     href: https://github.com/pepkit/pepr
-  right:
   - text: Databio.org
     href: http://databio.org
   - text: Software & Data
     href: http://databio.org/software/
+
+articles: 
+  - title: Introduction
+    contents:
+      - gettingStarted
+  - title: Advanced features
+    contents:
+      - starts_with("feature")
+
+reference:
+  - title: "pepr API"
+    desc: "Exported functions of `pepr`."
+    contents:
+      - -matches("\\.")
+  - title: "utilities"
+    desc: "Extra non-exported utility functions."
+    contents:
+      - .strformat
+      - .expandPath
+      - .printNestedList
+news:
+- one_page: true

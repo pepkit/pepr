@@ -2,19 +2,20 @@
 % Please edit documentation in R/models.R
 \name{Project}
 \alias{Project}
-\title{A class representing a Portable Encapsulated Project
-This is a helper that creates the project with empty samples and config slots}
+\title{The constructor of a class representing a Portable Encapsulated Project}
 \usage{
-Project(file, samples = list(), config = list())
+Project(file = character(), subproject = character())
 }
 \arguments{
-\item{file}{project configuration yaml file}
+\item{file}{a character with project configuration yaml file}
 
-\item{samples}{a data table object holding the sample metadata}
-
-\item{config}{a list object holding contents of the config file}
+\item{subproject}{a character with the subproject name to be activated}
 }
 \description{
-A class representing a Portable Encapsulated Project
 This is a helper that creates the project with empty samples and config slots
+}
+\examples{
+projectConfig = system.file("extdata", "example_peps-master",
+"example_subprojects1", "project_config.yaml", package="pepr")
+p=Project(projectConfig)
 }

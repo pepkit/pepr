@@ -5,5 +5,5 @@
 \alias{Config-class}
 \title{Config objects are specialized list objects}
 \description{
-Config objects are specialized list objects
+Config objects are used with the \code{\link{Project-class}} objects
 }

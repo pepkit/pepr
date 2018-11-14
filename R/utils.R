@@ -7,7 +7,7 @@
 #' @return	Target itself if already absolute, else target nested within parent.
 .makeAbsPath = function(perhapsRelative, parent) {
   if (!.isDefined(perhapsRelative)) { return(perhapsRelative)}
-  perhapsRelative = expandPath(perhapsRelative)
+  perhapsRelative = .expandPath(perhapsRelative)
   if (.isAbsolute(perhapsRelative)) {
     abspath = perhapsRelative
   } else {
@@ -25,14 +25,12 @@
 # not a boolean
 .isDefined = function(var) { ! (is.null(var) || is.na(var)) }
 
-# Filesystem utilities
-
 #' Determine whether a path is absolute.
 #'
 #' @param path The path to check for seeming absolute-ness.
 #' @return Flag indicating whether the \code{path} appears to be absolute.
-#' @family path operations
 .isAbsolute = function(path) {
+  if(!is.character(path)) stop("The path must be character.")
   firstChar = substr(path, 1, 1)
   return(identical("/", firstChar) | identical("~", firstChar))
 }
@@ -43,17 +41,18 @@
 
 #' Listify data frame columns
 #'
-#' This function turns each data frame column into a list, so that its cells can contain multiple elements
+#' This function turns each data frame column into a list,
+#' so that its cells can contain multiple elements
 #' 
 #' @param DF an object of class data.frame
-#'
 #' @return an object of class data.frame
-#' @export
 #'
 #' @examples
+#' @export
 #' dataFrame=mtcars
-#' listifiedDataFrame=listifyDF(dataFrame)
-listifyDF = function(DF){
+#' listifiedDataFrame=.listifyDF(dataFrame)
+.listifyDF = function(DF){
+  if(!is.data.frame(DF)) stop("The input object must be a data.frame.")
   colNames =  names(DF)
   for(iColumn in colNames){
     DF[[iColumn]]=as.list(DF[[iColumn]])

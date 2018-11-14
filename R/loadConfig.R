@@ -1,26 +1,30 @@
-#' Loads a project_config.yaml file
+#' Load the config of a PEP
+#'
+#' Loads a PEP config file
 #'
 #' @param sp Subproject to activate
 #' @param filename file path to config file
-#' @export
-loadConfig = function(filename=NULL, sp=NULL) {
-  
+#' 
+#' @seealso \url{https://pepkit.github.io/}
+.loadConfig = function(filename = NULL, sp = NULL) {
   if (!file.exists(filename)) {
-    message("No config file found: ", filename)
-    return()
+    stop("No config file found")
   }
-  
-  cfg = new("Config", yaml::yaml.load_file(filename))
+  config_file = yaml::yaml.load_file(filename)
+  if (!is.list(config_file))
+    stop("The config file has to be a YAML formatted file.
+         See: http://yaml.org/start.html")
+  cfg = methods::new("Config", config_file)
   
   if (is.null(cfg)) {
-    message("Config file not loaded.")
+    cat("Config file not loaded.", fill = T)
     return()
   }
   
-  message("Loaded config file: ", filename)
+  cat("Loaded config file: ", filename, fill = T)
   
   # Show available subprojects
-  listSubprojects(cfg)
+  .listSubprojects(cfg)
   
   # Update based on subproject if one is specified.
   cfg = .updateSubconfig(cfg, sp)
@@ -29,7 +33,7 @@ loadConfig = function(filename=NULL, sp=NULL) {
   # This used to be all metadata columns; now it's just: results_subdir
   mdn = names(cfg$metadata)
   
-  cfg$metadata = makeMetadataSectionAbsolute(cfg, parent=dirname(filename))
+  cfg$metadata = .makeMetadataSectionAbsolute(cfg, parent = dirname(filename))
   
   # Infer default project name
   
@@ -47,163 +51,150 @@ loadConfig = function(filename=NULL, sp=NULL) {
   return(cfg)
 }
 
-.updateSubconfig = function(cfg, sp=NULL) {
-  if (! is.null(sp)) {
+.updateSubconfig = function(cfg, sp = NULL) {
+  if (!is.null(sp)) {
     if (is.null(cfg$subprojects[[sp]])) {
-      message("Subproject not found: ", sp)
+      cat("Subproject not found: ", sp, fill = T)
       return()
     }
-    cfg = modifyList(cfg, cfg$subprojects[[sp]])
-    message("Loading subproject: ", sp)
+    cfg = utils::modifyList(cfg, cfg$subprojects[[sp]])
+    cat("Loading subproject: ", sp, fill = T)
   }
   return(cfg)
 }
 
 
-#' Lists subprojects in a config file 
-#' 
-#' Lists subprojects in an R list representation of a yaml config file read by
-#' pepr
-#'
-#' @param cfg Configuration section of a project
-#' @export
-listSubprojects = function(cfg) {
-  # Show available subprojects
-  if (length(names(cfg$subprojects)) > 1) {
-    message("  subprojects: ", paste0(names(cfg$subprojects), collapse=","))
+
+.listSubprojects = function(cfg) {
+  # make sure the extracted config is of proper class
+  if(!methods::is(cfg,"Config")) 
+    stop("The Project object does not contain a vaild config")
+  
+  if (length(names(cfg$subprojects)) > 0) {
+    # If there are any show a cat and return if needed
+    cat("  subprojects: ", paste0(names(cfg$subprojects), 
+                                  collapse = ","), fill = T)
+    invisible(names(cfg$subprojects))
+  } else{
+    # Otherwise return NULL for testing purposes
+    NULL
   }
-  invisible(names(cfg$subprojects))
 }
 
-
-#' Mapper of organism name to genomic assembly name
+#' Expand system path
 #'
-#' \code{assemblyByOrganism} uses the data in a project config object to 
-#' map organism name to genomic assembly name, supporting both the direct 
-#' mapping within a \code{genome} section, or an encoding of this data in 
-#' an \code{implied_columns} section.
+#' This function expands system paths (the non-absolute paths become absolute) 
+#' and replaces the environment variables (e.g, \code{${HOME}}) 
+#' with their values.
 #'
-#' @param config A project configuration object (parsed from a file with 
-#'        \code{yaml::yaml.load_file}).
-#' @return Mapping (as \code{list}) in which each name is an organism, and 
-#'         each list element is the corresponding genomic assembly name.
-#' @seealso \url{http://looper.readthedocs.io/en/latest/implied-columns.html}
+#' Most importantly strings that are not system paths are returned untouched
+#'
+#' @param path file path to expand. Potentially any string
+#' @return Expanded path or untouched string
+#'
+#' @examples
+#'
+#' string = "https://www.r-project.org/"
+#' .expandPath(string)
+#' path = "$HOME/my/path/string.txt"
+#' .expandPath(path)
 #' @export
-assemblyByOrganism = function(config) {
-  # Basic case, in which the project config directly maps organism name 
-  # to genomic assembly name
-  if (!is.null(config$genome)) { return(config$genome) }
-  
-  # If neither direct mapping nor column implications, we can't do anything.
-  organismImplications = config$implied_columns$organism
-  if (is.null(organismImplications)) {
-    warning("Project config lacks 'genome' and 'organism' section within 
-            'implied_columns' section, so derivation of genome assembly mapping 
-            is not possible.")
-    return(NULL)
+.expandPath = function(path) {
+  # helper function
+  removeNonWords = function(str) {
+    # can be used to get rid of the non-word chars in the env vars strings
+    strsplit(gsub("[^[:alnum:] ]", "", str), " +")[[1]]
   }
   
-  # Build up the organism-to-assembly mapping, skipping each organism 
-  # for which such a mapping isn't defined.
-  assemblies = list()
-  for (organismName in names(organismImplications)) {
-    assembly = organismImplications[[organismName]][["genome"]]
-    if (is.null(assembly)) {
-      warning(sprintf("No 'genome' for '%s'", organismName))
-    } else {
-      assemblies[[organismName]] = assembly
+  # helper function
+  replaceEnvVars = function(path, matches){
+    # the core of the expandPath function
+    parts = unlist(regmatches(x = path, matches, invert = F))
+    replacements = c()
+    for (i in seq_along(attr(matches[[1]], "match.length"))) {
+      # get the values of the env vars
+      replacements[i] = Sys.getenv(removeNonWords(parts[i]))
+      if(any(replacements == "")){
+        missingEnvVar = which(replacements=="")
+        stop(
+          paste("The environment variable",parts[missingEnvVar],"was not found")
+          )
+      }
+    }
+    # replace env vars with their system values
+    regmatches(x = path, matches, invert = F) = replacements
+    # if UNIX, make sure the root's in the path
+    if (.Platform$OS.type == "unix") {
+      if (!startsWith(path, "/")) {
+        path = paste0("/", path)
+      }
+      # prevent double slashes
+      path = gsub("//", "/", path)
     }
   }
   
-  return(assemblies)
-}
-
-#' Implementation of python's expandpath
-#' @param path file path to expand
-#' @export
-expandPath = function(path) {
-  # Handle null/empty input.
-  if (!.isDefined(path)) { return(path) }
-  
-  # Helper functions
-  chopPath = function(p) { 
-    if (p == dirname(p)) p else c(chopPath(dirname(p)), basename(p)) 
-  }
-  expand = function(pathPart) { 
-    if (startsWith(pathPart, "$")) {
-      return(system(sprintf("echo %s", pathPart), intern = TRUE))
-    } else {
-      return(pathPart)
-    }
+  # handle null/empty input.
+  if (!.isDefined(path)) {
+    return(path)
   }
   
-  # Split path; short-circuit return or ensure no reference to this folder.
-  parts = chopPath(path)
-  if (length(parts) < 2) { return(parts) }
-  if (identical(".", parts[1])) { parts = parts[2:length(parts)] }
+  # if it's a path, make it absolute
+  path = path.expand(path)
+  # search for env vars, both bracketed and not 
+  matchesBracket = gregexpr("\\$\\{\\w+\\}", path, perl = T)
+  matches = gregexpr("\\$\\w+", path, perl = T)
   
-  # Expand any environment variables and return the complete path
-  if(.Platform$OS.type=="unix") {
-    # Prevent double slashes
-    if(any(parts=="/")){
-      parts[which(parts=="/")]=""
-    }
-  }
-  fullPath = do.call(file.path, lapply(parts, expand))
-  return(fullPath)
+  # perform two rounds of env var replacement
+  # this way both bracketed and not bracketed ones will be replaced
+  if(all(attr(matchesBracket[[1]], "match.length") != -1)) path = replaceEnvVars(path, matchesBracket)
+  if(all(attr(matches[[1]], "match.length") != -1)) path = replaceEnvVars(path, matches)
+  
+  return(path)
 }
 
 #' Format a string like python's format function
-#' 
-#' Given a string with environment variables (encoded like ${VAR}) and other
-#' variables (encoded like {VAR}), this function will substitute both of these
-#' and return the formatted string, like the python string format(). Other
-#' variables are populated from a list of arguments
+#'
+#' Given a string with environment variables (encoded like \code{${VAR}} or \code{$VAR}), and
+#' other variables (encoded like \code{{VAR}}) this function will substitute
+#' both of these and return the formatted string, like the Python
+#' \code{str.format()} method. Other variables are populated from a list of arguments.
+#' Additionally, if the string is a non-absolute path, it will be expanded.
 
 #' @param string String with variables encoded
 #' @param args named list of arguments to use to populate the string
+#' @param exclude character vector of args that should be excluded from 
+#' the interpolation. The elements in the vector should match the names of the
+#' elements in the \code{args} list
 #' @export
 #' @examples
-#' strformat("{VAR1}{VAR2}_file", list(VAR1="hi", VAR2="hello"))
-
-#' Format a string like python's format function
-#' 
-#' Given a string with environment variables (encoded like ${VAR}) and other
-#' variables (encoded like {VAR}), this function will substitute both of these
-#' and return the formatted string, like the python string format(). Other
-#' variables are populated from a list of arguments
-
-#' @param string String with variables encoded
-#' @param args named list of arguments to use to populate the string
-#' @param exclude character vector of args that should be excluded from the interpolation. The elements in the vector should match the names of the elements in the args list
-#' @export
-#' @examples
-#' strformat("{VAR1}{VAR2}_file", list(VAR1="hi", VAR2="hello"))
-strformat = function(string, args, exclude) {
-  result=c()
-  x = pepr:::expandPath(string)
+#' .strformat("~/{VAR1}{VAR2}_file", list(VAR1="hi", VAR2="hello"))
+#' .strformat("$HOME/{VAR1}{VAR2}_file", list(VAR1="hi", VAR2="hello"))
+.strformat = function(string, args, exclude) {
+  result = c()
+  x = .expandPath(string)
   # str_interp requires variables encoded like ${var}, so we substitute
   # the {var} syntax here.
   x = stringr::str_replace_all(x, "\\{", "${")
-  argsUnlisted=lapply(args, unlist)
-  argsLengths=lapply(argsUnlisted, length)
-  if(any(argsLengths>1)){
-    pluralID=which(argsLengths>1)
-    # Remove the previously interpolated, thus plural elements from another round of interpolation
-    if(any(names(pluralID) %in% exclude)){
-      pluralID=pluralID[-which(names(pluralID) %in% exclude)]
+  argsUnlisted = lapply(args, unlist)
+  argsLengths = lapply(argsUnlisted, length)
+  if (any(argsLengths > 1)) {
+    pluralID = which(argsLengths > 1)
+    # Remove the previously interpolated, 
+    # thus plural elements from another round of interpolation
+    if (any(names(pluralID) %in% exclude)) {
+      pluralID = pluralID[-which(names(pluralID) %in% exclude)]
     }
-    for(iPlural in unlist(argsUnlisted[pluralID])){
+    for (iPlural in unlist(argsUnlisted[pluralID])) {
       argsUnlisted[[pluralID]] = iPlural
-      result=append(result,stringr::str_interp(x, argsUnlisted))
+      result = append(result, stringr::str_interp(x, argsUnlisted))
     }
     return(result)
-  }else{
+  } else{
     return(stringr::str_interp(x, argsUnlisted))
   }
 }
 
-makeMetadataSectionAbsolute = function(config, parent) {
+.makeMetadataSectionAbsolute = function(config, parent) {
   # Enable creation of absolute path using given parent folder path.
   absViaParent = pryr::partial(.makeAbsPath, parent = parent)
   
@@ -214,27 +205,30 @@ makeMetadataSectionAbsolute = function(config, parent) {
   # Process each metadata item, handling each value according to attribute name.
   for (metadataAttribute in names(config$metadata)) {
     value = config$metadata[[metadataAttribute]]
-    
+    values=c()
+    # loop through all values, supports multiple 
+    # values in the config key-value pairs
+    for(iValue in value){
     if (metadataAttribute %in% kRelativeToOutputDirMetadataSections) {
       if (metadataAttribute == kOldPipelinesSection) {
-        warning(sprintf(
-          "Config contains old pipeline location specification section: '%s'", 
-          kOldPipelinesSection))
+        warning(
+          sprintf(
+            "Config contains old pipeline location specification section: '%s'",
+            kOldPipelinesSection
+          )
+        )
       }
-      value = expandPath(value)
-      if (!.isAbsolute(value)) {
-        value = file.path(expandPath(config$metadata[["output_dir"]]), value)
+      iValue = .expandPath(iValue)
+      if (!.isAbsolute(iValue)) {
+        iValue = file.path(.expandPath(config$metadata[["output_dir"]]), iValue)
       }
     }
-    else { value = absViaParent(value) }    # No special handling
-    
-    # Check for and warn about nonexistent path before setting value.
-    if (!(!.isDefined(value) || file.exists(value) || dir.exists(value))) {
-      warning(sprintf("Value for '%s' doesn't exist: '%s'", metadataAttribute, value))
+    else {
+      iValue = absViaParent(iValue)
     }
-    absoluteMetadata[[metadataAttribute]] = value
+    values=append(values,iValue)
   }
-  
+    absoluteMetadata[[metadataAttribute]] = values
+  }
   return(absoluteMetadata)
 }
-
