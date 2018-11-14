@@ -2,8 +2,8 @@
 #'
 #' Provides an in-memory representation and functions to access project
 #' configuration and sample annotation values for a PEP.
-#' 
-#' Can be created with the constructor: \code{\link{Project}} 
+#'
+#' Can be created with the constructor: \code{\link{Project}}
 #'
 #' @slot file character vector path to config file on disk.
 #' @slot samples a data table object holding the sample metadata
@@ -36,9 +36,9 @@ Project = function(file = character(),
 }
 
 #' Config objects are specialized list objects
-#' 
+#'
 #' Config objects are used with the \code{\link{Project-class}} objects
-#' 
+#'
 #'
 #' @exportClass Config
 setClass("Config", contains = "list")
@@ -63,7 +63,7 @@ setMethod(
     cat("PEP project object. Class: ", class(object), fill = T)
     cat("  file: ", object@file, fill = T)
     cat("  samples: ", NROW(object@samples), fill = T)
-    if(length(object@config) != 0){
+    if (length(object@config) != 0) {
       .listSubprojects(object@config)
     }
     invisible(NULL)
@@ -171,16 +171,14 @@ setGeneric(name = "getSample", function(.Object, sampleName)
 
 setMethod(
   f = "getSample",
-  signature(
-    .Object = "Project",
-    sampleName = "character"
-  ),
+  signature(.Object = "Project",
+            sampleName = "character"),
   definition = function(.Object, sampleName) {
     sampleNames = unlist(.Object@samples$sample_name)
     rowNumber = which(sampleNames == sampleName)
     if (length(rowNumber) == 0)
       stop("Such sample name does not exist.")
-    result = samples(.Object)[rowNumber,]
+    result = samples(.Object)[rowNumber, ]
     return(result)
   }
 )
@@ -231,10 +229,10 @@ setMethod(
     sampleNumber = which(subsampleNames == subsampleName)
     if (length(sampleNumber) == 0)
       stop("Such sample and sub sample name combination does not exist.")
-    result = .Object@samples[1, ]
+    result = .Object@samples[1,]
     for (iColumn in names(result)) {
       if (length(.Object@samples[[iColumn]][[rowNumber]]) > 1) {
-        result[[iColumn]] = 
+        result[[iColumn]] =
           .Object@samples[[iColumn]][[rowNumber]][[sampleNumber]]
       } else{
         result[[iColumn]] = .Object@samples[[iColumn]][[rowNumber]][[1]]
@@ -247,13 +245,13 @@ setMethod(
 #' Lists subprojects in a \code{\link{Project-class}} object
 #'
 #' Lists available subprojects within a \code{\link{Project-class}} object.
-#' 
-#' The subprojects can be activated by passing their names 
+#'
+#' The subprojects can be activated by passing their names
 #' to the \code{\link{Project-class}} object constructor (\code{\link{Project}})
-#' 
+#'
 #' @param project an object of \code{\link{Project-class}} class
 #' @return names of the available subprojects
-#' 
+#'
 #' @export
 setGeneric("listSubprojects", function(.Object)
   standardGeneric("listSubprojects"))
@@ -264,7 +262,8 @@ setMethod(
   definition = function(.Object) {
     config = config(.Object)
     .listSubprojects(cfg = config)
-  })
+  }
+)
 
 
 #' Activate other subproject in objects of \code{\link{Project-class}} class
@@ -292,7 +291,7 @@ setMethod(
     # This used to be all metadata columns; now it's just: results_subdir
     mdn = names(.Object@config$metadata)
     
-    .Object@config$metadata = 
+    .Object@config$metadata =
       .makeMetadataSectionAbsolute(.Object@config,
                                    parent = dirname(.Object@file))
     
@@ -307,7 +306,7 @@ setMethod(
 
 
 .deriveAttributes = function(.Object) {
-  # Backwards compatibility 
+  # Backwards compatibility
   # after change of derived columns to derived attributes
   if (is.null(.Object@config$derived_attributes)) {
     if (is.null(.Object@config$derived_columns)) {
@@ -359,7 +358,7 @@ setMethod(
 
 .implyAttributes = function(.Object) {
   if (is.null(.Object@config$implied_attributes)) {
-    # Backwards compatibility 
+    # Backwards compatibility
     # after change of implied columns to implied attributes
     if (is.null(.Object@config$implied_columns)) {
       # if the implied_attributes and implied_columns in project's config are
@@ -374,24 +373,26 @@ setMethod(
     # the implied_attributes in project's config is a list,
     # so the columns can be implied
     samplesDims = dim(.Object@samples)
-    primaryColumn = names(.Object@config$implied_attributes)
-    for (iColumn in primaryColumn) {
+    primaryColumns = names(.Object@config$implied_attributes)
+    for (iColumn in primaryColumns) {
       primaryKeys = names(.Object@config$implied_attributes[[iColumn]])
       for (iKey in primaryKeys) {
         newValues = names(.Object@config$implied_attributes[[iColumn]][[iKey]])
         for (iValue in newValues) {
           samplesColumns = names(.Object@samples)
+          currentValue = .Object@config$implied_attributes[[iColumn]][[iKey]][[iValue]]
+          if (is.null(currentValue)) currentValue = NA
           if (any(samplesColumns == iValue)) {
             # The implied column has been already added, populating
-            .Object@samples[[iValue]][which(.Object@samples[[iColumn]] == iKey)] = 
-              .Object@config$implied_attributes[[iColumn]][[iKey]][[iValue]]
+            .Object@samples[[iValue]][which(.Object@samples[[iColumn]] == iKey)] =
+              currentValue
           } else{
             # The implied column is missing, adding column and populating
             toBeAdded = data.frame(rep("", samplesDims[1]), stringsAsFactors =
                                      FALSE)
             names(toBeAdded) = iValue
-            toBeAdded[which(.Object@samples[[iColumn]] == iKey), 1] = 
-              .Object@config$implied_attributes[[iColumn]][[iKey]][[iValue]]
+            toBeAdded[which(.Object@samples[[iColumn]] == iKey), 1] =
+              currentValue
             .Object@samples = cbind(.Object@samples, toBeAdded)
           }
         }
@@ -448,8 +449,8 @@ setMethod(
   colList = vector("list", rowNum)
   for (iName in subNames) {
     whichNames = which(samplesSubannotation$sample_name == iName)
-    subTable = samplesSubannotation[whichNames, ]
-    dropCol = which(names(samplesSubannotation[whichNames, ]) == "sample_name")
+    subTable = samplesSubannotation[whichNames,]
+    dropCol = which(names(samplesSubannotation[whichNames,]) == "sample_name")
     subTable = subset(subTable, select = -dropCol)
     for (iColumn in seq_len(ncol(subTable))) {
       colName = names(subset(subTable, select = iColumn))
@@ -478,9 +479,9 @@ setMethod(
   # Extracting needed slots
   # backwards compatible with the "constants" key in the config YAML
   constants = .Object@config$constants
-  if(is.null(config(.Object)$constants)){
+  if (is.null(config(.Object)$constants)) {
     constants = config(.Object)$constant_attributes
-  }else{
+  } else{
     constant = config(.Object)$constants
   }
   if (is.list(constants)) {
