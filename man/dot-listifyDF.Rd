@@ -16,3 +16,7 @@ an object of class data.frame
 This function turns each data frame column into a list,
 so that its cells can contain multiple elements
 }
+\examples{
+dataFrame=mtcars
+listifiedDataFrame=.listifyDF(dataFrame)
+}

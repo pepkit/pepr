@@ -34,6 +34,8 @@
   mdn = names(cfg$metadata)
   
   cfg$metadata = .makeMetadataSectionAbsolute(cfg, parent = dirname(filename))
+  # make data_sources section absolute
+  if(!is.null(cfg$data_sources)) cfg$data_sources = sapply(cfg$data_sources, .expandPath)
   
   # Infer default project name
   
@@ -139,7 +141,7 @@
   }
   
   # if it's a path, make it absolute
-  path = path.expand(path)
+  path = normalizePath(path.expand(path),mustWork = FALSE)
   # search for env vars, both bracketed and not 
   matchesBracket = gregexpr("\\$\\{\\w+\\}", path, perl = T)
   matches = gregexpr("\\$\\w+", path, perl = T)
@@ -230,5 +232,7 @@
   }
     absoluteMetadata[[metadataAttribute]] = values
   }
+  
+
   return(absoluteMetadata)
 }

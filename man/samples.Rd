@@ -4,7 +4,7 @@
 \alias{samples}
 \title{View samples in the objects of \code{\link{Project-class}} class}
 \usage{
-samples(object, ...)
+samples(object)
 }
 \arguments{
 \item{object}{an object of \code{\link{Project-class}} class}

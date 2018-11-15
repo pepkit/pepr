@@ -4,7 +4,7 @@
 \alias{config}
 \title{View PEP config of the object of \code{\link{Project-class}} class}
 \usage{
-config(object, ...)
+config(object)
 }
 \arguments{
 \item{object}{an object of \code{\link{Project-class}} class}

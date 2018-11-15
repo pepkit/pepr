@@ -87,7 +87,7 @@ setMethod(
 #' config(p)
 #'
 #' @export
-setGeneric("config", function(object, ...)
+setGeneric("config", function(object)
   standardGeneric("config"))
 
 setMethod(
@@ -114,7 +114,7 @@ setMethod(
 #' samples(p)
 #'
 #' @export
-setGeneric("samples", function(object, ...)
+setGeneric("samples", function(object)
   standardGeneric("samples"))
 
 setMethod(
@@ -249,7 +249,7 @@ setMethod(
 #' The subprojects can be activated by passing their names
 #' to the \code{\link{Project-class}} object constructor (\code{\link{Project}})
 #'
-#' @param project an object of \code{\link{Project-class}} class
+#' @param .Object an object of \code{\link{Project-class}} class
 #' @return names of the available subprojects
 #'
 #' @export
@@ -508,6 +508,7 @@ setMethod(
 #' Useful for displaying the config of a PEP
 #'
 #' @param lst list object to print
+#' @param level the indentation level
 #'
 #' @examples
 #' projectConfig = system.file("extdata",
@@ -516,7 +517,7 @@ setMethod(
 #' "project_config.yaml",
 #' package = "pepr")
 #' p = Project(file = projectConfig)
-#' .printNestedList(config(p))
+#' .printNestedList(config(p),level=2)
 #' @export
 .printNestedList = function(lst, level = 0) {
   if (!is.list(lst))
