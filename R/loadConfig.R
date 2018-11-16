@@ -35,7 +35,21 @@
   
   cfg$metadata = .makeMetadataSectionAbsolute(cfg, parent = dirname(filename))
   # make data_sources section absolute
-  if(!is.null(cfg$data_sources)) cfg$data_sources = sapply(cfg$data_sources, .expandPath)
+  if(!is.null(cfg$data_sources)) 
+    cfg$data_sources = lapply(cfg$data_sources, .expandPath)
+  # make bioconductor section absolute, used in BiocProject
+  if(!is.null(cfg$bioconductor)) 
+    cfg$bioconductor = lapply(cfg$bioconductor, function(x) {
+      # this function will also expand paths starting with "./",
+      # and expand them only in case an absolute path exists
+      ret=.expandPath(x)
+      if(startsWith(ret,"./")){
+        absRet=file.path(dirname(normalizePath(filename)),gsub("./","",ret))
+        if(file.exists(absRet))
+          ret = absRet
+      }
+      return(ret)
+    })
   
   # Infer default project name
   
