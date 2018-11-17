@@ -6,7 +6,7 @@
 #' @param filename file path to config file
 #' 
 #' @seealso \url{https://pepkit.github.io/}
-.loadConfig = function(filename = NULL, sp = NULL) {
+.loadConfig = function(filename=NULL, sp=NULL) {
   if (!file.exists(filename)) {
     stop("No config file found")
   }
@@ -37,20 +37,11 @@
   # make data_sources section absolute
   if(!is.null(cfg$data_sources)) 
     cfg$data_sources = lapply(cfg$data_sources, .expandPath)
-  # make bioconductor section absolute, used in BiocProject
-  if(!is.null(cfg$bioconductor)) 
-    cfg$bioconductor = lapply(cfg$bioconductor, function(x) {
-      # this function will also expand paths starting with "./",
-      # and expand them only in case an absolute path exists
-      ret=.expandPath(x)
-      if(startsWith(ret,"./")){
-        absRet=file.path(dirname(normalizePath(filename)),gsub("./","",ret))
-        if(file.exists(absRet))
-          ret = absRet
-      }
-      return(ret)
-    })
-  
+  # make bioconductor$read_fun_path value absolute, used in BiocProject
+  if(!is.null(cfg$bioconductor$read_fun_path)){
+    path = gsub("\\./","",cfg$bioconductor$read_fun_path)
+    cfg$bioconductor$read_fun_path = .makeAbsPath(path, parent=dirname(filename))
+  }
   # Infer default project name
   
   if (is.null(cfg$name)) {
