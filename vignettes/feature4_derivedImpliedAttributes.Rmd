@@ -15,7 +15,7 @@ This vignette will show you how and why to use the derieved attributes and impli
 
  - For the basic information about the PEP concept on the [project website](https://pepkit.github.io/)
  
- - Make sure to study the dedicated [derived attributes](./derivedAttributes.Rmd) and [implied attributes](./impliedAttributes.Rmd) vignettes prior to reading this one
+ - Make sure to study the dedicated [derived attributes](./feature3_derivedAttributes.html) and [implied attributes](./feature2_impliedAttributes.html) vignettes prior to reading this one
 
 ## Problem/Goal
 While either derived attributes or implied attributes functionalities alone are often sufficient to efficiently describe your samples in PEP, the example below demonstrates how to use the derived attributes to **simplify and unclutter the columns** of the `sample_annotation.csv` file, after implying the attributes for samples that **follow certain patterns**. The two functionalities combined provide you with the way of building complex, yet flexible sample annotation tables effortlessly. Note that the attributes implication is always performed first - before the attributes are derived. This means that the newly created attributes (implied ones) can be used to construct the attributes in the column derivation process. Please consider the example below for reference:
