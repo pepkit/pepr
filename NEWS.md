@@ -1,17 +1,14 @@
 # pepr 0.0.4
 
-## TBA
+## 2018-11-14
 
-## New Functionalites
+## Added
 
-## Changes
+## Changed
 
 * change the `Project` object construction, the subproject can be activated at construction time
 * change `implied/derived_columns` to `implied/derived_attributes`. Backwards compatible
 * change `constants` to `constantAttributes`. Backwards compatible
-	
-## Bug Fixes
-
 * fix `expandPath()` function, add error when environment variable not found
 
 
@@ -19,26 +16,21 @@
 
 ## 2018-09-12
 
-## New Functionalities
+## Added
 
 * add `derived_columns` functionality
 * add `implied_columns` functionality
 * add `subannotation` functionality
 	
-## Changes
-
-## Bug Fixes
-
+## Changed
 
 # pepr 0.0.2 
 
 ## 2018-09-06
 
-## New Functionalites
+## Added
 
 * first release, includes basic [PEP](https://pepkit.github.io/) reading functions
 
-## Changes
-
-## Bug Fixes
+## Changed
 
