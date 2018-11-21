@@ -1,3 +1,15 @@
+# pepr 0.0.5
+
+## TBA
+
+## Added
+
+## Changed
+
+* if the `subproject` argument of the `Project()` function is not present in the config, the original project is returned
+* paths in the `bioconductor` section of the config are made aboslute and environment varaiables are read
+
+
 # pepr 0.0.4
 
 ## 2018-11-14
