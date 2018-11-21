@@ -54,15 +54,15 @@
     }
     cfg$name = maybeProjectName
   }
-  
   return(cfg)
 }
 
 .updateSubconfig = function(cfg, sp = NULL) {
   if (!is.null(sp)) {
     if (is.null(cfg$subprojects[[sp]])) {
-      cat("Subproject not found: ", sp, fill = T)
-      return()
+      warning("Subproject not found: ", sp)
+      cat("Subproject was not activated", fill = T)
+      return(cfg)
     }
     cfg = utils::modifyList(cfg, cfg$subprojects[[sp]])
     cat("Loading subproject: ", sp, fill = T)
