@@ -417,9 +417,12 @@ setMethod(
   if (.safeFileExists(sampleAnnotationPath)) {
     samples = sampleReadFunc(sampleAnnotationPath)
   } else{
-    cat("No sample annotation file:", sampleAnnotationPath, fill = T)
-    stop()
-    samples = data.frame()
+    if(!is.null(.Object@config$subprojects)){
+    warning("No sample annotation file: ", sampleAnnotationPath)
+    samples = data.table::data.table()
+    }else{
+      stop("No sample annotation file: ", sampleAnnotationPath)
+    }
   }
   .Object@samples = samples
   return(.Object)
