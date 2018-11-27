@@ -4,6 +4,8 @@
 
 ## Added
 
+* add `activateSubproject` method
+
 ## Changed
 
 * if the `subproject` argument of the `Project()` function is not present in the config, the original project is returned

@@ -71,12 +71,12 @@ setMethod(
 )
 
 
-#' View PEP config of the object of \code{\link{Project-class}} class
+#' View PEP config of the object of \code{\link{Project-class}}
 #'
 #' This method can be used to view the config slot of
 #' the \code{\link{Project-class}} class
 #'
-#' @param object an object of \code{\link{Project-class}} class
+#' @param object an object of \code{\link{Project-class}}
 #'
 #' @return a list with the config file
 #'
@@ -99,12 +99,12 @@ setMethod(
 )
 
 
-#' View samples in the objects of \code{\link{Project-class}} class
+#' View samples in the objects of \code{\link{Project-class}} 
 #'
 #' This method can be used to view the samples slot
 #' of the \code{\link{Project-class}} class
 #'
-#' @param object an object of \code{\link{Project-class}} class
+#' @param object an object of \code{\link{Project-class}} 
 #'
 #' @return a data.table with the with metadata about samples
 #' @examples
@@ -134,7 +134,7 @@ setMethod("initialize", "Project", function(.Object, ...) {
     .Object@config = .loadConfig(ellipsis$file)
     if (length(ellipsis$subproject) != 0) {
       # check if subproject provided
-      .Object = .activateSubproject(.Object, ellipsis$subproject)
+      .Object = activateSubproject(.Object, ellipsis$subproject)
     } else{
       .Object = .loadSampleAnnotation(.Object)
       .Object = .loadSampleSubannotation(.Object)
@@ -246,12 +246,19 @@ setMethod(
 #'
 #' Lists available subprojects within a \code{\link{Project-class}} object.
 #'
-#' The subprojects can be activated by passing their names
-#' to the \code{\link{Project-class}} object constructor (\code{\link{Project}})
+#' The subprojects can be activated by passing their names to the  \code{\link{activateSubproject}} method
 #'
-#' @param .Object an object of \code{\link{Project-class}} class
+#' @param .Object an object of \code{\link{Project-class}}
 #' @return names of the available subprojects
-#'
+#' @examples 
+#' projectConfig = system.file("extdata",
+#' "example_peps-master",
+#' "example_subprojects1",
+#' "project_config.yaml",
+#' package = "pepr")
+#' p = Project(file = projectConfig)
+#' availSubprojects = listSubprojects(p)
+#' activateSubproject(p,availSubprojects[1])
 #' @export
 setGeneric("listSubprojects", function(.Object)
   standardGeneric("listSubprojects"))
@@ -266,23 +273,34 @@ setMethod(
 )
 
 
-#' Activate other subproject in objects of \code{\link{Project-class}} class
+#' Activate other subproject in objects of \code{\link{Project-class}}
 #'
-#' This method switches the between the subprojects
+#' This method switches between the subprojects
 #' within the \code{\link{Project-class}} object
 #'
 #' To check what are the subproject names
-#' call \code{listSubprojects(config(p))}, where \code{p} is the object
+#' call \code{listSubprojects(p)}, where \code{p} is the object
 #' of \code{\link{Project-class}} class
 #'
 #' @param .Object an object of class \code{\link{Project-class}}
 #' @param sp character with the subproject name
-setGeneric(".activateSubproject", function(.Object, sp)
-  standardGeneric(".activateSubproject"))
+#' 
+#' @examples 
+#' projectConfig = system.file("extdata",
+#' "example_peps-master",
+#' "example_subprojects1",
+#' "project_config.yaml",
+#' package = "pepr")
+#' p = Project(file = projectConfig)
+#' availSubprojects = listSubprojects(p)
+#' activateSubproject(p,availSubprojects[1])
+#' @export
+setGeneric("activateSubproject", function(.Object, sp)
+  standardGeneric("activateSubproject"))
 
 
 setMethod(
-  f = ".activateSubproject",
+  f = "activateSubproject",
   signature = signature(.Object = "Project", sp = "character"),
   definition = function(.Object, sp) {
     .Object@config = .updateSubconfig(.Object@config, sp)
