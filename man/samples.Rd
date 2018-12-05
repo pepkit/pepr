@@ -2,12 +2,12 @@
 % Please edit documentation in R/models.R
 \name{samples}
 \alias{samples}
-\title{View samples in the objects of \code{\link{Project-class}} class}
+\title{View samples in the objects of \code{\link{Project-class}}}
 \usage{
 samples(object)
 }
 \arguments{
-\item{object}{an object of \code{\link{Project-class}} class}
+\item{object}{an object of \code{\link{Project-class}}}
 }
 \value{
 a data.table with the with metadata about samples

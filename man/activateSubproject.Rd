@@ -2,7 +2,7 @@
 % Please edit documentation in R/models.R
 \name{activateSubproject}
 \alias{activateSubproject}
-\title{Activate other subproject in objects of \code{\link{Project-class}} class}
+\title{Activate other subproject in objects of \code{\link{Project-class}}}
 \usage{
 activateSubproject(.Object, sp)
 }

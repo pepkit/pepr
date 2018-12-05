@@ -17,11 +17,11 @@
   cfg = methods::new("Config", config_file)
   
   if (is.null(cfg)) {
-    cat("Config file not loaded.", fill = T)
+    message("Config file not loaded.", fill = T)
     return()
   }
   
-  cat("Loaded config file: ", filename, fill = T)
+  message("Loaded config file: ", filename, fill = T)
   
   # Show available subprojects
   .listSubprojects(cfg)
@@ -61,11 +61,11 @@
   if (!is.null(sp)) {
     if (is.null(cfg$subprojects[[sp]])) {
       warning("Subproject not found: ", sp)
-      cat("Subproject was not activated", fill = T)
+      message("Subproject was not activated", fill = T)
       return(cfg)
     }
     cfg = utils::modifyList(cfg, cfg$subprojects[[sp]])
-    cat("Loading subproject: ", sp, fill = T)
+    message("Loading subproject: ", sp, fill = T)
   }
   return(cfg)
 }
@@ -79,7 +79,7 @@
   
   if (length(names(cfg$subprojects)) > 0) {
     # If there are any show a cat and return if needed
-    cat("  subprojects: ", paste0(names(cfg$subprojects), 
+    message("  subprojects: ", paste0(names(cfg$subprojects), 
                                   collapse = ","), fill = T)
     invisible(names(cfg$subprojects))
   } else{

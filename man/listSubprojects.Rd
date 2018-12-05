@@ -7,7 +7,7 @@
 listSubprojects(.Object)
 }
 \arguments{
-\item{.Object}{an object of \code{\link{Project-class}} class}
+\item{.Object}{an object of \code{\link{Project-class}}}
 }
 \value{
 names of the available subprojects

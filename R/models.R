@@ -28,10 +28,10 @@ setClass("Project",
 #' "example_subprojects1", "project_config.yaml", package="pepr")
 #' p=Project(projectConfig)
 #' @export Project
-Project = function(file = character(),
+Project = function(file = NULL,
                    # samples = list(),
                    # config = list(),
-                   subproject = character()) {
+                   subproject = NULL) {
   methods::new("Project", file = file, subproject = subproject)
 }
 
@@ -128,11 +128,11 @@ setMethod(
 setMethod("initialize", "Project", function(.Object, ...) {
   .Object = methods::callNextMethod(.Object)  # calls generic initialize
   ellipsis <- list(...)
-  if (length(ellipsis$file) != 0) {
+  if (!is.null(ellipsis$file)) {
     # check if file path provided
     .Object@file = ellipsis$file
     .Object@config = .loadConfig(ellipsis$file)
-    if (length(ellipsis$subproject) != 0) {
+    if (!is.null(ellipsis$subproject)) {
       # check if subproject provided
       .Object = activateSubproject(.Object, ellipsis$subproject)
     } else{
