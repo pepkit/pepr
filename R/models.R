@@ -64,7 +64,7 @@ setMethod(
     cat("  file: ", object@file, fill = T)
     cat("  samples: ", NROW(object@samples), fill = T)
     if (length(object@config) != 0) {
-      .listSubprojects(object@config)
+      .listSubprojects(object@config, style="cat")
     }
     invisible(NULL)
   }
@@ -268,7 +268,7 @@ setMethod(
   signature = signature(.Object = "Project"),
   definition = function(.Object) {
     config = config(.Object)
-    .listSubprojects(cfg = config)
+    .listSubprojects(cfg = config, style="message")
   }
 )
 

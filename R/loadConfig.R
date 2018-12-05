@@ -17,11 +17,11 @@
   cfg = methods::new("Config", config_file)
   
   if (is.null(cfg)) {
-    message("Config file not loaded.", fill = T)
+    message("Config file not loaded.")
     return()
   }
   
-  message("Loaded config file: ", filename, fill = T)
+  message("Loaded config file: ", filename)
   
   # Show available subprojects
   .listSubprojects(cfg)
@@ -61,26 +61,34 @@
   if (!is.null(sp)) {
     if (is.null(cfg$subprojects[[sp]])) {
       warning("Subproject not found: ", sp)
-      message("Subproject was not activated", fill = T)
+      message("Subproject was not activated")
       return(cfg)
     }
     cfg = utils::modifyList(cfg, cfg$subprojects[[sp]])
-    message("Loading subproject: ", sp, fill = T)
+    message("Loading subproject: ", sp)
   }
   return(cfg)
 }
 
 
 
-.listSubprojects = function(cfg) {
+.listSubprojects = function(cfg, style="message") {
+  # this function can be used in object show method, where cat is preferred 
+  # or for user information when the Project is created, where message
+  # is preferred
+  if(!style == "message"){
+    printFun = pryr::partial(cat, fill = T)
+  }else{
+    printFun = message
+  }
   # make sure the extracted config is of proper class
   if(!methods::is(cfg,"Config")) 
     stop("The Project object does not contain a vaild config")
   
   if (length(names(cfg$subprojects)) > 0) {
     # If there are any show a cat and return if needed
-    message("  subprojects: ", paste0(names(cfg$subprojects), 
-                                  collapse = ","), fill = T)
+    printFun("  subprojects: ", paste0(names(cfg$subprojects), 
+                                  collapse = ","))
     invisible(names(cfg$subprojects))
   } else{
     # Otherwise return NULL for testing purposes
