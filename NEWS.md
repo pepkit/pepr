@@ -10,7 +10,7 @@
 
 * if the `subproject` argument of the `Project()` function is not present in the config, the original project is returned
 * paths in the `bioconductor` section of the config are made aboslute and environment varaiables are read
-* no sample annoptation is allowed if any suprojects are defined in the config
+* no sample annotation is allowed if any suprojects are defined in the config
 
 
 # pepr 0.0.4
