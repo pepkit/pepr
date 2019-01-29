@@ -55,28 +55,45 @@ setMethod(
   }
 )
 
-setGeneric("checkSection", function(object, name)
+setGeneric("checkSection", function(object, sectionNames)
   standardGeneric("checkSection"))
 
 #' Check for existence of a section in the Project config
 #' 
-#' This function checks for the section in the config YAML file. Returns \code{TRUE} if it exists or \code{FALSE} and warning otherwise.
+#' This function checks for the section/nested sections in the config YAML file. Returns \code{TRUE} if it exist(s) or \code{FALSE} and warning otherwise.
 #' 
 #' @param object object of \code{\link[pepr]{Config-class}}
-#' @param name the name of the section to look for
+#' @param sectionNames the name of the section or names of the nested sections to look for
 #' 
 #' @return a logical indicating whether the section exists
+#' 
+#' #' @examples
+#' projectConfig = system.file("extdata", "example_peps-master",
+#' "example_subprojects1", "project_config.yaml", package="pepr")
+#' p=Project(projectConfig)
+#' checkSection(config(p),sectionNames = c("subprojects","newLib","metadata"))
 #' @export
 setMethod(
   "checkSection",
   signature = "Config",
-  definition = function(object, name) {
-    test=ifelse(is.null(pepr::config(p)[[name]]),FALSE,TRUE)
-    if(test){
-      return(TRUE)
+  definition = function(object, sectionNames) {
+    testList = object
+    counter = 1
+    test = F
+    while ((!test) && (!is.na(sectionNames[counter]))) {
+      if(!is.list(testList)){
+        warning("The section '", paste(sectionNames, collapse = ': '),"' does not exist.")
+        return(FALSE)
+      }
+      test = is.null(testList[[sectionNames[counter]]]) 
+      if(test){
+        warning("The section '", paste(sectionNames, collapse = ': '),"' does not exist.")
+        return(FALSE)
+      }
+      testList = testList[[sectionNames[counter]]]
+      counter = counter + 1
     }
-    warning("The config YAML is missing the '",name ,"' section.")
-    return(FALSE)
+    return(TRUE)
   }
 )
 

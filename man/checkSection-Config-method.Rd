@@ -5,16 +5,22 @@
 \alias{checkSection,Config-method}
 \title{Check for existence of a section in the Project config}
 \usage{
-\S4method{checkSection}{Config}(object, name)
+\S4method{checkSection}{Config}(object, sectionNames)
 }
 \arguments{
 \item{object}{object of \code{\link[pepr]{Config-class}}}
 
-\item{name}{the name of the section to look for}
+\item{sectionNames}{the name of the section or names of the nested sections to look for}
 }
 \value{
 a logical indicating whether the section exists
+
+#' @examples
+projectConfig = system.file("extdata", "example_peps-master",
+"example_subprojects1", "project_config.yaml", package="pepr")
+p=Project(projectConfig)
+checkSection(config(p),sectionNames = c("subprojects","newLib","metadata"))
 }
 \description{
-This function checks for the section in the config YAML file. Returns \code{TRUE} if it exists or \code{FALSE} and warning otherwise.
+This function checks for the section/nested sections in the config YAML file. Returns \code{TRUE} if it exist(s) or \code{FALSE} and warning otherwise.
 }
