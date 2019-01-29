@@ -81,12 +81,7 @@ setMethod(
     counter = 1
     test = F
     while ((!test) && (!is.na(sectionNames[counter]))) {
-      if(!is.list(testList)){
-        warning("The section '", paste(sectionNames, collapse = ': '),"' does not exist.")
-        return(FALSE)
-      }
-      test = is.null(testList[[sectionNames[counter]]]) 
-      if(test){
+      if((!is.list(testList)) || is.null(testList[[sectionNames[counter]]])){
         warning("The section '", paste(sectionNames, collapse = ': '),"' does not exist.")
         return(FALSE)
       }
