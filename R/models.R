@@ -67,7 +67,7 @@ setGeneric("checkSection", function(object, sectionNames)
 #' 
 #' @return a logical indicating whether the section exists
 #' 
-#' #' @examples
+#' @examples
 #' projectConfig = system.file("extdata", "example_peps-master",
 #' "example_subprojects1", "project_config.yaml", package="pepr")
 #' p=Project(projectConfig)

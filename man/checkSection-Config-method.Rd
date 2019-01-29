@@ -14,13 +14,13 @@
 }
 \value{
 a logical indicating whether the section exists
-
-#' @examples
+}
+\description{
+This function checks for the section/nested sections in the config YAML file. Returns \code{TRUE} if it exist(s) or \code{FALSE} and warning otherwise.
+}
+\examples{
 projectConfig = system.file("extdata", "example_peps-master",
 "example_subprojects1", "project_config.yaml", package="pepr")
 p=Project(projectConfig)
 checkSection(config(p),sectionNames = c("subprojects","newLib","metadata"))
-}
-\description{
-This function checks for the section/nested sections in the config YAML file. Returns \code{TRUE} if it exist(s) or \code{FALSE} and warning otherwise.
 }
