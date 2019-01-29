@@ -55,6 +55,30 @@ setMethod(
   }
 )
 
+setGeneric("checkSection", function(object, name)
+  standardGeneric("checkSection"))
+
+#' Check for existence of a section in the Project config
+#' 
+#' This function checks for the section in the config YAML file. Returns \code{TRUE} if it exists or \code{FALSE} and warning otherwise.
+#' 
+#' @param object object of \code{\link[pepr]{Config-class}}
+#' @param name the name of the section to look for
+#' 
+#' @return a logical indicating whether the section exists
+#' @export
+setMethod(
+  "checkSection",
+  signature = "Config",
+  definition = function(object, name) {
+    test=ifelse(is.null(pepr::config(p)[[name]]),FALSE,TRUE)
+    if(test){
+      return(TRUE)
+    }
+    warning("The config YAML is missing the '",name ,"' section.")
+    return(FALSE)
+  }
+)
 
 setMethod(
   "show",
