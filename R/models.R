@@ -60,7 +60,7 @@ setGeneric("checkSection", function(object, sectionNames)
 
 #' Check for existence of a section in the Project config
 #' 
-#' This function checks for the section/nested sections in the config YAML file. Returns \code{TRUE} if it exist(s) or \code{FALSE} and warning otherwise.
+#' This function checks for the section/nested sections in the config YAML file. Returns \code{TRUE} if it exist(s) or \code{FALSE} otherwise.
 #' 
 #' @param object object of \code{\link[pepr]{Config-class}}
 #' @param sectionNames the name of the section or names of the nested sections to look for
@@ -82,7 +82,6 @@ setMethod(
     test = F
     while ((!test) && (!is.na(sectionNames[counter]))) {
       if((!is.list(testList)) || is.null(testList[[sectionNames[counter]]])){
-        warning("The section '", paste(sectionNames, collapse = ': '),"' does not exist.")
         return(FALSE)
       }
       testList = testList[[sectionNames[counter]]]
