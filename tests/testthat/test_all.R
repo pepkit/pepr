@@ -164,6 +164,16 @@ test_that("printNestedList throws errors", {
   expect_error(.printNestedList(1))
 })
 
+test_that("fetchSamples throws errors", {
+  expect_error(fetchSamples(samples = samples(p),attr="test",func = function(x){},action = "include"))
+  expect_error(fetchSamples(samples = samples(p),attr="file",func = function(x){stop("test")},action = "include"))
+})
+
+test_that("fetchSamples returns correct rows count", {
+  expect_equal(NROW(fetchSamples(samples = samples(p),attr="file",func = function(x){grep("frog1", x)},action = "include")),1)
+  expect_equal(NROW(fetchSamples(samples = samples(p),attr="sample_name",func = function(x){which(x=="frog_1")},action = "include")),1)
+})
+
 context("Project operations")
 
 test_that("getSubsample method throws errors", {
@@ -214,3 +224,12 @@ test_that("listSubprojects exported method returns correct object type, length a
             expect_equal(length(listSubprojects(p_subproj1)), 2)
           })
 
+test_that("checkSection returns a correct type", {
+  expect_is(checkSection(config(p),"metadata"),"logical")
+  expect_is(checkSection(config(p),"test"),"logical")
+})
+
+test_that("checkSection returns correct value", {
+  expect_equal(checkSection(config(p),c("metadata","sample_annotation")), T)
+  expect_equal(checkSection(config(p),c("test")), F)
+})

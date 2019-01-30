@@ -103,10 +103,10 @@ fetchSamples = function(samples, attr=NULL, func=NULL, action="include"){
         rowIdx = tryCatch(expr = {
           do.call(func,list(x=samples[[attr]]))
         },error = function(e){
-          message("Error captured")
+          message("Error in your function: ")
           message(e)
         },warning = function(w){
-          message("Warning captured")
+          message("Warning in your function: ")
           message(w)
         })
       }else{
