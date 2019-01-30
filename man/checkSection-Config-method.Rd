@@ -16,7 +16,7 @@
 a logical indicating whether the section exists
 }
 \description{
-This function checks for the section/nested sections in the config YAML file. Returns \code{TRUE} if it exist(s) or \code{FALSE} and warning otherwise.
+This function checks for the section/nested sections in the config YAML file. Returns \code{TRUE} if it exist(s) or \code{FALSE} otherwise.
 }
 \examples{
 projectConfig = system.file("extdata", "example_peps-master",

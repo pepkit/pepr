@@ -163,7 +163,6 @@
   # this way both bracketed and not bracketed ones will be replaced
   if(all(attr(matchesBracket[[1]], "match.length") != -1)) path = replaceEnvVars(path, matchesBracket)
   if(all(attr(matches[[1]], "match.length") != -1)) path = replaceEnvVars(path, matches)
-  
   return(path)
 }
 
@@ -180,13 +179,16 @@
 #' @param exclude character vector of args that should be excluded from 
 #' the interpolation. The elements in the vector should match the names of the
 #' elements in the \code{args} list
+#' @param parent a directory that will be used to make the path absolute
 #' @export
 #' @examples
 #' .strformat("~/{VAR1}{VAR2}_file", list(VAR1="hi", VAR2="hello"))
 #' .strformat("$HOME/{VAR1}{VAR2}_file", list(VAR1="hi", VAR2="hello"))
-.strformat = function(string, args, exclude) {
+.strformat = function(string, args, exclude, parent=NULL) {
   result = c()
-  x = .expandPath(string)
+  # if parent provided, make the path absolute and expand it.
+  #  Otherwise, just expand it
+  x = ifelse(is.null(parent),.expandPath(string),.makeAbsPath(string, parent))
   # str_interp requires variables encoded like ${var}, so we substitute
   # the {var} syntax here.
   x = stringr::str_replace_all(x, "\\{", "${")

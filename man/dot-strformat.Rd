@@ -4,7 +4,7 @@
 \alias{.strformat}
 \title{Format a string like python's format function}
 \usage{
-.strformat(string, args, exclude)
+.strformat(string, args, exclude, parent = NULL)
 }
 \arguments{
 \item{string}{String with variables encoded}
@@ -14,6 +14,8 @@
 \item{exclude}{character vector of args that should be excluded from 
 the interpolation. The elements in the vector should match the names of the
 elements in the \code{args} list}
+
+\item{parent}{a directory that will be used to make the path absolute}
 }
 \description{
 Given a string with environment variables (encoded like \code{${VAR}} or \code{$VAR}), and

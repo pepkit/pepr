@@ -374,7 +374,8 @@ setMethod(
   # Set default derived columns - deprecated, to be deleted
   dc = unique(append(.Object@config$derived_attributes, "data_source"))
   .Object@config$derived_attributes = dc
-  
+  # Get the path to the direcotry containing the config
+  parentDir = dirname(.Object@file)
   # Convert samples table into list of individual samples for processing
   cfg = .Object@config
   tempSamples = .Object@samples
@@ -397,7 +398,8 @@ setMethod(
       }
       regex = cfg$data_sources[[sampDataSource]]
       if (!is.null(regex)) {
-        samp[[column]] = list(.strformat(regex, as.list(samp), exclude))
+        a = .strformat(regex, as.list(samp), exclude, parentDir)
+        samp[[column]] = list(system(sprintf("echo %s",a), intern = TRUE))
       }
       listOfSamples[[iSamp]] = samp
     }
