@@ -5,12 +5,15 @@
 ## Added
 
 * add `activateSubproject` method
+* add `fetchSamples` function
+* add `checkSection` method on `Config` object
 
 ## Changed
 
 * if the `subproject` argument of the `Project()` function is not present in the config, the original project is returned
 * paths in the `bioconductor` section of the config are made aboslute and environment varaiables are read
 * no sample annotation is allowed if any suprojects are defined in the config
+* fixed the problem with paths expansions in sample subannotaitons case
 
 
 # pepr 0.0.4

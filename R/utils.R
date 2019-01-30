@@ -59,3 +59,64 @@
   }
   return(DF)
 }
+
+#' Collect samples fulfilling the specified requirements
+#' 
+#' This funciton collects the samples from a \code{\link[data.table]{data.table-class}} object that
+#' fulfill the requirements of an attribute \code{attr} specified with 
+#' the \code{fun} argument
+#' 
+#' The anonymous function provided in the \code{func} argument has to return a integer(s) that indicate the rows that the \code{action} should be performed on.
+#' Core expressions which are most useful to implement the anonymous function are:
+#' \itemize{
+#' \item \code{\link[base]{which}} with inequality signs: \code{==,>,<}
+#' \item \code{\link[base]{grep}}
+#' }
+#' 
+#' @param samples an object of \code{\link[data.table]{data.table-class}} class
+#' @param attr a string specifying a column in the \code{samples}
+#' @param func an anonymous function, see Details for more information
+#' @param action a string (either \code{include} or \code{exclude}) that specifies whether the function should select the row or exclude it.
+#' 
+#' @examples 
+#' projectConfig = system.file("extdata", "example_peps-master",
+#' "example_subprojects1", "project_config.yaml", package="pepr")
+#' p = Project(projectConfig)
+#' s = samples(p)
+#' fetchSamples(s,attr = "sample_name", func=function(x){ which(x=="pig_0h") },action="include")
+#' fetchSamples(s,attr = "sample_name", func=function(x){ which(x=="pig_0h") },action="exclude")
+#' fetchSamples(s,attr = "sample_name", func=function(x){ grep("pig_",x) },action="include")
+#' @export
+fetchSamples = function(samples, attr=NULL, func=NULL, action="include"){
+  if(!is(samples, "data.table"))
+    stop("'samples' argument has to be a data.table object, got: '",
+         class(samples),"'")
+  if(!action %in% c("include","exclude"))
+    stop("'action' argument has to be either 'include' or 'exclude', got '", action,"'")
+  attrNames = colnames(samples)
+  if(!is.null(attr)){
+    if(!attr %in% attrNames) 
+      stop("The samples attribute '", attr,"' was not found.")
+    if (!is.null(func)) {
+      # use the anonymous function if provided
+      if (is.function(func)) {
+        rowIdx = tryCatch(expr = {
+          do.call(func,list(x=samples[[attr]]))
+        },error = function(e){
+          message("Error captured")
+          message(e)
+        },warning = function(w){
+          message("Warning captured")
+          message(w)
+        })
+      }else{
+        stop("The anonymous function you provided is invalid.")
+      }
+    }
+  }
+  if(length(rowIdx) < 1 || (!is(rowIdx,"integer")))
+    stop("your function returned invalid indices: '", rowIdx,"'")
+  # use action arg
+  if(action=="include") return(samples[rowIdx, ])
+    return(samples[!rowIdx, ])
+}
