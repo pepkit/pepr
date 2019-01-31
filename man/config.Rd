@@ -2,12 +2,12 @@
 % Please edit documentation in R/models.R
 \name{config}
 \alias{config}
-\title{View PEP config of the object of \code{\link{Project-class}} class}
+\title{View PEP config of the object of \code{\link{Project-class}}}
 \usage{
-config(object, ...)
+config(object)
 }
 \arguments{
-\item{object}{an object of \code{\link{Project-class}} class}
+\item{object}{an object of \code{\link{Project-class}}}
 }
 \value{
 a list with the config file

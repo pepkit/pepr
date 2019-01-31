@@ -8,6 +8,8 @@
 }
 \arguments{
 \item{lst}{list object to print}
+
+\item{level}{the indentation level}
 }
 \description{
 Prints a nested list in a way that looks nice
@@ -22,5 +24,5 @@ projectConfig = system.file("extdata",
 "project_config.yaml",
 package = "pepr")
 p = Project(file = projectConfig)
-.printNestedList(config(p))
+.printNestedList(config(p),level=2)
 }

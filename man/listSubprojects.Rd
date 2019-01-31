@@ -7,7 +7,7 @@
 listSubprojects(.Object)
 }
 \arguments{
-\item{project}{an object of \code{\link{Project-class}} class}
+\item{.Object}{an object of \code{\link{Project-class}}}
 }
 \value{
 names of the available subprojects
@@ -16,6 +16,15 @@ names of the available subprojects
 Lists available subprojects within a \code{\link{Project-class}} object.
 }
 \details{
-The subprojects can be activated by passing their names 
-to the \code{\link{Project-class}} object constructor (\code{\link{Project}})
+The subprojects can be activated by passing their names to the  \code{\link{activateSubproject}} method
+}
+\examples{
+projectConfig = system.file("extdata",
+"example_peps-master",
+"example_subprojects1",
+"project_config.yaml",
+package = "pepr")
+p = Project(file = projectConfig)
+availSubprojects = listSubprojects(p)
+activateSubproject(p,availSubprojects[1])
 }

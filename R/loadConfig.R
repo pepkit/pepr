@@ -6,7 +6,7 @@
 #' @param filename file path to config file
 #' 
 #' @seealso \url{https://pepkit.github.io/}
-.loadConfig = function(filename = NULL, sp = NULL) {
+.loadConfig = function(filename=NULL, sp=NULL) {
   if (!file.exists(filename)) {
     stop("No config file found")
   }
@@ -17,11 +17,11 @@
   cfg = methods::new("Config", config_file)
   
   if (is.null(cfg)) {
-    cat("Config file not loaded.", fill = T)
+    message("Config file not loaded.")
     return()
   }
   
-  cat("Loaded config file: ", filename, fill = T)
+  message("Loaded config file: ", filename)
   
   # Show available subprojects
   .listSubprojects(cfg)
@@ -34,7 +34,14 @@
   mdn = names(cfg$metadata)
   
   cfg$metadata = .makeMetadataSectionAbsolute(cfg, parent = dirname(filename))
-  
+  # make data_sources section absolute
+  if(!is.null(cfg$data_sources)) 
+    cfg$data_sources = lapply(cfg$data_sources, .expandPath)
+  # make bioconductor$read_fun_path value absolute, used in BiocProject
+  if(!is.null(cfg$bioconductor$read_fun_path)){
+    path = gsub("\\./","",cfg$bioconductor$read_fun_path)
+    cfg$bioconductor$read_fun_path = .makeAbsPath(path, parent=dirname(filename))
+  }
   # Infer default project name
   
   if (is.null(cfg$name)) {
@@ -47,33 +54,41 @@
     }
     cfg$name = maybeProjectName
   }
-  
   return(cfg)
 }
 
 .updateSubconfig = function(cfg, sp = NULL) {
   if (!is.null(sp)) {
     if (is.null(cfg$subprojects[[sp]])) {
-      cat("Subproject not found: ", sp, fill = T)
-      return()
+      warning("Subproject not found: ", sp)
+      message("Subproject was not activated")
+      return(cfg)
     }
     cfg = utils::modifyList(cfg, cfg$subprojects[[sp]])
-    cat("Loading subproject: ", sp, fill = T)
+    message("Loading subproject: ", sp)
   }
   return(cfg)
 }
 
 
 
-.listSubprojects = function(cfg) {
+.listSubprojects = function(cfg, style="message") {
+  # this function can be used in object show method, where cat is preferred 
+  # or for user information when the Project is created, where message
+  # is preferred
+  if(!style == "message"){
+    printFun = pryr::partial(cat, fill = T)
+  }else{
+    printFun = message
+  }
   # make sure the extracted config is of proper class
   if(!methods::is(cfg,"Config")) 
     stop("The Project object does not contain a vaild config")
   
   if (length(names(cfg$subprojects)) > 0) {
     # If there are any show a cat and return if needed
-    cat("  subprojects: ", paste0(names(cfg$subprojects), 
-                                  collapse = ","), fill = T)
+    printFun("  subprojects: ", paste0(names(cfg$subprojects), 
+                                  collapse = ","))
     invisible(names(cfg$subprojects))
   } else{
     # Otherwise return NULL for testing purposes
@@ -139,7 +154,7 @@
   }
   
   # if it's a path, make it absolute
-  path = path.expand(path)
+  path = normalizePath(path.expand(path),mustWork = FALSE)
   # search for env vars, both bracketed and not 
   matchesBracket = gregexpr("\\$\\{\\w+\\}", path, perl = T)
   matches = gregexpr("\\$\\w+", path, perl = T)
@@ -148,7 +163,6 @@
   # this way both bracketed and not bracketed ones will be replaced
   if(all(attr(matchesBracket[[1]], "match.length") != -1)) path = replaceEnvVars(path, matchesBracket)
   if(all(attr(matches[[1]], "match.length") != -1)) path = replaceEnvVars(path, matches)
-  
   return(path)
 }
 
@@ -165,13 +179,16 @@
 #' @param exclude character vector of args that should be excluded from 
 #' the interpolation. The elements in the vector should match the names of the
 #' elements in the \code{args} list
+#' @param parent a directory that will be used to make the path absolute
 #' @export
 #' @examples
 #' .strformat("~/{VAR1}{VAR2}_file", list(VAR1="hi", VAR2="hello"))
 #' .strformat("$HOME/{VAR1}{VAR2}_file", list(VAR1="hi", VAR2="hello"))
-.strformat = function(string, args, exclude) {
+.strformat = function(string, args, exclude, parent=NULL) {
   result = c()
-  x = .expandPath(string)
+  # if parent provided, make the path absolute and expand it.
+  #  Otherwise, just expand it
+  x = ifelse(is.null(parent),.expandPath(string),.makeAbsPath(string, parent))
   # str_interp requires variables encoded like ${var}, so we substitute
   # the {var} syntax here.
   x = stringr::str_replace_all(x, "\\{", "${")
@@ -230,5 +247,7 @@
   }
     absoluteMetadata[[metadataAttribute]] = values
   }
+  
+
   return(absoluteMetadata)
 }

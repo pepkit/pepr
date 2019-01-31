@@ -28,10 +28,10 @@ setClass("Project",
 #' "example_subprojects1", "project_config.yaml", package="pepr")
 #' p=Project(projectConfig)
 #' @export Project
-Project = function(file = character(),
+Project = function(file = NULL,
                    # samples = list(),
                    # config = list(),
-                   subproject = character()) {
+                   subproject = NULL) {
   methods::new("Project", file = file, subproject = subproject)
 }
 
@@ -55,6 +55,41 @@ setMethod(
   }
 )
 
+setGeneric("checkSection", function(object, sectionNames)
+  standardGeneric("checkSection"))
+
+#' Check for existence of a section in the Project config
+#' 
+#' This function checks for the section/nested sections in the config YAML file. Returns \code{TRUE} if it exist(s) or \code{FALSE} otherwise.
+#' 
+#' @param object object of \code{\link[pepr]{Config-class}}
+#' @param sectionNames the name of the section or names of the nested sections to look for
+#' 
+#' @return a logical indicating whether the section exists
+#' 
+#' @examples
+#' projectConfig = system.file("extdata", "example_peps-master",
+#' "example_subprojects1", "project_config.yaml", package="pepr")
+#' p=Project(projectConfig)
+#' checkSection(config(p),sectionNames = c("subprojects","newLib","metadata"))
+#' @export
+setMethod(
+  "checkSection",
+  signature = "Config",
+  definition = function(object, sectionNames) {
+    testList = object
+    counter = 1
+    test = F
+    while ((!test) && (!is.na(sectionNames[counter]))) {
+      if((!is.list(testList)) || is.null(testList[[sectionNames[counter]]])){
+        return(FALSE)
+      }
+      testList = testList[[sectionNames[counter]]]
+      counter = counter + 1
+    }
+    return(TRUE)
+  }
+)
 
 setMethod(
   "show",
@@ -64,19 +99,19 @@ setMethod(
     cat("  file: ", object@file, fill = T)
     cat("  samples: ", NROW(object@samples), fill = T)
     if (length(object@config) != 0) {
-      .listSubprojects(object@config)
+      .listSubprojects(object@config, style="cat")
     }
     invisible(NULL)
   }
 )
 
 
-#' View PEP config of the object of \code{\link{Project-class}} class
+#' View PEP config of the object of \code{\link{Project-class}}
 #'
 #' This method can be used to view the config slot of
 #' the \code{\link{Project-class}} class
 #'
-#' @param object an object of \code{\link{Project-class}} class
+#' @param object an object of \code{\link{Project-class}}
 #'
 #' @return a list with the config file
 #'
@@ -87,7 +122,7 @@ setMethod(
 #' config(p)
 #'
 #' @export
-setGeneric("config", function(object, ...)
+setGeneric("config", function(object)
   standardGeneric("config"))
 
 setMethod(
@@ -99,12 +134,12 @@ setMethod(
 )
 
 
-#' View samples in the objects of \code{\link{Project-class}} class
+#' View samples in the objects of \code{\link{Project-class}} 
 #'
 #' This method can be used to view the samples slot
 #' of the \code{\link{Project-class}} class
 #'
-#' @param object an object of \code{\link{Project-class}} class
+#' @param object an object of \code{\link{Project-class}} 
 #'
 #' @return a data.table with the with metadata about samples
 #' @examples
@@ -114,7 +149,7 @@ setMethod(
 #' samples(p)
 #'
 #' @export
-setGeneric("samples", function(object, ...)
+setGeneric("samples", function(object)
   standardGeneric("samples"))
 
 setMethod(
@@ -128,13 +163,13 @@ setMethod(
 setMethod("initialize", "Project", function(.Object, ...) {
   .Object = methods::callNextMethod(.Object)  # calls generic initialize
   ellipsis <- list(...)
-  if (length(ellipsis$file) != 0) {
+  if (!is.null(ellipsis$file)) {
     # check if file path provided
     .Object@file = ellipsis$file
     .Object@config = .loadConfig(ellipsis$file)
-    if (length(ellipsis$subproject) != 0) {
+    if (!is.null(ellipsis$subproject)) {
       # check if subproject provided
-      .Object = .activateSubproject(.Object, ellipsis$subproject)
+      .Object = activateSubproject(.Object, ellipsis$subproject)
     } else{
       .Object = .loadSampleAnnotation(.Object)
       .Object = .loadSampleSubannotation(.Object)
@@ -246,12 +281,19 @@ setMethod(
 #'
 #' Lists available subprojects within a \code{\link{Project-class}} object.
 #'
-#' The subprojects can be activated by passing their names
-#' to the \code{\link{Project-class}} object constructor (\code{\link{Project}})
+#' The subprojects can be activated by passing their names to the  \code{\link{activateSubproject}} method
 #'
-#' @param project an object of \code{\link{Project-class}} class
+#' @param .Object an object of \code{\link{Project-class}}
 #' @return names of the available subprojects
-#'
+#' @examples 
+#' projectConfig = system.file("extdata",
+#' "example_peps-master",
+#' "example_subprojects1",
+#' "project_config.yaml",
+#' package = "pepr")
+#' p = Project(file = projectConfig)
+#' availSubprojects = listSubprojects(p)
+#' activateSubproject(p,availSubprojects[1])
 #' @export
 setGeneric("listSubprojects", function(.Object)
   standardGeneric("listSubprojects"))
@@ -261,28 +303,39 @@ setMethod(
   signature = signature(.Object = "Project"),
   definition = function(.Object) {
     config = config(.Object)
-    .listSubprojects(cfg = config)
+    .listSubprojects(cfg = config, style="message")
   }
 )
 
 
-#' Activate other subproject in objects of \code{\link{Project-class}} class
+#' Activate other subproject in objects of \code{\link{Project-class}}
 #'
-#' This method switches the between the subprojects
+#' This method switches between the subprojects
 #' within the \code{\link{Project-class}} object
 #'
 #' To check what are the subproject names
-#' call \code{listSubprojects(config(p))}, where \code{p} is the object
+#' call \code{listSubprojects(p)}, where \code{p} is the object
 #' of \code{\link{Project-class}} class
 #'
 #' @param .Object an object of class \code{\link{Project-class}}
 #' @param sp character with the subproject name
-setGeneric(".activateSubproject", function(.Object, sp)
-  standardGeneric(".activateSubproject"))
+#' 
+#' @examples 
+#' projectConfig = system.file("extdata",
+#' "example_peps-master",
+#' "example_subprojects1",
+#' "project_config.yaml",
+#' package = "pepr")
+#' p = Project(file = projectConfig)
+#' availSubprojects = listSubprojects(p)
+#' activateSubproject(p,availSubprojects[1])
+#' @export
+setGeneric("activateSubproject", function(.Object, sp)
+  standardGeneric("activateSubproject"))
 
 
 setMethod(
-  f = ".activateSubproject",
+  f = "activateSubproject",
   signature = signature(.Object = "Project", sp = "character"),
   definition = function(.Object, sp) {
     .Object@config = .updateSubconfig(.Object@config, sp)
@@ -321,7 +374,8 @@ setMethod(
   # Set default derived columns - deprecated, to be deleted
   dc = unique(append(.Object@config$derived_attributes, "data_source"))
   .Object@config$derived_attributes = dc
-  
+  # Get the path to the direcotry containing the config
+  parentDir = dirname(.Object@file)
   # Convert samples table into list of individual samples for processing
   cfg = .Object@config
   tempSamples = .Object@samples
@@ -344,7 +398,8 @@ setMethod(
       }
       regex = cfg$data_sources[[sampDataSource]]
       if (!is.null(regex)) {
-        samp[[column]] = list(.strformat(regex, as.list(samp), exclude))
+        a = .strformat(regex, as.list(samp), exclude, parentDir)
+        samp[[column]] = list(system(sprintf("echo %s",a), intern = TRUE))
       }
       listOfSamples[[iSamp]] = samp
     }
@@ -417,9 +472,12 @@ setMethod(
   if (.safeFileExists(sampleAnnotationPath)) {
     samples = sampleReadFunc(sampleAnnotationPath)
   } else{
-    cat("No sample annotation file:", sampleAnnotationPath, fill = T)
-    stop()
-    samples = data.frame()
+    if(!is.null(.Object@config$subprojects)){
+    warning("No sample annotation file: ", sampleAnnotationPath)
+    samples = data.table::data.table()
+    }else{
+      stop("No sample annotation file: ", sampleAnnotationPath)
+    }
   }
   .Object@samples = samples
   return(.Object)
@@ -508,6 +566,7 @@ setMethod(
 #' Useful for displaying the config of a PEP
 #'
 #' @param lst list object to print
+#' @param level the indentation level
 #'
 #' @examples
 #' projectConfig = system.file("extdata",
@@ -516,7 +575,7 @@ setMethod(
 #' "project_config.yaml",
 #' package = "pepr")
 #' p = Project(file = projectConfig)
-#' .printNestedList(config(p))
+#' .printNestedList(config(p),level=2)
 #' @export
 .printNestedList = function(lst, level = 0) {
   if (!is.list(lst))
