@@ -1,0 +1,6 @@
+metadata:
+  sample_table: sample_table.csv
+  sample_subtable: sample_subtable.csv
+  output_dir: $HOME/hello_looper_results
+  pipeline_interfaces: [../pipeline/pipeline_interface.yaml]
+

@@ -1,0 +1,6 @@
+metadata:
+  sample_table: sample_table.csv
+
+constant_attributes:
+    read_type: SINGLE
+
