@@ -2,66 +2,28 @@ context("Project object creation/loadConfig")
 
 # get data ----------------------------------------------------------------
 
-DF = mtcars
+
+branch = "dev"
 
 p = Project(
   file = system.file(
     "extdata",
-    "example_peps-dev",
+    paste0("example_peps-",branch),
     "example_basic",
     "project_config.yaml",
     package = "pepr"
   )
 )
-p_file_missing = p
-p_file_missing@config$metadata$sample_table = "missing"
-p_subproj1 = Project(
-  file = system.file(
-    "extdata",
-    "example_peps-dev",
-    "example_subprojects1",
-    "project_config.yaml",
-    package = "pepr"
-  )
-)
-p_subproj2 = Project(
-  file = system.file(
-    "extdata",
-    "example_peps-dev",
-    "example_subprojects2",
-    "project_config.yaml",
-    package = "pepr"
-  )
-)
-p_sub = Project(
-  file = system.file(
-    "extdata",
-    "example_peps-dev",
-    "example_subtable1",
-    "project_config.yaml",
-    package = "pepr"
-  )
-)
-p_implied = Project(
-  file = system.file(
-    "extdata",
-    "example_peps-dev",
-    "example_implied",
-    "project_config.yaml",
-    package = "pepr"
-  )
-)
-
 yaml = yaml.load_file(system.file(
   "extdata",
-  "example_peps-dev",
+  paste0("example_peps-",branch),
   "example_subprojects2",
   "project_config.yaml",
   package = "pepr"
 ))
 p_yaml=Project(system.file(
   "extdata",
-  "example_peps-dev",
+  paste0("example_peps-",branch),
   "example_subprojects2",
   "project_config.yaml",
   package = "pepr"
