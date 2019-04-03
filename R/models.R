@@ -253,8 +253,8 @@ setMethod(
   definition = function(.Object, sampleName, subsampleName) {
     if (is.null(.Object@samples$subsample_name))
       stop(
-        "There is no subsample_name attribute in the subannotation
-        table, therefore this method cannot be called."
+        "There is no subsample_name attribute in the subannotation", 
+        " table, therefore this method cannot be called."
       )
     sampleNames = unlist(.Object@samples$sample_name)
     rowNumber = which(sampleNames == sampleName)
@@ -497,13 +497,13 @@ setMethod(
   # Extracting needed slots
   if(is.null(.Object@config$metadata$subsample_table)){
     if(!is.null(.Object@config$metadata$sample_subannotation)){
-      .Object@config$metadata$subsample_table = 
+      .Object@config$metadata$sample_subtable = 
         .Object@config$metadata$sample_subannotation
       warning("'sample_subannotation' key in the 'metadata' section of the"
               ,"config is deprecated. Use 'sample_subtable' instead.")
     }
   }
-  sampleSubannotationPath = .Object@config$metadata$subsample_table
+  sampleSubannotationPath = .Object@config$metadata$sample_subtable
   samples = .Object@samples
   samples = .listifyDF(samples)
   #Reading sample subannonataion table, just like in annotation table
