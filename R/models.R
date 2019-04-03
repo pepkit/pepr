@@ -540,6 +540,9 @@ setMethod(
       # The column exists
       whichColSamples = which(names(samples) == colName)
       whichRowSamples = which(samples$sample_name == iName)
+      if(length(whichRowSamples) < 1){
+        stop("No samples named '", iName, "'")
+      }
       # Inserting element(s) into the list
       colList[[whichRowSamples]] = subTable[[colName]]
       # Inserting the list as a column in the data.frame
