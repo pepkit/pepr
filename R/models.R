@@ -336,18 +336,14 @@ setGeneric("activateSubproject", function(.Object, sp)
 
 setMethod(
   f = "activateSubproject",
-  signature = signature(.Object = "Project", sp = "character"),
+  signature = signature(.Object="Project", sp="character"),
   definition = function(.Object, sp) {
     .Object@config = .updateSubconfig(.Object@config, sp)
-    
     # Ensure that metadata paths are absolute and return the config.
     # This used to be all metadata columns; now it's just: results_subdir
     mdn = names(.Object@config$metadata)
-    
     .Object@config$metadata =
-      .makeMetadataSectionAbsolute(.Object@config,
-                                   parent = dirname(.Object@file))
-    
+      .makeMetadataSectionAbsolute(.Object@config, parent=dirname(.Object@file))
     .Object = .loadSampleAnnotation(.Object)
     .Object = .loadSampleSubannotation(.Object)
     .Object = .applyConstantAttributes(.Object)
@@ -468,24 +464,46 @@ setMethod(
   } else {
     sampleReadFunc = utils::read.table
   }
-  sampleAnnotationPath = .Object@config$metadata$sample_annotation
-  if (.safeFileExists(sampleAnnotationPath)) {
+  if(is.null(.Object@config$metadata$sample_table)){
+    if(!is.null(.Object@config$metadata$sample_annotation)){
+      .Object@config$metadata$sample_table = 
+        .Object@config$metadata$sample_annotation
+      warning("'sample_annotation' key in the 'metadata' section of the config "
+              ,"is deprecated. Use 'sample_table' instead.")
+    } else{
+        if(!is.null(.Object@config$subprojects)){
+          # if there are any subprojects, just warn and return empty data.table,
+          # maybe there's a 'sample_table' specified in the subproject
+          warning("No 'sample_table' key in the 'metadata' section of the " 
+                  ,"config")
+          .Object@samples = data.table::data.table()
+          return(.Object)
+        } else{
+          stop("No 'sample_table' key in the 'metadata' section of the config")
+        }
+    }
+  }
+  sampleAnnotationPath = .Object@config$metadata$sample_table
+  if(.safeFileExists(sampleAnnotationPath)){
     samples = sampleReadFunc(sampleAnnotationPath)
   } else{
-    if(!is.null(.Object@config$subprojects)){
-    warning("No sample annotation file: ", sampleAnnotationPath)
-    samples = data.table::data.table()
-    }else{
-      stop("No sample annotation file: ", sampleAnnotationPath)
-    }
+    stop("The sample annotation sheet does not exist: ", sampleAnnotationPath)
   }
   .Object@samples = samples
   return(.Object)
 }
 
-.loadSampleSubannotation = function(.Object) {
+.loadSampleSubannotation = function(.Object){
   # Extracting needed slots
-  sampleSubannotationPath = .Object@config$metadata$sample_subannotation
+  if(is.null(.Object@config$metadata$subsample_table)){
+    if(!is.null(.Object@config$metadata$sample_subannotation)){
+      .Object@config$metadata$subsample_table = 
+        .Object@config$metadata$sample_subannotation
+      warning("'sample_subannotation' key in the 'metadata' section of the"
+              ,"config is deprecated. Use 'sample_subtable' instead.")
+    }
+  }
+  sampleSubannotationPath = .Object@config$metadata$subsample_table
   samples = .Object@samples
   samples = .listifyDF(samples)
   #Reading sample subannonataion table, just like in annotation table

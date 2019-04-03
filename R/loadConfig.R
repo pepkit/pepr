@@ -33,7 +33,7 @@
   # This used to be all metadata columns; now it's just: results_subdir
   mdn = names(cfg$metadata)
   
-  cfg$metadata = .makeMetadataSectionAbsolute(cfg, parent = dirname(filename))
+  cfg$metadata = .makeMetadataSectionAbsolute(cfg, parent=dirname(filename))
   # make data_sources section absolute
   if(!is.null(cfg$data_sources)) 
     cfg$data_sources = lapply(cfg$data_sources, .expandPath)
@@ -57,7 +57,7 @@
   return(cfg)
 }
 
-.updateSubconfig = function(cfg, sp = NULL) {
+.updateSubconfig = function(cfg, sp=NULL) {
   if (!is.null(sp)) {
     if (is.null(cfg$subprojects[[sp]])) {
       warning("Subproject not found: ", sp)
@@ -69,8 +69,6 @@
   }
   return(cfg)
 }
-
-
 
 .listSubprojects = function(cfg, style="message") {
   # this function can be used in object show method, where cat is preferred 
@@ -87,8 +85,7 @@
   
   if (length(names(cfg$subprojects)) > 0) {
     # If there are any show a cat and return if needed
-    printFun("  subprojects: ", paste0(names(cfg$subprojects), 
-                                  collapse = ","))
+    printFun("  subprojects: ", paste0(names(cfg$subprojects), collapse=","))
     invisible(names(cfg$subprojects))
   } else{
     # Otherwise return NULL for testing purposes
