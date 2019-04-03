@@ -32,17 +32,18 @@ This series of examples below demonstrates how and why to use sample subannoatat
 
 ### Example 1: basic sample subannotation table
 
-This example demonstrates how the sample subannotation functionality is used. In this example, 2 samples have multiple input files that need merging (`frog_1` and `frog_2`), while 1 sample (`frog_3`) does not. Therefore, `frog_3` specifies its file in the `sample_annotation.csv` file, while the others leave that field blank and instead specify several files in the `sample_subannotation.csv` file.
+This example demonstrates how the sample subannotation functionality is used. In this example, 2 samples have multiple input files that need merging (`frog_1` and `frog_2`), while 1 sample (`frog_3`) does not. Therefore, `frog_3` specifies its file in the `sample_table.csv` file, while the others leave that field blank and instead specify several files in the `sample_subtable.csv` file.
 
 This example is made up of these components:
 
 * Project config file:
 ```{r, echo=FALSE,message=TRUE,collapse=TRUE,comment=" "}
+branch = "dev"
 library(pepr)
 projectConfig = system.file(
 "extdata",
-"example_peps-master",
-"example_subannotation1",
+paste0("example_peps-", branch),
+"example_subtable1",
 "project_config.yaml",
 package = "pepr"
 )
@@ -53,9 +54,9 @@ package = "pepr"
 library(knitr)
 sampleAnnotation = system.file(
 "extdata",
-"example_peps-master",
-"example_subannotation1",
-"sample_annotation.csv",
+paste0("example_peps-", branch),
+"example_subtable1",
+"sample_table.csv",
 package = "pepr"
 )
 sampleAnnotationDF = read.table(sampleAnnotation, sep = ",", header = T)
@@ -65,9 +66,9 @@ kable(sampleAnnotationDF, format = "html")
 ```{r ,echo=FALSE}
 sampleAnnotation = system.file(
   "extdata",
-  "example_peps-master",
-  "example_subannotation1",
-  "sample_subannotation.csv",
+  paste0("example_peps-", branch),
+  "example_subtable1",
+  "sample_subtable.csv",
   package = "pepr"
   )
   sampleAnnotationDF = read.table(sampleAnnotation, sep = ",", header = T)
@@ -79,8 +80,8 @@ Let's load the project config, create the Project object and see if multiple fil
 library(pepr)
 projectConfig1 = system.file(
 "extdata",
-"example_peps-master",
-"example_subannotation1",
+paste0("example_peps-", branch),
+"example_subtable1",
 "project_config.yaml",
 package = "pepr"
 )
@@ -107,7 +108,7 @@ getSubsample(p1, sampleName, subsampleName)
 
 ### Example 2: subannotations and derived attributes
 
-This example uses a `sample_subannotation.csv` file and a derived attributes to point to files. This is a rather complex example. Notice we must include the `file_id` column in the `sample_annotation.csv` file, and leave it blank; this is then populated by just some of the samples (`frog_1` and `frog_2`) in the `sample_subannotation.csv`, but is left empty for the samples that are not merged.
+This example uses a `sample_subtable.csv` file and a derived attributes to point to files. This is a rather complex example. Notice we must include the `file_id` column in the `sample_table.csv` file, and leave it blank; this is then populated by just some of the samples (`frog_1` and `frog_2`) in the `sample_subtable.csv`, but is left empty for the samples that are not merged.
 
 This example is made up of these components:
 
@@ -116,8 +117,8 @@ This example is made up of these components:
 library(pepr)
 projectConfig = system.file(
 "extdata",
-"example_peps-master",
-"example_subannotation2",
+paste0("example_peps-", branch),
+"example_subtable2",
 "project_config.yaml",
 package = "pepr"
 )
@@ -128,9 +129,9 @@ package = "pepr"
 library(knitr)
 sampleAnnotation = system.file(
 "extdata",
-"example_peps-master",
-"example_subannotation2",
-"sample_annotation.csv",
+paste0("example_peps-", branch),
+"example_subtable2",
+"sample_table.csv",
 package = "pepr"
 )
 sampleAnnotationDF = read.table(sampleAnnotation, sep = ",", header = T)
@@ -140,9 +141,9 @@ kable(sampleAnnotationDF, format = "html")
 ```{r ,echo=FALSE}
 sampleAnnotation = system.file(
   "extdata",
-  "example_peps-master",
-  "example_subannotation2",
-  "sample_subannotation.csv",
+  paste0("example_peps-", branch),
+  "example_subtable2",
+  "sample_subtable.csv",
   package = "pepr"
   )
   sampleAnnotationDF = read.table(sampleAnnotation, sep = ",", header = T)
@@ -153,8 +154,8 @@ Let's load the project config, create the Project object and see if multiple fil
 library(pepr)
 projectConfig2 = system.file(
 "extdata",
-"example_peps-master",
-"example_subannotation2",
+paste0("example_peps-", branch),
+"example_subtable2",
 "project_config.yaml",
 package = "pepr"
 )
@@ -170,7 +171,7 @@ kable(p2Samples)
 
 ### Example 3: subannotations and expansion characters
 
-This example gives the exact same results as Example 2, but in this case, uses a wildcard for `frog_2` instead of including it in the `sample_subannotation.csv` file. Since we can't use a wildcard and a subannotation for the same sample, this necessitates specifying a second data source class (`local_files_unmerged`) that uses an asterisk (*). The outcome is the same.
+This example gives the exact same results as Example 2, but in this case, uses a wildcard for `frog_2` instead of including it in the `sample_subtable.csv` file. Since we can't use a wildcard and a subannotation for the same sample, this necessitates specifying a second data source class (`local_files_unmerged`) that uses an asterisk (*). The outcome is the same.
 
 This example is made up of these components:
 
@@ -179,8 +180,8 @@ This example is made up of these components:
 library(pepr)
 projectConfig = system.file(
 "extdata",
-"example_peps-master",
-"example_subannotation3",
+paste0("example_peps-", branch),
+"example_subtable3",
 "project_config.yaml",
 package = "pepr"
 )
@@ -191,21 +192,21 @@ package = "pepr"
 library(knitr)
 sampleAnnotation = system.file(
 "extdata",
-"example_peps-master",
-"example_subannotation3",
-"sample_annotation.csv",
+paste0("example_peps-", branch),
+"example_subtable3",
+"sample_table.csv",
 package = "pepr"
 )
 sampleAnnotationDF = read.table(sampleAnnotation, sep = ",", header = T)
 kable(sampleAnnotationDF, format = "html") 
 ```
-* Sample subannotation table:
+* Sample subtable table:
 ```{r ,echo=FALSE}
 sampleAnnotation = system.file(
   "extdata",
-  "example_peps-master",
-  "example_subannotation3",
-  "sample_subannotation.csv",
+  paste0("example_peps-", branch),
+  "example_subtable3",
+  "sample_subtable.csv",
   package = "pepr"
   )
   sampleAnnotationDF = read.table(sampleAnnotation, sep = ",", header = T)
@@ -216,8 +217,8 @@ Let's load the project config, create the Project object and see if multiple fil
 library(pepr)
 projectConfig3 = system.file(
 "extdata",
-"example_peps-master",
-"example_subannotation3",
+paste0("example_peps-", branch),
+"example_subtable3",
 "project_config.yaml",
 package = "pepr"
 )
@@ -242,8 +243,8 @@ This example is made up of these components:
 library(pepr)
 project_config = system.file(
 "extdata",
-"example_peps-master",
-"example_subannotation4",
+paste0("example_peps-", branch),
+"example_subtable4",
 "project_config.yaml",
 package = "pepr"
 )
@@ -254,9 +255,9 @@ package = "pepr"
 library(knitr)
 sampleAnnotation = system.file(
 "extdata",
-"example_peps-master",
-"example_subannotation4",
-"sample_annotation.csv",
+paste0("example_peps-", branch),
+"example_subtable4",
+"sample_table.csv",
 package = "pepr"
 )
 sampleAnnotationDF = read.table(sampleAnnotation, sep = ",", header = T)
@@ -266,9 +267,9 @@ kable(sampleAnnotationDF, format = "html")
 ```{r ,echo=FALSE}
 sampleAnnotation = system.file(
   "extdata",
-  "example_peps-master",
-  "example_subannotation4",
-  "sample_subannotation.csv",
+  paste0("example_peps-", branch),
+  "example_subtable4",
+  "sample_subtable.csv",
   package = "pepr"
   )
   sampleAnnotationDF = read.table(sampleAnnotation, sep = ",", header = T)
@@ -279,8 +280,8 @@ Let's load the project config, create the Project object and see if multiple fil
 library(pepr)
 projectConfig4 = system.file(
 "extdata",
-"example_peps-master",
-"example_subannotation4",
+paste0("example_peps-", branch),
+"example_subtable4",
 "project_config.yaml",
 package = "pepr"
 )
@@ -306,8 +307,8 @@ This example is made up of these components:
 library(pepr)
 project_config = system.file(
 "extdata",
-"example_peps-master",
-"example_subannotation5",
+paste0("example_peps-", branch),
+"example_subtable5",
 "project_config.yaml",
 package = "pepr"
 )
@@ -318,9 +319,9 @@ package = "pepr"
 library(knitr)
 sampleAnnotation = system.file(
 "extdata",
-"example_peps-master",
-"example_subannotation5",
-"sample_annotation.csv",
+paste0("example_peps-", branch),
+"example_subtable5",
+"sample_table.csv",
 package = "pepr"
 )
 sampleAnnotationDF = read.table(sampleAnnotation, sep = ",", header = T)
@@ -330,9 +331,9 @@ kable(sampleAnnotationDF, format = "html")
 ```{r ,echo=FALSE}
 sampleAnnotation = system.file(
   "extdata",
-  "example_peps-master",
-  "example_subannotation5",
-  "sample_subannotation.csv",
+  paste0("example_peps-", branch),
+  "example_subtable5",
+  "sample_subtable.csv",
   package = "pepr"
   )
   sampleAnnotationDF = read.table(sampleAnnotation, sep = ",", header = T)
@@ -343,8 +344,8 @@ Let's load the project config, create the Project object and see if multiple fil
 library(pepr)
 projectConfig5 = system.file(
 "extdata",
-"example_peps-master",
-"example_subannotation5",
+paste0("example_peps-", branch),
+"example_subtable5",
 "project_config.yaml",
 package = "pepr"
 )

@@ -29,8 +29,9 @@ Load `pepr` and read in your project. We have provided a basic example to show y
 
 ```{r,collapse=TRUE}
 library('pepr')
+branch = "dev"
 projectConfigFile = system.file("extdata",
-	"example_peps-master",
+	paste0("example_peps-", branch),
 	"example_basic",
 	"project_config.yaml",
 	package="pepr")
