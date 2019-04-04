@@ -231,7 +231,7 @@ setMethod(
 #' projectConfig = system.file(
 #' "extdata",
 #' "example_peps-master",
-#' "example_subannotation1",
+#' "example_subtable1",
 #' "project_config.yaml",
 #' package = "pepr"
 #' )
@@ -497,13 +497,13 @@ setMethod(
   # Extracting needed slots
   if(is.null(.Object@config$metadata$subsample_table)){
     if(!is.null(.Object@config$metadata$sample_subannotation)){
-      .Object@config$metadata$sample_subtable = 
+      .Object@config$metadata$subsample_table = 
         .Object@config$metadata$sample_subannotation
       warning("'sample_subannotation' key in the 'metadata' section of the"
-              ,"config is deprecated. Use 'sample_subtable' instead.")
+              ,"config is deprecated. Use 'subsample_table' instead.")
     }
   }
-  sampleSubannotationPath = .Object@config$metadata$sample_subtable
+  sampleSubannotationPath = .Object@config$metadata$subsample_table
   samples = .Object@samples
   samples = .listifyDF(samples)
   #Reading sample subannonataion table, just like in annotation table

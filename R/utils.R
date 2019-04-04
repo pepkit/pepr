@@ -1,8 +1,8 @@
 
 #' Create an absolute path from a primary target and a parent candidate.
 #
-#' @param perhapsRelative: Path to primary target directory.
-#' @param  parent a path to parent folder to use if target isn't absolute.
+#' @param perhapsRelative Path to primary target directory.
+#' @param parent a path to parent folder to use if target isn't absolute.
 #
 #' @return	Target itself if already absolute, else target nested within parent.
 .makeAbsPath = function(perhapsRelative, parent) {
@@ -88,7 +88,7 @@
 #' fetchSamples(s,attr = "sample_name", func=function(x){ grep("pig_",x) },action="include")
 #' @export
 fetchSamples = function(samples, attr=NULL, func=NULL, action="include"){
-  if(!is(samples, "data.table"))
+  if(!methods::is(samples, "data.table"))
     stop("'samples' argument has to be a data.table object, got: '",
          class(samples),"'")
   if(!action %in% c("include","exclude"))
@@ -114,7 +114,7 @@ fetchSamples = function(samples, attr=NULL, func=NULL, action="include"){
       }
     }
   }
-  if(length(rowIdx) < 1 || (!is(rowIdx,"integer")))
+  if(length(rowIdx) < 1 || (!methods::is(rowIdx,"integer")))
     stop("your function returned invalid indices: '", rowIdx,"'")
   # use action arg
   if(action=="include") return(samples[rowIdx, ])

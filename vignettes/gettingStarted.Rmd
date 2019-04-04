@@ -29,7 +29,7 @@ Load `pepr` and read in your project. We have provided a basic example to show y
 
 ```{r,collapse=TRUE}
 library('pepr')
-branch = "dev"
+branch = "master"
 projectConfigFile = system.file("extdata",
 	paste0("example_peps-", branch),
 	"example_basic",

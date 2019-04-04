@@ -30,7 +30,7 @@ This vignette will show you how and why to use the subbprojects functionality of
 The example below demonstrates how and why to use implied attributes functionality to **define numerous similar projects in a single project config file**. This functionality is extremely convenient when one has to define projects with small settings discreptancies, like different attributes in the annotation sheet. For example libraries `ABCD` and `EFGH` instead of the original `RRBS`.
 
 ```{r ,echo=FALSE}
-branch = "dev"
+branch = "master"
 library(knitr)
 sampleAnnotation = system.file(
 "extdata",

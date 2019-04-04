@@ -32,13 +32,13 @@ This series of examples below demonstrates how and why to use sample subannoatat
 
 ### Example 1: basic sample subannotation table
 
-This example demonstrates how the sample subannotation functionality is used. In this example, 2 samples have multiple input files that need merging (`frog_1` and `frog_2`), while 1 sample (`frog_3`) does not. Therefore, `frog_3` specifies its file in the `sample_table.csv` file, while the others leave that field blank and instead specify several files in the `sample_subtable.csv` file.
+This example demonstrates how the sample subannotation functionality is used. In this example, 2 samples have multiple input files that need merging (`frog_1` and `frog_2`), while 1 sample (`frog_3`) does not. Therefore, `frog_3` specifies its file in the `sample_table.csv` file, while the others leave that field blank and instead specify several files in the `subsample_table.csv` file.
 
 This example is made up of these components:
 
 * Project config file:
 ```{r, echo=FALSE,message=TRUE,collapse=TRUE,comment=" "}
-branch = "dev"
+branch = "master"
 library(pepr)
 projectConfig = system.file(
 "extdata",
@@ -68,7 +68,7 @@ sampleAnnotation = system.file(
   "extdata",
   paste0("example_peps-", branch),
   "example_subtable1",
-  "sample_subtable.csv",
+  "subsample_table.csv",
   package = "pepr"
   )
   sampleAnnotationDF = read.table(sampleAnnotation, sep = ",", header = T)
@@ -108,7 +108,7 @@ getSubsample(p1, sampleName, subsampleName)
 
 ### Example 2: subannotations and derived attributes
 
-This example uses a `sample_subtable.csv` file and a derived attributes to point to files. This is a rather complex example. Notice we must include the `file_id` column in the `sample_table.csv` file, and leave it blank; this is then populated by just some of the samples (`frog_1` and `frog_2`) in the `sample_subtable.csv`, but is left empty for the samples that are not merged.
+This example uses a `subsample_table.csv` file and a derived attributes to point to files. This is a rather complex example. Notice we must include the `file_id` column in the `sample_table.csv` file, and leave it blank; this is then populated by just some of the samples (`frog_1` and `frog_2`) in the `subsample_table.csv`, but is left empty for the samples that are not merged.
 
 This example is made up of these components:
 
@@ -143,7 +143,7 @@ sampleAnnotation = system.file(
   "extdata",
   paste0("example_peps-", branch),
   "example_subtable2",
-  "sample_subtable.csv",
+  "subsample_table.csv",
   package = "pepr"
   )
   sampleAnnotationDF = read.table(sampleAnnotation, sep = ",", header = T)
@@ -171,7 +171,7 @@ kable(p2Samples)
 
 ### Example 3: subannotations and expansion characters
 
-This example gives the exact same results as Example 2, but in this case, uses a wildcard for `frog_2` instead of including it in the `sample_subtable.csv` file. Since we can't use a wildcard and a subannotation for the same sample, this necessitates specifying a second data source class (`local_files_unmerged`) that uses an asterisk (*). The outcome is the same.
+This example gives the exact same results as Example 2, but in this case, uses a wildcard for `frog_2` instead of including it in the `subsample_table.csv` file. Since we can't use a wildcard and a subannotation for the same sample, this necessitates specifying a second data source class (`local_files_unmerged`) that uses an asterisk (*). The outcome is the same.
 
 This example is made up of these components:
 
@@ -206,7 +206,7 @@ sampleAnnotation = system.file(
   "extdata",
   paste0("example_peps-", branch),
   "example_subtable3",
-  "sample_subtable.csv",
+  "subsample_table.csv",
   package = "pepr"
   )
   sampleAnnotationDF = read.table(sampleAnnotation, sep = ",", header = T)
@@ -269,7 +269,7 @@ sampleAnnotation = system.file(
   "extdata",
   paste0("example_peps-", branch),
   "example_subtable4",
-  "sample_subtable.csv",
+  "subsample_table.csv",
   package = "pepr"
   )
   sampleAnnotationDF = read.table(sampleAnnotation, sep = ",", header = T)
@@ -333,7 +333,7 @@ sampleAnnotation = system.file(
   "extdata",
   paste0("example_peps-", branch),
   "example_subtable5",
-  "sample_subtable.csv",
+  "subsample_table.csv",
   package = "pepr"
   )
   sampleAnnotationDF = read.table(sampleAnnotation, sep = ",", header = T)

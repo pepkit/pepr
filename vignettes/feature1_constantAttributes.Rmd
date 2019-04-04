@@ -26,7 +26,7 @@ This vignette will show you how and why to use the constant attributes functiona
 The example below demonstrates how to use the constant attributes to **define the samples attributes in the `read_type` column** of the `sample_table.csv` file. This functionality is extremely useful when there are many samples that are characterized by identical values of certain attribute (here: value `SINGLE` in `read_type` attribute). Please consider the example below for reference:
 
 ```{r ,echo=FALSE,warning=FALSE}
-branch = "dev"
+branch = "master"
 library(knitr)
 sampleAnnotation = system.file(
 "extdata",

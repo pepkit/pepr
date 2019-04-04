@@ -3,7 +3,7 @@ context("Project object creation/loadConfig")
 # get data ----------------------------------------------------------------
 
 
-branch = "dev"
+branch = "master"
 
 p = Project(
   file = system.file(
@@ -14,6 +14,7 @@ p = Project(
     package = "pepr"
   )
 )
+
 yaml = yaml.load_file(system.file(
   "extdata",
   paste0("example_peps-",branch),
@@ -36,7 +37,7 @@ test_that("loadConfig returns correct object type", {
   expect_is(.loadConfig(
     system.file(
       "extdata",
-      "example_peps-dev",
+      paste0("example_peps-",branch),
       "example_basic",
       "project_config.yaml",
       package = "pepr"
@@ -45,7 +46,7 @@ test_that("loadConfig returns correct object type", {
   expect_is(.loadConfig(
     system.file(
       "extdata",
-      "example_peps-dev",
+      paste0("example_peps-",branch),
       "example_basic",
       "project_config.yaml",
       package = "pepr"

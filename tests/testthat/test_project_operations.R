@@ -2,7 +2,7 @@ context("Project operations")
 
 # get data ----------------------------------------------------------------
 
-branch = "dev"
+branch = "master"
 
 DF = mtcars
 

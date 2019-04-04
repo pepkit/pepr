@@ -1,7 +1,7 @@
 context("utils")
 # get data ----------------------------------------------------------------
 
-branch = "dev"
+branch = "master"
 
 DF = mtcars
 

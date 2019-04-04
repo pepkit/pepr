@@ -1,4 +1,4 @@
 metadata:
   sample_table: sample_table.csv
-  sample_subtable: sample_subtable.csv
+  subsample_table: subsample_table.csv
   output_dir: $HOME/example_results
