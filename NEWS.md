@@ -1,14 +1,20 @@
-# pepr 0.0.5
+# pepr Changelog
 
-## TBA
+## [0.1.1] - unreleased
 
-## Added
+### Changed
+
+* keys in the config file: `sample_annotation` to `sample_table`, `sample_subannotation` to `subsample_table`. Backwards compatibility is preserved.
+
+## [0.1] - 2019-02-01
+
+### Added
 
 * add `activateSubproject` method
 * add `fetchSamples` function
 * add `checkSection` method on `Config` object
 
-## Changed
+### Changed
 
 * if the `subproject` argument of the `Project()` function is not present in the config, the original project is returned
 * paths in the `bioconductor` section of the config are made aboslute and environment varaiables are read
@@ -16,13 +22,9 @@
 * fixed the problem with paths expansions in sample subannotaitons case
 
 
-# pepr 0.0.4
+## [0.0.4] - 2018-11-14
 
-## 2018-11-14
-
-## Added
-
-## Changed
+### Changed
 
 * change the `Project` object construction, the subproject can be activated at construction time
 * change `implied/derived_columns` to `implied/derived_attributes`. Backwards compatible
@@ -30,25 +32,16 @@
 * fix `expandPath()` function, add error when environment variable not found
 
 
-# pepr 0.0.3
+## [0.0.3] - 2018-09-12
 
-## 2018-09-12
-
-## Added
+### Added
 
 * add `derived_columns` functionality
 * add `implied_columns` functionality
 * add `subannotation` functionality
 	
-## Changed
+## [0.0.2] - 2018-09-06
 
-# pepr 0.0.2 
-
-## 2018-09-06
-
-## Added
+### Added
 
 * first release, includes basic [PEP](https://pepkit.github.io/) reading functions
-
-## Changed
-
