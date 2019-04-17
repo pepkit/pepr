@@ -1,0 +1,6 @@
+metadata:
+  sample_table: sample_table.csv
+
+bioconductor:
+  readFunName: readRemoteData
+  readFunPath: readRemoteData.R

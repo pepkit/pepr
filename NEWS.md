@@ -1,6 +1,10 @@
-# pepr 0.1
+# pepr 0.2 - 2019-04-17
 
-## 2019-02-01
+## Changed
+
+* keys in the config file: `sample_annotation` to `sample_table`, `sample_subannotation` to `subsample_table`. Backwards compatibility is preserved.
+
+# pepr 0.1 - 2019-02-01
 
 ## Added
 
@@ -16,11 +20,7 @@
 * fixed the problem with paths expansions in sample subannotaitons case
 
 
-# pepr 0.0.4
-
-## 2018-11-14
-
-## Added
+# pepr 0.0.4 - 2018-11-14
 
 ## Changed
 
@@ -30,9 +30,7 @@
 * fix `expandPath()` function, add error when environment variable not found
 
 
-# pepr 0.0.3
-
-## 2018-09-12
+# pepr 0.0.3 - 2018-09-12
 
 ## Added
 
@@ -40,15 +38,8 @@
 * add `implied_columns` functionality
 * add `subannotation` functionality
 	
-## Changed
-
-# pepr 0.0.2 
-
-## 2018-09-06
+#  pepr 0.0.2 - 2018-09-06
 
 ## Added
 
 * first release, includes basic [PEP](https://pepkit.github.io/) reading functions
-
-## Changed
-

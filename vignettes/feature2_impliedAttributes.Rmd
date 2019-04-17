@@ -28,12 +28,13 @@ This vignette will show you how and why to use the implied attributes functional
 The example below demonstrates how and why to use implied attributes functionality to **save your time and effort** in case multiple sample attributes need to be defined for many samples and they **follow certain patterns**. Please consider the example below for reference:
 
 ```{r ,echo=FALSE}
+branch = "master"
 library(knitr)
 sampleAnnotation = system.file(
 "extdata",
-"example_peps-master",
+paste0("example_peps-", branch),
 "example_implied",
-"sample_annotation_pre.csv",
+"sample_table_pre.csv",
 package = "pepr"
 )
 sampleAnnotationDF = read.table(sampleAnnotation, sep = ",", header = T)
@@ -42,13 +43,13 @@ knitr::kable(sampleAnnotationDF, format = "html")
 
 ----
 ## Solution
-Noticeably, the samples with attributes `human` and `mouse` (in the `organism` column) follow two distinct patterns here. They have additional attributes in attributes `genome` and `genome_size` in the `sample_annotation.csv` file. Consequently you can use implied attributes to add those attributes to the sample annotations (set global, species-level attributes at the project level instead of duplicating that information for every sample that belongs to a species). The way how this process is carried out is indicated explicitly in the `project_config.yaml` file (presented below).
+Noticeably, the samples with attributes `human` and `mouse` (in the `organism` column) follow two distinct patterns here. They have additional attributes in attributes `genome` and `genome_size` in the `sample_table.csv` file. Consequently you can use implied attributes to add those attributes to the sample annotations (set global, species-level attributes at the project level instead of duplicating that information for every sample that belongs to a species). The way how this process is carried out is indicated explicitly in the `project_config.yaml` file (presented below).
 
 ```{r, echo=FALSE,message=TRUE,collapse=TRUE,comment=" "}
 library(pepr)
 projectConfig = system.file(
 "extdata",
-"example_peps-master",
+paste0("example_peps-", branch),
 "example_implied",
 "project_config.yaml",
 package = "pepr"
@@ -58,14 +59,14 @@ package = "pepr"
 
 Consequently, you can design an `implied_attributes` multi-level key-value section in the `project_config.yaml` file. Note that the keys must match the column names and attributes in the `sample_annotations.csv` file. 
 
-Let's introduce a few modifications to the original `sample_annotation.csv` file to use the `implied_attributes` section of the config. Simply skip the attributes that will be implied and let the `pepr` do the work for you.
+Let's introduce a few modifications to the original `sample_table.csv` file to use the `implied_attributes` section of the config. Simply skip the attributes that will be implied and let the `pepr` do the work for you.
 
 ```{r ,echo=FALSE}
 sampleAnnotation = system.file(
   "extdata",
-  "example_peps-master",
+  paste0("example_peps-", branch),
   "example_implied",
-  "sample_annotation.csv",
+  "sample_table.csv",
   package = "pepr"
   )
   sampleAnnotationDF = read.table(sampleAnnotation, sep = ",", header = T)
@@ -80,7 +81,7 @@ Load `pepr` and read in the project metadata by specifying the path to the `proj
 library(pepr)
 projectConfig = system.file(
 "extdata",
-"example_peps-master",
+paste0("example_peps-", branch),
 "example_implied",
 "project_config.yaml",
 package = "pepr"

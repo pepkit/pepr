@@ -90,3 +90,6 @@ target/
 
 # Rcaches
 RCache/*
+
+# macOS
+*.DS_Store

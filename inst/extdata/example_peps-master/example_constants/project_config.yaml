@@ -1,6 +1,5 @@
 metadata:
-    sample_annotation: sample_annotation.csv
-    output_dir: $HOME/hello_looper_results
+  sample_table: sample_table.csv
 
 constant_attributes:
     read_type: SINGLE

@@ -1,5 +1,5 @@
 metadata:
-    sample_annotation: sample_annotation.csv
+    sample_table: sample_table.csv
     output_dir: $HOME/hello_looper_results
 
 # not used, added for tesing
@@ -20,4 +20,4 @@ implied_columns:
 subprojects:
     noFrog:
         metadata:
-            sample_annotation: sample_annotation_noFrog.csv
+            sample_table: sample_table_noFrog.csv

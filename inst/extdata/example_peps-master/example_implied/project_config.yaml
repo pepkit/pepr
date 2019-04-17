@@ -1,8 +1,8 @@
 metadata:
-    sample_annotation: sample_annotation.csv
+    sample_table: sample_table.csv
     output_dir: $HOME/hello_looper_results
 
-implied_columns:
+implied_attributes:
     organism:
         human:
             genome: "hg38"
@@ -10,3 +10,5 @@ implied_columns:
         mouse:
             genome: "mm10"
             macs_genome_size: "mm"
+
+          

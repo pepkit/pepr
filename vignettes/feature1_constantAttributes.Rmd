@@ -23,15 +23,16 @@ This vignette will show you how and why to use the constant attributes functiona
  - basic information about the PEP concept on the [project website](https://pepkit.github.io/).
 
 ## Problem/Goal
-The example below demonstrates how to use the constant attributes to **define the samples attributes in the `read_type` column** of the `sample_annotation.csv` file. This functionality is extremely useful when there are many samples that are characterized by identical values of certain attribute (here: value `SINGLE` in `read_type` attribute). Please consider the example below for reference:
+The example below demonstrates how to use the constant attributes to **define the samples attributes in the `read_type` column** of the `sample_table.csv` file. This functionality is extremely useful when there are many samples that are characterized by identical values of certain attribute (here: value `SINGLE` in `read_type` attribute). Please consider the example below for reference:
 
 ```{r ,echo=FALSE,warning=FALSE}
+branch = "master"
 library(knitr)
 sampleAnnotation = system.file(
 "extdata",
-"example_peps-master",
+paste0("example_peps-", branch),
 "example_constants",
-"sample_annotation_pre.csv",
+"sample_table_pre.csv",
 package = "pepr"
 )
 sampleAnnotationDF = read.table(sampleAnnotation, sep = ",", header = T)
@@ -47,7 +48,7 @@ As the name suggests the attributes in the specified attributes (here: `read_typ
 library(pepr)
 projectConfig = system.file(
 "extdata",
-"example_peps-master",
+paste0("example_peps-", branch),
 "example_constants",
 "project_config.yaml",
 package = "pepr"
@@ -56,14 +57,14 @@ package = "pepr"
 ```
 
 
-Let's introduce a few modifications to the original `sample_annotation.csv` file to use the `constant_attributes` section of the config. Simply skip the attributes that are set constant and let the `pepr` do the work for you.
+Let's introduce a few modifications to the original `sample_table.csv` file to use the `constant_attributes` section of the config. Simply skip the attributes that are set constant and let the `pepr` do the work for you.
 
 ```{r ,echo=FALSE,warning=FALSE}
 sampleAnnotation = system.file(
   "extdata",
-  "example_peps-master",
+  paste0("example_peps-", branch),
   "example_constants",
-  "sample_annotation.csv",
+  "sample_table.csv",
   package = "pepr"
   )
   sampleAnnotationDF = read.table(sampleAnnotation, sep = ",", header = T)
@@ -78,7 +79,7 @@ Load `pepr` and read in the project metadata by specifying the path to the `proj
 library(pepr)
 projectConfig = system.file(
 "extdata",
-"example_peps-master",
+paste0("example_peps-", branch),
 "example_constants",
 "project_config.yaml",
 package = "pepr"
