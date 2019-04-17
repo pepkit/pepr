@@ -1,4 +1,4 @@
-# pepr 0.1.1 - unreleased
+# pepr 0.2 - 2019-04-17
 
 ## Changed
 
