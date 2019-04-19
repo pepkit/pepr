@@ -52,13 +52,6 @@ setMethod(
   }
 )
 
-#' PipelineInterface objects are specialized list objects
-#'
-#' Extends \code{\link{Config-class}}
-#'
-#' @exportClass PipelineInterface
-setClass("PipelineInterface", contains = "Config")
-
 setGeneric("checkSection", function(object, sectionNames)
   standardGeneric("checkSection"))
 
@@ -155,8 +148,7 @@ setMethod(
 #' @export
 setGeneric("samples", function(object)
     standardGeneric("samples"))
-  # getGeneric("Biobase", "samples"))
-  # #' @importMethodsFrom Biobase samples
+
 setMethod(
   "samples",
   signature = "Project",
