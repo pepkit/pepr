@@ -39,21 +39,25 @@ Project = function(file = NULL,
 #'
 #' Config objects are used with the \code{\link{Project-class}} objects
 #'
-#'
 #' @exportClass Config
 setClass("Config", contains = "list")
-
 
 # Override the standard generic show function for our config-style lists
 setMethod(
   "show",
-  signature = "Config",
-  definition = function(object) {
-    cat("PEP project object. Class:", class(object), fill = T)
+  signature = "Config", definition = function(object) {
+    cat("Config object. Class:", class(object), fill = T)
     .printNestedList(object)
     invisible(NULL)
   }
 )
+
+#' PipelineInterface objects are specialized list objects
+#'
+#' Extends \code{\link{Config-class}}
+#'
+#' @exportClass PipelineInterface
+setClass("PipelineInterface", contains = "Config")
 
 setGeneric("checkSection", function(object, sectionNames)
   standardGeneric("checkSection"))
@@ -150,8 +154,9 @@ setMethod(
 #'
 #' @export
 setGeneric("samples", function(object)
-  standardGeneric("samples"))
-
+    standardGeneric("samples"))
+  # getGeneric("Biobase", "samples"))
+  # #' @importMethodsFrom Biobase samples
 setMethod(
   "samples",
   signature = "Project",
@@ -306,6 +311,48 @@ setMethod(
     .listSubprojects(cfg = config, style="message")
   }
 )
+
+setGeneric("getPipelineInterface", function(.Object)
+    standardGeneric("getPipelineInterface"))
+
+#' Get the pipeline intraface
+#'
+#' Extracts the pipeline interface as a \code{\link{Config-class}} object
+#' 
+#' @param .Object an object of \code{\link{Project-class}}
+#'
+#' @return an object of \code{\link{Config-class}}. A list-like representation of the YAML file.
+#' @export
+#'
+#' @examples
+#' projectConfig = system.file("extdata",
+#' "example_peps-master",
+#' "example_subprojects1",
+#' "project_config.yaml",
+#' package = "pepr")
+#' p = Project(file = projectConfig)
+#' getPipelineInterface(p)
+setMethod("getPipelineInterface", "Project",function(.Object){
+    if(.hasPipIface(.Object)){
+        cfg = config(.Object)
+        for(sect in PIP_IFACE_SECTION){
+            cfg = cfg[[sect]]
+        }
+        methods::new("Config", yaml::yaml.load_file(cfg))
+    } else{
+        warning("No pipeline interface found in the config")
+        NULL
+    }
+})
+
+#' Check if project defines pipeline interface
+#'
+#' @param p object of \code{\link{Project-class}}
+#'
+#' @return logical indicating whether pipeline interface is defined
+.hasPipIface = function(p){
+    checkSection(config(p), PIP_IFACE_SECTION)
+}
 
 
 #' Activate other subproject in objects of \code{\link{Project-class}}
