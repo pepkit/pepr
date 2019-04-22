@@ -1,3 +1,12 @@
+# pepr 0.2.1 - unreleased
+
+## Added
+
+
+## Changed
+
+* `checkSection` method can be used with a mixture of section names _and_ indices.
+
 # pepr 0.2 - 2019-04-17
 
 ## Changed

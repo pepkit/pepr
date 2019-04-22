@@ -59,6 +59,8 @@ setGeneric("checkSection", function(object, sectionNames)
 #' 
 #' This function checks for the section/nested sections in the config YAML file. Returns \code{TRUE} if it exist(s) or \code{FALSE} otherwise.
 #' 
+#' Element indices can be used instead of the actual names, see \code{Examples}.
+#' 
 #' @param object object of \code{\link[pepr]{Config-class}}
 #' @param sectionNames the name of the section or names of the nested sections to look for
 #' 
@@ -69,19 +71,27 @@ setGeneric("checkSection", function(object, sectionNames)
 #' "example_subprojects1", "project_config.yaml", package="pepr")
 #' p=Project(projectConfig)
 #' checkSection(config(p),sectionNames = c("subprojects","newLib","metadata"))
+#' checkSection(config(p),sectionNames = c("subprojects",1,"metadata"))
 #' @export
 setMethod(
   "checkSection",
   signature = "Config",
   definition = function(object, sectionNames) {
+    # try co convert the section name to numeric, return original name if 
+    # not possible this enables the outer method to check the sections 
+    # existance by index and by name at the same time
+    tryToNum = function(x){
+        convertedX = suppressWarnings(as.numeric(x))
+        ifelse(!is.na(convertedX), convertedX, x)
+    }
     testList = object
     counter = 1
-    test = F
-    while ((!test) && (!is.na(sectionNames[counter]))) {
-      if((!is.list(testList)) || is.null(testList[[sectionNames[counter]]])){
+    while (!is.na(sectionNames[counter])) {
+      item = tryToNum(sectionNames[counter])
+      if((!is.list(testList)) || is.null(testList[[item]])){
         return(FALSE)
       }
-      testList = testList[[sectionNames[counter]]]
+      testList = testList[[item]]
       counter = counter + 1
     }
     return(TRUE)
