@@ -19,7 +19,7 @@ a logical indicating whether the section exists
 This function checks for the section/nested sections in the config YAML file. Returns \code{TRUE} if it exist(s) or \code{FALSE} otherwise.
 }
 \details{
-Element indices can be used instead of the actual names as well, see \code{Examples}.
+Element indices can be used instead of the actual names, see \code{Examples}.
 }
 \examples{
 projectConfig = system.file("extdata", "example_peps-master",

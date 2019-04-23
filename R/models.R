@@ -314,8 +314,8 @@ setMethod(
   }
 )
 
-setGeneric("getPipelineInterface", function(.Object)
-    standardGeneric("getPipelineInterface"))
+setGeneric("getPipelineInterfaces", function(.Object)
+    standardGeneric("getPipelineInterfaces"))
 
 #' Get the pipeline intraface(s)
 #'
@@ -338,7 +338,7 @@ setGeneric("getPipelineInterface", function(.Object)
 #' package = "pepr")
 #' p = Project(file = projectConfig)
 #' getPipelineInterface(p)
-setMethod("getPipelineInterface", "Project",function(.Object){
+setMethod("getPipelineInterfaces", "Project",function(.Object){
     if(.hasPipIface(.Object)){
         cfg = config(.Object)
         for(sect in PIP_IFACE_SECTION){
