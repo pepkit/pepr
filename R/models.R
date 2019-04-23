@@ -337,7 +337,7 @@ setGeneric("getPipelineInterfaces", function(.Object)
 #' "project_config.yaml",
 #' package = "pepr")
 #' p = Project(file = projectConfig)
-#' getPipelineInterface(p)
+#' getPipelineInterfaces(p)
 setMethod("getPipelineInterfaces", "Project",function(.Object){
     if(.hasPipIface(.Object)){
         cfg = config(.Object)
