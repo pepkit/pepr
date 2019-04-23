@@ -317,13 +317,17 @@ setMethod(
 setGeneric("getPipelineInterface", function(.Object)
     standardGeneric("getPipelineInterface"))
 
-#' Get the pipeline intraface
+#' Get the pipeline intraface(s)
 #'
-#' Extracts the pipeline interface as a \code{\link{Config-class}} object
+#' Extracts the pipeline interface(s) as a list 
+#' of \code{\link{Config-class}} objects
 #' 
 #' @param .Object an object of \code{\link{Project-class}}
 #'
-#' @return an object of \code{\link{Config-class}}. A list-like representation of the YAML file.
+#' @return a list of objects of \code{\link{Config-class}} 
+#' (list-like representation of the YAML file(s)). Number of elements in the 
+#' list reflects the number of pipeline interfaces defined by the 
+#' \code{\link{Project-class}} object.
 #' @export
 #'
 #' @examples
@@ -340,10 +344,12 @@ setMethod("getPipelineInterface", "Project",function(.Object){
         for(sect in PIP_IFACE_SECTION){
             cfg = cfg[[sect]]
         }
-        methods::new("Config", yaml::yaml.load_file(cfg))
+        lapply(as.list(cfg), function(x){
+            methods::new("Config", yaml::yaml.load_file(x))
+        })
     } else{
         warning("No pipeline interface found in the config")
-        NULL
+        invisible(NULL)
     }
 })
 
