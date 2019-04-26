@@ -2,7 +2,8 @@
 % Please edit documentation in R/models.R
 \name{activateSubproject}
 \alias{activateSubproject}
-\title{Activate other subproject in objects of \code{\link{Project-class}}}
+\title{setGeneric("getPipelineInterfaces", function(.Object)
+    standardGeneric("getPipelineInterfaces"))}
 \usage{
 activateSubproject(.Object, sp)
 }
@@ -12,10 +13,56 @@ activateSubproject(.Object, sp)
 \item{sp}{character with the subproject name}
 }
 \description{
-This method switches between the subprojects
-within the \code{\link{Project-class}} object
+#' Get the pipeline intraface(s)
+#'
+#' Extracts the pipeline interface(s) as a list 
+#' of \code{\link{Config-class}} objects
+#' 
+#' @param .Object an object of \code{\link{Project-class}}
+#'
+#' @return a list of objects of \code{\link{Config-class}} 
+#' (list-like representation of the YAML file(s)). Number of elements in the 
+#' list reflects the number of pipeline interfaces defined by the 
+#' \code{\link{Project-class}} object.
+#' @export
+#'
+#' @examples
+#' projectConfig = system.file("extdata",
+#' "example_peps-master",
+#' "example_subprojects1",
+#' "project_config.yaml",
+#' package = "pepr")
+#' p = Project(file = projectConfig)
+#' getPipelineInterfaces(p)
+setMethod("getPipelineInterfaces", "Project",function(.Object){
+    if(.hasPipIface(.Object)){
+        cfg = config(.Object)
+        for(sect in PIP_IFACE_SECTION){
+            cfg = cfg[[sect]]
+        }
+        lapply(as.list(cfg), function(x){
+            methods::new("Config", yaml::yaml.load_file(x))
+        })
+    } else{
+        warning("No pipeline interface found in the config")
+        invisible(NULL)
+    }
+})
 }
 \details{
+#' Check if project defines pipeline interface
+#'
+#' @param p object of \code{\link{Project-class}}
+#'
+#' @return logical indicating whether pipeline interface is defined
+.hasPipIface = function(p){
+    checkSection(config(p), PIP_IFACE_SECTION)
+}
+Activate other subproject in objects of \code{\link{Project-class}}
+
+This method switches between the subprojects
+within the \code{\link{Project-class}} object
+
 To check what are the subproject names
 call \code{listSubprojects(p)}, where \code{p} is the object
 of \code{\link{Project-class}} class
