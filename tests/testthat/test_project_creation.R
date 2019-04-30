@@ -87,7 +87,7 @@ test_that("Project throws errors", {
 })
 
 test_that("Project creates an object of class Project", {
-  expect_is(p, 'Project')
+  expect_is(Project(cfg), 'Project')
 })
 
 test_that("Project (loadConfig) produces a proper config file.
