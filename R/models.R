@@ -174,6 +174,7 @@ setMethod("initialize", "Project", function(.Object, ...) {
     # check if file path provided
     .Object@file = ellipsis$file
     .Object@config = .loadConfig(ellipsis$file)
+    .Object@config = .sanitizeConfig(.Object@config)
     if (!is.null(ellipsis$subproject)) {
       # check if subproject provided
       .Object = activateSubproject(.Object, ellipsis$subproject)
@@ -345,6 +346,7 @@ setMethod(
   f = "activateSubproject",
   signature = signature(.Object="Project", sp="character"),
   definition = function(.Object, sp) {
+    .Object@config = .sanitizeConfig(.Object@config)
     .Object@config = .updateSubconfig(.Object@config, sp)
     # Ensure that metadata paths are absolute and return the config.
     # This used to be all metadata columns; now it's just: results_subdir
@@ -472,23 +474,15 @@ setMethod(
     sampleReadFunc = utils::read.table
   }
   if(is.null(.Object@config$metadata$sample_table)){
-    if(!is.null(.Object@config$metadata$sample_annotation)){
-      .Object@config$metadata$sample_table = 
-        .Object@config$metadata$sample_annotation
-      warning("'sample_annotation' key in the 'metadata' section of the config "
-              ,"is deprecated. Use 'sample_table' instead.")
-    } else{
-        if(!is.null(.Object@config$subprojects)){
-          # if there are any subprojects, just warn and return empty data.table,
-          # maybe there's a 'sample_table' specified in the subproject
-          warning("No 'sample_table' key in the 'metadata' section of the " 
-                  ,"config")
-          .Object@samples = data.table::data.table()
-          return(.Object)
-        } else{
-          stop("No 'sample_table' key in the 'metadata' section of the config")
-        }
-    }
+    if(!is.null(.Object@config$subprojects)){
+    # if there are any subprojects, just warn and return empty data.table,
+    # maybe there's a 'sample_table' specified in the subproject
+    warning("No 'sample_table' key in the 'metadata' section of the " 
+            ,"config")
+    .Object@samples = data.table::data.table()
+    return(.Object)
+  } else{
+    stop("No 'sample_table' key in the 'metadata' section of the config")
   }
   sampleAnnotationPath = .Object@config$metadata$sample_table
   if(.safeFileExists(sampleAnnotationPath)){
@@ -502,14 +496,6 @@ setMethod(
 
 .loadSampleSubannotation = function(.Object){
   # Extracting needed slots
-  if(is.null(.Object@config$metadata$subsample_table)){
-    if(!is.null(.Object@config$metadata$sample_subannotation)){
-      .Object@config$metadata$subsample_table = 
-        .Object@config$metadata$sample_subannotation
-      warning("'sample_subannotation' key in the 'metadata' section of the"
-              ,"config is deprecated. Use 'subsample_table' instead.")
-    }
-  }
   sampleSubannotationPath = .Object@config$metadata$subsample_table
   samples = .Object@samples
   samples = .listifyDF(samples)

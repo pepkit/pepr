@@ -3,8 +3,7 @@
 #
 #' @param perhapsRelative Path to primary target directory.
 #' @param parent a path to parent folder to use if target isn't absolute.
-#
-#' @return	Target itself if already absolute, else target nested within parent.
+#' @return Target itself if already absolute, else target nested within parent.
 .makeAbsPath = function(perhapsRelative, parent) {
   if (!.isDefined(perhapsRelative)) { return(perhapsRelative)}
   perhapsRelative = .expandPath(perhapsRelative)
@@ -52,7 +51,8 @@
 #' listifiedDataFrame=.listifyDF(dataFrame)
 #' @export
 .listifyDF = function(DF){
-  if(!is.data.frame(DF)) stop("The input object must be a data.frame.")
+  if(!is.data.frame(DF))
+    stop("The input object must be a data.frame.")
   colNames =  names(DF)
   for(iColumn in colNames){
     DF[[iColumn]]=as.list(DF[[iColumn]])
@@ -118,5 +118,51 @@ fetchSamples = function(samples, attr=NULL, func=NULL, action="include"){
     stop("your function returned invalid indices: '", rowIdx,"'")
   # use action arg
   if(action=="include") return(samples[rowIdx, ])
-    return(samples[!rowIdx, ])
+  return(samples[!rowIdx, ])
 }
+
+#' Handles the deprecation of the `sample_annotation` key in the `metadata` section of the config
+#' 
+#' If `sample_table` is not defined, the `sample_annotation` value is saved under `sample_table` key
+#' The `sample_annotation` is then removed
+#' Similarily for `sample_subannotation` `subsample_table` pair
+#' 
+#' @param cfg list config
+#' @return cfg list config 
+.handleSampleAnnotationDeprecation = function(cfg){
+  if(!is.null(cfg$metadata$sample_annotation)){
+    warning("'sample_annotation' key in the 'metadata' section of the config "
+            ,"is deprecated. Use 'sample_table' instead.")
+    if(is.null(cfg$metadata$sample_table)){
+      # save the sample_annotation under the sample_table key, delete the former
+      cfg$metadata$sample_table = cfg$metadata$sample_annotation
+    }
+    cfg$metadata$sample_annotation = NULL
+  }
+  if(!is.null(cfg$metadata$sample_subannotation)){
+    warning("'sample_subannotation' key in the 'metadata' section of the config "
+            ,"is deprecated. Use 'subsample_table' instead.")
+    if(is.null(cfg$metadata$subsample_table)){
+      # save the sample_annotation under the sample_table key, delete the former
+      cfg$metadata$subsample_table = cfg$metadata$sample_subannotation
+    }
+    cfg$metadata$sample_subannotation = NULL
+  }
+  return(cfg)
+}
+
+#' A designated place for any config transformations/sanity checks, like keys deprecation handling
+#'
+#' @param cfg config or a section of one to sanitize
+#' @return cfg sanitized config
+#' @export
+.sanitizeConfig = function(cfg){
+  cfg = .handleSampleAnnotationDeprecation(cfg)
+  if(!is.null(cfg$subprojects)){
+    for(i in seq_along(cfg$subprojects)){
+      cfg$subprojects[[i]] = .handleSampleAnnotationDeprecation(cfg$subprojects[[i]])
+    }
+  }
+  return(cfg)
+}
+
