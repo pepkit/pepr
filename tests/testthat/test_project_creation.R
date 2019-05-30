@@ -114,7 +114,7 @@ test_that(".loadSampleAannotation retains backwards compatibility and warns", {
     p=Project(cfg)
     names(p@config$metadata)[which(
         names(p@config$metadata) == "sample_table")] = "sample_annotation"
-    expect_warning(.loadSampleAnnotation(p))
+    expect_error(.loadSampleAnnotation(p))
 })
 
 test_that(".loadSampleAannotation does not allow for missing sample_table 
@@ -124,13 +124,3 @@ test_that(".loadSampleAannotation does not allow for missing sample_table
         p@config$metadata[-which(names(p@config$metadata) == "sample_table")]
     expect_error(.loadSampleAnnotation(p))
 })
-
-test_that(".loadSampleSubannotation allows for missing sample_table if subprojects
-          are defined", {
-              p=Project(cfgSubtable)
-              names(p@config$metadata)[
-                  which(names(p@config$metadata) == 
-                            "subsample_table")] = "sample_subannotation"
-              expect_warning(.loadSampleSubannotation(p))
-})
-

@@ -26,7 +26,7 @@ test_that("listifyDF does not change the dimensions", {
 })
 
 test_that(".makeAbsPath throws errors", {
-    expect_error(.makeAbsPath("path", "test"))
+    expect_error(expect_warning(.makeAbsPath("path", "test")))
 })
 
 test_that(".makeAbsPath returns NULL and NA if these are subject to test", {
@@ -159,3 +159,4 @@ test_that(".strformat works",{
 test_that(".printNestedList produces an output", {
     expect_output(.printNestedList(config(p)))
 })
+
