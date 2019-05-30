@@ -178,7 +178,7 @@ setMethod("initialize", "Project", function(.Object, ...) {
     if (!is.null(ellipsis$subproject)) {
       # check if subproject provided
       .Object = activateSubproject(.Object, ellipsis$subproject)
-    } else{
+    } else {
       .Object = .loadSampleAnnotation(.Object)
       .Object = .loadSampleSubannotation(.Object)
       .Object = .applyConstantAttributes(.Object)
@@ -481,8 +481,9 @@ setMethod(
             ,"config")
     .Object@samples = data.table::data.table()
     return(.Object)
-  } else{
-    stop("No 'sample_table' key in the 'metadata' section of the config")
+    } else{
+      stop("No 'sample_table' key in the 'metadata' section of the config")
+    }
   }
   sampleAnnotationPath = .Object@config$metadata$sample_table
   if(.safeFileExists(sampleAnnotationPath)){
