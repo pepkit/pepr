@@ -16,11 +16,6 @@
          See: http://yaml.org/start.html")
   cfg = methods::new("Config", config_file)
   
-  if (is.null(cfg)) {
-    message("Config file not loaded.")
-    return()
-  }
-  
   message("Loaded config file: ", filename)
   
   # Show available subprojects
@@ -37,10 +32,10 @@
   # make data_sources section absolute
   if(!is.null(cfg$data_sources)) 
     cfg$data_sources = lapply(cfg$data_sources, .expandPath)
-  # make bioconductor$read_fun_path value absolute, used in BiocProject
-  if(!is.null(cfg$bioconductor$read_fun_path)){
-    path = gsub("\\./","",cfg$bioconductor$read_fun_path)
-    cfg$bioconductor$read_fun_path = .makeAbsPath(path, parent=dirname(filename))
+  # make bioconductor$readFunPath value absolute, used in BiocProject
+  if(!is.null(cfg$bioconductor$readFunPath)){
+    path = gsub("\\./","",cfg$bioconductor$readFunPath)
+    cfg$bioconductor$readFunPath = .makeAbsPath(path, parent=dirname(filename))
   }
   # Infer default project name
   
@@ -222,29 +217,10 @@
     values=c()
     # loop through all values, supports multiple 
     # values in the config key-value pairs
-    for(iValue in value){
-    if (metadataAttribute %in% kRelativeToOutputDirMetadataSections) {
-      if (metadataAttribute == kOldPipelinesSection) {
-        warning(
-          sprintf(
-            "Config contains old pipeline location specification section: '%s'",
-            kOldPipelinesSection
-          )
-        )
-      }
-      iValue = .expandPath(iValue)
-      if (!.isAbsolute(iValue)) {
-        iValue = file.path(.expandPath(config$metadata[["output_dir"]]), iValue)
-      }
+    for (iValue in value) {
+        values=append(values, absViaParent(iValue))
     }
-    else {
-      iValue = absViaParent(iValue)
-    }
-    values=append(values,iValue)
-  }
     absoluteMetadata[[metadataAttribute]] = values
   }
-  
-
   return(absoluteMetadata)
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils.R
 \name{fetchSamples}
 \alias{fetchSamples}
-\title{Collect samples fulfilling the specified requirements}
+\title{Handles the deprecation of the `sample_annotation` key in the `metadata` section of the config}
 \usage{
 fetchSamples(samples, attr = NULL, func = NULL, action = "include")
 }
@@ -16,12 +16,16 @@ fetchSamples(samples, attr = NULL, func = NULL, action = "include")
 \item{action}{a string (either \code{include} or \code{exclude}) that specifies whether the function should select the row or exclude it.}
 }
 \description{
+If `sample_table` is not defined, the `sample_annotation` value is saved under `sample_table` key
+The `sample_annotation` is then removed
+Collect samples fulfilling the specified requirements
+}
+\details{
 This funciton collects the samples from a \code{\link[data.table]{data.table-class}} object that
 fulfill the requirements of an attribute \code{attr} specified with 
 the \code{fun} argument
-}
-\details{
-The anonymous function provided in the \code{func} argument has to return a integer(s) that indicate the rows that the \code{action} should be performed on.
+
+The anonymous function provided in the \code{func} argument has to return an integer that indicate the rows that the \code{action} should be performed on.
 Core expressions which are most useful to implement the anonymous function are:
 \itemize{
 \item \code{\link[base]{which}} with inequality signs: \code{==,>,<}

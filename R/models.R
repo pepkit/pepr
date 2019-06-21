@@ -39,17 +39,14 @@ Project = function(file = NULL,
 #'
 #' Config objects are used with the \code{\link{Project-class}} objects
 #'
-#'
 #' @exportClass Config
 setClass("Config", contains = "list")
-
 
 # Override the standard generic show function for our config-style lists
 setMethod(
   "show",
-  signature = "Config",
-  definition = function(object) {
-    cat("PEP project object. Class:", class(object), fill = T)
+  signature = "Config", definition = function(object) {
+    cat("Config object. Class:", class(object), fill = T)
     .printNestedList(object)
     invisible(NULL)
   }
@@ -62,6 +59,8 @@ setGeneric("checkSection", function(object, sectionNames)
 #' 
 #' This function checks for the section/nested sections in the config YAML file. Returns \code{TRUE} if it exist(s) or \code{FALSE} otherwise.
 #' 
+#' Element indices can be used instead of the actual names, see \code{Examples}.
+#' 
 #' @param object object of \code{\link[pepr]{Config-class}}
 #' @param sectionNames the name of the section or names of the nested sections to look for
 #' 
@@ -72,19 +71,27 @@ setGeneric("checkSection", function(object, sectionNames)
 #' "example_subprojects1", "project_config.yaml", package="pepr")
 #' p=Project(projectConfig)
 #' checkSection(config(p),sectionNames = c("subprojects","newLib","metadata"))
+#' checkSection(config(p),sectionNames = c("subprojects",1,"metadata"))
 #' @export
 setMethod(
   "checkSection",
   signature = "Config",
   definition = function(object, sectionNames) {
+    # try co convert the section name to numeric, return original name if 
+    # not possible this enables the outer method to check the sections 
+    # existance by index and by name at the same time
+    tryToNum = function(x){
+        convertedX = suppressWarnings(as.numeric(x))
+        ifelse(!is.na(convertedX), convertedX, x)
+    }
     testList = object
     counter = 1
-    test = F
-    while ((!test) && (!is.na(sectionNames[counter]))) {
-      if((!is.list(testList)) || is.null(testList[[sectionNames[counter]]])){
+    while (!is.na(sectionNames[counter])) {
+      item = tryToNum(sectionNames[counter])
+      if((!is.list(testList)) || is.null(testList[[item]])){
         return(FALSE)
       }
-      testList = testList[[sectionNames[counter]]]
+      testList = testList[[item]]
       counter = counter + 1
     }
     return(TRUE)
@@ -150,7 +157,7 @@ setMethod(
 #'
 #' @export
 setGeneric("samples", function(object)
-  standardGeneric("samples"))
+    standardGeneric("samples"))
 
 setMethod(
   "samples",
@@ -167,10 +174,11 @@ setMethod("initialize", "Project", function(.Object, ...) {
     # check if file path provided
     .Object@file = ellipsis$file
     .Object@config = .loadConfig(ellipsis$file)
+    .Object@config = .sanitizeConfig(.Object@config)
     if (!is.null(ellipsis$subproject)) {
       # check if subproject provided
       .Object = activateSubproject(.Object, ellipsis$subproject)
-    } else{
+    } else {
       .Object = .loadSampleAnnotation(.Object)
       .Object = .loadSampleSubannotation(.Object)
       .Object = .applyConstantAttributes(.Object)
@@ -338,6 +346,7 @@ setMethod(
   f = "activateSubproject",
   signature = signature(.Object="Project", sp="character"),
   definition = function(.Object, sp) {
+    .Object@config = .sanitizeConfig(.Object@config)
     .Object@config = .updateSubconfig(.Object@config, sp)
     # Ensure that metadata paths are absolute and return the config.
     # This used to be all metadata columns; now it's just: results_subdir
@@ -465,22 +474,15 @@ setMethod(
     sampleReadFunc = utils::read.table
   }
   if(is.null(.Object@config$metadata$sample_table)){
-    if(!is.null(.Object@config$metadata$sample_annotation)){
-      .Object@config$metadata$sample_table = 
-        .Object@config$metadata$sample_annotation
-      warning("'sample_annotation' key in the 'metadata' section of the config "
-              ,"is deprecated. Use 'sample_table' instead.")
+    if(!is.null(.Object@config$subprojects)){
+    # if there are any subprojects, just warn and return empty data.table,
+    # maybe there's a 'sample_table' specified in the subproject
+    warning("No 'sample_table' key in the 'metadata' section of the " 
+            ,"config")
+    .Object@samples = data.table::data.table()
+    return(.Object)
     } else{
-        if(!is.null(.Object@config$subprojects)){
-          # if there are any subprojects, just warn and return empty data.table,
-          # maybe there's a 'sample_table' specified in the subproject
-          warning("No 'sample_table' key in the 'metadata' section of the " 
-                  ,"config")
-          .Object@samples = data.table::data.table()
-          return(.Object)
-        } else{
-          stop("No 'sample_table' key in the 'metadata' section of the config")
-        }
+      stop("No 'sample_table' key in the 'metadata' section of the config")
     }
   }
   sampleAnnotationPath = .Object@config$metadata$sample_table
@@ -495,14 +497,6 @@ setMethod(
 
 .loadSampleSubannotation = function(.Object){
   # Extracting needed slots
-  if(is.null(.Object@config$metadata$subsample_table)){
-    if(!is.null(.Object@config$metadata$sample_subannotation)){
-      .Object@config$metadata$subsample_table = 
-        .Object@config$metadata$sample_subannotation
-      warning("'sample_subannotation' key in the 'metadata' section of the"
-              ,"config is deprecated. Use 'subsample_table' instead.")
-    }
-  }
   sampleSubannotationPath = .Object@config$metadata$subsample_table
   samples = .Object@samples
   samples = .listifyDF(samples)

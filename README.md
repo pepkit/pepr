@@ -1,5 +1,6 @@
 
-[![Build Status](https://travis-ci.org/pepkit/pepr.svg?branch=master)](https://travis-ci.org/pepkit/pepr) 
+[![Build Status](https://travis-ci.org/pepkit/pepr.svg?branch=master)](https://travis-ci.org/pepkit/pepr)
+[![Coverage Status](https://coveralls.io/repos/github/pepkit/pepr/badge.svg?branch=dev)](https://coveralls.io/github/pepkit/pepr?branch=dev&service=github)
 [![PEP compatible](http://pepkit.github.io/img/PEP-compatible-green.svg)](http://pepkit.github.io)
 
 `pepr` is not yet released, but we are planning to do so shortly. Complete documentation and API for the `pepr` R package is at [code.databio.org/pepr](http://code.databio.org/pepr/).
