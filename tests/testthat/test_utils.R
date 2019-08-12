@@ -36,7 +36,10 @@ test_that(".makeAbsPath returns NULL and NA if these are subject to test", {
 test_that(".expandPath returns correct object type and throws errors", {
     expect_is(.expandPath(path = "~/UVA/"), 'character')
     expect_error(.expandPath(1))
-    expect_error(.expandPath("~/$HOME/test/$NonExistentVar"))
+})
+test_that(".expandPath does not throw an error when when non-existent 
+          environment variable is found. Just a warning.", {
+    expect_warning(.expandPath("~/$HOME/test/$NonExistentVar"))
 })
 
 test_that("strformat returns correct object type and throws errors", {

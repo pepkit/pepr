@@ -125,7 +125,7 @@
         missingEnvVar = which(replacements == "")
         warning(
           paste0("The environment variable '",parts[missingEnvVar],
-                 "' was not found. Created Project object might be invalid.")
+                 "' was not found. Created object might be invalid.")
           )
       }
     }
