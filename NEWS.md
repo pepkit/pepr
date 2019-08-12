@@ -1,3 +1,9 @@
+# pepr 0.2.2 - unreleased
+
+## Changed
+
+*  downgrade exception from error to warining when missing envieonment variable is found
+
 # pepr 0.2.1 - 2019-06-21
 
 ## Changed
