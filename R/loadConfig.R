@@ -70,7 +70,7 @@
   # or for user information when the Project is created, where message
   # is preferred
   if(!style == "message"){
-    printFun = pryr::partial(cat, fill = T)
+    printFun = pryr::partial(cat, fill=T)
   }else{
     printFun = message
   }
@@ -116,20 +116,21 @@
   # helper function
   replaceEnvVars = function(path, matches){
     # the core of the expandPath function
-    parts = unlist(regmatches(x = path, matches, invert = F))
+    parts = unlist(regmatches(x=path, matches, invert=F))
     replacements = c()
     for (i in seq_along(attr(matches[[1]], "match.length"))) {
       # get the values of the env vars
       replacements[i] = Sys.getenv(removeNonWords(parts[i]))
       if(any(replacements == "")){
-        missingEnvVar = which(replacements=="")
-        stop(
-          paste("The environment variable",parts[missingEnvVar],"was not found")
+        missingEnvVar = which(replacements == "")
+        warning(
+          paste0("The environment variable '",parts[missingEnvVar],
+                 "' was not found. Created object might be invalid.")
           )
       }
     }
     # replace env vars with their system values
-    regmatches(x = path, matches, invert = F) = replacements
+    regmatches(x=path, matches, invert=F) = replacements
     # if UNIX, make sure the root's in the path
     if (.Platform$OS.type == "unix") {
       if (!startsWith(path, "/")) {
@@ -148,8 +149,8 @@
   # if it's a path, make it absolute
   path = normalizePath(path.expand(path),mustWork = FALSE)
   # search for env vars, both bracketed and not 
-  matchesBracket = gregexpr("\\$\\{\\w+\\}", path, perl = T)
-  matches = gregexpr("\\$\\w+", path, perl = T)
+  matchesBracket = gregexpr("\\$\\{\\w+\\}", path, perl=T)
+  matches = gregexpr("\\$\\w+", path, perl=T)
   
   # perform two rounds of env var replacement
   # this way both bracketed and not bracketed ones will be replaced
@@ -213,7 +214,7 @@
 
 .makeMetadataSectionAbsolute = function(config, parent) {
   # Enable creation of absolute path using given parent folder path.
-  absViaParent = pryr::partial(.makeAbsPath, parent = parent)
+  absViaParent = pryr::partial(.makeAbsPath, parent=parent)
   
   # With newer project config file layout,
   # certain metadata members are handled differently.
@@ -222,7 +223,7 @@
   # Process each metadata item, handling each value according to attribute name.
   for (metadataAttribute in names(config$metadata)) {
     value = config$metadata[[metadataAttribute]]
-    values=c()
+    values = c()
     # loop through all values, supports multiple 
     # values in the config key-value pairs
     for (iValue in value) {
