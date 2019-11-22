@@ -176,7 +176,7 @@
 #' @examples
 #' .strformat("~/{VAR1}{VAR2}_file", list(VAR1="hi", VAR2="hello"))
 #' .strformat("$HOME/{VAR1}{VAR2}_file", list(VAR1="hi", VAR2="hello"))
-.strformat = function(string, args, exclude, parent=NULL) {
+.strformat = function(string, args, exclude=NULL, parent=NULL) {
   result = c()
   # if parent provided, make the path absolute and expand it.
   #  Otherwise, just expand it
@@ -193,12 +193,20 @@
     if (any(names(pluralID) %in% exclude)) {
       pluralID = pluralID[-which(names(pluralID) %in% exclude)]
     }
-    for (iPlural in unlist(argsUnlisted[pluralID])) {
-      argsUnlisted[[pluralID]] = iPlural
-      result = append(result, stringr::str_interp(x, argsUnlisted))
-    }
+     attrCount = sapply(argsUnlisted, length)[pluralID]
+     nrows = unique(attrCount)
+     if(length(nrows) > 1) {
+      stop("If including multiple attributes with multiple values, the number of values in each attribute must be identical.")
+     }
+     for (r in seq_len(nrows)) {
+        argsUnlistedCopy = argsUnlisted
+        for (i in seq_along(pluralID)) {
+          argsUnlistedCopy[[pluralID[[i]]]] = argsUnlisted[[pluralID[[i]]]][r]
+        }
+        result = append(result, stringr::str_interp(x, argsUnlistedCopy))
+      }
     return(result)
-  } else{
+  } else {
     return(stringr::str_interp(x, argsUnlisted))
   }
 }
