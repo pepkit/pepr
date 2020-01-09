@@ -159,6 +159,7 @@ fetchSamples = function(samples, attr=NULL, func=NULL, action="include") {
 #' A designated place for any config transformations/sanity checks, like keys deprecation handling
 #'
 #' @param cfg config or a section of one to sanitize
+#'
 #' @return sanitized config
 #' @export
 .sanitizeConfig = function(cfg) {
@@ -170,4 +171,21 @@ fetchSamples = function(samples, attr=NULL, func=NULL, action="include") {
     }
   }
   return(cfg)
+}
+
+#' Create a list of matched files in the system and unmatched regular expessions
+#'
+#' @param rgx string to expand in the system
+#'
+#' @return a list of all the elements after possible expansion
+.matchesAndRegexes = function(rgx) {
+  res = c()
+  for(i in rgx){
+    matched = Sys.glob(i)
+    if(length(matched) < 1) {
+      matched = i
+    }
+    res = c(res, matched)
+  }
+  return(list(res))
 }

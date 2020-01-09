@@ -159,7 +159,7 @@
   return(path)
 }
 
-#' Format a string like python's format function
+#' Format a string like python's format method
 #'
 #' Given a string with environment variables (encoded like \code{${VAR}} or \code{$VAR}), and
 #' other variables (encoded like \code{{VAR}}) this function will substitute
@@ -189,11 +189,6 @@
   argsLengths = lapply(argsUnlisted, length)
   if (any(argsLengths > 1)) {
     pluralID = which(argsLengths > 1)
-    # Remove the previously interpolated, 
-    # thus plural elements from another round of interpolation
-    if (any(names(pluralID) %in% exclude)) {
-      pluralID = pluralID[-which(names(pluralID) %in% exclude)]
-    }
      attrCount = sapply(argsUnlisted, length)[pluralID]
      nrows = unique(attrCount)
      if(length(nrows) > 1) {

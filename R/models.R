@@ -403,8 +403,8 @@ setMethod(
       }
       regex = cfg$data_sources[[sampDataSource]]
       if (!is.null(regex)) {
-        a = .strformat(regex, as.list(samp), exclude, parentDir)
-        samp[[column]] = list(system(sprintf("echo %s",a), intern = TRUE))
+        formatted = .strformat(regex, as.list(samp), exclude, parentDir)
+        samp[[column]] = .matchesAndRegexes(formatted)
       }
       listOfSamples[[iSamp]] = samp
     }
@@ -415,6 +415,7 @@ setMethod(
   .Object@samples = do.call(rbind, listOfSamples)
   .Object
 }
+
 
 .implyAttributes = function(.Object) {
   if (is.null(.Object@config$implied_attributes)) {
