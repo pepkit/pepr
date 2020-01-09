@@ -1,8 +1,12 @@
-# pepr 0.2.2 - unreleased
+# pepr 0.2.2 - 2020-01-09
 
 ## Changed
 
 *  downgrade exception from error to warining when missing envieonment variable is found
+
+## Fixed 
+
+* issues related to subsample table functionality; [#33](https://github.com/pepkit/pepr/issues/33)
 
 # pepr 0.2.1 - 2019-06-21
 
