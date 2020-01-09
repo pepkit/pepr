@@ -1,8 +1,19 @@
+# pepr 0.2.2 - 2020-01-09
+
+## Changed
+
+*  downgrade exception from error to warining when missing envieonment variable is found
+
+## Fixed 
+
+* issues related to subsample table functionality; [#33](https://github.com/pepkit/pepr/issues/33)
+
 # pepr 0.2.1 - 2019-06-21
 
 ## Changed
 
 * `checkSection` method can be used with a mixture of section names _and_ indices.
+* improved interaction between pepr and BiocProject
 
 # pepr 0.2 - 2019-04-17
 
@@ -21,9 +32,9 @@
 ## Changed
 
 * if the `subproject` argument of the `Project()` function is not present in the config, the original project is returned
-* paths in the `bioconductor` section of the config are made aboslute and environment varaiables are read
-* no sample annotation is allowed if any suprojects are defined in the config
-* fixed the problem with paths expansions in sample subannotaitons case
+* paths in the `bioconductor` section of the config are made absolute and environment variables are read
+* no sample annotation is allowed if any subprojects are defined in the config
+* fixed the problem with paths expansions in sample subannotations case
 
 
 # pepr 0.0.4 - 2018-11-14

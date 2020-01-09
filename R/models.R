@@ -403,8 +403,8 @@ setMethod(
       }
       regex = cfg$data_sources[[sampDataSource]]
       if (!is.null(regex)) {
-        a = .strformat(regex, as.list(samp), exclude, parentDir)
-        samp[[column]] = list(system(sprintf("echo %s",a), intern = TRUE))
+        formatted = .strformat(regex, as.list(samp), exclude, parentDir)
+        samp[[column]] = .matchesAndRegexes(formatted)
       }
       listOfSamples[[iSamp]] = samp
     }
@@ -415,6 +415,7 @@ setMethod(
   .Object@samples = do.call(rbind, listOfSamples)
   .Object
 }
+
 
 .implyAttributes = function(.Object) {
   if (is.null(.Object@config$implied_attributes)) {
@@ -535,12 +536,13 @@ setMethod(
       whichColSamples = which(names(samples) == colName)
       whichRowSamples = which(samples$sample_name == iName)
       if(length(whichRowSamples) < 1){
-        stop("No samples named '", iName, "'")
+        warning("No samples named '", iName, "'")
+      } else {
+        # Inserting element(s) into the list
+        colList[[whichRowSamples]] = subTable[[colName]]
+        # Inserting the list as a column in the data.frame
+        samples[[colName]] = colList
       }
-      # Inserting element(s) into the list
-      colList[[whichRowSamples]] = subTable[[colName]]
-      # Inserting the list as a column in the data.frame
-      samples[[colName]] = colList
     }
   }
   samples[is.na(samples)] = ""

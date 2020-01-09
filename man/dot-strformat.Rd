@@ -2,9 +2,9 @@
 % Please edit documentation in R/loadConfig.R
 \name{.strformat}
 \alias{.strformat}
-\title{Format a string like python's format function}
+\title{Format a string like python's format method}
 \usage{
-.strformat(string, args, exclude, parent = NULL)
+.strformat(string, args, exclude = NULL, parent = NULL)
 }
 \arguments{
 \item{string}{String with variables encoded}

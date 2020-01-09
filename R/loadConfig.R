@@ -70,7 +70,7 @@
   # or for user information when the Project is created, where message
   # is preferred
   if(!style == "message"){
-    printFun = pryr::partial(cat, fill = T)
+    printFun = pryr::partial(cat, fill=T)
   }else{
     printFun = message
   }
@@ -116,20 +116,21 @@
   # helper function
   replaceEnvVars = function(path, matches){
     # the core of the expandPath function
-    parts = unlist(regmatches(x = path, matches, invert = F))
+    parts = unlist(regmatches(x=path, matches, invert=F))
     replacements = c()
     for (i in seq_along(attr(matches[[1]], "match.length"))) {
       # get the values of the env vars
       replacements[i] = Sys.getenv(removeNonWords(parts[i]))
       if(any(replacements == "")){
-        missingEnvVar = which(replacements=="")
-        stop(
-          paste("The environment variable",parts[missingEnvVar],"was not found")
+        missingEnvVar = which(replacements == "")
+        warning(
+          paste0("The environment variable '",parts[missingEnvVar],
+                 "' was not found. Created object might be invalid.")
           )
       }
     }
     # replace env vars with their system values
-    regmatches(x = path, matches, invert = F) = replacements
+    regmatches(x=path, matches, invert=F) = replacements
     # if UNIX, make sure the root's in the path
     if (.Platform$OS.type == "unix") {
       if (!startsWith(path, "/")) {
@@ -148,8 +149,8 @@
   # if it's a path, make it absolute
   path = normalizePath(path.expand(path),mustWork = FALSE)
   # search for env vars, both bracketed and not 
-  matchesBracket = gregexpr("\\$\\{\\w+\\}", path, perl = T)
-  matches = gregexpr("\\$\\w+", path, perl = T)
+  matchesBracket = gregexpr("\\$\\{\\w+\\}", path, perl=T)
+  matches = gregexpr("\\$\\w+", path, perl=T)
   
   # perform two rounds of env var replacement
   # this way both bracketed and not bracketed ones will be replaced
@@ -158,7 +159,7 @@
   return(path)
 }
 
-#' Format a string like python's format function
+#' Format a string like python's format method
 #'
 #' Given a string with environment variables (encoded like \code{${VAR}} or \code{$VAR}), and
 #' other variables (encoded like \code{{VAR}}) this function will substitute
@@ -176,7 +177,7 @@
 #' @examples
 #' .strformat("~/{VAR1}{VAR2}_file", list(VAR1="hi", VAR2="hello"))
 #' .strformat("$HOME/{VAR1}{VAR2}_file", list(VAR1="hi", VAR2="hello"))
-.strformat = function(string, args, exclude, parent=NULL) {
+.strformat = function(string, args, exclude=NULL, parent=NULL) {
   result = c()
   # if parent provided, make the path absolute and expand it.
   #  Otherwise, just expand it
@@ -188,24 +189,27 @@
   argsLengths = lapply(argsUnlisted, length)
   if (any(argsLengths > 1)) {
     pluralID = which(argsLengths > 1)
-    # Remove the previously interpolated, 
-    # thus plural elements from another round of interpolation
-    if (any(names(pluralID) %in% exclude)) {
-      pluralID = pluralID[-which(names(pluralID) %in% exclude)]
-    }
-    for (iPlural in unlist(argsUnlisted[pluralID])) {
-      argsUnlisted[[pluralID]] = iPlural
-      result = append(result, stringr::str_interp(x, argsUnlisted))
-    }
+     attrCount = sapply(argsUnlisted, length)[pluralID]
+     nrows = unique(attrCount)
+     if(length(nrows) > 1) {
+      stop("If including multiple attributes with multiple values, the number of values in each attribute must be identical.")
+     }
+     for (r in seq_len(nrows)) {
+        argsUnlistedCopy = argsUnlisted
+        for (i in seq_along(pluralID)) {
+          argsUnlistedCopy[[pluralID[[i]]]] = argsUnlisted[[pluralID[[i]]]][r]
+        }
+        result = append(result, stringr::str_interp(x, argsUnlistedCopy))
+      }
     return(result)
-  } else{
+  } else {
     return(stringr::str_interp(x, argsUnlisted))
   }
 }
 
 .makeMetadataSectionAbsolute = function(config, parent) {
   # Enable creation of absolute path using given parent folder path.
-  absViaParent = pryr::partial(.makeAbsPath, parent = parent)
+  absViaParent = pryr::partial(.makeAbsPath, parent=parent)
   
   # With newer project config file layout,
   # certain metadata members are handled differently.
@@ -214,7 +218,7 @@
   # Process each metadata item, handling each value according to attribute name.
   for (metadataAttribute in names(config$metadata)) {
     value = config$metadata[[metadataAttribute]]
-    values=c()
+    values = c()
     # loop through all values, supports multiple 
     # values in the config key-value pairs
     for (iValue in value) {

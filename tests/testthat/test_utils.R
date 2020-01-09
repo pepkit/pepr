@@ -36,7 +36,10 @@ test_that(".makeAbsPath returns NULL and NA if these are subject to test", {
 test_that(".expandPath returns correct object type and throws errors", {
     expect_is(.expandPath(path = "~/UVA/"), 'character')
     expect_error(.expandPath(1))
-    expect_error(.expandPath("~/$HOME/test/$NonExistentVar"))
+})
+test_that(".expandPath does not throw an error when when non-existent 
+          environment variable is found. Just a warning.", {
+    expect_warning(.expandPath("~/$HOME/test/$NonExistentVar"))
 })
 
 test_that("strformat returns correct object type and throws errors", {
@@ -150,10 +153,18 @@ test_that(".expandPath work with both curly braced and non-curly braced
                  .expandPath("${HOME}/my/path/string.txt"))
 })
 
-test_that(".strformat works",{
-    expect_null(.strformat("~/{VAR1}{VAR2}_file", list(VAR1=c("hi","a"), VAR2="hello"), exclude = "VAR1"))
-    expect_is(.strformat("~/{VAR1}{VAR2}_file", list(VAR1="hi", VAR2="hello"), exclude = "test"),"character")
-    expect_is(.strformat("~/{VAR1}{VAR2}_file", list(VAR1="hi", VAR2="hello")),"character")
+test_that(".strformat returns an object of correct class", {
+    expect_is(.strformat("~/{VAR1}{VAR2}_file", list(VAR1="var1a", VAR2="var2a")), "character")
+})
+
+test_that(".strformat works with multiple values", {
+    expect_equal(length(.strformat("{VAR1}_{VAR2}", list(VAR1=c("var1a", "var1b"), VAR2="var2a"))), 2)
+    expect_equal(length(.strformat("{VAR1}_{VAR2}", list(VAR1=c("var1a", "var1b"), VAR2=c("var2a", "var2b")))), 2)
+    expect_equal(length(.strformat("{VAR1}_{VAR2}", list(VAR1=c("var1a", "var1b"), VAR2="var2a"))), 2)
+})
+
+test_that(".strformat fails when multiple multi-replacemenets of different lengths are used", {
+    expect_error(.strformat("{VAR1}_{VAR2}", list(VAR1=c("var1a", "var1b"), VAR2=c("var2a", "var2b","var2c"))))
 })
 
 test_that(".printNestedList produces an output", {
