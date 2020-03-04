@@ -1,3 +1,7 @@
+CFG_SAMPLE_TABLE_KEY = "sample_table"
+CFG_SUBSAMPLE_TABLE_KEY = "subsample_table"
+CFG_VERSION_KEY = "pep_version"
+CFG_MODIFIERS_KEY = "sample_modifiers"
 #' Portable Encapsulated Project object
 #'
 #' Provides an in-memory representation and functions to access project
@@ -91,7 +95,7 @@ setMethod(
   signature = "Config", 
   definition = function(object) {
     if (CFG_VERSION_KEY %in% names(object)){
-      split = str_split(cfg[[CFG_VERSION_KEY]],"\\.")[[1]]
+      split = str_split(object[[CFG_VERSION_KEY]],"\\.")[[1]]
       if (length(split) < 3) stop("PEP version string is not tripartite")
       majorVer = as.numeric(split[1])
       if (majorVer < 2){
@@ -229,13 +233,17 @@ setMethod(
 
 setMethod("initialize", "Config", function(.Object, filename) {
   if (is.character(filename)){
-    filename = yaml::yaml.load_file(filename)
-    if (!is.list(filename))
+    cfg_data = yaml::yaml.load_file(filename)
+    if (!is.list(cfg_data))
       stop("The config file has to be a YAML formatted file.
            See: http://yaml.org/start.html")
+  } else{
+    cfg_data = filename
   }
-  .Object = methods::callNextMethod(.Object, filename)  # calls list initialize
-  # .Object = makeSectionsAbsolute(.Object)
+  reqAbs = c(CFG_SAMPLE_TABLE_KEY, CFG_SUBSAMPLE_TABLE_KEY)
+  .Object = methods::callNextMethod(.Object, cfg_data)  # calls list initialize
+  if (is.character(filename)) 
+    .Object = makeSectionsAbsolute(.Object, reqAbs, filename)
   .Object = reformat(.Object)
   return(.Object)
 })
