@@ -7,6 +7,8 @@ CFG_IMPLY_KEY = "imply"
 CFG_DERIVE_KEY = "derive"
 CFG_IMPLY_THEN_KEY = "then"
 CFG_IMPLY_IF_KEY = "if"
+CFG_DERIVE_ATTRS_KEY = "attributes"
+CFG_DERIVE_SOURCES_KEY = "sources"
 #' Portable Encapsulated Project object
 #'
 #' Provides an in-memory representation and functions to access project
@@ -285,7 +287,7 @@ setMethod(
     if (!CFG_MODIFIERS_KEY %in% names(config(object))) return(object)
     object = .appendAttrs(object)
     object = .implyAttrs(object)
-    # object = .deriveAttrs(object)
+    object = .deriveAttrs(object)
     return(object)
   }
 )
@@ -508,57 +510,27 @@ setMethod(
 }
 
 .deriveAttrs = function(.Object) {
-  # Backwards compatibility
-  # after change of derived columns to derived attributes
-  if (is.null(.Object@config$derived_attributes)) {
-    if (is.null(.Object@config$derived_columns)) {
-      # If no derived columns and attributes found - return the unchanged object
-      return(.Object)
-    } else{
-      # If the old naming scheme is used - copy the derived columns
-      .Object@config$derived_attributes = .Object@config$derived_columns
-      .Object@config[[which(names(.Object@config) == "derived_columns")]] = NULL
-    }
-  }
-  # Set default derived columns - deprecated, to be deleted
-  dc = unique(append(.Object@config$derived_attributes, "data_source"))
-  .Object@config$derived_attributes = dc
-  # Get the path to the direcotry containing the config
   parentDir = dirname(.Object@file)
-  # Convert samples table into list of individual samples for processing
-  cfg = .Object@config
-  tempSamples = .Object@samples
-  tempSamples[is.na(tempSamples)] = ""
-  numSamples = nrow(tempSamples)
-  if (numSamples == 0) {
-    return(.Object)
-  }
-  
-  listOfSamples = split(tempSamples, seq(numSamples))
-  exclude = c()
-  # Process derived attributes
-  for (column in cfg$derived_attributes) {
-    for (iSamp in seq_along(listOfSamples)) {
-      samp = listOfSamples[[iSamp]]
-      sampDataSource = unlist(samp[[column]])
-      if (is.null(sampDataSource)) {
-        # This sample lacks this derived attribute
-        next
+  modifiers = config(.Object)[[CFG_MODIFIERS_KEY]]
+  if (!CFG_DERIVE_KEY %in% names(modifiers)) return(.Object)
+  derivations = modifiers[[CFG_DERIVE_KEY]]
+  if (!all(c(CFG_DERIVE_ATTRS_KEY, CFG_DERIVE_SOURCES_KEY) %in% names(derivations)))
+    stop(CFG_DERIVE_KEY, " section is not formatted properly")
+  for (derivedAttr in derivations[[CFG_DERIVE_ATTRS_KEY]]) {
+    derivedSamplesVals = .Object@samples[,derivedAttr]
+    for (derivedSource in names(derivations[[CFG_DERIVE_SOURCES_KEY]])){
+      hitIds = which(derivedSamplesVals == derivedSource)
+      if (length(hitIds) < 1) next
+      for (hitId in hitIds){
+        rgx = derivations[[CFG_DERIVE_SOURCES_KEY]][[derivedSource]]
+        res = .matchesAndRegexes(.strformat(rgx, as.list(samples(.Object)[hitId,]), parentDir))  
+        .Object@samples[hitId,derivedAttr] = list(res)
       }
-      regex = cfg$data_sources[[sampDataSource]]
-      if (!is.null(regex)) {
-        formatted = .strformat(regex, as.list(samp), exclude, parentDir)
-        samp[[column]] = .matchesAndRegexes(formatted)
-      }
-      listOfSamples[[iSamp]] = samp
     }
-    exclude = append(exclude, column)
   }
-  
-  # Reformat listOfSamples to a table
-  .Object@samples = do.call(rbind, listOfSamples)
-  .Object
+  return(.Object)
 }
+
 
 .loadSampleAnnotation = function(.Object) {
   # Can use fread if data.table is installed, otherwise use read.table
