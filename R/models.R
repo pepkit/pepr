@@ -29,8 +29,6 @@ setClass("Project",
 #' p=Project(projectConfig)
 #' @export Project
 Project = function(file = NULL,
-                   # samples = list(),
-                   # config = list(),
                    subproject = NULL) {
   methods::new("Project", file = file, subproject = subproject)
 }
@@ -49,6 +47,36 @@ setMethod(
     cat("Config object. Class:", class(object), fill = T)
     .printNestedList(object)
     invisible(NULL)
+  }
+)
+
+#' Make sections absolute in the config
+#' 
+#' @export
+setGeneric("makeSectionsAbsolute", function(object, sections, cfgPath)
+  standardGeneric("makeSectionsAbsolute"))
+
+setMethod(
+  "makeSectionsAbsolute", 
+  signature = signature(
+    object="Config", 
+    sections="character", 
+    cfgPath="character"
+    ), 
+  definition = function(object, sections, cfgPath) {
+    # Enable creation of absolute path using given parent folder path.
+    absViaParent = pryr::partial(.makeAbsPath, parent=dirname(cfgPath))
+    for(section in sections){
+      if (section %in% names(object)){
+        absSectionVals = c()
+        for (iSection in object[section]){
+          absSection = absViaParent(iSection)
+          absSectionVals = append(absSectionVals, absSection)
+        }
+        object[section] = absSectionVals
+      }
+    }
+  return(object)
   }
 )
 
