@@ -2,6 +2,9 @@ CFG_SAMPLE_TABLE_KEY = "sample_table"
 CFG_SUBSAMPLE_TABLE_KEY = "subsample_table"
 CFG_VERSION_KEY = "pep_version"
 CFG_MODIFIERS_KEY = "sample_modifiers"
+CFG_APPEND_KEY = "append"
+CFG_IMPLY_KEY = "imply"
+CFG_DERIVE_KEY = "derive"
 #' Portable Encapsulated Project object
 #'
 #' Provides an in-memory representation and functions to access project
@@ -260,6 +263,8 @@ setMethod("initialize", "Project", function(.Object, ...) {
       # check if subproject provided
       .Object = activateAmendments(.Object, ellipsis$amendments)
     } else {
+      .Object = .loadSampleAnnotation(.Object)
+      .Object = .loadSampleSubannotation(.Object)
       .Object = .modifySamples(.Object)
     }
   }
@@ -275,11 +280,10 @@ setMethod(
   ".modifySamples",
   signature = "Project",
   definition = function(object) {
-    object = .loadSampleAnnotation(object)
-    # object = .loadSampleSubannotation(object)
-    # object = .applyConstantAttributes(object)
-    # object = .implyAttributes(object)
-    # object = .deriveAttributes(object)
+    if (!CFG_MODIFIERS_KEY %in% names(config(object))) return(object)
+    object = .appendAttrs(object)
+    # object = .implyAttrs(object)
+    # object = .deriveAttrs(object)
     return(object)
   }
 )
@@ -445,12 +449,35 @@ setMethod(
     .Object@config = .updateSubconfig(.Object@config, amendments)
     # Ensure that metadata paths are absolute and return the config.
     # This used to be all metadata columns; now it's just: results_subdir
-    return(.modifySamples(.Object))
+    .Object = .loadSampleAnnotation(.Object)
+    .Object = .loadSampleSubannotation(.Object)
+    .Object = .modifySamples(.Object)
+    return(.Object)
   }
 )
 
+.appendAttrs <- function(.Object) {
+  modifiers = config(.Object)[[CFG_MODIFIERS_KEY]]
+  if (!CFG_APPEND_KEY %in% names(modifiers)) return(.Object)
+  constants = modifiers[[CFG_APPEND_KEY]]
+  if (is.list(constants)) {
+    # get names
+    constantsNames = names(constants)
+    # get a copy of samples to get the dimensions
+    samplesDF = samples(.Object)
+    colLen = dim(samplesDF)[1]
+    for (iConst in seq_along(constants)) {
+      # create a one column data.table and glue appand it with to the 
+      # current samples data.table
+      constantCol = data.table::data.table(rep(constants[[iConst]], colLen))
+      names(constantCol) = constantsNames[iConst]
+      .Object@samples = cbind(samplesDF, constantCol)
+    }
+  }
+  return(.Object)
+}
 
-.deriveAttributes = function(.Object) {
+.deriveAttrs = function(.Object) {
   # Backwards compatibility
   # after change of derived columns to derived attributes
   if (is.null(.Object@config$derived_attributes)) {
@@ -504,7 +531,7 @@ setMethod(
 }
 
 
-.implyAttributes = function(.Object) {
+.implyAttrs = function(.Object) {
   if (is.null(.Object@config$implied_attributes)) {
     # Backwards compatibility
     # after change of implied columns to implied attributes
@@ -575,9 +602,10 @@ setMethod(
 }
 
 .loadSampleSubannotation = function(.Object){
-  # Extracting needed slots
-  sampleSubannotationPath = .Object@config$metadata$subsample_table
-  samples = .Object@samples
+  cfg = config(.Object)
+  if (!CFG_SUBSAMPLE_TABLE_KEY %in% names(cfg)) return(.Object)
+  sampleSubannotationPath = cfg[[CFG_SUBSAMPLE_TABLE_KEY]]
+  samples = samples(.Object)
   samples = .listifyDF(samples)
   #Reading sample subannonataion table, just like in annotation table
   if (requireNamespace("data.table")) {
@@ -625,32 +653,6 @@ setMethod(
   }
   samples[is.na(samples)] = ""
   .Object@samples = samples
-  return(.Object)
-}
-
-.applyConstantAttributes <- function(.Object) {
-  # Extracting needed slots
-  # backwards compatible with the "constants" key in the config YAML
-  constants = .Object@config$constants
-  if (is.null(config(.Object)$constants)) {
-    constants = config(.Object)$constant_attributes
-  } else{
-    constant = config(.Object)$constants
-  }
-  if (is.list(constants)) {
-    # get names
-    constantsNames = names(constants)
-    # get a copy of samples to get the dimensions
-    samplesDF = .Object@samples
-    colLen = dim(samplesDF)[1]
-    for (iConst in seq_along(constants)) {
-      # create a data.table - one column and glue
-      # it with the current samples data.table
-      constantCol = data.table::data.table(rep(constants[[iConst]], colLen))
-      names(constantCol) = constantsNames[iConst]
-      .Object@samples = cbind(.Object@samples, constantCol)
-    }
-  }
   return(.Object)
 }
 
