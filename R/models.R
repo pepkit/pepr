@@ -105,6 +105,8 @@ setMethod(
         }
       }
       message(paste0("Raw ", CFG_VERSION_KEY, ": ", object[CFG_VERSION_KEY]))
+    } else{
+      stop("Config file reformatting is not supported. Reformat the config manually.")
     }
     return(object)
   }
@@ -224,6 +226,19 @@ setMethod(
     object@samples
   }
 )
+
+setMethod("initialize", "Config", function(.Object, filename) {
+  if (is.character(filename)){
+    filename = yaml::yaml.load_file(filename)
+    if (!is.list(filename))
+      stop("The config file has to be a YAML formatted file.
+           See: http://yaml.org/start.html")
+  }
+  .Object = methods::callNextMethod(.Object, filename)  # calls list initialize
+  # .Object = makeSectionsAbsolute(.Object)
+  .Object = reformat(.Object)
+  return(.Object)
+})
 
 setMethod("initialize", "Project", function(.Object, ...) {
   .Object = methods::callNextMethod(.Object)  # calls generic initialize
