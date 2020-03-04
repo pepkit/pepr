@@ -170,7 +170,7 @@ setMethod(
     cat("  file: ", object@file, fill = T)
     cat("  samples: ", NROW(object@samples), fill = T)
     if (length(object@config) != 0) {
-      .listSubprojects(object@config, style="cat")
+      .listAmendments(object@config, style="cat")
     }
     invisible(NULL)
   }
@@ -255,20 +255,34 @@ setMethod("initialize", "Project", function(.Object, ...) {
     # check if file path provided
     .Object@file = ellipsis$file
     .Object@config = .loadConfig(ellipsis$file)
-    .Object@config = .sanitizeConfig(.Object@config)
-    if (!is.null(ellipsis$subproject)) {
+    # .Object@config = .sanitizeConfig(.Object@config)
+    if (!is.null(ellipsis$amendments)) {
       # check if subproject provided
-      .Object = activateSubproject(.Object, ellipsis$subproject)
+      .Object = activateAmendments(.Object, ellipsis$amendments)
     } else {
-      .Object = .loadSampleAnnotation(.Object)
-      .Object = .loadSampleSubannotation(.Object)
-      .Object = .applyConstantAttributes(.Object)
-      .Object = .implyAttributes(.Object)
-      .Object = .deriveAttributes(.Object)
+      .Object = .modifySamples(.Object)
     }
   }
   return(.Object)
 })
+
+#' Read sample annotation and perform all the sample modifications
+#' @export
+setGeneric(".modifySamples", function(object)
+  standardGeneric(".modifySamples"))
+
+setMethod(
+  ".modifySamples",
+  signature = "Project",
+  definition = function(object) {
+    object = .loadSampleAnnotation(object)
+    # object = .loadSampleSubannotation(object)
+    # object = .applyConstantAttributes(object)
+    # object = .implyAttributes(object)
+    # object = .deriveAttributes(object)
+    return(object)
+  }
+)
 
 
 #' This method extracts the sample from the \code{\link{Project-class}} object
@@ -370,7 +384,7 @@ setMethod(
 #'
 #' Lists available subprojects within a \code{\link{Project-class}} object.
 #'
-#' The subprojects can be activated by passing their names to the  \code{\link{activateSubproject}} method
+#' The subprojects can be activated by passing their names to the  \code{\link{activateAmendments}} method
 #'
 #' @param .Object an object of \code{\link{Project-class}}
 #' @return names of the available subprojects
@@ -382,7 +396,7 @@ setMethod(
 #' package = "pepr")
 #' p = Project(file = projectConfig)
 #' availSubprojects = listSubprojects(p)
-#' activateSubproject(p,availSubprojects[1])
+#' activateAmendments(p,availSubprojects[1])
 #' @export
 setGeneric("listSubprojects", function(.Object)
   standardGeneric("listSubprojects"))
@@ -417,29 +431,21 @@ setMethod(
 #' package = "pepr")
 #' p = Project(file = projectConfig)
 #' availSubprojects = listSubprojects(p)
-#' activateSubproject(p,availSubprojects[1])
+#' activateAmendments(p,availSubprojects[1])
 #' @export
-setGeneric("activateSubproject", function(.Object, sp)
-  standardGeneric("activateSubproject"))
+setGeneric("activateAmendments", function(.Object, amendments)
+  standardGeneric("activateAmendments"))
 
 
 setMethod(
-  f = "activateSubproject",
-  signature = signature(.Object="Project", sp="character"),
-  definition = function(.Object, sp) {
-    .Object@config = .sanitizeConfig(.Object@config)
-    .Object@config = .updateSubconfig(.Object@config, sp)
+  f = "activateAmendments",
+  signature = signature(.Object="Project", amendments="character"),
+  definition = function(.Object, amendments) {
+    # .Object@config = .sanitizeConfig(.Object@config)
+    .Object@config = .updateSubconfig(.Object@config, amendments)
     # Ensure that metadata paths are absolute and return the config.
     # This used to be all metadata columns; now it's just: results_subdir
-    mdn = names(.Object@config$metadata)
-    .Object@config$metadata =
-      .makeMetadataSectionAbsolute(.Object@config, parent=dirname(.Object@file))
-    .Object = .loadSampleAnnotation(.Object)
-    .Object = .loadSampleSubannotation(.Object)
-    .Object = .applyConstantAttributes(.Object)
-    .Object = .implyAttributes(.Object)
-    .Object = .deriveAttributes(.Object)
-    .Object
+    return(.modifySamples(.Object))
   }
 )
 
@@ -555,23 +561,14 @@ setMethod(
   } else {
     sampleReadFunc = utils::read.table
   }
-  if(is.null(.Object@config$metadata$sample_table)){
-    if(!is.null(.Object@config$subprojects)){
-    # if there are any subprojects, just warn and return empty data.table,
-    # maybe there's a 'sample_table' specified in the subproject
-    warning("No 'sample_table' key in the 'metadata' section of the " 
-            ,"config")
-    .Object@samples = data.table::data.table()
-    return(.Object)
-    } else{
-      stop("No 'sample_table' key in the 'metadata' section of the config")
-    }
-  }
-  sampleAnnotationPath = .Object@config$metadata$sample_table
+  cfg = config(.Object)
+  if (!CFG_SAMPLE_TABLE_KEY %in% names(cfg)) return(.Object)
+  sampleAnnotationPath = cfg[[CFG_SAMPLE_TABLE_KEY]]
   if(.safeFileExists(sampleAnnotationPath)){
     samples = sampleReadFunc(sampleAnnotationPath)
   } else{
-    stop("The sample annotation sheet does not exist: ", sampleAnnotationPath)
+    warning("The sample_table does not exist: ", sampleAnnotationPath)
+    return(.Object)
   }
   .Object@samples = samples
   return(.Object)
