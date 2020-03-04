@@ -2,70 +2,51 @@
 #'
 #' Loads a PEP config file
 #'
-#' @param sp Subproject to activate
+#' @param amendments amendments to activate
 #' @param filename file path to config file
 #' 
 #' @seealso \url{https://pepkit.github.io/}
-.loadConfig = function(filename=NULL, sp=NULL) {
+.loadConfig = function(filename=NULL, amendments=NULL) {
   if (!file.exists(filename)) {
     stop("No config file found")
   }
-  config_file = yaml::yaml.load_file(filename)
-  if (!is.list(config_file))
-    stop("The config file has to be a YAML formatted file.
-         See: http://yaml.org/start.html")
-  cfg = methods::new("Config", config_file)
-  
+  # Initialize config object
+  cfg = methods::new("Config", filename)
   message("Loaded config file: ", filename)
-  
   # Show available subprojects
-  .listSubprojects(cfg)
-  
-  # Update based on subproject if one is specified.
-  cfg = .updateSubconfig(cfg, sp)
-  
-  # Ensure that metadata paths are absolute and return the config.
-  # This used to be all metadata columns; now it's just: results_subdir
-  mdn = names(cfg$metadata)
-  
-  cfg$metadata = .makeMetadataSectionAbsolute(cfg, parent=dirname(filename))
-  # make data_sources section absolute
-  if(!is.null(cfg$data_sources)) 
-    cfg$data_sources = lapply(cfg$data_sources, .expandPath)
+  .listAmendments(cfg)
+  # Update based on amendments if any specified
+  cfg = .activateAmendments(cfg, amendments)
   # make bioconductor$readFunPath value absolute, used in BiocProject
   if(!is.null(cfg$bioconductor$readFunPath)){
     path = gsub("\\./","",cfg$bioconductor$readFunPath)
     cfg$bioconductor$readFunPath = .makeAbsPath(path, parent=dirname(filename))
   }
-  # Infer default project name
-  
-  if (is.null(cfg$name)) {
-    # Default project name is the name of the folder containing the config file
-    maybeProjectName = basename(dirname(normalizePath(filename)))
-    if (maybeProjectName == "metadata") {
-      # Unless it's in a 'metadata' folder, then it's the name of the folder
-      # one level up
-      maybeProjectName = basename(dirname(dirname(normalizePath(filename))))
+  cfg$name = .inferProjectName(cfg, filename)
+  return(cfg)
+}
+
+.inferProjectName = function(cfg, filename){
+  if (!is.null(cfg$name)) return(cfg$name)
+  return(basename(dirname(normalizePath(filename))))
+}
+
+.activateAmendments = function(cfg, amendments=NULL) {
+  if (!is.null(amendments)) {
+    for (amendment in amendments){
+      if (is.null(cfg$amendments[[amendment]])) {
+        warning("Amendment not found: ", amendment)
+        message("Amendment was not activated")
+        return(cfg)
+      }
+      cfg = utils::modifyList(cfg, cfg$amendments[[amendment]])
+      message("Activating amendment: ", amendment)
     }
-    cfg$name = maybeProjectName
   }
   return(cfg)
 }
 
-.updateSubconfig = function(cfg, sp=NULL) {
-  if (!is.null(sp)) {
-    if (is.null(cfg$subprojects[[sp]])) {
-      warning("Subproject not found: ", sp)
-      message("Subproject was not activated")
-      return(cfg)
-    }
-    cfg = utils::modifyList(cfg, cfg$subprojects[[sp]])
-    message("Loading subproject: ", sp)
-  }
-  return(cfg)
-}
-
-.listSubprojects = function(cfg, style="message") {
+.listAmendments = function(cfg, style="message") {
   # this function can be used in object show method, where cat is preferred 
   # or for user information when the Project is created, where message
   # is preferred
@@ -78,10 +59,10 @@
   if(!methods::is(cfg,"Config")) 
     stop("The Project object does not contain a vaild config")
   
-  if (length(names(cfg$subprojects)) > 0) {
+  if (length(names(cfg$amendments)) > 0) {
     # If there are any show a cat and return if needed
-    printFun("  subprojects: ", paste0(names(cfg$subprojects), collapse=","))
-    invisible(names(cfg$subprojects))
+    printFun("  amendments: ", paste0(names(cfg$amendments), collapse=","))
+    invisible(names(cfg$amendments))
   } else{
     # Otherwise return NULL for testing purposes
     NULL
@@ -205,26 +186,4 @@
   } else {
     return(stringr::str_interp(x, argsUnlisted))
   }
-}
-
-.makeMetadataSectionAbsolute = function(config, parent) {
-  # Enable creation of absolute path using given parent folder path.
-  absViaParent = pryr::partial(.makeAbsPath, parent=parent)
-  
-  # With newer project config file layout,
-  # certain metadata members are handled differently.
-  absoluteMetadata = list()
-  
-  # Process each metadata item, handling each value according to attribute name.
-  for (metadataAttribute in names(config$metadata)) {
-    value = config$metadata[[metadataAttribute]]
-    values = c()
-    # loop through all values, supports multiple 
-    # values in the config key-value pairs
-    for (iValue in value) {
-        values=append(values, absViaParent(iValue))
-    }
-    absoluteMetadata[[metadataAttribute]] = values
-  }
-  return(absoluteMetadata)
 }
