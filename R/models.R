@@ -80,6 +80,36 @@ setMethod(
   }
 )
 
+#' Check config spec version and reformat if needed
+#' 
+#' @export
+setGeneric("reformat", function(object, sections, cfgPath)
+  standardGeneric("reformat"))
+
+setMethod(
+  "reformat", 
+  signature = "Config", 
+  definition = function(object) {
+    if (CFG_VERSION_KEY %in% names(object)){
+      split = str_split(cfg[[CFG_VERSION_KEY]],"\\.")[[1]]
+      if (length(split) < 3) stop("PEP version string is not tripartite")
+      majorVer = as.numeric(split[1])
+      if (majorVer < 2){
+        if (CFG_MODIFIERS_KEY %in% names(object)){
+          stop("Project configuration file subscribes to specification 
+               >= 2.0.0, since ",CFG_MODIFIERS_KEY," section is defined. Set ",
+               CFG_VERSION_KEY, " to 2.0.0 in your config")
+        } else{
+          stop("Config file reformatting is not supported. 
+               Reformat the config manually.")
+        }
+      }
+      message(paste0("Raw ", CFG_VERSION_KEY, ": ", object[CFG_VERSION_KEY]))
+    }
+    return(object)
+  }
+)
+
 setGeneric("checkSection", function(object, sectionNames)
   standardGeneric("checkSection"))
 
