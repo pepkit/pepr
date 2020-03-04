@@ -5,6 +5,8 @@ CFG_MODIFIERS_KEY = "sample_modifiers"
 CFG_APPEND_KEY = "append"
 CFG_IMPLY_KEY = "imply"
 CFG_DERIVE_KEY = "derive"
+CFG_IMPLY_THEN_KEY = "then"
+CFG_IMPLY_IF_KEY = "if"
 #' Portable Encapsulated Project object
 #'
 #' Provides an in-memory representation and functions to access project
@@ -36,8 +38,8 @@ setClass("Project",
 #' p=Project(projectConfig)
 #' @export Project
 Project = function(file = NULL,
-                   subproject = NULL) {
-  methods::new("Project", file = file, subproject = subproject)
+                   amendments = NULL) {
+  methods::new("Project", file = file, amendments = amendments)
 }
 
 #' Config objects are specialized list objects
@@ -282,7 +284,7 @@ setMethod(
   definition = function(object) {
     if (!CFG_MODIFIERS_KEY %in% names(config(object))) return(object)
     object = .appendAttrs(object)
-    # object = .implyAttrs(object)
+    object = .implyAttrs(object)
     # object = .deriveAttrs(object)
     return(object)
   }
@@ -399,18 +401,18 @@ setMethod(
 #' "project_config.yaml",
 #' package = "pepr")
 #' p = Project(file = projectConfig)
-#' availSubprojects = listSubprojects(p)
+#' availSubprojects = listAmendments(p)
 #' activateAmendments(p,availSubprojects[1])
 #' @export
-setGeneric("listSubprojects", function(.Object)
-  standardGeneric("listSubprojects"))
+setGeneric("listAmendments", function(.Object)
+  standardGeneric("listAmendments"))
 
 setMethod(
-  f = "listSubprojects",
+  f = "listAmendments",
   signature = signature(.Object = "Project"),
   definition = function(.Object) {
     config = config(.Object)
-    .listSubprojects(cfg = config, style="message")
+    .listAmendments(cfg = config, style="message")
   }
 )
 
@@ -421,7 +423,7 @@ setMethod(
 #' within the \code{\link{Project-class}} object
 #'
 #' To check what are the subproject names
-#' call \code{listSubprojects(p)}, where \code{p} is the object
+#' call \code{listAmendments(p)}, where \code{p} is the object
 #' of \code{\link{Project-class}} class
 #'
 #' @param .Object an object of class \code{\link{Project-class}}
@@ -434,7 +436,7 @@ setMethod(
 #' "project_config.yaml",
 #' package = "pepr")
 #' p = Project(file = projectConfig)
-#' availSubprojects = listSubprojects(p)
+#' availSubprojects = listAmendments(p)
 #' activateAmendments(p,availSubprojects[1])
 #' @export
 setGeneric("activateAmendments", function(.Object, amendments)
@@ -472,6 +474,34 @@ setMethod(
       constantCol = data.table::data.table(rep(constants[[iConst]], colLen))
       names(constantCol) = constantsNames[iConst]
       .Object@samples = cbind(samplesDF, constantCol)
+    }
+  }
+  return(.Object)
+}
+
+.implyAttrs = function(.Object) {
+  modifiers = config(.Object)[[CFG_MODIFIERS_KEY]]
+  if (!CFG_IMPLY_KEY %in% names(modifiers)) return(.Object)
+  implications = modifiers[[CFG_IMPLY_KEY]]
+  for (implication in implications) {
+    if (!(CFG_IMPLY_IF_KEY %in% names(implication) && CFG_IMPLY_THEN_KEY %in% names(implication)))
+      stop(CFG_IMPLY_KEY, " section is not formatted properly")
+    implierAttrs = names(implication[[CFG_IMPLY_IF_KEY]])
+    implierVals = as.character(implication[[CFG_IMPLY_IF_KEY]])
+    impliedAttrs = names(implication[[CFG_IMPLY_THEN_KEY]])
+    impliedVals = as.character(implication[[CFG_IMPLY_THEN_KEY]])
+    attrs = colnames(.Object@samples)
+    if (!all(implierAttrs %in% attrs)) next
+    hitIds = list()
+    for (i in seq_along(implierAttrs)) {
+      hitIds[[i]] = which(.Object@samples[,implierAttrs[i]] == implierVals[i])
+      if (length(hitIds) < 1) break
+    }
+    qualIds = Reduce(intersect, hitIds)
+    if (length(qualIds) < 1) next
+    for (i in seq_along(impliedAttrs)){
+      if (!impliedAttrs[i] %in% attrs) .Object@samples[,impliedAttrs[i]] = ""
+      .Object@samples[[qualIds, impliedAttrs[i]]] = impliedVals[i]
     }
   }
   return(.Object)
@@ -528,57 +558,6 @@ setMethod(
   # Reformat listOfSamples to a table
   .Object@samples = do.call(rbind, listOfSamples)
   .Object
-}
-
-
-.implyAttrs = function(.Object) {
-  if (is.null(.Object@config$implied_attributes)) {
-    # Backwards compatibility
-    # after change of implied columns to implied attributes
-    if (is.null(.Object@config$implied_columns)) {
-      # if the implied_attributes and implied_columns in project's config are
-      # NULL, there is nothing that can be done
-      return(.Object)
-    } else{
-      .Object@config$implied_attributes = .Object@config$implied_columns
-      .Object@config[[which(names(.Object@config) == "implied_columns")]] = NULL
-    }
-  }
-  if (is.list(.Object@config$implied_attributes)) {
-    # the implied_attributes in project's config is a list,
-    # so the columns can be implied
-    samplesDims = dim(.Object@samples)
-    primaryColumns = names(.Object@config$implied_attributes)
-    for (iColumn in primaryColumns) {
-      primaryKeys = names(.Object@config$implied_attributes[[iColumn]])
-      for (iKey in primaryKeys) {
-        newValues = names(.Object@config$implied_attributes[[iColumn]][[iKey]])
-        for (iValue in newValues) {
-          samplesColumns = names(.Object@samples)
-          currentValue = .Object@config$implied_attributes[[iColumn]][[iKey]][[iValue]]
-          if (is.null(currentValue)) currentValue = NA
-          if (any(samplesColumns == iValue)) {
-            # The implied column has been already added, populating
-            .Object@samples[[iValue]][which(.Object@samples[[iColumn]] == iKey)] =
-              currentValue
-          } else{
-            # The implied column is missing, adding column and populating
-            toBeAdded = data.frame(rep("", samplesDims[1]), stringsAsFactors =
-                                     FALSE)
-            names(toBeAdded) = iValue
-            toBeAdded[which(.Object@samples[[iColumn]] == iKey), 1] =
-              currentValue
-            .Object@samples = cbind(.Object@samples, toBeAdded)
-          }
-        }
-      }
-    }
-  } else{
-    # the implied_attributes in project's config is neither NULL nor list
-    cat("The implied_attributes key-value pairs in project config are invalid!",
-        fill = T)
-  }
-  return(.Object)
 }
 
 .loadSampleAnnotation = function(.Object) {
