@@ -479,14 +479,13 @@ setMethod(
     # get names
     constantsNames = names(constants)
     # get a copy of samples to get the dimensions
-    samplesDF = sampleTable(.Object)
-    colLen = dim(samplesDF)[1]
+    colLen = dim(sampleTable(.Object))[1]
     for (iConst in seq_along(constants)) {
       # create a one column data.table and glue appand it with to the 
       # current samples data.table
       constantCol = data.table::data.table(rep(constants[[iConst]], colLen))
       names(constantCol) = constantsNames[iConst]
-      .Object@samples = cbind(samplesDF, constantCol)
+      .Object@samples = cbind(.Object@samples, constantCol)
     }
   }
   return(.Object)
