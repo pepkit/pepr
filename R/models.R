@@ -1,3 +1,4 @@
+# constant variables declarations
 CFG_SAMPLE_TABLE_KEY = "sample_table"
 CFG_SUBSAMPLE_TABLE_KEY = "subsample_table"
 CFG_VERSION_KEY = "pep_version"
@@ -9,6 +10,7 @@ CFG_IMPLY_THEN_KEY = "then"
 CFG_IMPLY_IF_KEY = "if"
 CFG_DERIVE_ATTRS_KEY = "attributes"
 CFG_DERIVE_SOURCES_KEY = "sources"
+
 #' Portable Encapsulated Project object
 #'
 #' Provides an in-memory representation and functions to access project
@@ -39,8 +41,7 @@ setClass("Project",
 #' "example_subprojects1", "project_config.yaml", package="pepr")
 #' p=Project(projectConfig)
 #' @export Project
-Project = function(file = NULL,
-                   amendments = NULL) {
+Project = function(file = NULL, amendments = NULL) {
   methods::new("Project", file = file, amendments = amendments)
 }
 
@@ -54,7 +55,8 @@ setClass("Config", contains = "list")
 # Override the standard generic show function for our config-style lists
 setMethod(
   "show",
-  signature = "Config", definition = function(object) {
+  signature = "Config", 
+  definition = function(object) {
     cat("Config object. Class:", class(object), fill = T)
     .printNestedList(object)
     invisible(NULL)
@@ -92,13 +94,15 @@ setMethod(
 )
 
 #' Check config spec version and reformat if needed
+#'
+#' @param object an object of \code{\link{Config-class}} 
 #' 
-#' @export
-setGeneric("reformat", function(object, sections, cfgPath)
-  standardGeneric("reformat"))
+#' @return an object of \code{\link{Config-class}} 
+setGeneric(".reformat", function(object)
+  standardGeneric(".reformat"))
 
 setMethod(
-  "reformat", 
+  ".reformat", 
   signature = "Config", 
   definition = function(object) {
     if (CFG_VERSION_KEY %in% names(object)){
@@ -115,9 +119,9 @@ setMethod(
                Reformat the config manually.")
         }
       }
-      message(paste0("Raw ", CFG_VERSION_KEY, ": ", object[CFG_VERSION_KEY]))
     } else{
-      stop("Config file reformatting is not supported. Reformat the config manually.")
+      stop("Config file is missing ", CFG_VERSION_KEY, " key. 
+           Add it to the config manually.")
     }
     return(object)
   }
@@ -224,14 +228,14 @@ setMethod(
 #' projectConfig = system.file("extdata", "example_peps-master",
 #' "example_subprojects1", "project_config.yaml", package="pepr")
 #' p=Project(projectConfig)
-#' samples(p)
+#' sampleTable(p)
 #'
 #' @export
-setGeneric("samples", function(object)
-    standardGeneric("samples"))
+setGeneric("sampleTable", function(object)
+    standardGeneric("sampleTable"))
 
 setMethod(
-  "samples",
+  "sampleTable",
   signature = "Project",
   definition = function(object) {
     object@samples
@@ -251,7 +255,7 @@ setMethod("initialize", "Config", function(.Object, filename) {
   .Object = methods::callNextMethod(.Object, cfg_data)  # calls list initialize
   if (is.character(filename)) 
     .Object = makeSectionsAbsolute(.Object, reqAbs, filename)
-  .Object = reformat(.Object)
+  .Object = .reformat(.Object)
   return(.Object)
 })
 
@@ -268,15 +272,18 @@ setMethod("initialize", "Project", function(.Object, ...) {
       .Object = activateAmendments(.Object, ellipsis$amendments)
     } else {
       .Object = .loadSampleAnnotation(.Object)
-      .Object = .loadSampleSubannotation(.Object)
       .Object = .modifySamples(.Object)
     }
   }
   return(.Object)
 })
 
-#' Read sample annotation and perform all the sample modifications
-#' @export
+
+#' Perform all the sample addribute modifications
+#'
+#' @param object an object of \code{\link{Project-class}} 
+#'
+#' @return
 setGeneric(".modifySamples", function(object)
   standardGeneric(".modifySamples"))
 
@@ -287,6 +294,7 @@ setMethod(
     if (!CFG_MODIFIERS_KEY %in% names(config(object))) return(object)
     object = .appendAttrs(object)
     object = .implyAttrs(object)
+    object = .mergeAttrs(object)
     object = .deriveAttrs(object)
     return(object)
   }
@@ -324,7 +332,7 @@ setMethod(
     rowNumber = which(sampleNames == sampleName)
     if (length(rowNumber) == 0)
       stop("Such sample name does not exist.")
-    result = samples(.Object)[rowNumber, ]
+    result = sampleTable(.Object)[rowNumber, ]
     return(result)
   }
 )
@@ -454,12 +462,19 @@ setMethod(
     # Ensure that metadata paths are absolute and return the config.
     # This used to be all metadata columns; now it's just: results_subdir
     .Object = .loadSampleAnnotation(.Object)
-    .Object = .loadSampleSubannotation(.Object)
+    .Object = .mergeAttrs(.Object)
     .Object = .modifySamples(.Object)
     return(.Object)
   }
 )
 
+#' Append constant attributes across all the samples
+#'
+#' @param .Object an object of \code{\link{Project-class}} 
+#'
+#' @return an object of \code{\link{Project-class}} 
+#'
+#' @examples
 .appendAttrs <- function(.Object) {
   modifiers = config(.Object)[[CFG_MODIFIERS_KEY]]
   if (!CFG_APPEND_KEY %in% names(modifiers)) return(.Object)
@@ -468,7 +483,7 @@ setMethod(
     # get names
     constantsNames = names(constants)
     # get a copy of samples to get the dimensions
-    samplesDF = samples(.Object)
+    samplesDF = sampleTable(.Object)
     colLen = dim(samplesDF)[1]
     for (iConst in seq_along(constants)) {
       # create a one column data.table and glue appand it with to the 
@@ -481,6 +496,13 @@ setMethod(
   return(.Object)
 }
 
+#' Imply attributes
+#'
+#' @param .Object an object of \code{\link{Project-class}} 
+#'
+#' @return an object of \code{\link{Project-class}} 
+#'
+#' @examples
 .implyAttrs = function(.Object) {
   modifiers = config(.Object)[[CFG_MODIFIERS_KEY]]
   if (!CFG_IMPLY_KEY %in% names(modifiers)) return(.Object)
@@ -503,12 +525,18 @@ setMethod(
     if (length(qualIds) < 1) next
     for (i in seq_along(impliedAttrs)){
       if (!impliedAttrs[i] %in% attrs) .Object@samples[,impliedAttrs[i]] = ""
-      .Object@samples[[qualIds, impliedAttrs[i]]] = impliedVals[i]
+      .Object@samples[qualIds, impliedAttrs[i]] = impliedVals[i]
     }
   }
   return(.Object)
 }
 
+#' Derive attributes
+#'
+#' @param .Object an object of \code{\link{Project-class}} 
+#'
+#' @return an object of \code{\link{Project-class}} 
+#'
 .deriveAttrs = function(.Object) {
   parentDir = dirname(.Object@file)
   modifiers = config(.Object)[[CFG_MODIFIERS_KEY]]
@@ -523,7 +551,7 @@ setMethod(
       if (length(hitIds) < 1) next
       for (hitId in hitIds){
         rgx = derivations[[CFG_DERIVE_SOURCES_KEY]][[derivedSource]]
-        res = .matchesAndRegexes(.strformat(rgx, as.list(samples(.Object)[hitId,]), parentDir))  
+        res = .matchesAndRegexes(.strformat(rgx, as.list(sampleTable(.Object)[hitId,]), parentDir))  
         .Object@samples[hitId,derivedAttr] = list(res)
       }
     }
@@ -532,6 +560,12 @@ setMethod(
 }
 
 
+#' Read sample annotation from disk
+#'
+#' @param .Object an object of \code{\link{Project-class}} 
+#'
+#' @return an object of \code{\link{Project-class}} 
+#'
 .loadSampleAnnotation = function(.Object) {
   # Can use fread if data.table is installed, otherwise use read.table
   if (requireNamespace("data.table")) {
@@ -552,11 +586,18 @@ setMethod(
   return(.Object)
 }
 
-.loadSampleSubannotation = function(.Object){
+#' Merge samples defined in sample table with ones in subsample table
+#'
+#' @param .Object an object of \code{\link{Project-class}} 
+#'
+#' @return an object of \code{\link{Project-class}} 
+#'
+#' @examples
+.mergeAttrs = function(.Object){
   cfg = config(.Object)
   if (!CFG_SUBSAMPLE_TABLE_KEY %in% names(cfg)) return(.Object)
   sampleSubannotationPath = cfg[[CFG_SUBSAMPLE_TABLE_KEY]]
-  samples = samples(.Object)
+  samples = sampleTable(.Object)
   samples = .listifyDF(samples)
   #Reading sample subannonataion table, just like in annotation table
   if (requireNamespace("data.table")) {

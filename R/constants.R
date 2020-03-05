@@ -1,4 +1,4 @@
-kOldPipelinesSection = "pipelines_dir"
-kRelativeToOutputDirMetadataSections = c("results_subdir", "submission_subdir")
-
-kRelativeToConfigSections = c("metadata", "pipeline_config")
+CFG_SAMPLE_TABLE_KEY = "sample_table"
+CFG_SUBSAMPLE_TABLE_KEY = "subsample_table"
+CFG_VERSION_KEY = "pep_version"
+CFG_MODIFIERS_KEY = "sample_modifiers"

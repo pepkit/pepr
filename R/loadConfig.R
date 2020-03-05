@@ -158,7 +158,7 @@
 #' @examples
 #' .strformat("~/{VAR1}{VAR2}_file", list(VAR1="hi", VAR2="hello"))
 #' .strformat("$HOME/{VAR1}{VAR2}_file", list(VAR1="hi", VAR2="hello"))
-.strformat = function(string, args, exclude=NULL, parent=NULL) {
+.strformat = function(string, args, parent=NULL) {
   result = c()
   # if parent provided, make the path absolute and expand it.
   #  Otherwise, just expand it
