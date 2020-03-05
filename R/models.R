@@ -37,7 +37,7 @@ setClass("Project",
 #' This is a helper that creates the project with empty samples and config slots
 #'
 #' @param file a character with project configuration yaml file
-#' @param subproject a character with the subproject name to be activated
+#' @param amendments a character with the amendments names to be activated
 #' @examples
 #' projectConfig = system.file("extdata", "example_peps-master",
 #' "example_subprojects1", "project_config.yaml", package="pepr")
@@ -45,6 +45,26 @@ setClass("Project",
 #' @export Project
 Project = function(file = NULL, amendments = NULL) {
   methods::new("Project", file = file, amendments = amendments)
+}
+
+#'  The constructor of a class representing PEP config
+#'
+#' @param file a character with project configuration yaml file
+#' @param amendments a character with the amendments names to be activated
+#'
+#' @return
+#' @export
+#' projectConfig = system.file("extdata", "example_peps-master",
+#' "example_subprojects1", "project_config.yaml", package="pepr")
+#' c=Config(projectConfig)
+#' @examples
+Config = function(file, amendments = NULL){
+  message("Loading config file: ", file)
+  cfg_data = .loadConfig(filename=file, amendments=amendments)
+  config = methods::new("Config",data=cfg_data)
+  config = makeSectionsAbsolute(config, REQ_ABS, file)
+  .listAmendments(config)
+  return(config)
 }
 
 #' Config objects are specialized list objects
@@ -256,12 +276,8 @@ setMethod("initialize", "Project", function(.Object, ...) {
   if (!is.null(ellipsis$file)) {
     # check if file path provided
     .Object@file = ellipsis$file
-    message("Loading config file: ", ellipsis$file)
-    cfg_data = .loadConfig(filename = ellipsis$file, amendments = ellipsis$amendments)
-    .Object@config = methods::new("Config",data=cfg_data)
-    # list available amendments
-    .listAmendments(.Object@config)
-    .Object@config = makeSectionsAbsolute(.Object@config, REQ_ABS, .Object@file)
+    # instantiate config object and stick it in the config slot
+    .Object@config = Config(ellipsis$file, ellipsis$amendments)
     .Object = .loadSampleAnnotation(.Object)
     .Object = .modifySamples(.Object)
   }
@@ -447,8 +463,6 @@ setMethod(
   f = "activateAmendments",
   signature = signature(.Object="Project", amendments="character"),
   definition = function(.Object, amendments) {
-    # .Object@config = .sanitizeConfig(.Object@config)
-    # .Object@config = .updateSubconfig(.Object@config, amendments)
     .Object@config = .applyAmendments(.Object@config, amendments)
     .Object@config = makeSectionsAbsolute(
       .Object@config, 

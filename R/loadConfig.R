@@ -16,7 +16,6 @@
     stop("The config file has to be a YAML formatted file.
          See: http://yaml.org/start.html")
   # Update based on imports inm the config file
-  # cfg_data = utils::modifyList(cfg_data, .applyImports(cfg_data))
   cfg_data = .applyImports(cfg_data)
   # Update based on amendments if any specified
   cfg_data = .applyAmendments(cfg_data, amendments)
