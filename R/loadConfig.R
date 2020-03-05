@@ -16,7 +16,7 @@
   # Show available subprojects
   .listAmendments(cfg)
   # Update based on amendments if any specified
-  cfg = .activateAmendments(cfg, amendments)
+  cfg = .applyAmendments(cfg, amendments)
   # make bioconductor$readFunPath value absolute, used in BiocProject
   if(!is.null(cfg$bioconductor$readFunPath)){
     path = gsub("\\./","",cfg$bioconductor$readFunPath)
@@ -31,7 +31,7 @@
   return(basename(dirname(normalizePath(filename))))
 }
 
-.activateAmendments = function(cfg, amendments=NULL) {
+.applyAmendments = function(cfg, amendments=NULL) {
   if (!is.null(amendments)) {
     for (amendment in amendments){
       if (is.null(cfg$amendments[[amendment]])) {
@@ -162,7 +162,7 @@
   result = c()
   # if parent provided, make the path absolute and expand it.
   #  Otherwise, just expand it
-  x = ifelse(is.null(parent),.expandPath(string),.makeAbsPath(string, parent))
+  x = .expandPath(string)
   # str_interp requires variables encoded like ${var}, so we substitute
   # the {var} syntax here.
   x = stringr::str_replace_all(x, "\\{", "${")

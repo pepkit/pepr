@@ -1,6 +1,7 @@
 # constant variables declarations
 CFG_SAMPLE_TABLE_KEY = "sample_table"
 CFG_SUBSAMPLE_TABLE_KEY = "subsample_table"
+REQ_ABS = c(CFG_SAMPLE_TABLE_KEY, CFG_SUBSAMPLE_TABLE_KEY)
 CFG_VERSION_KEY = "pep_version"
 CFG_MODIFIERS_KEY = "sample_modifiers"
 CFG_APPEND_KEY = "append"
@@ -251,10 +252,7 @@ setMethod("initialize", "Config", function(.Object, filename) {
   } else{
     cfg_data = filename
   }
-  reqAbs = c(CFG_SAMPLE_TABLE_KEY, CFG_SUBSAMPLE_TABLE_KEY)
   .Object = methods::callNextMethod(.Object, cfg_data)  # calls list initialize
-  if (is.character(filename)) 
-    .Object = makeSectionsAbsolute(.Object, reqAbs, filename)
   .Object = .reformat(.Object)
   return(.Object)
 })
@@ -265,15 +263,10 @@ setMethod("initialize", "Project", function(.Object, ...) {
   if (!is.null(ellipsis$file)) {
     # check if file path provided
     .Object@file = ellipsis$file
-    .Object@config = .loadConfig(ellipsis$file)
-    # .Object@config = .sanitizeConfig(.Object@config)
-    if (!is.null(ellipsis$amendments)) {
-      # check if subproject provided
-      .Object = activateAmendments(.Object, ellipsis$amendments)
-    } else {
-      .Object = .loadSampleAnnotation(.Object)
-      .Object = .modifySamples(.Object)
-    }
+    .Object@config = .loadConfig(filename = ellipsis$file, amendments = ellipsis$amendments)
+    .Object@config = makeSectionsAbsolute(.Object@config, REQ_ABS, .Object@file)
+    .Object = .loadSampleAnnotation(.Object)
+    .Object = .modifySamples(.Object)
   }
   return(.Object)
 })
@@ -437,7 +430,7 @@ setMethod(
 #' of \code{\link{Project-class}} class
 #'
 #' @param .Object an object of class \code{\link{Project-class}}
-#' @param sp character with the subproject name
+#' @param amendments character with the subproject name
 #' 
 #' @examples 
 #' projectConfig = system.file("extdata",
@@ -458,11 +451,14 @@ setMethod(
   signature = signature(.Object="Project", amendments="character"),
   definition = function(.Object, amendments) {
     # .Object@config = .sanitizeConfig(.Object@config)
-    .Object@config = .updateSubconfig(.Object@config, amendments)
-    # Ensure that metadata paths are absolute and return the config.
-    # This used to be all metadata columns; now it's just: results_subdir
+    # .Object@config = .updateSubconfig(.Object@config, amendments)
+    .Object@config = .applyAmendments(.Object@config, amendments)
+    .Object@config = makeSectionsAbsolute(
+      .Object@config, 
+      c(CFG_SAMPLE_TABLE_KEY, CFG_SUBSAMPLE_TABLE_KEY), 
+      .Object@file
+    )
     .Object = .loadSampleAnnotation(.Object)
-    .Object = .mergeAttrs(.Object)
     .Object = .modifySamples(.Object)
     return(.Object)
   }
