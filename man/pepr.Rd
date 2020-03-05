@@ -3,7 +3,6 @@
 \docType{package}
 \name{pepr}
 \alias{pepr}
-\alias{pepr-package}
 \title{Package docs}
 \description{
 Package docs

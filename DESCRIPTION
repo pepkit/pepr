@@ -19,4 +19,4 @@ Suggests:
 VignetteBuilder: knitr
 License: BSD_2_clause + file LICENSE
 BugReports: https://github.com/pepkit/pepr
-RoxygenNote: 6.1.1
+RoxygenNote: 7.0.2

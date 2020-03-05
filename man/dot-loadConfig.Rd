@@ -4,12 +4,12 @@
 \alias{.loadConfig}
 \title{Load the config of a PEP}
 \usage{
-.loadConfig(filename = NULL, sp = NULL)
+.loadConfig(filename = NULL, amendments = NULL)
 }
 \arguments{
 \item{filename}{file path to config file}
 
-\item{sp}{Subproject to activate}
+\item{amendments}{amendments to activate}
 }
 \description{
 Loads a PEP config file
