@@ -11,6 +11,7 @@ CFG_IMPLY_THEN_KEY = "then"
 CFG_IMPLY_IF_KEY = "if"
 CFG_DERIVE_ATTRS_KEY = "attributes"
 CFG_DERIVE_SOURCES_KEY = "sources"
+CFG_IMPORTS_KEY = "imports"
 
 #' Portable Encapsulated Project object
 #'
@@ -243,16 +244,8 @@ setMethod(
   }
 )
 
-setMethod("initialize", "Config", function(.Object, filename) {
-  if (is.character(filename)){
-    cfg_data = yaml::yaml.load_file(filename)
-    if (!is.list(cfg_data))
-      stop("The config file has to be a YAML formatted file.
-           See: http://yaml.org/start.html")
-  } else{
-    cfg_data = filename
-  }
-  .Object = methods::callNextMethod(.Object, cfg_data)  # calls list initialize
+setMethod("initialize", "Config", function(.Object, data) {
+  .Object = methods::callNextMethod(.Object, data)  # calls list initialize
   .Object = .reformat(.Object)
   return(.Object)
 })
@@ -263,7 +256,11 @@ setMethod("initialize", "Project", function(.Object, ...) {
   if (!is.null(ellipsis$file)) {
     # check if file path provided
     .Object@file = ellipsis$file
-    .Object@config = .loadConfig(filename = ellipsis$file, amendments = ellipsis$amendments)
+    message("Loading config file: ", ellipsis$file)
+    cfg_data = .loadConfig(filename = ellipsis$file, amendments = ellipsis$amendments)
+    .Object@config = methods::new("Config",data=cfg_data)
+    # list available amendments
+    .listAmendments(.Object@config)
     .Object@config = makeSectionsAbsolute(.Object@config, REQ_ABS, .Object@file)
     .Object = .loadSampleAnnotation(.Object)
     .Object = .modifySamples(.Object)

@@ -11,19 +11,22 @@
     stop("No config file found")
   }
   # Initialize config object
-  cfg = methods::new("Config", filename)
-  message("Loaded config file: ", filename)
-  # Show available subprojects
-  .listAmendments(cfg)
+  cfg_data = yaml::yaml.load_file(filename)
+  if (!is.list(cfg_data))
+    stop("The config file has to be a YAML formatted file.
+         See: http://yaml.org/start.html")
+  # Update based on imports inm the config file
+  # cfg_data = utils::modifyList(cfg_data, .applyImports(cfg_data))
+  cfg_data = .applyImports(cfg_data)
   # Update based on amendments if any specified
-  cfg = .applyAmendments(cfg, amendments)
+  cfg_data = .applyAmendments(cfg_data, amendments)
   # make bioconductor$readFunPath value absolute, used in BiocProject
-  if(!is.null(cfg$bioconductor$readFunPath)){
-    path = gsub("\\./","",cfg$bioconductor$readFunPath)
-    cfg$bioconductor$readFunPath = .makeAbsPath(path, parent=dirname(filename))
+  if(!is.null(cfg_data$bioconductor$readFunPath)){
+    path = gsub("\\./","",cfg_data$bioconductor$readFunPath)
+    cfg_data$bioconductor$readFunPath = .makeAbsPath(path, parent=dirname(filename))
   }
-  cfg$name = .inferProjectName(cfg, filename)
-  return(cfg)
+  cfg_data$name = .inferProjectName(cfg_data, filename)
+  return(cfg_data)
 }
 
 .inferProjectName = function(cfg, filename){
@@ -46,6 +49,17 @@
   return(cfg)
 }
 
+.applyImports = function(cfg_data){
+  if (!CFG_IMPORTS_KEY %in% names(cfg_data))
+    return(cfg_data)
+  for(externalPath in cfg_data[CFG_IMPORTS_KEY]){
+    extCfg = .loadConfig(filename = externalPath)  
+    cfg_data = utils::modifyList(cfg_data, extCfg)
+    message("  Loaded external config file: ", externalPath)
+  }
+  return(cfg_data)
+}
+
 .listAmendments = function(cfg, style="message") {
   # this function can be used in object show method, where cat is preferred 
   # or for user information when the Project is created, where message
@@ -55,10 +69,6 @@
   }else{
     printFun = message
   }
-  # make sure the extracted config is of proper class
-  if(!methods::is(cfg,"Config")) 
-    stop("The Project object does not contain a vaild config")
-  
   if (length(names(cfg$amendments)) > 0) {
     # If there are any show a cat and return if needed
     printFun("  amendments: ", paste0(names(cfg$amendments), collapse=","))
