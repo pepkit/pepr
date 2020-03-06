@@ -1,10 +1,10 @@
 ---
-title: "Mixed implied and derived attributes in pepr"
+title: "Sample modifiers in pepr: imply and derive"
 author: "Michal Stolarczyk"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Mixed implied and derived attributes in pepr}
+  %\VignetteIndexEntry{Sample modifiers in pepr: imply and derive}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -21,12 +21,12 @@ This vignette will show you how and why to use the derieved attributes and impli
 While either derived attributes or implied attributes functionalities alone are often sufficient to efficiently describe your samples in PEP, the example below demonstrates how to use the derived attributes to **simplify and unclutter the columns** of the `sample_table.csv` file, after implying the attributes for samples that **follow certain patterns**. The two functionalities combined provide you with the way of building complex, yet flexible sample annotation tables effortlessly. Note that the attributes implication is always performed first - before the attributes are derived. This means that the newly created attributes (implied ones) can be used to construct the attributes in the column derivation process. Please consider the example below for reference:
 
 ```{r ,echo=FALSE}
-branch = "master"
+branch = "cfg2"
 library(knitr)
 sampleAnnotation = system.file(
 "extdata",
 paste0("example_peps-", branch),
-"example_derived_implied",
+"example_derive_imply",
 "sample_table_pre.csv",
 package = "pepr"
 )
@@ -36,14 +36,14 @@ knitr::kable(sampleAnnotationDF, format = "html")
 ----
 ## Solution
 
-The specification of detailed file paths/names (as presented above) is cumbersome. In order to make your life easier just find the patterns that the file names in `file_path` column of `sample_table.csv` follow, imply needed attributes and derive the file names. This multi step process is orchestrated by the `project_config.yaml` file via the `derived_attributes` and `implied_attributes` sections:
+The specification of detailed file paths/names (as presented above) is cumbersome. In order to make your life easier just find the patterns that the file names in `file_path` column of `sample_table.csv` follow, imply needed attributes and derive the file names. This multi step process is orchestrated by the `project_config.yaml` file via the `sample_modifiers.derive` and `sample_modifiers.imply` sections:
 
 ```{r, echo=FALSE,message=TRUE,collapse=TRUE,comment=" "}
 library(pepr)
 projectConfig = system.file(
 "extdata",
 paste0("example_peps-", branch),
-"example_derived_implied",
+"example_derive_imply",
 "project_config.yaml",
 package = "pepr"
 )
@@ -58,7 +58,7 @@ Let's introduce a few modifications to the original `sample_table.csv` file to i
 sampleAnnotation = system.file(
   "extdata",
   paste0("example_peps-", branch),
-  "example_derived_implied",
+  "example_derive_imply",
   "sample_table.csv",
   package = "pepr"
   )
@@ -75,7 +75,7 @@ library(pepr)
 projectConfig = system.file(
 "extdata",
 paste0("example_peps-", branch),
-"example_derived_implied",
+"example_derive_imply",
 "project_config.yaml",
 package = "pepr"
 )
@@ -85,7 +85,7 @@ p = Project(projectConfig)
 And inspect it:
 
 ```{r collapse=T}
-samples(p)
+sampleTable(p)
 ```
 
 As you can see, the resulting samples are annotated the same way as if they were read from the original, unwieldy, annotations file (enriched with the `genome` and `condition` attributes that were implied).

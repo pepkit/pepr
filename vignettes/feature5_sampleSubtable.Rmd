@@ -1,10 +1,10 @@
 ---
-title: "Sample subannotations in pepr"
+title: "Subsample table in pepr"
 author: "Michal Stolarczyk & Nathan Sheffield"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Sample subannotations in pepr}
+  %\VignetteIndexEntry{Subsample table in pepr}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -18,11 +18,11 @@ knitr::opts_chunk$set(
 
 # Learn sample subannotations in `pepr`
 
-This vignette will show you how and why to use the sample subannotation functionality of the `pepr` package.
+This vignette will show you how and why to use the subsample table functionality of the `pepr` package.
 
- - basic information about the PEP concept visit the [project website](https://pepkit.github.io/).
+ - basic information about the PEP concept visit the [project website](http://pep.databio.org/en/2.0.0/).
  
- - broader theoretical description in the sample subannotation [documentation section](https://pepkit.github.io/docs/sample_subannotation/).
+ - broader theoretical description in the subsample table [documentation section](http://pep.databio.org/en/2.0.0/specification/#project-attribute-subsample_table).
 
 ## Problem/Goal
 
@@ -38,7 +38,7 @@ This example is made up of these components:
 
 * Project config file:
 ```{r, echo=FALSE,message=TRUE,collapse=TRUE,comment=" "}
-branch = "master"
+branch = "cfg2"
 library(pepr)
 projectConfig = system.file(
 "extdata",
@@ -81,13 +81,13 @@ library(pepr)
 projectConfig1 = system.file(
 "extdata",
 paste0("example_peps-", branch),
-"example_subtable1",
+"example_subtable2",
 "project_config.yaml",
 package = "pepr"
 )
 p1 = Project(projectConfig1)
 # Check the files
-p1Samples = samples(p1)
+p1Samples = sampleTable(p1)
 p1Samples$file
 # Check the subsample names
 p1Samples$subsample_name
@@ -101,7 +101,7 @@ You can also access a single subsample if you call the `getSubsample` method wit
 
 ```{r}
 sampleName = "frog_1"
-subsampleName = "sub_a"
+subsampleName = "a"
 getSubsample(p1, sampleName, subsampleName)
 ```
 
@@ -161,7 +161,7 @@ package = "pepr"
 )
 p2 = Project(projectConfig2)
 # Check the files
-p2Samples = samples(p2)
+p2Samples = sampleTable(p2)
 p2Samples$file
 ```
 And inspect the whole table in `p2@samples` slot
@@ -224,7 +224,7 @@ package = "pepr"
 )
 p3 = Project(projectConfig3)
 # Check the files
-p3Samples = samples(p3)
+p3Samples = sampleTable(p3)
 p3Samples$file
 ```
 And inspect the whole table in `p3@samples` slot
@@ -287,7 +287,7 @@ package = "pepr"
 )
 p4 = Project(projectConfig4)
 # Check the read1 and read2 columns
-p4Samples = samples(p4)
+p4Samples = sampleTable(p4)
 p4Samples$read1
 p4Samples$read2
 ```
@@ -352,7 +352,7 @@ package = "pepr"
 p5 = Project(projectConfig5)
 
 # Check the read1 and read2 columns
-p5Samples = samples(p5)
+p5Samples = sampleTable(p5)
 p5Samples$read1
 p5Samples$read2
 ```

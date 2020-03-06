@@ -1,10 +1,10 @@
 ---
-title: "Implied attributes in pepr"
+title: "Sample modifiers in pepr: imply"
 author: "Michal Stolarczyk"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Implied attributes in pepr}
+  %\VignetteIndexEntry{Sample modifiers in pepr: imply}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -20,20 +20,20 @@ knitr::opts_chunk$set(
 
 This vignette will show you how and why to use the implied attributes functionality of the `pepr` package. 
 
- - basic information about the PEP concept on the [project website](https://pepkit.github.io/)
+ - basic information about the PEP concept on the [project website](http://pep.databio.org/en/2.0.0)
  
- - broader theoretical description in the implied attributes [documentation section](https://pepkit.github.io/docs/implied_attributes/).
+ - broader theoretical description in the implied attributes [documentation section](http://pep.databio.org/en/2.0.0/specification/#sample_modifiersimply).
 
 ## Problem/Goal
 The example below demonstrates how and why to use implied attributes functionality to **save your time and effort** in case multiple sample attributes need to be defined for many samples and they **follow certain patterns**. Please consider the example below for reference:
 
 ```{r ,echo=FALSE}
-branch = "master"
+branch = "cfg2"
 library(knitr)
 sampleAnnotation = system.file(
 "extdata",
 paste0("example_peps-", branch),
-"example_implied",
+"example_imply",
 "sample_table_pre.csv",
 package = "pepr"
 )
@@ -50,22 +50,22 @@ library(pepr)
 projectConfig = system.file(
 "extdata",
 paste0("example_peps-", branch),
-"example_implied",
+"example_imply",
 "project_config.yaml",
 package = "pepr"
 )
 .printNestedList(yaml::read_yaml(projectConfig))
 ```
 
-Consequently, you can design an `implied_attributes` multi-level key-value section in the `project_config.yaml` file. Note that the keys must match the column names and attributes in the `sample_annotations.csv` file. 
+Consequently, you can design `sample_modifiers.imply` - a multi-level key-value section in the `project_config.yaml` file. Note that the keys must match the column names and attributes in the `sample_annotations.csv` file. 
 
-Let's introduce a few modifications to the original `sample_table.csv` file to use the `implied_attributes` section of the config. Simply skip the attributes that will be implied and let the `pepr` do the work for you.
+Let's introduce a few modifications to the original `sample_table.csv` file to use the `sample_modifiers.imply` section of the config. Simply skip the attributes that will be implied and let the `pepr` do the work for you.
 
 ```{r ,echo=FALSE}
 sampleAnnotation = system.file(
   "extdata",
   paste0("example_peps-", branch),
-  "example_implied",
+  "example_imply",
   "sample_table.csv",
   package = "pepr"
   )
@@ -82,7 +82,7 @@ library(pepr)
 projectConfig = system.file(
 "extdata",
 paste0("example_peps-", branch),
-"example_implied",
+"example_imply",
 "project_config.yaml",
 package = "pepr"
 )
@@ -92,7 +92,7 @@ p = Project(projectConfig)
 And inspect it:
 
 ```{r}
-samples(p)
+sampleTable(p)
 ```
 
 As you can see, the resulting samples are annotated the same way as if they were read from the original annotations file with attributes in the two last columns manually determined.
