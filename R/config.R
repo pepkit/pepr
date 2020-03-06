@@ -116,12 +116,14 @@ setGeneric("checkSection", function(object, sectionNames)
 
 #' Check for existence of a section in the Project config
 #' 
-#' This function checks for the section/nested sections in the config YAML file. Returns \code{TRUE} if it exist(s) or \code{FALSE} otherwise.
+#' This function checks for the section/nested sections in the config YAML file.
+#'  Returns \code{TRUE} if it exist(s) or \code{FALSE} otherwise.
 #' 
 #' Element indices can be used instead of the actual names, see \code{Examples}.
 #' 
 #' @param object object of \code{\link[pepr]{Config-class}}
-#' @param sectionNames the name of the section or names of the nested sections to look for
+#' @param sectionNames the name of the section or names of the 
+#'        nested sections to look for
 #' 
 #' @return a logical indicating whether the section exists
 #' 
@@ -209,7 +211,8 @@ setMethod(
   # make bioconductor$readFunPath value absolute, used in BiocProject
   if(!is.null(cfg_data$bioconductor$readFunPath)){
     path = gsub("\\./","",cfg_data$bioconductor$readFunPath)
-    cfg_data$bioconductor$readFunPath = .makeAbsPath(path, parent=dirname(filename))
+    cfg_data$bioconductor$readFunPath = 
+      .makeAbsPath(path, parent=dirname(filename))
   }
   cfg_data$name = .inferProjectName(cfg_data, filename)
   return(cfg_data)

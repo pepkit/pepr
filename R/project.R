@@ -328,20 +328,26 @@ setMethod(
         if (!(CFG_IMPLY_IF_KEY %in% names(implication) && CFG_IMPLY_THEN_KEY %in% names(implication)))
             stop(CFG_IMPLY_KEY, " section is not formatted properly")
         implierAttrs = names(implication[[CFG_IMPLY_IF_KEY]])
-        implierVals = as.character(implication[[CFG_IMPLY_IF_KEY]])
+        implierVals = implication[[CFG_IMPLY_IF_KEY]]
         impliedAttrs = names(implication[[CFG_IMPLY_THEN_KEY]])
         impliedVals = as.character(implication[[CFG_IMPLY_THEN_KEY]])
         attrs = colnames(.Object@samples)
         if (!all(implierAttrs %in% attrs)) next
-        hitIds = list()
+        allHitIds = list()
         for (i in seq_along(implierAttrs)) {
-            hitIds[[i]] = which(.Object@samples[,implierAttrs[i]] == implierVals[i])
-            if (length(hitIds) < 1) break
+            hitIds = list()
+            implierStrings = as.character(unlist(implierVals[i]))
+            for(j in seq_along(implierStrings)){
+                hitIds[[j]] = which(.Object@samples[,implierAttrs[i]] == implierStrings[j])    
+            }
+            allHitIds[[i]] = Reduce(union, hitIds)
+            if (length(allHitIds[[i]]) < 1) break
         }
-        qualIds = Reduce(intersect, hitIds)
+        qualIds = Reduce(intersect, allHitIds)
         if (length(qualIds) < 1) next
         for (i in seq_along(impliedAttrs)){
-            if (!impliedAttrs[i] %in% attrs) .Object@samples[,impliedAttrs[i]] = ""
+            if (!impliedAttrs[i] %in% attrs) 
+                .Object@samples[,impliedAttrs[i]] = ""
             .Object@samples[qualIds, impliedAttrs[i]] = impliedVals[i]
         }
     }

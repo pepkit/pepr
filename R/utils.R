@@ -64,8 +64,10 @@
   
   # perform two rounds of env var replacement
   # this way both bracketed and not bracketed ones will be replaced
-  if(all(attr(matchesBracket[[1]], "match.length") != -1)) path = replaceEnvVars(path, matchesBracket)
-  if(all(attr(matches[[1]], "match.length") != -1)) path = replaceEnvVars(path, matches)
+  if(all(attr(matchesBracket[[1]], "match.length") != -1)) 
+    path = replaceEnvVars(path, matchesBracket)
+  if(all(attr(matches[[1]], "match.length") != -1)) 
+    path = replaceEnvVars(path, matches)
   return(path)
 }
 
@@ -102,7 +104,8 @@
     attrCount = sapply(argsUnlisted, length)[pluralID]
     nrows = unique(attrCount)
     if(length(nrows) > 1) {
-      stop("If including multiple attributes with multiple values, the number of values in each attribute must be identical.")
+      stop("If including multiple attributes with multiple values, 
+           the number of values in each attribute must be identical.")
     }
     for (r in seq_len(nrows)) {
       argsUnlistedCopy = argsUnlisted
