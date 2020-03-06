@@ -51,7 +51,7 @@
 .applyImports = function(cfg_data){
   if (!CFG_IMPORTS_KEY %in% names(cfg_data))
     return(cfg_data)
-  for(externalPath in cfg_data[CFG_IMPORTS_KEY]){
+  for(externalPath in cfg_data[[CFG_IMPORTS_KEY]]){
     extCfg = .loadConfig(filename = externalPath)  
     cfg_data = utils::modifyList(cfg_data, extCfg)
     message("  Loaded external config file: ", externalPath)
