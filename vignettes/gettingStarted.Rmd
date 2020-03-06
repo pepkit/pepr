@@ -29,7 +29,7 @@ Load `pepr` and read in your project. We have provided a basic example to show y
 
 ```{r,collapse=TRUE}
 library('pepr')
-branch = "master"
+branch = "cfg2"
 projectConfigFile = system.file("extdata",
 	paste0("example_peps-", branch),
 	"example_basic",
@@ -56,7 +56,7 @@ p
 To get the sample table out of the project, you use the `samples()` function:
 
 ```{r,collapse=TRUE}
-samples(p)
+sampleTable(p)
 ```
 
 And you can also access the project configuration metadata with the `config()` function:
