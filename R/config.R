@@ -197,7 +197,7 @@ setMethod(
 #' @seealso \url{https://pepkit.github.io/}
 .loadConfig = function(filename=NULL, amendments=NULL) {
   if (!file.exists(filename)) {
-    stop("No config file found")
+    stop("Config file found: ", filename)
   }
   # Initialize config object
   cfg_data = yaml::yaml.load_file(filename)
@@ -205,7 +205,7 @@ setMethod(
     stop("The config file has to be a YAML formatted file.
          See: http://yaml.org/start.html")
   # Update based on imports inm the config file
-  cfg_data = .applyImports(cfg_data)
+  cfg_data = .applyImports(cfg_data, filename)
   # Update based on amendments if any specified
   cfg_data = .applyAmendments(cfg_data, amendments)
   # make bioconductor$readFunPath value absolute, used in BiocProject
@@ -262,13 +262,34 @@ setMethod(
   return(cfg)
 }
 
-.applyImports = function(cfg_data){
+#' Function for recursive config data imports
+#'
+#' @param cfg_data config data, possibly including imports statement
+#' @filename path to the file to get the imports for
+#'
+#' @return config data enriched in imported sections, if imports existed in the
+#'  input
+.applyImports = function(cfg_data, filename){
   if (!CFG_IMPORTS_KEY %in% names(cfg_data))
     return(cfg_data)
   for(externalPath in cfg_data[[CFG_IMPORTS_KEY]]){
+    externalPath=.makeAbsPath(externalPath, parent = dirname(filename))
     extCfg = .loadConfig(filename = externalPath)  
     cfg_data = utils::modifyList(cfg_data, extCfg)
     message("  Loaded external config file: ", externalPath)
   }
   return(cfg_data)
+}
+
+#' Infer project name
+#' 
+#' Based on dedicated config section or PEP enclosing dir
+#'
+#' @param cfg config data
+#' @param filename path to the config file
+#'
+#' @return
+.inferProjectName = function(cfg, filename){
+  if (!is.null(cfg$name)) return(cfg$name)
+  return(basename(dirname(normalizePath(filename))))
 }
