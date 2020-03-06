@@ -33,51 +33,6 @@
   return(basename(dirname(normalizePath(filename))))
 }
 
-.applyAmendments = function(cfg, amendments=NULL) {
-  if (!is.null(amendments)) {
-    for (amendment in amendments){
-      if (is.null(cfg$amendments[[amendment]])) {
-        warning("Amendment not found: ", amendment)
-        message("Amendment was not activated")
-        return(cfg)
-      }
-      cfg = utils::modifyList(cfg, cfg$amendments[[amendment]])
-      message("Activating amendment: ", amendment)
-    }
-  }
-  return(cfg)
-}
-
-.applyImports = function(cfg_data){
-  if (!CFG_IMPORTS_KEY %in% names(cfg_data))
-    return(cfg_data)
-  for(externalPath in cfg_data[[CFG_IMPORTS_KEY]]){
-    extCfg = .loadConfig(filename = externalPath)  
-    cfg_data = utils::modifyList(cfg_data, extCfg)
-    message("  Loaded external config file: ", externalPath)
-  }
-  return(cfg_data)
-}
-
-.listAmendments = function(cfg, style="message") {
-  # this function can be used in object show method, where cat is preferred 
-  # or for user information when the Project is created, where message
-  # is preferred
-  if(!style == "message"){
-    printFun = pryr::partial(cat, fill=T)
-  }else{
-    printFun = message
-  }
-  if (length(names(cfg$amendments)) > 0) {
-    # If there are any show a cat and return if needed
-    printFun("  amendments: ", paste0(names(cfg$amendments), collapse=","))
-    invisible(names(cfg$amendments))
-  } else{
-    # Otherwise return NULL for testing purposes
-    NULL
-  }
-}
-
 #' Expand system path
 #'
 #' This function expands system paths (the non-absolute paths become absolute) 
