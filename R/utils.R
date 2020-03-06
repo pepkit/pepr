@@ -104,8 +104,7 @@
     attrCount = sapply(argsUnlisted, length)[pluralID]
     nrows = unique(attrCount)
     if(length(nrows) > 1) {
-      stop("If including multiple attributes with multiple values, 
-           the number of values in each attribute must be identical.")
+      stop("If including multiple attributes with multiple values, the number of values in each attribute must be identical.")
     }
     for (r in seq_len(nrows)) {
       argsUnlistedCopy = argsUnlisted
@@ -293,10 +292,13 @@ fetchSamples = function(samples, attr=NULL, func=NULL, action="include") {
 .printNestedList = function(lst, level = 0) {
   if (!is.list(lst))
     stop("The input is not a list, cannot be displayed.")
-  for (itemName in names(lst)) {
-    item = lst[[itemName]]
+  ns = names(lst)
+  for (i in seq_along(lst)) {
+    item = lst[[i]]
+    itemName = ns[i]
     if (class(item) == "list") {
-      cat(rep(" ", level), paste0(itemName, ":"), fill = T)
+      if(!is.null(itemName))
+        cat(rep(" ", level), paste0(itemName, ":"), fill = T)
       .printNestedList(item, level + 2)
     } else {
       if (is.null(item))
