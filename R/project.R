@@ -78,6 +78,7 @@ setMethod(
     definition = function(object) {
         if (!CFG_MODIFIERS_KEY %in% names(config(object))) return(object)
         object = .appendAttrs(object)
+        object = .duplicateAttrs(object)
         object = .implyAttrs(object)
         object = .mergeAttrs(object)
         object = .deriveAttrs(object)
@@ -290,8 +291,6 @@ setMethod(
 #' @param .Object an object of \code{\link{Project-class}} 
 #'
 #' @return an object of \code{\link{Project-class}} 
-#'
-#' @examples
 .appendAttrs <- function(.Object) {
     modifiers = config(.Object)[[CFG_MODIFIERS_KEY]]
     if (!CFG_APPEND_KEY %in% names(modifiers)) return(.Object)
@@ -312,14 +311,27 @@ setMethod(
     return(.Object)
 }
 
+#' Duplicate a selected attribute across all the samples
+#'
+#' @param .Object an object of \code{\link{Project-class}} 
+#'
+#' @return an object of \code{\link{Project-class}} 
+.duplicateAttrs <- function(.Object) {
+    modifiers = config(.Object)[[CFG_MODIFIERS_KEY]]
+    if (!CFG_DUPLICATE_KEY %in% names(modifiers)) return(.Object)
+    duplicated = modifiers[[CFG_DUPLICATE_KEY]]
+    for(oriAttrName in names(duplicated)){
+        print(oriAttrName); print(duplicated[[oriAttrName]])
+        .Object@samples[,duplicated[[oriAttrName]]] = .Object@samples[,oriAttrName]
+    }
+    return(.Object)
+}
 
 #' Imply attributes
 #'
 #' @param .Object an object of \code{\link{Project-class}} 
 #'
 #' @return an object of \code{\link{Project-class}} 
-#'
-#' @examples
 .implyAttrs = function(.Object) {
     modifiers = config(.Object)[[CFG_MODIFIERS_KEY]]
     if (!CFG_IMPLY_KEY %in% names(modifiers)) return(.Object)
@@ -360,7 +372,6 @@ setMethod(
 #' @param .Object an object of \code{\link{Project-class}} 
 #'
 #' @return an object of \code{\link{Project-class}} 
-#'
 .deriveAttrs = function(.Object) {
     parentDir = dirname(.Object@file)
     modifiers = config(.Object)[[CFG_MODIFIERS_KEY]]
@@ -389,7 +400,6 @@ setMethod(
 #' @param .Object an object of \code{\link{Project-class}} 
 #'
 #' @return an object of \code{\link{Project-class}} 
-#'
 .loadSampleAnnotation = function(.Object) {
     # Can use fread if data.table is installed, otherwise use read.table
     if (requireNamespace("data.table")) {
@@ -416,8 +426,6 @@ setMethod(
 #' @param .Object an object of \code{\link{Project-class}} 
 #'
 #' @return an object of \code{\link{Project-class}} 
-#'
-#' @examples
 .mergeAttrs = function(.Object){
     cfg = config(.Object)
     if (!CFG_SUBSAMPLE_TABLE_KEY %in% names(cfg)) return(.Object)
