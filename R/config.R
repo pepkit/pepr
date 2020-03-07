@@ -11,11 +11,11 @@ setMethod("initialize", "Config", function(.Object, data) {
 #' @param amendments a character with the amendments names to be activated
 #'
 #' @return
-#' @export
+#' @examples
 #' projectConfig = system.file("extdata", "example_peps-master",
 #' "example_subprojects1", "project_config.yaml", package="pepr")
 #' c=Config(projectConfig)
-#' @examples
+#' @export
 Config = function(file, amendments = NULL){
   message("Loading config file: ", file)
   cfg_data = .loadConfig(filename=file, amendments=amendments)
@@ -245,8 +245,6 @@ setMethod(
 #' @param amendments 
 #'
 #' @return
-#'
-#' @examples
 .applyAmendments = function(cfg, amendments=NULL) {
   if (!is.null(amendments)) {
     for (amendment in amendments){
@@ -265,7 +263,7 @@ setMethod(
 #' Function for recursive config data imports
 #'
 #' @param cfg_data config data, possibly including imports statement
-#' @filename path to the file to get the imports for
+#' @param filename path to the file to get the imports for
 #'
 #' @return config data enriched in imported sections, if imports existed in the
 #'  input
