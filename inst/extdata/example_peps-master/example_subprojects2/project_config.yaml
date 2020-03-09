@@ -8,7 +8,7 @@ pipeline_interfaces:
     - $HOME/test_path1
     - $HOME/test_path2
 
-implied_columns:
+implied_attributes:
     organism:
         human:
             genome: "hg38"

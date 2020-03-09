@@ -7,7 +7,7 @@ pipeline_interfaces: [../pipeline/pipeline_interface.yaml]
 sample_modifiers:
   derive:
     attributes: [read1, read2]
-  sources:
-    R1: "../data/{identifier}{file_id}_R1.fq.gz"
-    R2: "../data/{identifier}{file_id}_R2.fq.gz"
+    sources:
+      R1: "../data/{identifier}{file_id}_R1.fq.gz"
+      R2: "../data/{identifier}{file_id}_R2.fq.gz"
 
