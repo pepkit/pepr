@@ -40,8 +40,8 @@ setMethod("initialize", "Project", function(.Object, ...) {
 #' @param file a character with project configuration yaml file
 #' @param amendments a character with the amendments names to be activated
 #' @examples
-#' projectConfig = system.file("extdata", "example_peps-master",
-#' "example_subprojects1", "project_config.yaml", package="pepr")
+#' projectConfig = system.file("extdata", "example_peps-cfg2",
+#' "example_amendments1", "project_config.yaml", package="pepr")
 #' p=Project(projectConfig)
 #' @export Project
 Project = function(file = NULL, amendments = NULL) {
@@ -76,7 +76,6 @@ setMethod(
     ".modifySamples",
     signature = "Project",
     definition = function(object) {
-        if (!CFG_MODIFIERS_KEY %in% names(config(object))) return(object)
         object = .appendAttrs(object)
         object = .duplicateAttrs(object)
         object = .implyAttrs(object)
@@ -183,23 +182,23 @@ setMethod(
 )
 
 
-#' Lists subprojects in a \code{\link{Project-class}} object
+#' Lists amendments in a \code{\link{Project-class}} object
 #'
-#' Lists available subprojects within a \code{\link{Project-class}} object.
+#' Lists available amendments within a \code{\link{Project-class}} object.
 #'
-#' The subprojects can be activated by passing their names to the  \code{\link{activateAmendments}} method
+#' The amendments can be activated by passing their names to the  \code{\link{activateAmendments}} method
 #'
 #' @param .Object an object of \code{\link{Project-class}}
-#' @return names of the available subprojects
+#' @return names of the available amendments
 #' @examples 
 #' projectConfig = system.file("extdata",
-#' "example_peps-master",
-#' "example_subprojects1",
+#' "example_peps-cfg2",
+#' "example_amendments1",
 #' "project_config.yaml",
 #' package = "pepr")
 #' p = Project(file = projectConfig)
-#' availSubprojects = listAmendments(p)
-#' activateAmendments(p,availSubprojects[1])
+#' availAmendemtns = listAmendments(p)
+#' activateAmendments(p,availAmendemtns[1])
 #' @export
 setGeneric("listAmendments", function(.Object)
     standardGeneric("listAmendments"))
@@ -214,27 +213,27 @@ setMethod(
 )
 
 
-#' Activate other subproject in objects of \code{\link{Project-class}}
+#' Activate other amendments in objects of \code{\link{Project-class}}
 #'
-#' This method switches between the subprojects
+#' This method switches between the amendments
 #' within the \code{\link{Project-class}} object
 #'
-#' To check what are the subproject names
+#' To check what are the amendments names
 #' call \code{listAmendments(p)}, where \code{p} is the object
 #' of \code{\link{Project-class}} class
 #'
 #' @param .Object an object of class \code{\link{Project-class}}
-#' @param amendments character with the subproject name
+#' @param amendments character with the amendment name
 #' 
 #' @examples 
 #' projectConfig = system.file("extdata",
-#' "example_peps-master",
-#' "example_subprojects1",
+#' "example_peps-cfg2",
+#' "example_amendments1",
 #' "project_config.yaml",
 #' package = "pepr")
 #' p = Project(file = projectConfig)
-#' availSubprojects = listAmendments(p)
-#' activateAmendments(p,availSubprojects[1])
+#' availAmendments = listAmendments(p)
+#' activateAmendments(p,availAmendments[1])
 #' @export
 setGeneric("activateAmendments", function(.Object, amendments)
     standardGeneric("activateAmendments"))
@@ -265,8 +264,8 @@ setMethod(
 #'
 #' @return a data.table with the with metadata about samples
 #' @examples
-#' projectConfig = system.file("extdata", "example_peps-master",
-#' "example_subprojects1", "project_config.yaml", package="pepr")
+#' projectConfig = system.file("extdata", "example_peps-cfg2",
+#' "example_amendments1", "project_config.yaml", package="pepr")
 #' p=Project(projectConfig)
 #' sampleTable(p)
 #'
@@ -292,6 +291,7 @@ setMethod(
 #'
 #' @return an object of \code{\link{Project-class}} 
 .appendAttrs <- function(.Object) {
+    if (!CFG_MODIFIERS_KEY %in% names(config(.Object))) return(.Object)
     modifiers = config(.Object)[[CFG_MODIFIERS_KEY]]
     if (!CFG_APPEND_KEY %in% names(modifiers)) return(.Object)
     constants = modifiers[[CFG_APPEND_KEY]]
@@ -317,6 +317,7 @@ setMethod(
 #'
 #' @return an object of \code{\link{Project-class}} 
 .duplicateAttrs <- function(.Object) {
+    if (!CFG_MODIFIERS_KEY %in% names(config(.Object))) return(.Object)
     modifiers = config(.Object)[[CFG_MODIFIERS_KEY]]
     if (!CFG_DUPLICATE_KEY %in% names(modifiers)) return(.Object)
     duplicated = modifiers[[CFG_DUPLICATE_KEY]]
@@ -332,6 +333,7 @@ setMethod(
 #'
 #' @return an object of \code{\link{Project-class}} 
 .implyAttrs = function(.Object) {
+    if (!CFG_MODIFIERS_KEY %in% names(config(.Object))) return(.Object)
     modifiers = config(.Object)[[CFG_MODIFIERS_KEY]]
     if (!CFG_IMPLY_KEY %in% names(modifiers)) return(.Object)
     implications = modifiers[[CFG_IMPLY_KEY]]
@@ -372,6 +374,7 @@ setMethod(
 #'
 #' @return an object of \code{\link{Project-class}} 
 .deriveAttrs = function(.Object) {
+    if (!CFG_MODIFIERS_KEY %in% names(config(.Object))) return(.Object)
     parentDir = dirname(.Object@file)
     modifiers = config(.Object)[[CFG_MODIFIERS_KEY]]
     if (!CFG_DERIVE_KEY %in% names(modifiers)) return(.Object)

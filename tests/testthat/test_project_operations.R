@@ -2,7 +2,7 @@ context("Project operations")
 
 # get data ----------------------------------------------------------------
 
-branch = "master"
+branch = "cfg2"
 
 DF = mtcars
 
@@ -16,12 +16,12 @@ p = Project(
   )
 )
 pFileMissing = p
-pFileMissing@config$metadata$sample_table = "missing"
+pFileMissing@config$sample_table = "missing"
 pSubproj1 = Project(
   file = system.file(
     "extdata",
     paste0("example_peps-",branch),
-    "example_subprojects1",
+    "example_amendments1",
     "project_config.yaml",
     package = "pepr"
   )
@@ -30,7 +30,7 @@ pSubproj2 = Project(
   file = system.file(
     "extdata",
     paste0("example_peps-",branch),
-    "example_subprojects2",
+    "example_amendments2",
     "project_config.yaml",
     package = "pepr"
   )
@@ -48,7 +48,7 @@ pImplied = Project(
   file = system.file(
     "extdata",
     paste0("example_peps-",branch),
-    "example_implied",
+    "example_imply",
     "project_config.yaml",
     package = "pepr"
   )
@@ -58,7 +58,7 @@ pDerived = Project(
     file = system.file(
         "extdata",
         paste0("example_peps-",branch),
-        "example_derived",
+        "example_derive",
         "project_config.yaml",
         package = "pepr"
     )

@@ -2,31 +2,31 @@
 % Please edit documentation in R/project.R
 \name{activateAmendments}
 \alias{activateAmendments}
-\title{Activate other subproject in objects of \code{\link{Project-class}}}
+\title{Activate other amendments in objects of \code{\link{Project-class}}}
 \usage{
 activateAmendments(.Object, amendments)
 }
 \arguments{
 \item{.Object}{an object of class \code{\link{Project-class}}}
 
-\item{amendments}{character with the subproject name}
+\item{amendments}{character with the amendment name}
 }
 \description{
-This method switches between the subprojects
+This method switches between the amendments
 within the \code{\link{Project-class}} object
 }
 \details{
-To check what are the subproject names
+To check what are the amendments names
 call \code{listAmendments(p)}, where \code{p} is the object
 of \code{\link{Project-class}} class
 }
 \examples{
 projectConfig = system.file("extdata",
-"example_peps-master",
-"example_subprojects1",
+"example_peps-cfg2",
+"example_amendments1",
 "project_config.yaml",
 package = "pepr")
 p = Project(file = projectConfig)
-availSubprojects = listAmendments(p)
-activateAmendments(p,availSubprojects[1])
+availAmendments = listAmendments(p)
+activateAmendments(p,availAmendments[1])
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/project.R
 \name{listAmendments}
 \alias{listAmendments}
-\title{Lists subprojects in a \code{\link{Project-class}} object}
+\title{Lists amendments in a \code{\link{Project-class}} object}
 \usage{
 listAmendments(.Object)
 }
@@ -10,21 +10,21 @@ listAmendments(.Object)
 \item{.Object}{an object of \code{\link{Project-class}}}
 }
 \value{
-names of the available subprojects
+names of the available amendments
 }
 \description{
-Lists available subprojects within a \code{\link{Project-class}} object.
+Lists available amendments within a \code{\link{Project-class}} object.
 }
 \details{
-The subprojects can be activated by passing their names to the  \code{\link{activateAmendments}} method
+The amendments can be activated by passing their names to the  \code{\link{activateAmendments}} method
 }
 \examples{
 projectConfig = system.file("extdata",
-"example_peps-master",
-"example_subprojects1",
+"example_peps-cfg2",
+"example_amendments1",
 "project_config.yaml",
 package = "pepr")
 p = Project(file = projectConfig)
-availSubprojects = listAmendments(p)
-activateAmendments(p,availSubprojects[1])
+availAmendemtns = listAmendments(p)
+activateAmendments(p,availAmendemtns[1])
 }

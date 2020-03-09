@@ -12,8 +12,8 @@ setMethod("initialize", "Config", function(.Object, data) {
 #'
 #' @return
 #' @examples
-#' projectConfig = system.file("extdata", "example_peps-master",
-#' "example_subprojects1", "project_config.yaml", package="pepr")
+#' projectConfig = system.file("extdata", "example_peps-cfg2",
+#' "example_amendments1", "project_config.yaml", package="pepr")
 #' c=Config(projectConfig)
 #' @export
 Config = function(file, amendments = NULL){
@@ -128,11 +128,11 @@ setGeneric("checkSection", function(object, sectionNames)
 #' @return a logical indicating whether the section exists
 #' 
 #' @examples
-#' projectConfig = system.file("extdata", "example_peps-master",
-#' "example_subprojects1", "project_config.yaml", package="pepr")
+#' projectConfig = system.file("extdata", "example_peps-cfg2",
+#' "example_amendments1", "project_config.yaml", package="pepr")
 #' p=Project(projectConfig)
-#' checkSection(config(p),sectionNames = c("subprojects","newLib","metadata"))
-#' checkSection(config(p),sectionNames = c("subprojects",1,"metadata"))
+#' checkSection(config(p),sectionNames = c("amendments","newLib"))
+#' checkSection(config(p),sectionNames = c("amendments",1))
 #' @export
 setMethod(
   "checkSection",
@@ -170,8 +170,8 @@ setMethod(
 #' @return a list with the config file
 #'
 #' @examples
-#' projectConfig = system.file("extdata", "example_peps-master",
-#' "example_subprojects1", "project_config.yaml", package="pepr")
+#' projectConfig = system.file("extdata", "example_peps-cfg2",
+#' "example_amendments1", "project_config.yaml", package="pepr")
 #' p=Project(projectConfig)
 #' config(p)
 #'

@@ -15,7 +15,7 @@ Project(file = NULL, amendments = NULL)
 This is a helper that creates the project with empty samples and config slots
 }
 \examples{
-projectConfig = system.file("extdata", "example_peps-master",
-"example_subprojects1", "project_config.yaml", package="pepr")
+projectConfig = system.file("extdata", "example_peps-cfg2",
+"example_amendments1", "project_config.yaml", package="pepr")
 p=Project(projectConfig)
 }
