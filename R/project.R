@@ -96,7 +96,7 @@ setMethod(
 #' @examples
 #' projectConfig = system.file(
 #' "extdata",
-#' "example_peps-master",
+#' "example_peps-cfg2",
 #' "example_basic",
 #' "project_config.yaml",
 #' package = "pepr"
@@ -134,7 +134,7 @@ setMethod(
 #' @examples
 #' projectConfig = system.file(
 #' "extdata",
-#' "example_peps-master",
+#' "example_peps-cfg2",
 #' "example_subtable1",
 #' "project_config.yaml",
 #' package = "pepr"

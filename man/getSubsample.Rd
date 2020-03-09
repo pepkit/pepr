@@ -22,7 +22,7 @@ This method extracts the subsample from the \code{\link{Project-class}} object
 \examples{
 projectConfig = system.file(
 "extdata",
-"example_peps-master",
+"example_peps-cfg2",
 "example_subtable1",
 "project_config.yaml",
 package = "pepr"

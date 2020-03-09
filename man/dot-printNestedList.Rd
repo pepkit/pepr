@@ -19,7 +19,7 @@ Useful for displaying the config of a PEP
 }
 \examples{
 projectConfig = system.file("extdata",
-"example_peps-master",
+"example_peps-cfg2",
 "example_basic",
 "project_config.yaml",
 package = "pepr")

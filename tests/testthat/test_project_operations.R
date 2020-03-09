@@ -76,35 +76,29 @@ test_that("getSubsample method returns a correct size DF", {
 })
 
 
-test_that(".loadSamplesubnnotation always returns a Project", {
-  expect_is(.loadSampleSubannotation(p), 'Project')
-  expect_is(.loadSampleSubannotation(pSubproj2), 'Project')
-  expect_is(.loadSampleSubannotation(pSub), 'Project')
-})
-
 test_that(".implyAttributes returns Project object", {
-  expect_is(.implyAttributes(pImplied), 'Project')
+  expect_is(.implyAttrs(pImplied), 'Project')
 })
 
 test_that(".deriveAttributes returns Project object", {
-  expect_is(.deriveAttributes(pDerived), 'Project')
+  expect_is(.deriveAttrs(pDerived), 'Project')
 })
 
 test_that(".listSubprojects internal function returns correct object type, length and throws errors",
           {
-            expect_equal(length(.listSubprojects(pSubproj1@config)), 2)
-            expect_is(.listSubprojects(pSubproj2@config), 'character')
-            expect_null(.listSubprojects(p@config))
-            expect_error(.listSubprojects(1))
+            expect_equal(length(.listAmendments(pSubproj1@config)), 2)
+            expect_is(.listAmendments(pSubproj2@config), 'character')
+            expect_null(.listAmendments(p@config))
+            expect_error(.listAmendments(1))
           })
 
 test_that("listSubprojects exported method returns correct object type, length and throws errors",
           {
-            expect_equal(length(listSubprojects(pSubproj1)), 2)
-            expect_is(listSubprojects(pSubproj1), 'character')
-            expect_null(listSubprojects(p))
-            expect_error(listSubprojects(1))
-            expect_equal(length(listSubprojects(pSubproj1)), 2)
+            expect_equal(length(listAmendments(pSubproj1)), 2)
+            expect_is(listAmendments(pSubproj1), 'character')
+            expect_null(listAmendments(p))
+            expect_error(listAmendments(1))
+            expect_equal(length(listAmendments(pSubproj1)), 2)
           })
 
 test_that("checkSection returns a correct type", {
@@ -113,22 +107,22 @@ test_that("checkSection returns a correct type", {
 })
 
 test_that("checkSection returns correct value", {
-  expect_equal(checkSection(config(p),c("metadata","sample_table")), T)
+  expect_equal(checkSection(config(p),c("sample_table")), T)
   expect_equal(checkSection(config(p),c("test")), F)
 })
 
-test_that("activateSubproject does not fail and throws a warning when called 
+test_that("activateAmendments does not fail and throws a warning when called 
           with invalid subproject name", {
-              expect_warning(activateSubproject(pSubproj1, "test"))
+              expect_warning(activateAmendments(pSubproj1, "test"))
 })
 
-test_that("activateSubproject returns a correct object type", {
-    expect_is(activateSubproject(pSubproj1, "newLib2"), "Project")
+test_that("activateAmendments returns a correct object type", {
+    expect_is(activateAmendments(pSubproj1, "newLib2"), "Project")
 })
 
-test_that(".listSubprojects works with different styles of printing", {
-    expect_message(.listSubprojects(config(pSubproj1)))
-    expect_output(.listSubprojects(config(pSubproj1),style="cat"))
+test_that(".listAmendments works with different styles of printing", {
+    expect_message(.listAmendments(config(pSubproj1)))
+    expect_output(.listAmendments(config(pSubproj1),style="cat"))
 })
 
 test_that("show methods work", {
