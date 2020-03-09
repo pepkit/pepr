@@ -1,6 +1,6 @@
-language: R
+language: r
+os: "linux"
 warnings_are_errors: false
-sudo: false
 cache: packages
 r_packages: devtools
 r_github_packages: 
