@@ -22,8 +22,15 @@ Load a project and explore metadata like this:
 
 ```R
 library('pepr')
-p = Project(file = "~/code/microtest/config/microtest_config.yaml")
+cfgPath = system.file(
+    "extdata",
+    paste0("example_peps-cfg2"),
+    "example_basic",
+    "project_config.yaml",
+    package = "pepr"
+  )
+p = Project(file = cfgPath)
 
-samples(p)
+sampleTable(p)
 config(p)
 ```
