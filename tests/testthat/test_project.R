@@ -75,6 +75,14 @@ configDuplicate = system.file(
   package = "pepr"
 )
 
+configImports = system.file(
+  "extdata",
+  paste0("example_peps-",branch),
+  "example_imports",
+  "project_config.yaml",
+  package = "pepr"
+)
+
 # tests -------------------------------------------------------------------
 
 context("Project object creation")
@@ -122,4 +130,11 @@ context("Modifiers: duplicate")
 test_that("duplicate modifier works", {
   s = sampleTable(Project(configDuplicate))
   expect_true(all(s[,"organism"]==s[,"animal"]))
+})
+
+context("Import external configs")
+
+
+test_that("importing external configs works", {
+  expect_true(all(sampleTable(Project(configImports))[,"imported_attr"] == "imported_val"))
 })
