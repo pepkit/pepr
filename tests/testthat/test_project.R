@@ -99,6 +99,10 @@ test_that("Project successfully loads a config with bioconductor section", {
     expect_true(is(Project(cfgBioc), "Project"))
 })
 
+test_that("empty Project can be created", {
+  expect_is(Project(),"Project")
+})
+
 context("Amendments")
 
 test_that("Project succesfully activates amendments at initialization", {
