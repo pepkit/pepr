@@ -321,7 +321,6 @@ setMethod(
     if (!CFG_DUPLICATE_KEY %in% names(modifiers)) return(.Object)
     duplicated = modifiers[[CFG_DUPLICATE_KEY]]
     for(oriAttrName in names(duplicated)){
-        print(oriAttrName); print(duplicated[[oriAttrName]])
         .Object@samples[,duplicated[[oriAttrName]]] = .Object@samples[,oriAttrName]
     }
     return(.Object)

@@ -75,13 +75,6 @@ test_that("getSubsample method returns a correct size DF", {
   expect_equal(dim(getSubsample(pSub, "frog_1", "sub_a")), c(1, 4))
 })
 
-test_that(".loadSampleAnnotation returns a Project object", {
-  expect_is(.loadSampleAnnotation(p), 'Project')
-})
-
-test_that(".loadSampleAnnotation thorws an error when file not fond", {
-  expect_error(.loadSampleAnnotation(pFileMissing))
-})
 
 test_that(".loadSamplesubnnotation always returns a Project", {
   expect_is(.loadSampleSubannotation(p), 'Project')
