@@ -303,9 +303,12 @@ setMethod(
         for (iConst in seq_along(constants)) {
             # create a one column data.table and glue appand it with to the 
             # current samples data.table
-            constantCol = data.table::data.table(rep(constants[[iConst]], colLen))
-            names(constantCol) = constantsNames[iConst]
-            .Object@samples = cbind(.Object@samples, constantCol)
+            if(!constantsNames[iConst] %in% colnames(sampleTable(.Object))) {
+                constantCol = 
+                    data.table::data.table(rep(constants[[iConst]], colLen))
+                names(constantCol) = constantsNames[iConst]
+                .Object@samples = cbind(.Object@samples, constantCol)
+            }
         }
     }
     return(.Object)
