@@ -76,6 +76,7 @@ setMethod(
     ".modifySamples",
     signature = "Project",
     definition = function(object) {
+        object = .removeAttrs(object)
         object = .appendAttrs(object)
         object = .duplicateAttrs(object)
         object = .implyAttrs(object)
@@ -283,6 +284,26 @@ setMethod(
 
 # sample modifiers --------------------------------------------------------
 
+#' Remove attributes across all the samples
+#'
+#' @param .Object an object of \code{\link{Project-class}} 
+#'
+#' @return an object of \code{\link{Project-class}} 
+.removeAttrs <- function(.Object) {
+    if (!CFG_MODIFIERS_KEY %in% names(config(.Object))) return(.Object)
+    modifiers = config(.Object)[[CFG_MODIFIERS_KEY]]
+    if (!CFG_REMOVE_KEY %in% names(modifiers)) return(.Object)
+    toRemove = modifiers[[CFG_REMOVE_KEY]]
+    if (!is.null(toRemove)) {
+        # get a copy of samples to get the dimensions
+        for (rem in toRemove) {
+            if(rem %in% colnames(sampleTable(.Object))) {
+                .Object@samples[,rem] = NULL
+            }
+        }
+    }
+    return(.Object)
+}
 
 
 #' Append constant attributes across all the samples
