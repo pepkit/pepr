@@ -83,6 +83,14 @@ configImports = system.file(
   package = "pepr"
 )
 
+configRemove = system.file(
+  "extdata",
+  paste0("example_peps-",branch),
+  "example_remove",
+  "project_config.yaml",
+  package = "pepr"
+)
+
 # tests -------------------------------------------------------------------
 
 context("Project object creation")
@@ -136,9 +144,20 @@ test_that("duplicate modifier works", {
   expect_true(all(s[,"organism"]==s[,"animal"]))
 })
 
+context("Modifiers: remove")
+
+
+test_that("remove modifier works", {
+  p = Project(configRemove)
+  removed = p@config$sample_modifiers$remove
+  expect_false(removed %in% colnames(sampleTable(p)))
+})
+
 context("Import external configs")
 
 
 test_that("importing external configs works", {
   expect_true(all(sampleTable(Project(configImports))[,"imported_attr"] == "imported_val"))
 })
+
+

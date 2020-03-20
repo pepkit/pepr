@@ -11,9 +11,6 @@ sample_modifiers:
 
 amendments:
   newLib:
-    metadata:
-      sample_table: sample_table_newLib.csv
+    sample_table: sample_table_newLib.csv
   newLib2:
-    metadata:
-      sample_table: sample_table_newLib2.csv
-
+    sample_table: sample_table_newLib2.csv
