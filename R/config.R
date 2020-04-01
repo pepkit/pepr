@@ -214,6 +214,15 @@ setMethod(
     cfg_data$bioconductor$readFunPath = 
       .makeAbsPath(path, parent=dirname(filename))
   }
+  # make looper section absolute
+  if(!is.null(cfg_data[[CFG_LOOPER_KEY]])){
+    nms = names(cfg_data[[CFG_LOOPER_KEY]])
+    for(i in seq_along(cfg_data[[CFG_LOOPER_KEY]])){
+      path = gsub("\\./","", cfg_data[[CFG_LOOPER_KEY]][[nms[i]]])
+      cfg_data[[CFG_LOOPER_KEY]][[nms[i]]] = 
+        .makeAbsPath(path, parent=dirname(filename))
+    }
+  }
   cfg_data$name = .inferProjectName(cfg_data, filename)
   return(cfg_data)
 }

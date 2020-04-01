@@ -34,7 +34,7 @@
       if(any(replacements == "")){
         missingEnvVar = which(replacements == "")
         warning(
-          paste0("The environment variable '",parts[missingEnvVar],
+          paste0("The environment variable '", parts[missingEnvVar],
                  "' was not found. Created object might be invalid.")
         )
       }
