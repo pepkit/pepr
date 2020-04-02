@@ -11,7 +11,7 @@ cfg = system.file(
     package = "pepr"
   )
 
-yaml = yaml::yaml.load_file(system.file(
+f = yaml::yaml.load_file(system.file(
   "extdata",
   paste0("example_peps-",branch),
   "example_amendments2",
@@ -160,4 +160,27 @@ test_that("importing external configs works", {
   expect_true(all(sampleTable(Project(configImports))[,"imported_attr"] == "imported_val"))
 })
 
+context("Version number parsing")
+test_that("invalid version string is exceptional", {
+  path = paste(tempdir(), "test.yaml", sep="/")
+  f$pep_version = "2"
+  yaml::write_yaml(file = path, x = f)
+  expect_error(Project(file = path))
+})
+
+
+test_that("version has to be 2.0.0 if sample_modifiers key is in the config", {
+  path = paste(tempdir(), "test.yaml", sep="/")
+  f$pep_version = "1.0.0"
+  yaml::write_yaml(file = path, x = f)
+  expect_error(Project(file = path))
+})
+
+
+test_that("Version number is required", {
+  path = paste(tempdir(), "test.yaml", sep="/")
+  f$pep_version = NULL
+  yaml::write_yaml(file = path, x = f)
+  expect_error(Project(file = path))
+})
 

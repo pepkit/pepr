@@ -69,7 +69,9 @@ pDerived = Project(
 test_that("getSubsample method throws errors", {
   expect_error(getSubsample(mtcars))
   expect_error(getSubsample(p, "frog_1", "test"))
+  expect_error(getSubsample(p, "x", "test"))
 })
+
 
 test_that("getSubsample method returns a correct size DF", {
   expect_equal(dim(getSubsample(pSub, "frog_1", "sub_a")), c(1, 4))
