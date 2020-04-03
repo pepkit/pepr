@@ -124,6 +124,8 @@
 #
 #' @param perhapsRelative Path to primary target directory.
 #' @param parent a path to parent folder to use if target isn't absolute.
+#' 
+#' @export 
 #' @return Target itself if already absolute, else target nested within parent.
 .makeAbsPath = function(perhapsRelative, parent) {
   if (!.isDefined(perhapsRelative)) return(perhapsRelative)

@@ -3,6 +3,7 @@
 export(.checkSection)
 export(.expandPath)
 export(.listifyDF)
+export(.makeAbsPath)
 export(.printNestedList)
 export(.strformat)
 export(Config)
