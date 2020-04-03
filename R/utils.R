@@ -303,3 +303,34 @@ fetchSamples = function(samples, attr=NULL, func=NULL, action="include") {
     }
   }
 }
+
+#' Check for a section existence in a nested list
+#'
+#' @param object list to inspect
+#' @param sectionNames vector or characters with sectio names to check for 
+#'
+#' @return logical indicating whether the sections where found in the list
+#' @export
+#'
+#' @examples
+#' l = list(a=list(b="test"))
+#' .checkSection(l,c("a","b"))
+#' .checkSection(l,c("c","b"))
+.checkSection = function(object, sectionNames) {
+  tryToNum = function(x){
+    convertedX = suppressWarnings(as.numeric(x))
+    ifelse(!is.na(convertedX), convertedX, x)
+  }
+  testList = object
+  counter = 1
+  while (!is.na(sectionNames[counter])) {
+    item = tryToNum(sectionNames[counter])
+    if((!is.list(testList)) || is.null(testList[[item]])){
+      return(FALSE)
+    }
+    testList = testList[[item]]
+    counter = counter + 1
+  }
+  return(TRUE)
+}
+

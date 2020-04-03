@@ -141,21 +141,7 @@ setMethod(
     # try co convert the section name to numeric, return original name if 
     # not possible this enables the outer method to check the sections 
     # existance by index and by name at the same time
-    tryToNum = function(x){
-        convertedX = suppressWarnings(as.numeric(x))
-        ifelse(!is.na(convertedX), convertedX, x)
-    }
-    testList = object
-    counter = 1
-    while (!is.na(sectionNames[counter])) {
-      item = tryToNum(sectionNames[counter])
-      if((!is.list(testList)) || is.null(testList[[item]])){
-        return(FALSE)
-      }
-      testList = testList[[item]]
-      counter = counter + 1
-    }
-    return(TRUE)
+    .checkSection(object, sectionNames)
   }
 )
 
