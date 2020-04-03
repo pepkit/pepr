@@ -205,7 +205,6 @@ setMethod(
     nms = names(cfg_data[[CFG_LOOPER_KEY]])
     for(i in seq_along(cfg_data[[CFG_LOOPER_KEY]])){
       paths = cfg_data[[CFG_LOOPER_KEY]][[nms[i]]]
-      print(paths)
       for(j in seq_along(paths)){
         cfg_data[[CFG_LOOPER_KEY]][[nms[i]]][j] = 
           .makeAbsPath(paths[j], parent=dirname(filename))
