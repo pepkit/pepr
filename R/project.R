@@ -290,8 +290,8 @@ setMethod(
 #'
 #' @return an object of \code{\link{Project-class}} 
 .removeAttrs <- function(.Object) {
-    if (!CFG_MODIFIERS_KEY %in% names(config(.Object))) return(.Object)
-    modifiers = config(.Object)[[CFG_MODIFIERS_KEY]]
+    if (!CFG_S_MODIFIERS_KEY %in% names(config(.Object))) return(.Object)
+    modifiers = config(.Object)[[CFG_S_MODIFIERS_KEY]]
     if (!CFG_REMOVE_KEY %in% names(modifiers)) return(.Object)
     toRemove = modifiers[[CFG_REMOVE_KEY]]
     if (!is.null(toRemove)) {
@@ -312,8 +312,8 @@ setMethod(
 #'
 #' @return an object of \code{\link{Project-class}} 
 .appendAttrs <- function(.Object) {
-    if (!CFG_MODIFIERS_KEY %in% names(config(.Object))) return(.Object)
-    modifiers = config(.Object)[[CFG_MODIFIERS_KEY]]
+    if (!CFG_S_MODIFIERS_KEY %in% names(config(.Object))) return(.Object)
+    modifiers = config(.Object)[[CFG_S_MODIFIERS_KEY]]
     if (!CFG_APPEND_KEY %in% names(modifiers)) return(.Object)
     constants = modifiers[[CFG_APPEND_KEY]]
     if (is.list(constants)) {
@@ -341,8 +341,8 @@ setMethod(
 #'
 #' @return an object of \code{\link{Project-class}} 
 .duplicateAttrs <- function(.Object) {
-    if (!CFG_MODIFIERS_KEY %in% names(config(.Object))) return(.Object)
-    modifiers = config(.Object)[[CFG_MODIFIERS_KEY]]
+    if (!CFG_S_MODIFIERS_KEY %in% names(config(.Object))) return(.Object)
+    modifiers = config(.Object)[[CFG_S_MODIFIERS_KEY]]
     if (!CFG_DUPLICATE_KEY %in% names(modifiers)) return(.Object)
     duplicated = modifiers[[CFG_DUPLICATE_KEY]]
     for(oriAttrName in names(duplicated)){
@@ -357,8 +357,8 @@ setMethod(
 #'
 #' @return an object of \code{\link{Project-class}} 
 .implyAttrs = function(.Object) {
-    if (!CFG_MODIFIERS_KEY %in% names(config(.Object))) return(.Object)
-    modifiers = config(.Object)[[CFG_MODIFIERS_KEY]]
+    if (!CFG_S_MODIFIERS_KEY %in% names(config(.Object))) return(.Object)
+    modifiers = config(.Object)[[CFG_S_MODIFIERS_KEY]]
     if (!CFG_IMPLY_KEY %in% names(modifiers)) return(.Object)
     implications = modifiers[[CFG_IMPLY_KEY]]
     for (implication in implications) {
@@ -398,9 +398,9 @@ setMethod(
 #'
 #' @return an object of \code{\link{Project-class}} 
 .deriveAttrs = function(.Object) {
-    if (!CFG_MODIFIERS_KEY %in% names(config(.Object))) return(.Object)
+    if (!CFG_S_MODIFIERS_KEY %in% names(config(.Object))) return(.Object)
     parentDir = dirname(.Object@file)
-    modifiers = config(.Object)[[CFG_MODIFIERS_KEY]]
+    modifiers = config(.Object)[[CFG_S_MODIFIERS_KEY]]
     if (!CFG_DERIVE_KEY %in% names(modifiers)) return(.Object)
     derivations = modifiers[[CFG_DERIVE_KEY]]
     if (!all(c(CFG_DERIVE_ATTRS_KEY, CFG_DERIVE_SOURCES_KEY) %in% names(derivations)))

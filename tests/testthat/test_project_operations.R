@@ -86,12 +86,11 @@ test_that(".deriveAttributes returns Project object", {
   expect_is(.deriveAttrs(pDerived), 'Project')
 })
 
-test_that(".listSubprojects internal function returns correct object type, length and throws errors",
+test_that(".listAmendments internal function returns correct object type, length and throws errors",
           {
             expect_equal(length(.listAmendments(pSubproj1@config)), 2)
             expect_is(.listAmendments(pSubproj2@config), 'character')
             expect_null(.listAmendments(p@config))
-            expect_error(.listAmendments(1))
           })
 
 test_that("listSubprojects exported method returns correct object type, length and throws errors",

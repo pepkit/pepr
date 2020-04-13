@@ -93,9 +93,9 @@ setMethod(
       if (length(split) < 3) stop("PEP version string is not tripartite")
       majorVer = as.numeric(split[1])
       if (majorVer < 2){
-        if (CFG_MODIFIERS_KEY %in% names(object)){
+        if (CFG_S_MODIFIERS_KEY %in% names(object)){
           stop("Project configuration file subscribes to specification 
-               >= 2.0.0, since ",CFG_MODIFIERS_KEY," section is defined. Set ",
+               >= 2.0.0, since ",CFG_S_MODIFIERS_KEY," section is defined. Set ",
                CFG_VERSION_KEY, " to 2.0.0 in your config")
         } else{
           stop("Config file reformatting is not supported. 
@@ -224,10 +224,12 @@ setMethod(
   }else{
     printFun = message
   }
-  if (length(names(cfg$amendments)) > 0) {
+  if (CFG_P_MODIFIERS_KEY %in% names(cfg) &&
+      CFG_AMEND_KEY %in% names(cfg[[CFG_P_MODIFIERS_KEY]]) &&
+      length(names(cfg[[CFG_P_MODIFIERS_KEY]][[CFG_AMEND_KEY]])) > 0) {
     # If there are any show a cat and return if needed
-    printFun("  amendments: ", paste0(names(cfg$amendments), collapse=","))
-    invisible(names(cfg$amendments))
+    printFun("  amendments: ", paste0(names(cfg[[CFG_P_MODIFIERS_KEY]][[CFG_AMEND_KEY]]), collapse=","))
+    invisible(names(cfg[[CFG_P_MODIFIERS_KEY]][[CFG_AMEND_KEY]]))
   } else{
     # Otherwise return NULL for testing purposes
     NULL
@@ -245,12 +247,14 @@ setMethod(
 .applyAmendments = function(cfg, amendments=NULL) {
   if (!is.null(amendments)) {
     for (amendment in amendments){
-      if (is.null(cfg$amendments[[amendment]])) {
+      if (!CFG_P_MODIFIERS_KEY %in% names(cfg) || 
+          !CFG_AMEND_KEY %in% names(cfg[[CFG_P_MODIFIERS_KEY]]) || 
+          is.null(cfg[[CFG_P_MODIFIERS_KEY]][[CFG_AMEND_KEY]][[amendment]])) {
         warning("Amendment not found: ", amendment)
         message("Amendment was not activated")
         return(cfg)
       }
-      cfg = utils::modifyList(cfg, cfg$amendments[[amendment]])
+      cfg = utils::modifyList(cfg, cfg[[CFG_P_MODIFIERS_KEY]][[CFG_AMEND_KEY]][[amendment]])
       message("Activating amendment: ", amendment)
     }
   }
@@ -265,9 +269,10 @@ setMethod(
 #' @return config data enriched in imported sections, if imports existed in the
 #'  input
 .applyImports = function(cfg_data, filename){
-  if (!CFG_IMPORTS_KEY %in% names(cfg_data))
+  if (!CFG_P_MODIFIERS_KEY %in% names(cfg_data) || 
+      !CFG_IMPORT_KEY %in% names(cfg_data[[CFG_P_MODIFIERS_KEY]]))
     return(cfg_data)
-  for(externalPath in cfg_data[[CFG_IMPORTS_KEY]]){
+  for(externalPath in cfg_data[[CFG_P_MODIFIERS_KEY]][[CFG_IMPORT_KEY]]){
     externalPath=.makeAbsPath(externalPath, parent = dirname(filename))
     extCfg = .loadConfig(filename = externalPath)  
     cfg_data = utils::modifyList(cfg_data, extCfg)
