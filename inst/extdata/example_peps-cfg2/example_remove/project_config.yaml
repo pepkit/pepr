@@ -10,9 +10,3 @@ sample_modifiers:
       source2: /path/from/collaborator/weirdNamingScheme_{external_id}.fastq
   remove:
     - protocol
-
-amendments:
-  newLib:
-    sample_table: sample_table_newLib.csv
-  newLib2:
-    sample_table: sample_table_newLib2.csv
