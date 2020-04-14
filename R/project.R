@@ -322,13 +322,13 @@ setMethod(
         # get a copy of samples to get the dimensions
         colLen = dim(sampleTable(.Object))[1]
         for (iConst in seq_along(constants)) {
-            # create a one column data.table and glue appand it with to the 
-            # current samples data.table
+            # create a one column data.table and appand it to the current one
             if(!constantsNames[iConst] %in% colnames(sampleTable(.Object))) {
-                constantCol = 
-                    data.table::data.table(rep(constants[[iConst]], colLen))
-                names(constantCol) = constantsNames[iConst]
-                .Object@samples = cbind(.Object@samples, constantCol)
+                tempDT = data.table::data.table(
+                    matrix(matrix(NA, ncol=1, nrow=colLen)))
+                tempDT[, 1] = list(list(constants[[iConst]]))
+                names(tempDT) = constantsNames[iConst]
+                .Object@samples = cbind(.Object@samples, tempDT)
             }
         }
     }
@@ -403,7 +403,8 @@ setMethod(
     modifiers = config(.Object)[[CFG_S_MODIFIERS_KEY]]
     if (!CFG_DERIVE_KEY %in% names(modifiers)) return(.Object)
     derivations = modifiers[[CFG_DERIVE_KEY]]
-    if (!all(c(CFG_DERIVE_ATTRS_KEY, CFG_DERIVE_SOURCES_KEY) %in% names(derivations)))
+    if (!all(c(CFG_DERIVE_ATTRS_KEY, CFG_DERIVE_SOURCES_KEY) 
+             %in% names(derivations)))
         stop(CFG_DERIVE_KEY, " section is not formatted properly")
     for (derivedAttr in derivations[[CFG_DERIVE_ATTRS_KEY]]) {
         derivedSamplesVals = .Object@samples[,derivedAttr]
@@ -412,8 +413,9 @@ setMethod(
             if (length(hitIds) < 1) next
             for (hitId in hitIds){
                 rgx = derivations[[CFG_DERIVE_SOURCES_KEY]][[derivedSource]]
-                res = .matchesAndRegexes(.strformat(rgx, as.list(sampleTable(.Object)[hitId,]), parentDir))  
-                .Object@samples[hitId,derivedAttr] = list(res)
+                res = .matchesAndRegexes(.strformat(
+                    rgx, as.list(sampleTable(.Object)[hitId,]), parentDir))  
+                .Object@samples[hitId,derivedAttr] = list(unique(unlist(res)))
             }
         }
     }
@@ -427,17 +429,11 @@ setMethod(
 #'
 #' @return an object of \code{\link{Project-class}} 
 .loadSampleAnnotation = function(.Object) {
-    # Can use fread if data.table is installed, otherwise use read.table
-    if (requireNamespace("data.table")) {
-        sampleReadFunc = data.table::fread
-    } else {
-        sampleReadFunc = utils::read.table
-    }
     cfg = config(.Object)
     if (!CFG_SAMPLE_TABLE_KEY %in% names(cfg)) return(.Object)
     sampleAnnotationPath = cfg[[CFG_SAMPLE_TABLE_KEY]]
     if(.safeFileExists(sampleAnnotationPath)){
-        samples = sampleReadFunc(sampleAnnotationPath)
+        samples = data.table::fread(sampleAnnotationPath)
     } else{
         warning("The sample_table does not exist: ", sampleAnnotationPath)
         return(.Object)
@@ -458,21 +454,15 @@ setMethod(
     sampleSubannotationPath = cfg[[CFG_SUBSAMPLE_TABLE_KEY]]
     samples = sampleTable(.Object)
     samples = .listifyDF(samples)
-    #Reading sample subannonataion table, just like in annotation table
-    if (requireNamespace("data.table")) {
-        sampleSubReadFunc = data.table::fread
-    } else {
-        sampleSubReadFunc = utils::read.table
-    }
     if (.safeFileExists(sampleSubannotationPath)) {
-        samplesSubannotation = sampleSubReadFunc(sampleSubannotationPath)
+        samplesSubannotation = data.table::fread(sampleSubannotationPath)
     } else{
-        samplesSubannotation = data.frame()
+        samplesSubannotation = data.table::data.table()
     }
     subNames = unique(samplesSubannotation$sample_name)
     rowNum = nrow(samples)
     # Creating a list to be populated in the loop and inserted
-    # into the samples data.frame as a column. This way the "cells"
+    # into the samples data.table as a column. This way the "cells"
     # in the samples table can consist of multiple elements
     colList = vector("list", rowNum)
     for (iName in subNames) {
@@ -497,7 +487,7 @@ setMethod(
             } else {
                 # Inserting element(s) into the list
                 colList[[whichRowSamples]] = subTable[[colName]]
-                # Inserting the list as a column in the data.frame
+                # Inserting the list as a column in the data.table
                 samples[[colName]] = colList
             }
         }
