@@ -136,8 +136,8 @@
     abspath = file.path(normalizePath(parent), perhapsRelative)
   }
   if (!.isAbsolute(abspath)) 
-    stop("Relative path", perhapsRelative, "and parent", parent ,
-         "failed to create absolute path: ", abspath)
+    stop("Relative path ", perhapsRelative, " and parent ", parent ,
+         " failed to create absolute path: ", abspath)
   return(abspath)
 }
 

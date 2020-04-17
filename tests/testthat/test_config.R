@@ -85,19 +85,3 @@ test_that("loadConfig throws errors", {
     expect_error(Config("a"))
     expect_error(Config(filename = Project(cfg)@config$sample_table))
 })
-
-context("Path expansion")
-test_that("env var in looper section are populated",{
-    f$looper = list(path="$HOME/test")
-    path = paste(tempdir(), "test.yaml", sep="/")
-    yaml::write_yaml(file = path, x = f)
-    expect_true(.isAbsolute(config(Project(file = path))$looper$path))
-})
-
-test_that("paths in looper section are made absolute",{
-    f$looper = list(path="~/test")
-    path = paste(tempdir(), "test.yaml", sep="/")
-    yaml::write_yaml(file = path, x = f)
-    x = config(Project(file = path))$looper$path
-    expect_true(identical("/", substr(x, 1, 1)))
-})
