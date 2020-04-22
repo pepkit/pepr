@@ -1,7 +1,70 @@
+#' Config objects expand string attributes 
+#'
+#' Config objects are used with the \code{\link{Config-class}} objects
+#'
+#' @exportClass Config
+setClass("Config", contains = "list")
+
+setMethod("initialize", "Config", function(.Object, data) {
+  return(methods::callNextMethod(.Object, data))  # calls parent's method
+})
+
+#'  The constructor of a class representing PEP config
+#'
+#' @param file a character with project configuration yaml file
+#' @param amendments a character with the amendments names to be activated
+#'
+#' @return
+#' @examples
+#' projectConfig = system.file("extdata", "example_peps-cfg2",
+#' "example_amendments1", "project_config.yaml", package="pepr")
+#' c=Config(projectConfig)
+#' @export 
+Config = function(.Object, ...) {
+  return(methods::new("Config", .Object, ...))
+}
+
+.expandList <- function(x) {
+  if(is.list(x))
+    return(lapply(x, .expandList))
+  return(suppressWarnings(.expandPath(x)))
+}
+
+setMethod("[", c("Config"), function(x, i) {
+  xList=as(x, "list", strict=TRUE)
+  if(is.character(i)){
+    matches = which(names(x) == grep(i, names(x), value=TRUE))
+  } else{
+    matches = i
+  }
+  element = xList[matches]
+  return(.expandList(element))
+})
+
+
+setMethod("[[", "Config", function(x, i) {
+  xList=as(x, "list", strict=TRUE)
+  
+  if(is.character(i)){
+    matches = which(names(x) == grep(i, names(x), value=TRUE))
+  } else{
+    matches = i
+  }
+  element = xList[[matches]]
+  return(.expandList(element))
+})
+
+setMethod("$", "Config", function(x, name){
+  matches = which(names(x) == grep(name, names(x), value=TRUE))
+  if(length(matches) == 0)
+    return(NULL)
+  hits = x[[matches]]
+  return(.expandList(hits))
+})
+
 setMethod("initialize", "Config", function(.Object, data) {
   .Object = methods::callNextMethod(.Object, data)  # calls list initialize
-  .Object = .reformat(.Object)
-  return(.Object)
+  return(.reformat(.Object))
 })
 
 
@@ -19,7 +82,7 @@ setMethod("initialize", "Config", function(.Object, data) {
 Config = function(file, amendments = NULL){
   message("Loading config file: ", file)
   cfg_data = .loadConfig(filename=file, amendments=amendments)
-  config = methods::new("Config",data=cfg_data)
+  config = methods::new("Config", data=cfg_data)
   config = makeSectionsAbsolute(config, REQ_ABS, file)
   .listAmendments(config)
   return(config)
@@ -36,7 +99,7 @@ setClass("Config", contains = "list")
 # Override the standard generic show function for our config-style lists
 setMethod(
   "show",
-  signature = "Config", 
+  signature = "Config",
   definition = function(object) {
     cat("Config object. Class:", class(object), fill = T)
     .printNestedList(object)

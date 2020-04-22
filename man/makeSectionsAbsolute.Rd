@@ -2,10 +2,25 @@
 % Please edit documentation in R/config.R
 \name{makeSectionsAbsolute}
 \alias{makeSectionsAbsolute}
-\title{Make sections absolute in the config}
+\title{#' Config objects are specialized list objects
+#'
+#' Config objects are used with the \code{\link{Project-class}} objects
+#'
+#' @exportClass Config
+setClass("Config", contains = "list")}
 \usage{
 makeSectionsAbsolute(object, sections, cfgPath)
 }
 \description{
+# Override the standard generic show function for our config-style lists
+setMethod(
+  "show",
+  signature = "Config", 
+  definition = function(object) {
+    cat("Config object. Class:", class(object), fill = T)
+    .printNestedList(object)
+    invisible(NULL)
+  }
+)
 Make sections absolute in the config
 }
