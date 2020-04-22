@@ -6,4 +6,6 @@
 \title{Config objects expand string attributes}
 \description{
 Config objects are used with the \code{\link{Config-class}} objects
+
+Config objects are used with the \code{\link{Project-class}} objects
 }
