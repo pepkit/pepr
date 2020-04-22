@@ -54,6 +54,11 @@ setMethod("[[", "Config", function(x, i) {
   return(.expandList(element))
 })
 
+
+.DollarNames.Config <- function(x, pattern = "")
+  grep(pattern, grep(names(x), value=TRUE))
+
+
 setMethod("$", "Config", function(x, name){
   matches = which(names(x) == grep(name, names(x), value=TRUE))
   if(length(matches) == 0)
