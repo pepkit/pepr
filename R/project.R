@@ -430,7 +430,7 @@ setMethod(
 #' @return an object of \code{\link{Project-class}} 
 .loadSampleAnnotation = function(.Object) {
     cfg = config(.Object)
-    if (!CFG_SAMPLE_TABLE_KEY %in% names(cfg)) return(.Object)
+    if (!CFG_SAMPLE_TABLE_KEY %in% names(cfg)) return(.Object) 
     sampleAnnotationPath = cfg[[CFG_SAMPLE_TABLE_KEY]]
     if(.safeFileExists(sampleAnnotationPath)){
         samples = data.table::fread(sampleAnnotationPath)

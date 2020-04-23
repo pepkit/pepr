@@ -41,28 +41,38 @@ Config = function(.Object, ...) {
   return(suppressWarnings(.expandPath(x)))
 }
 
+#' Get list subscript 
+#' 
+#' Based on available list element names and subscript value determine 
+#' index of the element requested
+#'
+#' @param lst list to search subsript for
+#' @param i character or numeric to determine final list index
+#'
+#' @return
+#'
+#' @examples
+#' l = list(a="a", b="b")
+#' .getSubscript(l, 1) == .getSubscript(l, "a")
+.getSubscript <- function(lst, i) {
+  if(is.character(i)) return(grep(paste0("^", i), names(lst)))
+  return(i)
+}
 
 setMethod("[", c("Config"), function(x, i) {
   xList=as(x, "list", strict=TRUE)
-  if(is.character(i)){
-    matches = which(names(x) == grep(i, names(x), value=TRUE))
-  } else{
-    matches = i
-  }
-  element = xList[matches]
+  subscript = .getSubscript(x, i)
+  if(length(subscript) == 0) return(NULL)
+  element = xList[subscript]
   return(.expandList(element))
 })
 
 
 setMethod("[[", "Config", function(x, i) {
   xList=as(x, "list", strict=TRUE)
-  
-  if(is.character(i)){
-    matches = which(names(x) == grep(i, names(x), value=TRUE))
-  } else{
-    matches = i
-  }
-  element = xList[[matches]]
+  subscript = .getSubscript(x, i)
+  if(length(subscript) == 0) return(NULL)
+  element = xList[[subscript]]
   return(.expandList(element))
 })
 
@@ -72,7 +82,7 @@ setMethod("[[", "Config", function(x, i) {
 
 
 setMethod("$", "Config", function(x, name){
-  matches = which(names(x) == grep(name, names(x), value=TRUE))
+  matches = grep(name, names(x))
   if(length(matches) == 0)
     return(NULL)
   hits = x[[matches]]
@@ -86,7 +96,7 @@ setMethod("initialize", "Config", function(.Object, data) {
 })
 
 
-#'  The constructor of a class representing PEP config
+#' The constructor of a class representing PEP config
 #'
 #' @param file a character with project configuration yaml file
 #' @param amendments a character with the amendments names to be activated
@@ -142,17 +152,11 @@ setMethod(
   definition = function(object, sections, cfgPath) {
     # Enable creation of absolute path using given parent folder path.
     absViaParent = pryr::partial(.makeAbsPath, parent=dirname(cfgPath))
-    for(section in sections){
-      if (section %in% names(object)){
-        absSectionVals = c()
-        for (iSection in object[section]){
-          absSection = absViaParent(iSection)
-          absSectionVals = append(absSectionVals, absSection)
-        }
-        object[section] = absSectionVals
-      }
+    for(section in sections) {
+      if (section %in% names(object)) 
+        object[[section]] = absViaParent(object[[section]])
     }
-  return(object)
+    return(object)
   }
 )
 

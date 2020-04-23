@@ -33,9 +33,9 @@ test_that(".makeAbsPath returns NULL and NA if these are subject to test", {
     expect_null(.makeAbsPath(NULL, "test"))
     expect_true(is.na(.makeAbsPath(NA, "test")))
 })
-test_that(".expandPath returns correct object type and throws errors", {
+test_that(".expandPath returns correct object type", {
     expect_is(.expandPath(path = "~/UVA/"), 'character')
-    expect_error(.expandPath(1))
+    expect_is(.expandPath(1), 'numeric')
 })
 test_that(".expandPath does not throw an error when when non-existent 
           environment variable is found. Just a warning.", {

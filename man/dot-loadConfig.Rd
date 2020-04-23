@@ -15,5 +15,5 @@
 Loads a PEP config file
 }
 \seealso{
-\url{https://pepkit.github.io/}
+\url{https://pep.databio.org/}
 }
