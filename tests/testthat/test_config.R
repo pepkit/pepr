@@ -85,3 +85,10 @@ test_that("loadConfig throws errors", {
     expect_error(Config("a"))
     expect_error(Config(filename = Project(cfg)@config$sample_table))
 })
+
+test_that("paths are automatically expanded", {
+    cfg=config(Project(cfgSubproj))
+    expect_true(.isAbsolute(cfg$output_dir))
+    expect_true(.isAbsolute(cfg[["output_dir"]]))
+    expect_true(.isAbsolute(cfg["output_dir"][[1]]))
+})

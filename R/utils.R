@@ -31,19 +31,20 @@
     for (i in seq_along(attr(matches[[1]], "match.length"))) {
       # get the values of the env vars
       replacements[i] = Sys.getenv(removeNonWords(parts[i]))
-      if(any(replacements == "")){
-        missingEnvVar = which(replacements == "")
+      undefinedID = which(replacements == "")
+      if(length(undefinedID) > 0){
         warning(
-          paste0("The environment variable '", parts[missingEnvVar],
+          paste0("The environment variable '", parts[undefinedID],
                  "' was not found. Created object might be invalid.")
         )
+        replacements[undefinedID] = parts[undefinedID]
       }
     }
     # replace env vars with their system values
     regmatches(x=path, matches, invert=F) = replacements
     # if UNIX, make sure the root's in the path
     if (.Platform$OS.type == "unix") {
-      if (!startsWith(path, "/")) {
+      if (!startsWith(path, "/") && length(undefinedID) == 0) {
         path = paste0("/", path)
       }
       # prevent double slashes
@@ -52,7 +53,7 @@
   }
   
   # handle null/empty input.
-  if (!.isDefined(path)) {
+  if (!.isDefined(path) || !is.character(path)) {
     return(path)
   }
   

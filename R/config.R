@@ -1,7 +1,13 @@
+#' Config objects expand string attributes 
+#'
+#' Config objects are used with the \code{\link{Config-class}} objects
+#'
+#' @exportClass Config
+setClass("Config", contains = "list")
+
+
 setMethod("initialize", "Config", function(.Object, data) {
-  .Object = methods::callNextMethod(.Object, data)  # calls list initialize
-  .Object = .reformat(.Object)
-  return(.Object)
+  return(methods::callNextMethod(.Object, data))  # calls parent's method
 })
 
 
@@ -15,11 +21,98 @@ setMethod("initialize", "Config", function(.Object, data) {
 #' projectConfig = system.file("extdata", "example_peps-cfg2",
 #' "example_amendments1", "project_config.yaml", package="pepr")
 #' c=Config(projectConfig)
+#' @export 
+Config = function(.Object, ...) {
+  return(methods::new("Config", .Object, ...))
+}
+
+#' Recursively try to expand list of strings
+#'
+#' @param x list, possibly of strings that are paths to expand
+#'
+#' @return list of strings with paths expaned
+#'
+#' @examples
+#' x = list(a=list(b=list(c="~/test.txt")))
+#' .expandList(x)
+#' @export
+.expandList <- function(x) {
+  if(is.list(x))
+    return(lapply(x, .expandList))
+  return(suppressWarnings(.expandPath(x)))
+}
+
+#' Get list subscript 
+#' 
+#' Based on available list element names and subscript value determine 
+#' index of the element requested
+#'
+#' @param lst list to search subsript for
+#' @param i character or numeric to determine final list index
+#'
+#' @return numeric index of the requested element in the list
+#'
+#' @examples
+#' l = list(a="a", b="b")
+#' .getSubscript(l, 1) == .getSubscript(l, "a")
+#' @export
+.getSubscript <- function(lst, i) {
+  if(is.character(i)) return(grep(paste0("^", i), names(lst)))
+  return(i)
+}
+
+setMethod("[", c("Config"), function(x, i) {
+  xList=as(x, "list", strict=TRUE)
+  subscript = .getSubscript(x, i)
+  if(length(subscript) == 0) return(NULL)
+  element = xList[subscript]
+  return(.expandList(element))
+})
+
+
+setMethod("[[", "Config", function(x, i) {
+  xList=as(x, "list", strict=TRUE)
+  subscript = .getSubscript(x, i)
+  if(length(subscript) == 0) return(NULL)
+  element = xList[[subscript]]
+  return(.expandList(element))
+})
+
+
+.DollarNames.Config <- function(x, pattern = "")
+  grep(pattern, grep(names(x), value=TRUE))
+
+
+setMethod("$", "Config", function(x, name){
+  matches = grep(name, names(x))
+  if(length(matches) == 0)
+    return(NULL)
+  hits = x[[matches]]
+  return(.expandList(hits))
+})
+
+
+setMethod("initialize", "Config", function(.Object, data) {
+  .Object = methods::callNextMethod(.Object, data)  # calls list initialize
+  return(.reformat(.Object))
+})
+
+
+#' The constructor of a class representing PEP config
+#'
+#' @param file a character with project configuration yaml file
+#' @param amendments a character with the amendments names to be activated
+#'
+#' @return
+#' @examples
+#' projectConfig = system.file("extdata", "example_peps-cfg2",
+#' "example_amendments1", "project_config.yaml", package="pepr")
+#' c=Config(projectConfig)
 #' @export
 Config = function(file, amendments = NULL){
   message("Loading config file: ", file)
   cfg_data = .loadConfig(filename=file, amendments=amendments)
-  config = methods::new("Config",data=cfg_data)
+  config = methods::new("Config", data=cfg_data)
   config = makeSectionsAbsolute(config, REQ_ABS, file)
   .listAmendments(config)
   return(config)
@@ -36,7 +129,7 @@ setClass("Config", contains = "list")
 # Override the standard generic show function for our config-style lists
 setMethod(
   "show",
-  signature = "Config", 
+  signature = "Config",
   definition = function(object) {
     cat("Config object. Class:", class(object), fill = T)
     .printNestedList(object)
@@ -51,6 +144,13 @@ setMethod(
 setGeneric("makeSectionsAbsolute", function(object, sections, cfgPath)
   standardGeneric("makeSectionsAbsolute"))
 
+#' Make selected sections absolute using cfg path
+#'
+#' @param object Config
+#' @param sections character set of sections to make absolute
+#' @param cfgPath character absolute path to the config YAML file
+#'
+#' @return Config with selected sections made absolute
 setMethod(
   "makeSectionsAbsolute", 
   signature = signature(
@@ -61,17 +161,11 @@ setMethod(
   definition = function(object, sections, cfgPath) {
     # Enable creation of absolute path using given parent folder path.
     absViaParent = pryr::partial(.makeAbsPath, parent=dirname(cfgPath))
-    for(section in sections){
-      if (section %in% names(object)){
-        absSectionVals = c()
-        for (iSection in object[section]){
-          absSection = absViaParent(iSection)
-          absSectionVals = append(absSectionVals, absSection)
-        }
-        object[section] = absSectionVals
-      }
+    for(section in sections) {
+      if (section %in% names(object)) 
+        object[[section]] = absViaParent(object[[section]])
     }
-  return(object)
+    return(object)
   }
 )
 
@@ -180,7 +274,7 @@ setMethod(
 #' @param amendments amendments to activate
 #' @param filename file path to config file
 #' 
-#' @seealso \url{https://pepkit.github.io/}
+#' @seealso \url{https://pep.databio.org/}
 .loadConfig = function(filename=NULL, amendments=NULL) {
   if (!file.exists(filename)) {
     stop("Config file found: ", filename)

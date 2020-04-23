@@ -3,7 +3,9 @@
 \docType{class}
 \name{Config-class}
 \alias{Config-class}
-\title{Config objects are specialized list objects}
+\title{Config objects expand string attributes}
 \description{
+Config objects are used with the \code{\link{Config-class}} objects
+
 Config objects are used with the \code{\link{Project-class}} objects
 }
