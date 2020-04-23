@@ -1,6 +1,6 @@
 readRemoteData = function(project) {
   # get the data from the Project object
-  url = pepr::samples(project)$remote_url[[1]]
+  url = pepr::sampleTable(project)$remote_url[[1]]
   # download the file
   bfc = BiocFileCache::BiocFileCache(cache=tempdir(),ask=FALSE)
   path = BiocFileCache::bfcrpath(bfc, url)

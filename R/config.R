@@ -5,9 +5,11 @@
 #' @exportClass Config
 setClass("Config", contains = "list")
 
+
 setMethod("initialize", "Config", function(.Object, data) {
   return(methods::callNextMethod(.Object, data))  # calls parent's method
 })
+
 
 #'  The constructor of a class representing PEP config
 #'
@@ -24,11 +26,21 @@ Config = function(.Object, ...) {
   return(methods::new("Config", .Object, ...))
 }
 
+#' Recursively try to expand list of strings
+#'
+#' @param x list, possibly of strings that are paths to expand
+#'
+#' @return list of strings with paths expaned
+#'
+#' @examples
+#' x = list(a=list(b=list(c="~/test.txt")))
+#' .expandList(x)
 .expandList <- function(x) {
   if(is.list(x))
     return(lapply(x, .expandList))
   return(suppressWarnings(.expandPath(x)))
 }
+
 
 setMethod("[", c("Config"), function(x, i) {
   xList=as(x, "list", strict=TRUE)
@@ -66,6 +78,7 @@ setMethod("$", "Config", function(x, name){
   hits = x[[matches]]
   return(.expandList(hits))
 })
+
 
 setMethod("initialize", "Config", function(.Object, data) {
   .Object = methods::callNextMethod(.Object, data)  # calls list initialize
@@ -248,7 +261,7 @@ setMethod(
 #' @param amendments amendments to activate
 #' @param filename file path to config file
 #' 
-#' @seealso \url{https://pepkit.github.io/}
+#' @seealso \url{https://pep.databio.org/}
 .loadConfig = function(filename=NULL, amendments=NULL) {
   if (!file.exists(filename)) {
     stop("Config file found: ", filename)
