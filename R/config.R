@@ -35,6 +35,7 @@ Config = function(.Object, ...) {
 #' @examples
 #' x = list(a=list(b=list(c="~/test.txt")))
 #' .expandList(x)
+#' @export
 .expandList <- function(x) {
   if(is.list(x))
     return(lapply(x, .expandList))
@@ -49,11 +50,12 @@ Config = function(.Object, ...) {
 #' @param lst list to search subsript for
 #' @param i character or numeric to determine final list index
 #'
-#' @return
+#' @return numeric index of the requested element in the list
 #'
 #' @examples
 #' l = list(a="a", b="b")
 #' .getSubscript(l, 1) == .getSubscript(l, "a")
+#' @export
 .getSubscript <- function(lst, i) {
   if(is.character(i)) return(grep(paste0("^", i), names(lst)))
   return(i)
@@ -142,6 +144,13 @@ setMethod(
 setGeneric("makeSectionsAbsolute", function(object, sections, cfgPath)
   standardGeneric("makeSectionsAbsolute"))
 
+#' Make selected sections absolute using cfg path
+#'
+#' @param object Config
+#' @param sections character set of sections to make absolute
+#' @param cfgPath character absolute path to the config YAML file
+#'
+#' @return Config with selected sections made absolute
 setMethod(
   "makeSectionsAbsolute", 
   signature = signature(

@@ -12,7 +12,7 @@
 \item{i}{character or numeric to determine final list index}
 }
 \value{
-
+numeric index of the requested element in the list
 }
 \description{
 Based on available list element names and subscript value determine 
