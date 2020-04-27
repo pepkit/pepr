@@ -134,10 +134,10 @@ sampleTable(pNewLib)
 
 As you can see, the `library` columns consists of new attributes (`ABCD`), which were defined in the `sample_table_newLib.csv` file.
 
-The second amendment can be activated in a similar way:
+Amendments can be also activated interactively, after `Project` object has been crated. Let's activate the second amendment this way:
 
 ```{r}
-pNewLib2 = Project(file = projectConfig, amendments = "newLib2")
+pNewLib2 = activateAmendments(p, "newLib2")
 sampleTable(pNewLib2)
 ```
 

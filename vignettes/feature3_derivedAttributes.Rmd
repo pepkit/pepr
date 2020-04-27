@@ -4,8 +4,8 @@ author: "Michal Stolarczyk"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Sample modifiers in pepr: derive}
   %\VignetteEncoding{UTF-8}
+  %\VignetteIndexEntry{Sample modifiers in pepr: derive}
   %\VignetteEngine{knitr::rmarkdown}
 editor_options: 
   chunk_output_type: console

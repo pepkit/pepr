@@ -49,7 +49,7 @@ package = "pepr"
 )
 .printNestedList(yaml::read_yaml(projectConfig))
 ```
-* Sample annotation table:
+* Sample table:
 ```{r ,echo=FALSE}
 library(knitr)
 sampleAnnotation = system.file(
@@ -62,7 +62,7 @@ package = "pepr"
 sampleAnnotationDF = read.table(sampleAnnotation, sep = ",", header = T)
 kable(sampleAnnotationDF, format = "html") 
 ```
-* Sample subannotation table:
+* Subsample table:
 ```{r ,echo=FALSE}
 sampleAnnotation = system.file(
   "extdata",
@@ -75,13 +75,12 @@ sampleAnnotation = system.file(
   kable(sampleAnnotationDF, format = "html") 
 ```
 
-Let's load the project config, create the Project object and see if multiple files are present 
+Let's create the Project object and see if multiple files are present 
 ```{r}
-library(pepr)
 projectConfig1 = system.file(
 "extdata",
 paste0("example_peps-", branch),
-"example_subtable2",
+"example_subtable1",
 "project_config.yaml",
 package = "pepr"
 )
@@ -101,7 +100,7 @@ You can also access a single subsample if you call the `getSubsample` method wit
 
 ```{r}
 sampleName = "frog_1"
-subsampleName = "a"
+subsampleName = "sub_a"
 getSubsample(p1, sampleName, subsampleName)
 ```
 
@@ -114,7 +113,6 @@ This example is made up of these components:
 
 * Project config file:
 ```{r, echo=FALSE,message=TRUE,collapse=TRUE,comment=" "}
-library(pepr)
 projectConfig = system.file(
 "extdata",
 paste0("example_peps-", branch),
@@ -126,7 +124,6 @@ package = "pepr"
 ```
 * Sample annotation table:
 ```{r ,echo=FALSE}
-library(knitr)
 sampleAnnotation = system.file(
 "extdata",
 paste0("example_peps-", branch),
@@ -151,7 +148,6 @@ sampleAnnotation = system.file(
 ```
 Let's load the project config, create the Project object and see if multiple files are present 
 ```{r}
-library(pepr)
 projectConfig2 = system.file(
 "extdata",
 paste0("example_peps-", branch),
@@ -171,13 +167,12 @@ kable(p2Samples)
 
 ### Example 3: subannotations and expansion characters
 
-This example gives the exact same results as Example 2, but in this case, uses a wildcard for `frog_2` instead of including it in the `subsample_table.csv` file. Since we can't use a wildcard and a subannotation for the same sample, this necessitates specifying a second data source class (`local_files_unmerged`) that uses an asterisk (*). The outcome is the same.
+This example gives the exact same results as Example 2, but in this case, uses a wildcard for `frog_2` instead of including it in the `subsample_table.csv` file. Since we can't use a wildcard and a subannotation for the same sample, this necessitates specifying a second data source class (`local_files_unmerged`) that uses an asterisk (`*`). The outcome is the same.
 
 This example is made up of these components:
 
 * Project config file:
 ```{r, echo=FALSE,message=TRUE,collapse=TRUE,comment=" "}
-library(pepr)
 projectConfig = system.file(
 "extdata",
 paste0("example_peps-", branch),
@@ -189,7 +184,6 @@ package = "pepr"
 ```
 * Sample annotation table:
 ```{r ,echo=FALSE}
-library(knitr)
 sampleAnnotation = system.file(
 "extdata",
 paste0("example_peps-", branch),
@@ -214,7 +208,6 @@ sampleAnnotation = system.file(
 ```
 Let's load the project config, create the Project object and see if multiple files are present 
 ```{r}
-library(pepr)
 projectConfig3 = system.file(
 "extdata",
 paste0("example_peps-", branch),
@@ -240,7 +233,6 @@ This example is made up of these components:
 
 * Project config file:
 ```{r, echo=FALSE,message=TRUE,collapse=TRUE,comment=" "}
-library(pepr)
 project_config = system.file(
 "extdata",
 paste0("example_peps-", branch),
@@ -252,7 +244,6 @@ package = "pepr"
 ```
 * Sample annotation table:
 ```{r ,echo=FALSE}
-library(knitr)
 sampleAnnotation = system.file(
 "extdata",
 paste0("example_peps-", branch),
@@ -277,7 +268,6 @@ sampleAnnotation = system.file(
 ```
 Let's load the project config, create the Project object and see if multiple files are present 
 ```{r}
-library(pepr)
 projectConfig4 = system.file(
 "extdata",
 paste0("example_peps-", branch),
@@ -304,7 +294,6 @@ This example is made up of these components:
 
 * Project config file:
 ```{r, echo=FALSE,message=TRUE,collapse=TRUE,comment=" "}
-library(pepr)
 project_config = system.file(
 "extdata",
 paste0("example_peps-", branch),
@@ -316,7 +305,6 @@ package = "pepr"
 ```
 * Sample annotation table:
 ```{r ,echo=FALSE}
-library(knitr)
 sampleAnnotation = system.file(
 "extdata",
 paste0("example_peps-", branch),
@@ -341,7 +329,6 @@ sampleAnnotation = system.file(
 ```
 Let's load the project config, create the Project object and see if multiple files are present 
 ```{r}
-library(pepr)
 projectConfig5 = system.file(
 "extdata",
 paste0("example_peps-", branch),
