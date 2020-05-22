@@ -18,7 +18,7 @@ setMethod("initialize", "Config", function(.Object, data) {
 #'
 #' @return
 #' @examples
-#' projectConfig = system.file("extdata", "example_peps-cfg2",
+#' projectConfig = system.file("extdata", "example_peps-master",
 #' "example_amendments1", "project_config.yaml", package="pepr")
 #' c=Config(projectConfig)
 #' @export 
@@ -105,7 +105,7 @@ setMethod("initialize", "Config", function(.Object, data) {
 #'
 #' @return
 #' @examples
-#' projectConfig = system.file("extdata", "example_peps-cfg2",
+#' projectConfig = system.file("extdata", "example_peps-master",
 #' "example_amendments1", "project_config.yaml", package="pepr")
 #' c=Config(projectConfig)
 #' @export
@@ -222,7 +222,7 @@ setGeneric("checkSection", function(object, sectionNames)
 #' @return a logical indicating whether the section exists
 #' 
 #' @examples
-#' projectConfig = system.file("extdata", "example_peps-cfg2",
+#' projectConfig = system.file("extdata", "example_peps-master",
 #' "example_amendments1", "project_config.yaml", package="pepr")
 #' p=Project(projectConfig)
 #' checkSection(config(p),sectionNames = c("amendments","newLib"))
@@ -250,7 +250,7 @@ setMethod(
 #' @return a list with the config file
 #'
 #' @examples
-#' projectConfig = system.file("extdata", "example_peps-cfg2",
+#' projectConfig = system.file("extdata", "example_peps-master",
 #' "example_amendments1", "project_config.yaml", package="pepr")
 #' p=Project(projectConfig)
 #' config(p)

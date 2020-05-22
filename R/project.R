@@ -40,7 +40,7 @@ setMethod("initialize", "Project", function(.Object, ...) {
 #' @param file a character with project configuration yaml file
 #' @param amendments a character with the amendments names to be activated
 #' @examples
-#' projectConfig = system.file("extdata", "example_peps-cfg2",
+#' projectConfig = system.file("extdata", "example_peps-master",
 #' "example_amendments1", "project_config.yaml", package="pepr")
 #' p=Project(projectConfig)
 #' @export Project
@@ -97,7 +97,7 @@ setMethod(
 #' @examples
 #' projectConfig = system.file(
 #' "extdata",
-#' "example_peps-cfg2",
+#' "example_peps-master",
 #' "example_basic",
 #' "project_config.yaml",
 #' package = "pepr"
@@ -135,7 +135,7 @@ setMethod(
 #' @examples
 #' projectConfig = system.file(
 #' "extdata",
-#' "example_peps-cfg2",
+#' "example_peps-master",
 #' "example_subtable1",
 #' "project_config.yaml",
 #' package = "pepr"
@@ -193,7 +193,7 @@ setMethod(
 #' @return names of the available amendments
 #' @examples 
 #' projectConfig = system.file("extdata",
-#' "example_peps-cfg2",
+#' "example_peps-master",
 #' "example_amendments1",
 #' "project_config.yaml",
 #' package = "pepr")
@@ -228,7 +228,7 @@ setMethod(
 #' 
 #' @examples 
 #' projectConfig = system.file("extdata",
-#' "example_peps-cfg2",
+#' "example_peps-master",
 #' "example_amendments1",
 #' "project_config.yaml",
 #' package = "pepr")
@@ -265,7 +265,7 @@ setMethod(
 #'
 #' @return a data.table with the with metadata about samples
 #' @examples
-#' projectConfig = system.file("extdata", "example_peps-cfg2",
+#' projectConfig = system.file("extdata", "example_peps-master",
 #' "example_amendments1", "project_config.yaml", package="pepr")
 #' p=Project(projectConfig)
 #' sampleTable(p)

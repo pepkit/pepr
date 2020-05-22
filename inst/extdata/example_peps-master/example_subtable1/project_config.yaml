@@ -1,4 +1,4 @@
-metadata:
-  sample_table: sample_table.csv
-  subsample_table: subsample_table.csv
-  output_dir: $HOME/example_results
+pep_version: "2.0.0"
+sample_table: sample_table.csv
+subsample_table: subsample_table.csv
+output_dir: $HOME/example_results

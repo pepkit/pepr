@@ -23,7 +23,7 @@ This function checks for the section/nested sections in the config YAML file.
 Element indices can be used instead of the actual names, see \code{Examples}.
 }
 \examples{
-projectConfig = system.file("extdata", "example_peps-cfg2",
+projectConfig = system.file("extdata", "example_peps-master",
 "example_amendments1", "project_config.yaml", package="pepr")
 p=Project(projectConfig)
 checkSection(config(p),sectionNames = c("amendments","newLib"))

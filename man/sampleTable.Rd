@@ -17,7 +17,7 @@ This method can be used to view the samples slot
 of the \code{\link{Project-class}} class
 }
 \examples{
-projectConfig = system.file("extdata", "example_peps-cfg2",
+projectConfig = system.file("extdata", "example_peps-master",
 "example_amendments1", "project_config.yaml", package="pepr")
 p=Project(projectConfig)
 sampleTable(p)

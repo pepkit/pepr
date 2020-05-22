@@ -22,7 +22,7 @@ of \code{\link{Project-class}} class
 }
 \examples{
 projectConfig = system.file("extdata",
-"example_peps-cfg2",
+"example_peps-master",
 "example_amendments1",
 "project_config.yaml",
 package = "pepr")

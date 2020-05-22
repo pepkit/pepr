@@ -1,12 +1,13 @@
 #' Package docs
 #' @docType package
 #' @name pepr
-#' @author Nathan Sheffield
+#' @author Michal Stolarczyk, Nathan Sheffield
 #' @import yaml
 #' @import stringr
 #' @import pryr
 #'
-#' @references \url{http://github.com/pepkit/pepr}
+#' @references 
+#' GitHub: \url{http://github.com/pepkit/pepr}, Documentation: \url{https://code.databio.org/pepr/}
 NULL
 
 

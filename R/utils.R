@@ -203,7 +203,7 @@
 #' @param action a string (either \code{include} or \code{exclude}) that specifies whether the function should select the row or exclude it.
 #' 
 #' @examples 
-#' projectConfig = system.file("extdata", "example_peps-cfg2",
+#' projectConfig = system.file("extdata", "example_peps-master",
 #' "example_amendments1", "project_config.yaml", package="pepr")
 #' p = Project(projectConfig)
 #' s = sampleTable(p)
@@ -281,7 +281,7 @@ fetchSamples = function(samples, attr=NULL, func=NULL, action="include") {
 #'
 #' @examples
 #' projectConfig = system.file("extdata",
-#' "example_peps-cfg2",
+#' "example_peps-master",
 #' "example_basic",
 #' "project_config.yaml",
 #' package = "pepr")

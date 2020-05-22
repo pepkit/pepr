@@ -28,7 +28,7 @@ This vignette will show you how and why to use the implied attributes functional
 The example below demonstrates how and why to use implied attributes functionality to **save your time and effort** in case multiple sample attributes need to be defined for many samples and they **follow certain patterns**. Please consider the example below for reference:
 
 ```{r ,echo=FALSE}
-branch = "cfg2"
+branch = "master"
 library(knitr)
 sampleAnnotation = system.file(
 "extdata",

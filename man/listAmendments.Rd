@@ -20,7 +20,7 @@ The amendments can be activated by passing their names to the  \code{\link{activ
 }
 \examples{
 projectConfig = system.file("extdata",
-"example_peps-cfg2",
+"example_peps-master",
 "example_amendments1",
 "project_config.yaml",
 package = "pepr")

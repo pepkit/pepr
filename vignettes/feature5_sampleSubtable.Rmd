@@ -38,7 +38,7 @@ This example is made up of these components:
 
 * Project config file:
 ```{r, echo=FALSE,message=TRUE,collapse=TRUE,comment=" "}
-branch = "cfg2"
+branch = "master"
 library(pepr)
 projectConfig = system.file(
 "extdata",

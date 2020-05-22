@@ -29,7 +29,7 @@ Core expressions which are most useful to implement the anonymous function are:
 }
 }
 \examples{
-projectConfig = system.file("extdata", "example_peps-cfg2",
+projectConfig = system.file("extdata", "example_peps-master",
 "example_amendments1", "project_config.yaml", package="pepr")
 p = Project(projectConfig)
 s = sampleTable(p)

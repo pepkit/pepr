@@ -4,12 +4,9 @@
 \name{pepr}
 \alias{pepr}
 \title{Package docs}
-\description{
-Package docs
-}
 \references{
-\url{http://github.com/pepkit/pepr}
+GitHub: \url{http://github.com/pepkit/pepr}, Documentation: \url{https://code.databio.org/pepr/}
 }
 \author{
-Nathan Sheffield
+Michal Stolarczyk, Nathan Sheffield
 }
