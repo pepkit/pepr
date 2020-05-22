@@ -7,7 +7,7 @@
 
 # The `pepr` package: Portable Encapsulated Projects in R
 
-`pepr` is an R package for reading [Portable Encapsulated Projects](https://pepkit.github.io/), or **PEP**s, in R. If you describe your project (configuration and samples) according to this format, you can load all project metadata into R using the `pepr` package. To test `pepr`, you can try loading one of the [example PEPs](https://pepkit.github.io/docs/example_PEPs/).
+`pepr` is an R package for reading [Portable Encapsulated Projects](http://pep.databio.org/en/2.0.0/), or **PEP**s, in R. If you describe your project (configuration and samples) according to this format, you can load all project metadata into R using the `pepr` package. To test `pepr`, you can try loading one of the [example PEPs](https://github.com/pepkit/example_peps).
 
 
 ## Quick start:
@@ -21,10 +21,10 @@ devtools::install_github("pepkit/pepr")
 Load a project and explore metadata like this:
 
 ```R
-library('pepr')
+library("pepr"")
 cfgPath = system.file(
     "extdata",
-    paste0("example_peps-cfg2"),
+    paste0("example_peps-master"),
     "example_basic",
     "project_config.yaml",
     package = "pepr"
