@@ -1,7 +1,7 @@
 # get data ----------------------------------------------------------------
 
 
-branch = "cfg2"
+branch = "master"
 
 cfg = system.file(
     "extdata",
