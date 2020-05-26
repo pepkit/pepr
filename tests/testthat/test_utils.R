@@ -33,9 +33,9 @@ test_that(".makeAbsPath returns NULL and NA if these are subject to test", {
     expect_null(.makeAbsPath(NULL, "test"))
     expect_true(is.na(.makeAbsPath(NA, "test")))
 })
-test_that(".expandPath returns correct object type and throws errors", {
+test_that(".expandPath returns correct object type", {
     expect_is(.expandPath(path = "~/UVA/"), 'character')
-    expect_error(.expandPath(1))
+    expect_is(.expandPath(1), 'numeric')
 })
 test_that(".expandPath does not throw an error when when non-existent 
           environment variable is found. Just a warning.", {
@@ -47,19 +47,6 @@ test_that("strformat returns correct object type and throws errors", {
     expect_error(.strformat("{VAR1}{VAR2}_file", list(VAR1 = "hi")))
     expect_error(.strformat(1))
 })
-
-test_that("makeMetadataSectionAbsolute returns correct object type and throws errors",
-          {
-              expect_is(.makeMetadataSectionAbsolute(p@config, dirname(p@file)), 'list')
-              expect_error(.makeMetadataSectionAbsolute(p@file, 1))
-          })
-
-test_that("makeMetadataSectionAbsolute does not change the length(s) of the list",
-          {
-              expect_equal(as.numeric(lapply(p@config$metadata, length)), as.numeric(lapply(
-                  .makeMetadataSectionAbsolute(p@config, dirname(p@file)), length
-              )))
-          })
 
 test_that(".isAbsolute returns correct object type and throws errors", {
     expect_is(.isAbsolute("/home/mjs5kd"), 'logical')
@@ -78,7 +65,7 @@ test_that("printNestedList throws errors", {
 test_that("fetchSamples throws errors", {
     expect_error(
         fetchSamples(
-            samples = samples(p),
+            samples = sampleTable(p),
             attr = "test",
             func = function(x) {
                 
@@ -88,7 +75,7 @@ test_that("fetchSamples throws errors", {
     )
     expect_error(
         fetchSamples(
-            samples = samples(p),
+            samples = sampleTable(p),
             attr = "file",
             func = function(x) {
                 stop("test")
@@ -97,7 +84,7 @@ test_that("fetchSamples throws errors", {
         )
     )
     expect_error(fetchSamples("test"))
-    expect_error(fetchSamples(samples(p), action = "test"))
+    expect_error(fetchSamples(sampleTable(p), action = "test"))
     expect_error(fetchSamples(
         samples(p),
         func = function(x) {
@@ -106,7 +93,7 @@ test_that("fetchSamples throws errors", {
     ))
     expect_equal(NROW(
         fetchSamples(
-            samples = samples(p),
+            samples = sampleTable(p),
             attr = "sample_name",
             func = function(x) {
                 which(x == "frog_1")
@@ -116,7 +103,7 @@ test_that("fetchSamples throws errors", {
     ), 1)
     expect_error(
         fetchSamples(
-            samples = samples(p),
+            samples = sampleTable(p),
             attr = "sample_name",
             func = "faulty function",
             action = "include"
@@ -127,7 +114,7 @@ test_that("fetchSamples throws errors", {
 test_that("fetchSamples returns correct rows count", {
     expect_equal(NROW(
         fetchSamples(
-            samples = samples(p),
+            samples = sampleTable(p),
             attr = "file",
             func = function(x) {
                 grep("frog1", x)
@@ -137,7 +124,7 @@ test_that("fetchSamples returns correct rows count", {
     ), 1)
     expect_equal(NROW(
         fetchSamples(
-            samples = samples(p),
+            samples = sampleTable(p),
             attr = "sample_name",
             func = function(x) {
                 which(x == "frog_1")

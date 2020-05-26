@@ -1,11 +1,11 @@
 ---
-title: "Derived attributes in pepr"
+title: "Sample modifiers in pepr: derive"
 author: "Michal Stolarczyk"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Derived attributes in pepr}
   %\VignetteEncoding{UTF-8}
+  %\VignetteIndexEntry{Sample modifiers in pepr: derive}
   %\VignetteEngine{knitr::rmarkdown}
 editor_options: 
   chunk_output_type: console
@@ -24,7 +24,7 @@ This vignette will show you how and why to use the derived attributes functional
 
  - basic information about the PEP concept on the [project website](https://pepkit.github.io/).
  
- - broader theoretical description in the derived attributes [documentation section](https://pepkit.github.io/docs/derived_attributes/).
+ - broader theoretical description in the derived attributes [documentation section](http://pep.databio.org/en/2.0.0/specification/#sample_modifiersderive).
 
 ## Problem/Goal
 The example below demonstrates how to use the derived attributes to **flexibly define the samples attributes the `file_path` column** of the `sample_table.csv` file to match the file names in  your project. Please consider the example below for reference:
@@ -36,7 +36,7 @@ library(knitr)
 sampleAnnotation = system.file(
 "extdata",
 paste0("example_peps-", branch),
-"example_derived",
+"example_derive",
 "sample_table_pre.csv",
 package = "pepr"
 )
@@ -46,7 +46,7 @@ knitr::kable(sampleAnnotationDF, format = "html")
 
 ----
 ## Solution
-As the name suggests the attributes in the specified attributes (here: `file_path`) can be derived from other ones. The way how this process is carried out is indicated explicitly in the `project_config.yaml` file (presented below). The name of the column is determined in the `derived_attributes` key-value pair, whereas the pattern for the attributes construction - in the `data_sources` one. Note that the second level key (here: `source`) has to exactly match the attributes in the `file_path` column of the modified `sample_annotation.csv` (presented below).
+As the name suggests the attributes in the specified attributes (here: `file_path`) can be derived from other ones. The way how this process is carried out is indicated explicitly in the `project_config.yaml` file (presented below). The name of the column is determined in the `sample_modifiers.derive.attributes` key-value pair, whereas the pattern for the attributes construction - in the `sample_modifiers.derive.sources` one. Note that the second level key (here: `source`) has to exactly match the attributes in the `file_path` column of the modified `sample_annotation.csv` (presented below).
 
 
 ```{r, echo=FALSE,message=TRUE,collapse=TRUE,comment=" "}
@@ -54,7 +54,7 @@ library(pepr)
 projectConfig = system.file(
 "extdata",
 paste0("example_peps-", branch),
-"example_derived",
+"example_derive",
 "project_config.yaml",
 package = "pepr"
 )
@@ -69,7 +69,7 @@ library(knitr)
 sampleAnnotation = system.file(
 "extdata",
 paste0("example_peps-", branch),
-"example_derived",
+"example_derive",
 "sample_table.csv",
 package = "pepr"
 )
@@ -86,7 +86,7 @@ library(pepr)
 projectConfig = system.file(
 "extdata",
 paste0("example_peps-", branch),
-"example_derived",
+"example_derive",
 "project_config.yaml",
 package = "pepr"
 )
@@ -96,7 +96,7 @@ p = Project(projectConfig)
 And inspect it:
 
 ```{r}
-samples(p)
+sampleTable(p)
 ```
 
 As you can see, the resulting samples are annotated the same way as if they were read from the original, unwieldy, annotations file.

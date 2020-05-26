@@ -1,17 +1,18 @@
 Package: pepr
 Type: Package
 Title: Reading Portable Encapsulated Projects
-Version: 0.2.2
-Date: 2019-06-21
+Version: 0.3.0
+Date: 2020-05-26
 Authors@R: c(person("Nathan", "Sheffield", email = "nathan@code.databio.org",
-    role = c("aut", "cre")),person("Michal","Stolarczyk",email="mjs5kd@virginia.edu",role=c("ctb")))
-Maintainer: Nathan Sheffield <nathan@code.databio.org>
+    role = c("aut", "cph")),person("Michal","Stolarczyk",email="michal@virginia.edu",role=c("aut","cre")))
+Maintainer: Michal Stolarczyk <michal@virginia.edu>
 Description: Reads standardized project configuration files into R.
 Imports:
     yaml,
     stringr,
     pryr,
-    data.table
+    data.table,
+    methods
 Suggests:
     knitr,
     testthat,
@@ -19,4 +20,4 @@ Suggests:
 VignetteBuilder: knitr
 License: BSD_2_clause + file LICENSE
 BugReports: https://github.com/pepkit/pepr
-RoxygenNote: 6.1.1
+RoxygenNote: 7.1.0

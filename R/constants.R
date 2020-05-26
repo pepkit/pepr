@@ -1,4 +1,19 @@
-kOldPipelinesSection = "pipelines_dir"
-kRelativeToOutputDirMetadataSections = c("results_subdir", "submission_subdir")
-
-kRelativeToConfigSections = c("metadata", "pipeline_config")
+# constant variables declarations
+CFG_SAMPLE_TABLE_KEY = "sample_table"
+CFG_SUBSAMPLE_TABLE_KEY = "subsample_table"
+REQ_ABS = c(CFG_SAMPLE_TABLE_KEY, CFG_SUBSAMPLE_TABLE_KEY)
+CFG_VERSION_KEY = "pep_version"
+CFG_S_MODIFIERS_KEY = "sample_modifiers"
+CFG_P_MODIFIERS_KEY = "project_modifiers"
+CFG_APPEND_KEY = "append"
+CFG_IMPLY_KEY = "imply"
+CFG_DERIVE_KEY = "derive"
+CFG_IMPLY_THEN_KEY = "then"
+CFG_IMPLY_IF_KEY = "if"
+CFG_DERIVE_ATTRS_KEY = "attributes"
+CFG_DERIVE_SOURCES_KEY = "sources"
+CFG_IMPORT_KEY = "import"
+CFG_AMEND_KEY = "amend"
+CFG_DUPLICATE_KEY = "duplicate"
+CFG_REMOVE_KEY = "remove"
+CFG_LOOPER_KEY = "looper"

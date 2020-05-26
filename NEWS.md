@@ -1,3 +1,21 @@
+# pepr 0.3.0 - 2020-05-26
+
+**This version introduced backwards-incompatible changes.**
+
+## Added
+
+* auto path expansion in `Config` class
+* attribute duplication functionality
+* config importing functionality
+* attribute removal functionality
+* possibility to define multi-attribute rules in attribute implication
+
+
+## Changed
+
+* **project configuration file to follow [PEP2.0.0 specification](http://pep.databio.org/en/2.0.0/specification/).** Browse the specification for changes related to config format
+
+
 # pepr 0.2.2 - 2020-01-09
 
 ## Changed
