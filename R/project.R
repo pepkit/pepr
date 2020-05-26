@@ -23,7 +23,7 @@ setMethod("initialize", "Project", function(.Object, ...) {
     ellipsis <- list(...)
     if (!is.null(ellipsis$file)) {
         # check if file path provided
-        .Object@file = .makeAbsPath(ellipsis$file, parent = getwd())
+        .Object@file = .makeAbsPath(ellipsis$file, parent = normalizePath(getwd()))
         # instantiate config object and stick it in the config slot
         .Object@config = Config(ellipsis$file, ellipsis$amendments)
         .Object = .loadSampleAnnotation(.Object)
