@@ -92,7 +92,6 @@ setMethod(
 #' @param x a \code{"\linkS4class{Config}"} object.
 #' @param i position of the identifier or the name of the identifier itself.
 #' @param name name of the element to access.
-#' @param ... additional arguments not used here.
 #'
 #' @return An element held in \code{"\linkS4class{Config}"} object
 #' @importFrom methods as
@@ -100,9 +99,10 @@ setMethod(
 #' projectConfig = system.file("extdata", "example_peps-master",
 #' "example_amendments1", "project_config.yaml", package="pepr")
 #' c=Config(projectConfig)
-#' c[[1]]
-#' c[1]
-#' c$pep_version
+#' c[[2]]
+#' c[2]
+#' c[["sample_table"]]
+#' c$sample_table
 #'
 #' @name select-config
 NULL

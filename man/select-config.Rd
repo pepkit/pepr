@@ -19,8 +19,6 @@
 \item{i}{position of the identifier or the name of the identifier itself.}
 
 \item{name}{name of the element to access.}
-
-\item{...}{additional arguments not used here.}
 }
 \value{
 An element held in \code{"\linkS4class{Config}"} object
@@ -34,8 +32,9 @@ The string will be expanded if it's a path.
 projectConfig = system.file("extdata", "example_peps-master",
 "example_amendments1", "project_config.yaml", package="pepr")
 c=Config(projectConfig)
-c[[1]]
-c[1]
-c$pep_version
+c[[2]]
+c[2]
+c[["sample_table"]]
+c$sample_table
 
 }
