@@ -83,7 +83,7 @@ test_that("loadConfig returns correct object type", {
 
 test_that("loadConfig throws errors", {
     expect_error(Config("a"))
-    expect_error(Config(filename = Project(cfg)@config$sample_table))
+    expect_error(Config(Project(cfg)@config$sample_table))
 })
 
 test_that("paths are automatically expanded", {

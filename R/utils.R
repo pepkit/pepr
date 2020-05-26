@@ -151,8 +151,7 @@
 #' @return Flag indicating whether the \code{path} appears to be absolute.
 .isAbsolute = function(path) {
   if (!is.character(path)) stop("The path must be character")
-  firstChar = substr(path, 1, 1)
-  return(identical("/", firstChar) | identical("~", firstChar))
+  return(grepl("^(/|[A-Za-z]:|\\\\|~)", path))
 }
 
 .safeFileExists = function(path) {
