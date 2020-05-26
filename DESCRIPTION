@@ -5,7 +5,7 @@ Version: 0.3.0
 Date: 2020-05-26
 Authors@R: c(person("Nathan", "Sheffield", email = "nathan@code.databio.org",
     role = c("aut", "cph")),person("Michal","Stolarczyk",email="michal@virginia.edu",role=c("aut","cre")))
-Maintainer: Nathan Sheffield <nathan@code.databio.org>
+Maintainer: Michal Stolarczyk <michal@virginia.edu>
 Description: Reads standardized project configuration files into R.
 Imports:
     yaml,
