@@ -9,9 +9,11 @@
 \arguments{
 \item{cfg}{config}
 
-\item{amendments}{}
+\item{amendments}{list of amendments to apply}
 }
 \value{
+possibly updated config
+
 
 }
 \description{

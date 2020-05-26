@@ -7,10 +7,10 @@
 .reformat(object)
 }
 \arguments{
-\item{object}{an object of \code{\link{Config-class}}}
+\item{object}{an object of \code{"\linkS4class{Config}"}}
 }
 \value{
-an object of \code{\link{Config-class}}
+an object of \code{"\linkS4class{Config}"}
 }
 \description{
 Check config spec version and reformat if needed

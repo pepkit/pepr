@@ -1,30 +1,51 @@
-#' Config objects expand string attributes 
+#' Config objects and specialized list obejcts and expand string attributes 
 #'
-#' Config objects are used with the \code{\link{Config-class}} objects
+#' Config objects are used with the \code{"\linkS4class{Project}"} object
+#'
+#' @importFrom methods callNextMethod
 #'
 #' @exportClass Config
 setClass("Config", contains = "list")
 
 
 setMethod("initialize", "Config", function(.Object, data) {
-  return(methods::callNextMethod(.Object, data))  # calls parent's method
+  .Object = methods::callNextMethod(.Object, data)  # calls list initialize
+  return(.reformat(.Object))
 })
 
-
-#'  The constructor of a class representing PEP config
+#' The constructor of a class representing PEP config
 #'
 #' @param file a character with project configuration yaml file
 #' @param amendments a character with the amendments names to be activated
 #'
-#' @return
+#' @return an object of \code{"\linkS4class{Config}"} class
 #' @examples
 #' projectConfig = system.file("extdata", "example_peps-master",
 #' "example_amendments1", "project_config.yaml", package="pepr")
 #' c=Config(projectConfig)
-#' @export 
-Config = function(.Object, ...) {
-  return(methods::new("Config", .Object, ...))
+#' @export
+#' @rdname Config-class
+Config = function(file, amendments = NULL){
+  message("Loading config file: ", file)
+  cfg_data = .loadConfig(filename=file, amendments=amendments)
+  config = methods::new("Config", data=cfg_data)
+  config = makeSectionsAbsolute(config, REQ_ABS, file)
+  .listAmendments(config)
+  return(config)
 }
+
+
+# Override the standard generic show function for our config-style lists
+setMethod(
+  "show",
+  signature = "Config",
+  definition = function(object) {
+    cat("Config object. Class:", class(object), fill = T)
+    .printNestedList(object)
+    invisible(NULL)
+  }
+)
+
 
 #' Recursively try to expand list of strings
 #'
@@ -61,6 +82,33 @@ Config = function(.Object, ...) {
   return(i)
 }
 
+
+#' Access \code{"\linkS4class{Config}"} object elements
+#'
+#' You can subset \linkS4class{Config} by identifier or by position using the
+#' \code{`[`}, \code{`[[`} or \code{`$`} operator. 
+#' The string will be expanded if it's a path.
+#'
+#' @param x a \code{"\linkS4class{Config}"} object.
+#' @param i position of the identifier or the name of the identifier itself.
+#' @param name name of the element to access.
+#' @param ... additional arguments not used here.
+#'
+#' @return An element held in \code{"\linkS4class{Config}"} object
+#' @importFrom methods as
+#' @examples
+#' projectConfig = system.file("extdata", "example_peps-master",
+#' "example_amendments1", "project_config.yaml", package="pepr")
+#' c=Config(projectConfig)
+#' c[[1]]
+#' c[1]
+#' c$pep_version
+#'
+#' @name select-config
+NULL
+
+#' @rdname select-config
+#' @export
 setMethod("[", c("Config"), function(x, i) {
   xList=as(x, "list", strict=TRUE)
   subscript = .getSubscript(x, i)
@@ -69,7 +117,8 @@ setMethod("[", c("Config"), function(x, i) {
   return(.expandList(element))
 })
 
-
+#' @rdname select-config
+#' @export
 setMethod("[[", "Config", function(x, i) {
   xList=as(x, "list", strict=TRUE)
   subscript = .getSubscript(x, i)
@@ -82,7 +131,8 @@ setMethod("[[", "Config", function(x, i) {
 .DollarNames.Config <- function(x, pattern = "")
   grep(pattern, grep(names(x), value=TRUE))
 
-
+#' @rdname select-config
+#' @export
 setMethod("$", "Config", function(x, name){
   matches = grep(name, names(x))
   if(length(matches) == 0)
@@ -92,65 +142,18 @@ setMethod("$", "Config", function(x, name){
 })
 
 
-setMethod("initialize", "Config", function(.Object, data) {
-  .Object = methods::callNextMethod(.Object, data)  # calls list initialize
-  return(.reformat(.Object))
-})
-
-
-#' The constructor of a class representing PEP config
+#' Make selected sections absolute using config path
 #'
-#' @param file a character with project configuration yaml file
-#' @param amendments a character with the amendments names to be activated
-#'
-#' @return
-#' @examples
-#' projectConfig = system.file("extdata", "example_peps-master",
-#' "example_amendments1", "project_config.yaml", package="pepr")
-#' c=Config(projectConfig)
-#' @export
-Config = function(file, amendments = NULL){
-  message("Loading config file: ", file)
-  cfg_data = .loadConfig(filename=file, amendments=amendments)
-  config = methods::new("Config", data=cfg_data)
-  config = makeSectionsAbsolute(config, REQ_ABS, file)
-  .listAmendments(config)
-  return(config)
-}
-
-
-#' Config objects are specialized list objects
-#'
-#' Config objects are used with the \code{\link{Project-class}} objects
-#'
-#' @exportClass Config
-setClass("Config", contains = "list")
-
-# Override the standard generic show function for our config-style lists
-setMethod(
-  "show",
-  signature = "Config",
-  definition = function(object) {
-    cat("Config object. Class:", class(object), fill = T)
-    .printNestedList(object)
-    invisible(NULL)
-  }
-)
-
-
-#' Make sections absolute in the config
-#' 
-#' @export
-setGeneric("makeSectionsAbsolute", function(object, sections, cfgPath)
-  standardGeneric("makeSectionsAbsolute"))
-
-#' Make selected sections absolute using cfg path
-#'
-#' @param object Config
+#' @param object \code{"\linkS4class{Config}"}
 #' @param sections character set of sections to make absolute
 #' @param cfgPath character absolute path to the config YAML file
 #'
 #' @return Config with selected sections made absolute
+#' @export
+setGeneric("makeSectionsAbsolute", function(object, sections, cfgPath)
+  standardGeneric("makeSectionsAbsolute"))
+
+#' @describeIn makeSectionsAbsolute Make selected sections absolute using config path from \code{"\linkS4class{Project}"}
 setMethod(
   "makeSectionsAbsolute", 
   signature = signature(
@@ -172,9 +175,9 @@ setMethod(
 
 #' Check config spec version and reformat if needed
 #'
-#' @param object an object of \code{\link{Config-class}} 
+#' @param object an object of \code{"\linkS4class{Config}"}
 #' 
-#' @return an object of \code{\link{Config-class}} 
+#' @return an object of \code{"\linkS4class{Config}"}
 setGeneric(".reformat", function(object)
   standardGeneric(".reformat"))
 
@@ -204,10 +207,6 @@ setMethod(
   }
 )
 
-
-setGeneric("checkSection", function(object, sectionNames)
-  standardGeneric("checkSection"))
-
 #' Check for existence of a section in the Project config
 #' 
 #' This function checks for the section/nested sections in the config YAML file.
@@ -215,7 +214,7 @@ setGeneric("checkSection", function(object, sectionNames)
 #' 
 #' Element indices can be used instead of the actual names, see \code{Examples}.
 #' 
-#' @param object object of \code{\link[pepr]{Config-class}}
+#' @param object object of \code{"\linkS4class{Config}"}
 #' @param sectionNames the name of the section or names of the 
 #'        nested sections to look for
 #' 
@@ -228,6 +227,10 @@ setGeneric("checkSection", function(object, sectionNames)
 #' checkSection(config(p),sectionNames = c("amendments","newLib"))
 #' checkSection(config(p),sectionNames = c("amendments",1))
 #' @export
+setGeneric("checkSection", function(object, sectionNames)
+  standardGeneric("checkSection"))
+
+#' @describeIn checkSection checks for existence of a section in \code{"\linkS4class{Config}"} objects
 setMethod(
   "checkSection",
   signature = "Config",
@@ -239,33 +242,6 @@ setMethod(
   }
 )
 
-
-#' View PEP config of the object of \code{\link{Project-class}}
-#'
-#' This method can be used to view the config slot of
-#' the \code{\link{Project-class}} class
-#'
-#' @param object an object of \code{\link{Project-class}}
-#'
-#' @return a list with the config file
-#'
-#' @examples
-#' projectConfig = system.file("extdata", "example_peps-master",
-#' "example_amendments1", "project_config.yaml", package="pepr")
-#' p=Project(projectConfig)
-#' config(p)
-#'
-#' @export
-setGeneric("config", function(object)
-  standardGeneric("config"))
-
-setMethod(
-  "config",
-  signature = "Project",
-  definition = function(object) {
-    object@config
-  }
-)
 
 #' Load the config of a PEP
 #'
@@ -324,7 +300,9 @@ setMethod(
 #' Overwrite and/or add Project attributes from the amendments section
 #'
 #' @param cfg config
-#' @param amendments 
+#' @param amendments list of amendments to apply
+#' 
+#' @return possibly updated config 
 #'
 #' @return
 .applyAmendments = function(cfg, amendments=NULL) {
@@ -371,7 +349,7 @@ setMethod(
 #' @param cfg config data
 #' @param filename path to the config file
 #'
-#' @return
+#' @return string project name
 .inferProjectName = function(cfg, filename){
   if (!is.null(cfg$name)) return(cfg$name)
   return(basename(dirname(normalizePath(filename))))

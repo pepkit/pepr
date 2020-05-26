@@ -7,10 +7,10 @@
 .modifySamples(object)
 }
 \arguments{
-\item{object}{an object of \code{\link{Project-class}}}
+\item{object}{an object of \code{"\linkS4class{Project}"}}
 }
 \value{
-
+modified Project object
 }
 \description{
 Perform all the sample addribute modifications

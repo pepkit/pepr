@@ -9,7 +9,7 @@ Provides an in-memory representation and functions to access project
 configuration and sample annotation values for a PEP.
 }
 \details{
-Can be created with the constructor: \code{\link{Project}}
+Can be created with the constructor: \code{"\linkS4class{Project}"}
 }
 \section{Slots}{
 

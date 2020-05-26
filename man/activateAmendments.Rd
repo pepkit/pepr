@@ -2,24 +2,32 @@
 % Please edit documentation in R/project.R
 \name{activateAmendments}
 \alias{activateAmendments}
-\title{Activate other amendments in objects of \code{\link{Project-class}}}
+\alias{activateAmendments,Project,character-method}
+\title{Activate amendments in objects of \code{"\linkS4class{Project}"}}
 \usage{
 activateAmendments(.Object, amendments)
+
+\S4method{activateAmendments}{Project,character}(.Object, amendments)
 }
 \arguments{
-\item{.Object}{an object of class \code{\link{Project-class}}}
+\item{.Object}{an object of class \code{"\linkS4class{Project}"}}
 
 \item{amendments}{character with the amendment name}
 }
 \description{
 This method switches between the amendments
-within the \code{\link{Project-class}} object
+within the \code{"\linkS4class{Project}"} object
 }
 \details{
 To check what are the amendments names
 call \code{listAmendments(p)}, where \code{p} is the object
-of \code{\link{Project-class}} class
+of \code{"\linkS4class{Project}"} class
 }
+\section{Methods (by class)}{
+\itemize{
+\item \code{.Object = Project,amendments = character}: activate amendments in a \code{"\linkS4class{Project}"} object
+}}
+
 \examples{
 projectConfig = system.file("extdata",
 "example_peps-master",

@@ -2,22 +2,30 @@
 % Please edit documentation in R/project.R
 \name{listAmendments}
 \alias{listAmendments}
-\title{Lists amendments in a \code{\link{Project-class}} object}
+\alias{listAmendments,Project-method}
+\title{List amendments}
 \usage{
 listAmendments(.Object)
+
+\S4method{listAmendments}{Project}(.Object)
 }
 \arguments{
-\item{.Object}{an object of \code{\link{Project-class}}}
+\item{.Object}{an object of \code{"\linkS4class{Project}"}}
 }
 \value{
 names of the available amendments
 }
 \description{
-Lists available amendments within a \code{\link{Project-class}} object.
+Lists available amendments within a \code{"\linkS4class{Project}"} object.
 }
 \details{
 The amendments can be activated by passing their names to the  \code{\link{activateAmendments}} method
 }
+\section{Methods (by class)}{
+\itemize{
+\item \code{Project}: list amendments in a \code{"\linkS4class{Project}"} object
+}}
+
 \examples{
 projectConfig = system.file("extdata",
 "example_peps-master",
@@ -26,5 +34,4 @@ projectConfig = system.file("extdata",
 package = "pepr")
 p = Project(file = projectConfig)
 availAmendemtns = listAmendments(p)
-activateAmendments(p,availAmendemtns[1])
 }

@@ -3,13 +3,13 @@
 #' Provides an in-memory representation and functions to access project
 #' configuration and sample annotation values for a PEP.
 #'
-#' Can be created with the constructor: \code{\link{Project}}
+#' Can be created with the constructor: \code{"\linkS4class{Project}"}
 #'
 #' @slot file character vector path to config file on disk.
 #' @slot samples a data table object holding the sample metadata
 #' @slot config a list object holding contents of the config file
 #'
-#' @exportClass Project
+#' @export
 setClass("Project",
          slots = c(
              file = "character",
@@ -43,7 +43,7 @@ setMethod("initialize", "Project", function(.Object, ...) {
 #' projectConfig = system.file("extdata", "example_peps-master",
 #' "example_amendments1", "project_config.yaml", package="pepr")
 #' p=Project(projectConfig)
-#' @export Project
+#' @export
 Project = function(file = NULL, amendments = NULL) {
     methods::new("Project", file = file, amendments = amendments)
 }
@@ -64,11 +64,40 @@ setMethod(
 )
 
 
+#' Extract \code{"\linkS4class{Project}"}
+#'
+#' This method can be used to view the config slot of
+#' the \code{"\linkS4class{Project}"} class
+#'
+#' @param object an object of \code{"\linkS4class{Project}"}
+#'
+#' @return project config 
+#'
+#' @examples
+#' projectConfig = system.file("extdata", "example_peps-master",
+#' "example_amendments1", "project_config.yaml", package="pepr")
+#' p=Project(projectConfig)
+#' config(p)
+#'
+#' @export
+setGeneric("config", function(object)
+    standardGeneric("config"))
+
+#' @describeIn config Extract \code{"\linkS4class{Project}"} of the object of \code{"\linkS4class{Project}"}
+setMethod(
+    "config",
+    signature = "Project",
+    definition = function(object) {
+        object@config
+    }
+)
+
+
 #' Perform all the sample addribute modifications
 #'
-#' @param object an object of \code{\link{Project-class}} 
+#' @param object an object of \code{"\linkS4class{Project}"} 
 #'
-#' @return
+#' @return modified Project object
 setGeneric(".modifySamples", function(object)
     standardGeneric(".modifySamples"))
 
@@ -87,10 +116,11 @@ setMethod(
 )
 
 
-#' This method extracts the sample from the \code{\link{Project-class}} object
+#' Extract samples
+#' 
+#' This method extracts the samples
 #'
 #' @param .Object An object of Project class
-#'
 #' @param sampleName character the name of the sample
 #'
 #' @return data.table one row data table with the sample associated metadata
@@ -109,6 +139,7 @@ setMethod(
 setGeneric(name = "getSample", function(.Object, sampleName)
     standardGeneric("getSample"))
 
+#' @describeIn getSample extracts the sample from the \code{"\linkS4class{Project}"} object
 setMethod(
     f = "getSample",
     signature(.Object = "Project",
@@ -124,7 +155,9 @@ setMethod(
 )
 
 
-#' This method extracts the subsample from the \code{\link{Project-class}} object
+#' Extract samples
+#' 
+#' This method extracts the samples
 #'
 #' @param .Object An object of Project class
 #'
@@ -148,6 +181,7 @@ setMethod(
 setGeneric(name = "getSubsample", function(.Object, sampleName, subsampleName)
     standardGeneric("getSubsample"))
 
+#' @describeIn getSubsample extracts the subsamples from the \code{"\linkS4class{Project}"} object
 setMethod(
     f = "getSubsample",
     signature(
@@ -183,13 +217,13 @@ setMethod(
 )
 
 
-#' Lists amendments in a \code{\link{Project-class}} object
+#' List amendments 
 #'
-#' Lists available amendments within a \code{\link{Project-class}} object.
+#' Lists available amendments within a \code{"\linkS4class{Project}"} object.
 #'
 #' The amendments can be activated by passing their names to the  \code{\link{activateAmendments}} method
 #'
-#' @param .Object an object of \code{\link{Project-class}}
+#' @param .Object an object of \code{"\linkS4class{Project}"}
 #' @return names of the available amendments
 #' @examples 
 #' projectConfig = system.file("extdata",
@@ -199,11 +233,11 @@ setMethod(
 #' package = "pepr")
 #' p = Project(file = projectConfig)
 #' availAmendemtns = listAmendments(p)
-#' activateAmendments(p,availAmendemtns[1])
 #' @export
 setGeneric("listAmendments", function(.Object)
     standardGeneric("listAmendments"))
 
+#' @describeIn listAmendments list amendments in a \code{"\linkS4class{Project}"} object
 setMethod(
     f = "listAmendments",
     signature = signature(.Object = "Project"),
@@ -214,16 +248,16 @@ setMethod(
 )
 
 
-#' Activate other amendments in objects of \code{\link{Project-class}}
+#' Activate amendments in objects of \code{"\linkS4class{Project}"}
 #'
 #' This method switches between the amendments
-#' within the \code{\link{Project-class}} object
+#' within the \code{"\linkS4class{Project}"} object
 #'
 #' To check what are the amendments names
 #' call \code{listAmendments(p)}, where \code{p} is the object
-#' of \code{\link{Project-class}} class
+#' of \code{"\linkS4class{Project}"} class
 #'
-#' @param .Object an object of class \code{\link{Project-class}}
+#' @param .Object an object of class \code{"\linkS4class{Project}"}
 #' @param amendments character with the amendment name
 #' 
 #' @examples 
@@ -239,6 +273,7 @@ setMethod(
 setGeneric("activateAmendments", function(.Object, amendments)
     standardGeneric("activateAmendments"))
 
+#' @describeIn activateAmendments activate amendments in a \code{"\linkS4class{Project}"} object
 setMethod(
     f = "activateAmendments",
     signature = signature(.Object="Project", amendments="character"),
@@ -256,12 +291,12 @@ setMethod(
 )
 
 
-#' View samples in the objects of \code{\link{Project-class}} 
+#' View samples in the objects of \code{"\linkS4class{Project}"}
 #'
 #' This method can be used to view the samples slot
-#' of the \code{\link{Project-class}} class
+#' of the \code{"\linkS4class{Project}"} class
 #'
-#' @param object an object of \code{\link{Project-class}} 
+#' @param object an object of \code{"\linkS4class{Project}"}
 #'
 #' @return a data.table with the with metadata about samples
 #' @examples
@@ -274,6 +309,7 @@ setMethod(
 setGeneric("sampleTable", function(object)
     standardGeneric("sampleTable"))
 
+#' @describeIn sampleTable extract sample table from a \code{"\linkS4class{Project}"}
 setMethod(
     "sampleTable",
     signature = "Project",
@@ -286,9 +322,9 @@ setMethod(
 
 #' Remove attributes across all the samples
 #'
-#' @param .Object an object of \code{\link{Project-class}} 
+#' @param .Object an object of \code{"\linkS4class{Project}"}
 #'
-#' @return an object of \code{\link{Project-class}} 
+#' @return an object of \code{"\linkS4class{Project}"}
 .removeAttrs <- function(.Object) {
     if (!CFG_S_MODIFIERS_KEY %in% names(config(.Object))) return(.Object)
     modifiers = config(.Object)[[CFG_S_MODIFIERS_KEY]]
@@ -337,9 +373,9 @@ setMethod(
 
 #' Duplicate a selected attribute across all the samples
 #'
-#' @param .Object an object of \code{\link{Project-class}} 
+#' @param .Object an object of \code{"\linkS4class{Project}"}
 #'
-#' @return an object of \code{\link{Project-class}} 
+#' @return an object of \code{"\linkS4class{Project}"}
 .duplicateAttrs <- function(.Object) {
     if (!CFG_S_MODIFIERS_KEY %in% names(config(.Object))) return(.Object)
     modifiers = config(.Object)[[CFG_S_MODIFIERS_KEY]]
@@ -353,9 +389,9 @@ setMethod(
 
 #' Imply attributes
 #'
-#' @param .Object an object of \code{\link{Project-class}} 
+#' @param .Object an object of \code{"\linkS4class{Project}"}
 #'
-#' @return an object of \code{\link{Project-class}} 
+#' @return an object of \code{"\linkS4class{Project}"} 
 .implyAttrs = function(.Object) {
     if (!CFG_S_MODIFIERS_KEY %in% names(config(.Object))) return(.Object)
     modifiers = config(.Object)[[CFG_S_MODIFIERS_KEY]]
@@ -394,9 +430,9 @@ setMethod(
 
 #' Derive attributes
 #'
-#' @param .Object an object of \code{\link{Project-class}} 
+#' @param .Object an object of \code{"\linkS4class{Project}"}
 #'
-#' @return an object of \code{\link{Project-class}} 
+#' @return an object of \code{"\linkS4class{Project}"}
 .deriveAttrs = function(.Object) {
     if (!CFG_S_MODIFIERS_KEY %in% names(config(.Object))) return(.Object)
     parentDir = dirname(.Object@file)
@@ -425,9 +461,9 @@ setMethod(
 
 #' Read sample annotation from disk
 #'
-#' @param .Object an object of \code{\link{Project-class}} 
+#' @param .Object an object of \code{"\linkS4class{Project}"}
 #'
-#' @return an object of \code{\link{Project-class}} 
+#' @return an object of \code{"\linkS4class{Project}"}
 .loadSampleAnnotation = function(.Object) {
     cfg = config(.Object)
     if (!CFG_SAMPLE_TABLE_KEY %in% names(cfg)) return(.Object) 
@@ -445,9 +481,9 @@ setMethod(
 
 #' Merge samples defined in sample table with ones in subsample table
 #'
-#' @param .Object an object of \code{\link{Project-class}} 
+#' @param .Object an object of \code{"\linkS4class{Project}"}
 #'
-#' @return an object of \code{\link{Project-class}} 
+#' @return an object of \code{"\linkS4class{Project}"}
 .mergeAttrs = function(.Object){
     cfg = config(.Object)
     if (!CFG_SUBSAMPLE_TABLE_KEY %in% names(cfg)) return(.Object)

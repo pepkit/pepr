@@ -1,4 +1,7 @@
-#' Package docs
+#' pepr
+#' 
+#' Package documentation
+#' 
 #' @docType package
 #' @name pepr
 #' @author Michal Stolarczyk, Nathan Sheffield

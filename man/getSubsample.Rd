@@ -2,9 +2,12 @@
 % Please edit documentation in R/project.R
 \name{getSubsample}
 \alias{getSubsample}
-\title{This method extracts the subsample from the \code{\link{Project-class}} object}
+\alias{getSubsample,Project,character,character-method}
+\title{Extract samples}
 \usage{
 getSubsample(.Object, sampleName, subsampleName)
+
+\S4method{getSubsample}{Project,character,character}(.Object, sampleName, subsampleName)
 }
 \arguments{
 \item{.Object}{An object of Project class}
@@ -17,8 +20,13 @@ getSubsample(.Object, sampleName, subsampleName)
 data.table one row data table with the subsample associated metadata
 }
 \description{
-This method extracts the subsample from the \code{\link{Project-class}} object
+This method extracts the samples
 }
+\section{Methods (by class)}{
+\itemize{
+\item \code{.Object = Project,sampleName = character,subsampleName = character}: extracts the subsamples from the \code{"\linkS4class{Project}"} object
+}}
+
 \examples{
 projectConfig = system.file(
 "extdata",

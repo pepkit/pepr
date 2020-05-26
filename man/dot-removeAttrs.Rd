@@ -7,10 +7,10 @@
 .removeAttrs(.Object)
 }
 \arguments{
-\item{.Object}{an object of \code{\link{Project-class}}}
+\item{.Object}{an object of \code{"\linkS4class{Project}"}}
 }
 \value{
-an object of \code{\link{Project-class}}
+an object of \code{"\linkS4class{Project}"}
 }
 \description{
 Remove attributes across all the samples

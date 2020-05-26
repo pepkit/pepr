@@ -82,9 +82,6 @@
 
 #' @param string String with variables encoded
 #' @param args named list of arguments to use to populate the string
-#' @param exclude character vector of args that should be excluded from 
-#' the interpolation. The elements in the vector should match the names of the
-#' elements in the \code{args} list
 #' @param parent a directory that will be used to make the path absolute
 #' @export
 #' @examples
@@ -201,7 +198,7 @@
 #' @param attr a string specifying a column in the \code{samples}
 #' @param func an anonymous function, see Details for more information
 #' @param action a string (either \code{include} or \code{exclude}) that specifies whether the function should select the row or exclude it.
-#' 
+#' @importFrom methods is
 #' @examples 
 #' projectConfig = system.file("extdata", "example_peps-master",
 #' "example_amendments1", "project_config.yaml", package="pepr")

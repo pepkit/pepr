@@ -12,7 +12,7 @@
 \item{filename}{path to the config file}
 }
 \value{
-
+string project name
 }
 \description{
 Based on dedicated config section or PEP enclosing dir

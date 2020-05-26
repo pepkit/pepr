@@ -3,9 +3,24 @@
 \docType{class}
 \name{Config-class}
 \alias{Config-class}
-\title{Config objects expand string attributes}
-\description{
-Config objects are used with the \code{\link{Config-class}} objects
+\alias{Config}
+\title{Config objects and specialized list obejcts and expand string attributes}
+\usage{
+Config(file, amendments = NULL)
+}
+\arguments{
+\item{file}{a character with project configuration yaml file}
 
-Config objects are used with the \code{\link{Project-class}} objects
+\item{amendments}{a character with the amendments names to be activated}
+}
+\value{
+an object of \code{"\linkS4class{Config}"} class
+}
+\description{
+Config objects are used with the \code{"\linkS4class{Project}"} object
+}
+\examples{
+projectConfig = system.file("extdata", "example_peps-master",
+"example_amendments1", "project_config.yaml", package="pepr")
+c=Config(projectConfig)
 }

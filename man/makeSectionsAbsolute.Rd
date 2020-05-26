@@ -2,10 +2,28 @@
 % Please edit documentation in R/config.R
 \name{makeSectionsAbsolute}
 \alias{makeSectionsAbsolute}
-\title{Make sections absolute in the config}
+\alias{makeSectionsAbsolute,Config,character,character-method}
+\title{Make selected sections absolute using config path}
 \usage{
 makeSectionsAbsolute(object, sections, cfgPath)
+
+\S4method{makeSectionsAbsolute}{Config,character,character}(object, sections, cfgPath)
+}
+\arguments{
+\item{object}{\code{"\linkS4class{Config}"}}
+
+\item{sections}{character set of sections to make absolute}
+
+\item{cfgPath}{character absolute path to the config YAML file}
+}
+\value{
+Config with selected sections made absolute
 }
 \description{
-Make sections absolute in the config
+Make selected sections absolute using config path
 }
+\section{Methods (by class)}{
+\itemize{
+\item \code{object = Config,sections = character,cfgPath = character}: Make selected sections absolute using config path from \code{"\linkS4class{Project}"}
+}}
+

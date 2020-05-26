@@ -3,7 +3,10 @@
 \docType{package}
 \name{pepr}
 \alias{pepr}
-\title{Package docs}
+\title{pepr}
+\description{
+Package documentation
+}
 \references{
 GitHub: \url{http://github.com/pepkit/pepr}, Documentation: \url{https://code.databio.org/pepr/}
 }

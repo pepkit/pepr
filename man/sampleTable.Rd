@@ -2,20 +2,28 @@
 % Please edit documentation in R/project.R
 \name{sampleTable}
 \alias{sampleTable}
-\title{View samples in the objects of \code{\link{Project-class}}}
+\alias{sampleTable,Project-method}
+\title{View samples in the objects of \code{"\linkS4class{Project}"}}
 \usage{
 sampleTable(object)
+
+\S4method{sampleTable}{Project}(object)
 }
 \arguments{
-\item{object}{an object of \code{\link{Project-class}}}
+\item{object}{an object of \code{"\linkS4class{Project}"}}
 }
 \value{
 a data.table with the with metadata about samples
 }
 \description{
 This method can be used to view the samples slot
-of the \code{\link{Project-class}} class
+of the \code{"\linkS4class{Project}"} class
 }
+\section{Methods (by class)}{
+\itemize{
+\item \code{Project}: extract sample table from a \code{"\linkS4class{Project}"}
+}}
+
 \examples{
 projectConfig = system.file("extdata", "example_peps-master",
 "example_amendments1", "project_config.yaml", package="pepr")

@@ -11,7 +11,8 @@ Imports:
     yaml,
     stringr,
     pryr,
-    data.table
+    data.table,
+    methods
 Suggests:
     knitr,
     testthat,
