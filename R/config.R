@@ -352,5 +352,5 @@ setMethod(
 #' @return string project name
 .inferProjectName = function(cfg, filename){
   if (!is.null(cfg$name)) return(cfg$name)
-  return(basename(dirname(normalizePath(filename))))
+  return(basename(dirname(path.expand(filename))))
 }

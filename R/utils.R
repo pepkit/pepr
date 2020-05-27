@@ -47,9 +47,9 @@
       if (!startsWith(path, "/") && length(undefinedID) == 0) {
         path = paste0("/", path)
       }
-      # prevent double slashes
-      path = gsub("//", "/", path)
     }
+    # prevent double slashes
+    path = gsub("//", "/", path)
   }
   
   # handle null/empty input.
@@ -58,7 +58,7 @@
   }
   
   # if it's a path, make it absolute
-  path = normalizePath(path.expand(path),mustWork = FALSE)
+  path = path.expand(path)
   # search for env vars, both bracketed and not 
   matchesBracket = gregexpr("\\$\\{\\w+\\}", path, perl=T)
   matches = gregexpr("\\$\\w+", path, perl=T)
@@ -131,7 +131,7 @@
   if (.isAbsolute(perhapsRelative)) {
     abspath = perhapsRelative
   } else {
-    abspath = file.path(normalizePath(parent), perhapsRelative)
+    abspath = file.path(path.expand(parent), perhapsRelative)
   }
   if (!.isAbsolute(abspath)) 
     stop("Relative path ", perhapsRelative, " and parent ", parent ,
