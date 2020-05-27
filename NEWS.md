@@ -1,3 +1,10 @@
+# pepr 0.3.1 - 2020-05-27
+
+## Fixed
+
+* issues with auto path expansion in objects of `Config` class on Windows
+* issues with path absoluteness determination on Windows
+
 # pepr 0.3.0 - 2020-05-26
 
 **This version introduced backwards-incompatible changes.**

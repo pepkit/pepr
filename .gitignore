@@ -13,3 +13,5 @@ pepr.Rproj
 docs
 doc
 Meta
+pepr.Rcheck/
+pepr_*.tar.gz

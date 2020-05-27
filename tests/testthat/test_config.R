@@ -53,8 +53,7 @@ configConst = system.file(
 
 .isAbsolute = function(path) {
     if (!is.character(path)) stop("The path must be character")
-    firstChar = substr(path, 1, 1)
-    return(identical("/", firstChar) | identical("~", firstChar))
+    return(grepl("^(/|[A-Za-z]:|\\\\|~)", path))
 }
 
 # tests -------------------------------------------------------------------
@@ -83,7 +82,7 @@ test_that("loadConfig returns correct object type", {
 
 test_that("loadConfig throws errors", {
     expect_error(Config("a"))
-    expect_error(Config(filename = Project(cfg)@config$sample_table))
+    expect_error(Config(Project(cfg)@config$sample_table))
 })
 
 test_that("paths are automatically expanded", {

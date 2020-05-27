@@ -186,7 +186,7 @@ setMethod(
   signature = "Config", 
   definition = function(object) {
     if (CFG_VERSION_KEY %in% names(object)){
-      split = str_split(object[[CFG_VERSION_KEY]],"\\.")[[1]]
+      split = strsplit(object[[CFG_VERSION_KEY]],"[.]")[[1]]
       if (length(split) < 3) stop("PEP version string is not tripartite")
       majorVer = as.numeric(split[1])
       if (majorVer < 2){
@@ -352,5 +352,5 @@ setMethod(
 #' @return string project name
 .inferProjectName = function(cfg, filename){
   if (!is.null(cfg$name)) return(cfg$name)
-  return(basename(dirname(normalizePath(filename))))
+  return(basename(dirname(path.expand(filename))))
 }
