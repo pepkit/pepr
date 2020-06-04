@@ -1,27 +1,28 @@
-
+[![Downloads](http://cranlogs.r-pkg.org/badges/grand-total/pepr)](http://cranlogs.r-pkg.org/badges/grand-total/pepr)
+[![CRAN](http://www.r-pkg.org/badges/version-last-release/pepr)](http://www.r-pkg.org/badges/version-last-release/pepr)
 [![Build Status](https://travis-ci.org/pepkit/pepr.svg?branch=master)](https://travis-ci.org/pepkit/pepr)
 [![Coverage Status](https://coveralls.io/repos/github/pepkit/pepr/badge.svg?branch=dev)](https://coveralls.io/github/pepkit/pepr?branch=dev&service=github)
 [![PEP compatible](http://pepkit.github.io/img/PEP-compatible-green.svg)](http://pepkit.github.io)
-
-`pepr` is not yet released, but has been submitted to CRAN and should be available for a standard installation shortly. Complete documentation and API for the `pepr` R package is at [code.databio.org/pepr](http://code.databio.org/pepr/).
 
 # The `pepr` package: Portable Encapsulated Projects in R
 
 `pepr` is an R package for reading [Portable Encapsulated Projects](http://pep.databio.org/en/2.0.0/), or **PEP**s, in R. If you describe your project (configuration and samples) according to this format, you can load all project metadata into R using the `pepr` package. To test `pepr`, you can try loading one of the [example PEPs](https://github.com/pepkit/example_peps).
 
+Complete documentation and API for the `pepr` R package is at [code.databio.org/pepr](http://code.databio.org/pepr/).
+
 
 ## Quick start:
 
-Install from GitHub:
+Install from [CRAN](https://cran.rstudio.com/web/packages/pepr/index.html):
 
 ```R
-devtools::install_github("pepkit/pepr")
+install.packages("pepr")
 ```
 
 Load a project and explore metadata like this:
 
 ```R
-library("pepr"")
+library("pepr")
 cfgPath = system.file(
     "extdata",
     paste0("example_peps-master"),
