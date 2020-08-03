@@ -543,7 +543,6 @@ setMethod(
     sampleSubannotationPath = cfg[[CFG_SUBSAMPLE_TABLE_KEY]]
     for(p in sampleSubannotationPath){
         .Object = .loadSubsampleAnnotation(.Object, p)    
-        print(.Object@samples)
     }
     return(.Object)
 }

@@ -1,7 +1,7 @@
 [![Downloads](http://cranlogs.r-pkg.org/badges/grand-total/pepr)](http://cranlogs.r-pkg.org/badges/grand-total/pepr)
 [![CRAN](http://www.r-pkg.org/badges/version-last-release/pepr)](http://www.r-pkg.org/badges/version-last-release/pepr)
-[![Build Status](https://travis-ci.org/pepkit/pepr.svg?branch=master)](https://travis-ci.org/pepkit/pepr)
-[![Coverage Status](https://coveralls.io/repos/github/pepkit/pepr/badge.svg?branch=dev)](https://coveralls.io/github/pepkit/pepr?branch=dev&service=github)
+![R-CMD-check](https://github.com/pepkit/pepr/workflows/R-CMD-check/badge.svg)
+[![codecov](https://codecov.io/gh/pepkit/pepr/branch/master/graph/badge.svg)](https://codecov.io/gh/pepkit/pepr)
 [![PEP compatible](http://pepkit.github.io/img/PEP-compatible-green.svg)](http://pepkit.github.io)
 
 # The `pepr` package: Portable Encapsulated Projects in R
