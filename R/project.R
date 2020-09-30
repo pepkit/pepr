@@ -25,7 +25,7 @@ setMethod("initialize", "Project", function(.Object, ...) {
         # check if file path provided
         .Object@file = .makeAbsPath(ellipsis$file, parent = path.expand(getwd()))
         # instantiate config object and stick it in the config slot
-        .Object@config = Config(ellipsis$file, ellipsis$amendments)
+        .Object@config = Config(.Object@file, ellipsis$amendments)
         .Object = .loadSampleAnnotation(.Object)
         .Object = .modifySamples(.Object)
     }
