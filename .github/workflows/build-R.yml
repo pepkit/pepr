@@ -15,7 +15,7 @@ jobs:
       fail-fast: false
       matrix:
         r: [release]
-        os: [ubuntu-latest, macos-latest, windows-latest]
+        os: [ubuntu-20.04, macos-latest, windows-latest]
 
     env:
       R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
