@@ -1,9 +1,0 @@
-language: r
-os: "linux"
-warnings_are_errors: false
-cache: packages
-r_packages: devtools
-r_github_packages: 
-  - r-lib/covr
-after_success:
-  - Rscript -e 'covr::coveralls()'
