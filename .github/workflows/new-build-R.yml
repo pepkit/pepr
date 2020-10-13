@@ -8,7 +8,7 @@ on:
     branches:
       - master
 
-name: new-R-CMD-check
+name: R-CMD-check
 
 jobs:
   R-CMD-check:
@@ -63,6 +63,7 @@ jobs:
 
       - name: Install dependencies
         run: |
+          remotes::install_cran("covr")
           remotes::install_deps(dependencies = TRUE)
           remotes::install_cran("rcmdcheck")
         shell: Rscript {0}
