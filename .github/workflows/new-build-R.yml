@@ -79,3 +79,7 @@ jobs:
         with:
           name: ${{ runner.os }}-r${{ matrix.config.r }}-results
           path: check
+
+      - name: Report test coverage
+        run: covr::codecov()
+        shell: Rscript {0}
