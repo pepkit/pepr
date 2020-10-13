@@ -126,17 +126,21 @@
 #' @export 
 #' @return Target itself if already absolute, else target nested within parent.
 .makeAbsPath = function(perhapsRelative, parent) {
-  if (!.isDefined(perhapsRelative)) return(perhapsRelative)
-  perhapsRelative = .expandPath(perhapsRelative)
-  if (.isAbsolute(perhapsRelative)) {
-    abspath = perhapsRelative
-  } else {
-    abspath = file.path(path.expand(parent), perhapsRelative)
+  res = c()
+  for(pR in perhapsRelative){
+    if (!.isDefined(pR)) return(pR)
+    pR = .expandPath(pR)
+    if (.isAbsolute(pR)) {
+      abspath = pR
+    } else {
+      abspath = file.path(path.expand(parent), pR)
+    }
+    if (!.isAbsolute(abspath)) 
+      stop("Relative path ", pR, " and parent ", parent ,
+           " failed to create absolute path: ", abspath)
+    res = append(res, abspath)
   }
-  if (!.isAbsolute(abspath)) 
-    stop("Relative path ", perhapsRelative, " and parent ", parent ,
-         " failed to create absolute path: ", abspath)
-  return(abspath)
+  return(res)
 }
 
 # Must test for is.null first, since is.na(NULL) returns a logical(0) which is

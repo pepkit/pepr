@@ -60,6 +60,8 @@ setMethod(
 .expandList <- function(x) {
   if(is.list(x))
     return(lapply(x, .expandList))
+  if(length(x) > 1)
+    return(unname(sapply(x, .expandList)))
   return(suppressWarnings(.expandPath(x)))
 }
 
