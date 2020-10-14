@@ -25,7 +25,7 @@ setMethod("initialize", "Project", function(.Object, ...) {
         # check if file path provided
         .Object@file = .makeAbsPath(ellipsis$file, parent = path.expand(getwd()))
         # instantiate config object and stick it in the config slot
-        .Object@config = Config(ellipsis$file, ellipsis$amendments)
+        .Object@config = Config(.Object@file, ellipsis$amendments)
         .Object = .loadSampleAnnotation(.Object)
         .Object = .modifySamples(.Object)
     }
@@ -479,40 +479,37 @@ setMethod(
 }
 
 
-#' Merge samples defined in sample table with ones in subsample table
+#' Load single subsample annotation
 #'
 #' @param .Object an object of \code{"\linkS4class{Project}"}
+#' @param path string, a path to the subsample table to read and incorporate
 #'
 #' @return an object of \code{"\linkS4class{Project}"}
-.mergeAttrs = function(.Object){
-    cfg = config(.Object)
-    if (!CFG_SUBSAMPLE_TABLE_KEY %in% names(cfg)) return(.Object)
-    sampleSubannotationPath = cfg[[CFG_SUBSAMPLE_TABLE_KEY]]
-    samples = sampleTable(.Object)
-    samples = .listifyDF(samples)
-    if (.safeFileExists(sampleSubannotationPath)) {
-        samplesSubannotation = data.table::fread(sampleSubannotationPath)
+.loadSubsampleAnnotation = function(.Object, path) {
+    if (.safeFileExists(path)) {
+        samplesSubannotation = data.table::fread(path)
     } else{
         samplesSubannotation = data.table::data.table()
     }
     subNames = unique(samplesSubannotation$sample_name)
+    samples = sampleTable(.Object)
+    samples = .listifyDF(samples)
     rowNum = nrow(samples)
     # Creating a list to be populated in the loop and inserted
     # into the samples data.table as a column. This way the "cells"
     # in the samples table can consist of multiple elements
-    colList = vector("list", rowNum)
     for (iName in subNames) {
         whichNames = which(samplesSubannotation$sample_name == iName)
         subTable = samplesSubannotation[whichNames,]
         dropCol = which(names(samplesSubannotation[whichNames,]) == "sample_name")
         subTable = subset(subTable, select = -dropCol)
+        colList = vector("list", rowNum)
         for (iColumn in seq_len(ncol(subTable))) {
             colName = names(subset(subTable, select = iColumn))
             if (!any(names(samples) == colName)) {
                 # The column doesn't exist, creating
                 samples[, colName] = NULL
             } else{
-                # colList=as.list(unname(samples[, ..colName]))[[1]]
                 colList = samples[[colName]]
             }
             # The column exists
@@ -530,5 +527,22 @@ setMethod(
     }
     samples[is.na(samples)] = ""
     .Object@samples = samples
+    return(.Object)
+}
+
+
+
+#' Merge samples defined in sample table with ones in subsample table(s)
+#'
+#' @param .Object an object of \code{"\linkS4class{Project}"}
+#'
+#' @return an object of \code{"\linkS4class{Project}"}
+.mergeAttrs = function(.Object){
+    cfg = config(.Object)
+    if (!CFG_SUBSAMPLE_TABLE_KEY %in% names(cfg)) return(.Object)
+    sampleSubannotationPath = cfg[[CFG_SUBSAMPLE_TABLE_KEY]]
+    for(p in sampleSubannotationPath){
+        .Object = .loadSubsampleAnnotation(.Object, p)    
+    }
     return(.Object)
 }

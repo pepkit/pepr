@@ -1,3 +1,13 @@
+# pepr 0.4.0 - 2020-10-14
+
+## Changed
+
+* added multiple subsample_table support
+
+## Fixed
+
+* issues with config file determination
+
 # pepr 0.3.2 - 2020-06-03
 
 ## Changed

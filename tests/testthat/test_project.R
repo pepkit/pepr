@@ -35,6 +35,14 @@ cfgSubtable = system.file(
     package = "pepr"
 )
 
+cfgSubtableMulti = system.file(
+  "extdata",
+  paste0("example_peps-",branch),
+  "example_subtables",
+  "project_config.yaml",
+  package = "pepr"
+)
+
 cfgBioc = system.file(
     "extdata",
     paste0("example_peps-",branch),
@@ -183,4 +191,18 @@ test_that("Version number is required", {
   yaml::write_yaml(file = path, x = f)
   expect_error(Project(file = path))
 })
+
+
+test_that("Subsample table works", {
+  p=Project(file=cfgSubtable)
+  expect_true("subsample_name" %in% colnames(p@samples))
+  expect_equal(length(p@samples$file[[1]]), 3)
+})
+
+
+test_that("Subsample table works for multiple subtables", {
+  p=Project(file=cfgSubtableMulti)
+  expect_true("desc" %in% colnames(p@samples))
+})
+
 

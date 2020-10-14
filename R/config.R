@@ -60,6 +60,8 @@ setMethod(
 .expandList <- function(x) {
   if(is.list(x))
     return(lapply(x, .expandList))
+  if(length(x) > 1)
+    return(unname(sapply(x, .expandList)))
   return(suppressWarnings(.expandPath(x)))
 }
 
@@ -129,12 +131,12 @@ setMethod("[[", "Config", function(x, i) {
 
 
 .DollarNames.Config <- function(x, pattern = "")
-  grep(pattern, grep(names(x), value=TRUE))
+  grep(paste0("^", pattern), grep(names(x), value=TRUE))
 
 #' @rdname select-config
 #' @export
 setMethod("$", "Config", function(x, name){
-  matches = grep(name, names(x))
+  matches = grep(paste0("^", name), names(x))
   if(length(matches) == 0)
     return(NULL)
   hits = x[[matches]]
