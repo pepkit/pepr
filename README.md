@@ -25,7 +25,7 @@ Load a project and explore metadata like this:
 library("pepr")
 cfgPath = system.file(
     "extdata",
-    paste0("example_peps-master"),
+    "example_peps-master",
     "example_basic",
     "project_config.yaml",
     package = "pepr"
