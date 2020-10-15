@@ -2,12 +2,12 @@
 % Please edit documentation in R/config.R
 \name{select-config}
 \alias{select-config}
-\alias{[,Config-method}
+\alias{[,Config,ANY-method}
 \alias{[[,Config-method}
 \alias{$,Config-method}
 \title{Access \code{"\linkS4class{Config}"} object elements}
 \usage{
-\S4method{[}{Config}(x, i)
+\S4method{[}{Config,ANY}(x, i)
 
 \S4method{[[}{Config}(x, i)
 

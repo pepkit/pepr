@@ -2,7 +2,7 @@
 % Please edit documentation in R/project.R
 \name{.mergeAttrs}
 \alias{.mergeAttrs}
-\title{Merge samples defined in sample table with ones in subsample table}
+\title{Merge samples defined in sample table with ones in subsample table(s)}
 \usage{
 .mergeAttrs(.Object)
 }
@@ -13,5 +13,5 @@
 an object of \code{"\linkS4class{Project}"}
 }
 \description{
-Merge samples defined in sample table with ones in subsample table
+Merge samples defined in sample table with ones in subsample table(s)
 }

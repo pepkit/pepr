@@ -8,7 +8,7 @@
 Package documentation
 }
 \references{
-GitHub: \url{http://github.com/pepkit/pepr}, Documentation: \url{https://code.databio.org/pepr/}
+GitHub: \url{https://github.com/pepkit/pepr}, Documentation: \url{https://code.databio.org/pepr/}
 }
 \author{
 Michal Stolarczyk, Nathan Sheffield
