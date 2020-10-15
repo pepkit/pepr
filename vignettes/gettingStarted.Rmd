@@ -12,7 +12,7 @@ vignette: >
 
 # Introduction to `pepr`
 
-`pepr` is the official R package for the [pepkit](http://pepkit.github.io) suite, a collection of tools that interface with *portable encapsulated projects*, or PEPs. [PEP format](http://pep.databio.org/en/latest/) defines a structure for organizing project metadata using a `yaml` file. `pepr` allows you to read any PEP-formatted project metadata (and potentially even actual sample data) into R, providing you a convenient user interface to interact with and share project metadata. 
+`pepr` is the official R package for the [pepkit](https://pep.databio.org/en/2.0.0/) suite, a collection of tools that interface with *portable encapsulated projects*, or PEPs. [PEP format](https://pep.databio.org/en/2.0.0/) defines a structure for organizing project metadata using a `yaml` file. `pepr` allows you to read any PEP-formatted project metadata (and potentially even actual sample data) into R, providing you a convenient user interface to interact with and share project metadata. 
 
 ## Installing `pepr`
 
