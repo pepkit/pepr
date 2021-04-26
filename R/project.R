@@ -362,7 +362,7 @@ setMethod(
             if(!constantsNames[iConst] %in% colnames(sampleTable(.Object))) {
                 tempDT = data.table::data.table(
                     matrix(matrix(NA, ncol=1, nrow=colLen)))
-                tempDT[, 1] = list(list(constants[[iConst]]))
+                tempDT[, 1] = list(constants[[iConst]])
                 names(tempDT) = constantsNames[iConst]
                 .Object@samples = cbind(.Object@samples, tempDT)
             }
