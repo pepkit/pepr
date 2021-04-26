@@ -1,3 +1,13 @@
+# pepr 0.4.1 - unreleased
+
+## Fixed
+
+* result class of appended attributes; it's no longer wrapped in a `list`
+
+## Changed 
+
+* error message when nonexistent attribute is derived
+
 # pepr 0.4.0 - 2020-10-14
 
 ## Changed
