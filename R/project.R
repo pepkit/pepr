@@ -443,6 +443,8 @@ setMethod(
              %in% names(derivations)))
         stop(CFG_DERIVE_KEY, " section is not formatted properly")
     for (derivedAttr in derivations[[CFG_DERIVE_ATTRS_KEY]]) {
+        if (!derivedAttr %in% colnames(.Object@samples))
+            stop(paste("Failed to derive. Sample attribute not found:", derivedAttr))
         derivedSamplesVals = .Object@samples[,derivedAttr]
         for (derivedSource in names(derivations[[CFG_DERIVE_SOURCES_KEY]])){
             hitIds = which(derivedSamplesVals == derivedSource)
