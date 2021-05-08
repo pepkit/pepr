@@ -1,0 +1,13 @@
+pandoc: 2.7.3
+pkgdown: 1.6.1
+pkgdown_sha: ~
+articles:
+  feature1_constantAttributes: feature1_constantAttributes.html
+  feature2_impliedAttributes: feature2_impliedAttributes.html
+  feature3_derivedAttributes: feature3_derivedAttributes.html
+  feature4_derivedImpliedAttributes: feature4_derivedImpliedAttributes.html
+  feature5_sampleSubtable: feature5_sampleSubtable.html
+  feature6_amendments: feature6_amendments.html
+  gettingStarted: gettingStarted.html
+last_built: 2021-05-08T18:25Z
+
