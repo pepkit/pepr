@@ -162,7 +162,7 @@
 #' Determine whether the string is a valid URL
 #'
 #' @param str string to inspect
-#' @importFrom RCurl url.exists
+#' @import RCurl
 #'
 #' @return logical indicating whether a string is a valid URL
 .isValidUrl = function(str) {
