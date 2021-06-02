@@ -158,8 +158,27 @@
   return(grepl("^(/|[A-Za-z]:|\\\\|~)", path))
 }
 
+
+#' Determine whether the string is a valid URL
+#'
+#' @param str string to inspect
+#'
+#' @return logical indicating whether a string is a valid URL
+.isValidUrl = function(str) {
+  ans = FALSE
+  if (grepl("www.|http:|https:", str)) {
+    ans = RCurl::url.exists(str)
+  }
+  ans
+}
+
+#' Check whether the string is a valid URL or an existing local path
+#'
+#' @param path string to be checked 
+#'
+#' @return a logical indicating whether it's an existing path or valid URL
 .safeFileExists = function(path) {
-  ((!is.null(path)) && file.exists(path))
+  (.isValidUrl(path) || (!is.null(path) && file.exists(path)))
 }
 
 #' Listify data frame columns

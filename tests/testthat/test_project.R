@@ -11,6 +11,14 @@ cfg = system.file(
     package = "pepr"
   )
 
+sampleTableBasic = system.file(
+  "extdata",
+  paste0("example_peps-",branch),
+  "example_basic",
+  "sample_table.csv",
+  package = "pepr"
+)
+
 f = yaml::yaml.load_file(system.file(
   "extdata",
   paste0("example_peps-",branch),
@@ -116,7 +124,19 @@ test_that("Project successfully loads a config with bioconductor section", {
 })
 
 test_that("empty Project can be created", {
-  expect_is(Project(),"Project")
+  expect_is(Project(), "Project")
+})
+
+context("Project object creation -- no config")
+
+test_that("Project can be instantiated with no config", {
+  expect_is(Project(sampleTable = sampleTableBasic), "Project")
+})
+
+context("Project object creation -- remote sample table")
+
+test_that("Project can be instantiated with a remote sample table", {
+  expect_is(Project(sampleTable = "https://raw.githubusercontent.com/pepkit/example_peps/master/example_basic/sample_table.csv"), "Project")
 })
 
 context("Amendments")

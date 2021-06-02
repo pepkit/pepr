@@ -26,8 +26,14 @@ setMethod("initialize", "Project", function(.Object, ...) {
         .Object@file = .makeAbsPath(ellipsis$file, parent = path.expand(getwd()))
         # instantiate config object and stick it in the config slot
         .Object@config = Config(.Object@file, ellipsis$amendments)
-        .Object = .loadSampleAnnotation(.Object)
+        sampleTablePath = .getSampleTablePathFromConfig(config=config(.Object))
+        .Object@samples = .loadSampleAnnotation(sampleTablePath=sampleTablePath)
         .Object = .modifySamples(.Object)
+    } else {
+        # if no project config file path provided, just read the sample table inm if avaialable
+        if (!is.null(ellipsis$sampleTable)){
+            .Object@samples = .loadSampleAnnotation(sampleTablePath=ellipsis$sampleTable)
+        }
     }
     return(.Object)
 })
@@ -37,15 +43,16 @@ setMethod("initialize", "Project", function(.Object, ...) {
 #'
 #' This is a helper that creates the project with empty samples and config slots
 #'
-#' @param file a character with project configuration yaml file
+#' @param file a character specifying a path to a project configuration YAML file
 #' @param amendments a character with the amendments names to be activated
+#' @param sampleTable a character specifying a path to the sample table path. It's disregarded if the `file` argument is provided. 
 #' @examples
 #' projectConfig = system.file("extdata", "example_peps-master",
 #' "example_amendments1", "project_config.yaml", package="pepr")
 #' p=Project(projectConfig)
 #' @export
-Project = function(file = NULL, amendments = NULL) {
-    methods::new("Project", file = file, amendments = amendments)
+Project = function(file = NULL, sampleTable = NULL, amendments = NULL) {
+    methods::new("Project", file = file, amendments = amendments, sampleTable = sampleTable)
 }
 
 
@@ -284,7 +291,8 @@ setMethod(
             c(CFG_SAMPLE_TABLE_KEY, CFG_SUBSAMPLE_TABLE_KEY), 
             .Object@file
         )
-        .Object = .loadSampleAnnotation(.Object)
+        sampleTablePath = .getSampleTablePathFromConfig(config=config(.Object))
+        .Object@samples = .loadSampleAnnotation(sampleTablePath=sampleTablePath)
         .Object = .modifySamples(.Object)
         return(.Object)
     }
@@ -461,23 +469,23 @@ setMethod(
 }
 
 
+.getSampleTablePathFromConfig = function(config){
+    if (!CFG_SAMPLE_TABLE_KEY %in% names(config)) stop("Sample table not defined in config") 
+    config[[CFG_SAMPLE_TABLE_KEY]]
+}
+
 #' Read sample annotation from disk
 #'
 #' @param .Object an object of \code{"\linkS4class{Project}"}
 #'
 #' @return an object of \code{"\linkS4class{Project}"}
-.loadSampleAnnotation = function(.Object) {
-    cfg = config(.Object)
-    if (!CFG_SAMPLE_TABLE_KEY %in% names(cfg)) return(.Object) 
-    sampleAnnotationPath = cfg[[CFG_SAMPLE_TABLE_KEY]]
-    if(.safeFileExists(sampleAnnotationPath)){
-        samples = data.table::fread(sampleAnnotationPath)
+.loadSampleAnnotation = function(sampleTablePath) {
+    if(.safeFileExists(sampleTablePath)){
+        samples = data.table::fread(sampleTablePath)
     } else{
-        warning("The sample_table does not exist: ", sampleAnnotationPath)
-        return(.Object)
+        warning("The sample table does not exist: ", sampleTablePath)
+        samples = data.frame()
     }
-    .Object@samples = samples
-    return(.Object)
 }
 
 
