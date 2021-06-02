@@ -4,7 +4,7 @@
 \alias{.loadSampleAnnotation}
 \title{Read sample annotation from disk}
 \usage{
-.loadSampleAnnotation(.Object)
+.loadSampleAnnotation(sampleTablePath)
 }
 \arguments{
 \item{.Object}{an object of \code{"\linkS4class{Project}"}}

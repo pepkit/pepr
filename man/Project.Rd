@@ -4,10 +4,12 @@
 \alias{Project}
 \title{The constructor of a class representing a Portable Encapsulated Project}
 \usage{
-Project(file = NULL, amendments = NULL)
+Project(file = NULL, sampleTable = NULL, amendments = NULL)
 }
 \arguments{
-\item{file}{a character with project configuration yaml file}
+\item{file}{a character specifying a path to a project configuration YAML file}
+
+\item{sampleTable}{a character specifying a path to the sample table path. It's disregarded if the `file` argument is provided.}
 
 \item{amendments}{a character with the amendments names to be activated}
 }
