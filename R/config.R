@@ -255,7 +255,7 @@ setMethod(
 #' @seealso \url{https://pep.databio.org/}
 .loadConfig = function(filename=NULL, amendments=NULL) {
   if (!file.exists(filename)) {
-    stop("Config file found: ", filename)
+    stop("Config file not found: ", filename)
   }
   # Initialize config object
   cfg_data = yaml::yaml.load_file(filename)
