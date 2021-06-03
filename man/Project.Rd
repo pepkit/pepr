@@ -16,7 +16,7 @@ Project(
 
 \item{sampleTable}{a string specifying a path to the sample table. It's disregarded if `file` argument is provided.}
 
-\item{subSampleTables}{a vector of strings specifying a path to the sample table. It's disregarded if `file` argument is provided.}
+\item{subSampleTables}{a vector of strings specifying paths to the subsample tables. It's disregarded if `file` argument is provided.}
 
 \item{amendments}{a string with the amendments names to be activated}
 }

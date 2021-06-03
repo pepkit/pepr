@@ -55,7 +55,7 @@ setMethod("initialize", "Project", function(.Object, ...) {
 #' @param file a string specifying a path to a project configuration YAML file
 #' @param amendments a string with the amendments names to be activated
 #' @param sampleTable a string specifying a path to the sample table. It's disregarded if `file` argument is provided. 
-#' @param subSampleTables a vector of strings specifying a path to the sample table. It's disregarded if `file` argument is provided. 
+#' @param subSampleTables a vector of strings specifying paths to the subsample tables. It's disregarded if `file` argument is provided. 
 #' @examples
 #' projectConfig = system.file("extdata", "example_peps-master",
 #' "example_amendments1", "project_config.yaml", package="pepr")
@@ -110,7 +110,7 @@ setMethod(
 )
 
 
-#' Perform all the sample addribute modifications
+#' Perform all the sample attribute modifications
 #'
 #' @param object an object of \code{"\linkS4class{Project}"} 
 #'

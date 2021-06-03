@@ -2,7 +2,7 @@
 % Please edit documentation in R/project.R
 \name{.modifySamples}
 \alias{.modifySamples}
-\title{Perform all the sample addribute modifications}
+\title{Perform all the sample attribute modifications}
 \usage{
 .modifySamples(object)
 }
@@ -13,5 +13,5 @@
 modified Project object
 }
 \description{
-Perform all the sample addribute modifications
+Perform all the sample attribute modifications
 }
