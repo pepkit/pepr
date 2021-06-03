@@ -136,22 +136,31 @@
     <p>This is a helper that creates the project with empty samples and config slots</p>
     </div>
 
-    <pre class="usage"><span class='fu'>Project</span><span class='op'>(</span>file <span class='op'>=</span> <span class='cn'>NULL</span>, sampleTable <span class='op'>=</span> <span class='cn'>NULL</span>, amendments <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>Project</span><span class='op'>(</span>
+  file <span class='op'>=</span> <span class='cn'>NULL</span>,
+  sampleTable <span class='op'>=</span> <span class='cn'>NULL</span>,
+  subSampleTables <span class='op'>=</span> <span class='cn'>NULL</span>,
+  amendments <span class='op'>=</span> <span class='cn'>NULL</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>file</th>
-      <td><p>a character specifying a path to a project configuration YAML file</p></td>
+      <td><p>a string specifying a path to a project configuration YAML file</p></td>
     </tr>
     <tr>
       <th>sampleTable</th>
-      <td><p>a character specifying a path to the sample table path. It's disregarded if the `file` argument is provided.</p></td>
+      <td><p>a string specifying a path to the sample table. It's disregarded if `file` argument is provided.</p></td>
+    </tr>
+    <tr>
+      <th>subSampleTables</th>
+      <td><p>a vector of strings specifying a path to the sample table. It's disregarded if `file` argument is provided.</p></td>
     </tr>
     <tr>
       <th>amendments</th>
-      <td><p>a character with the amendments names to be activated</p></td>
+      <td><p>a string with the amendments names to be activated</p></td>
     </tr>
     </table>
 

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Function reference • pepr</title>
+<title>Get the sample table from config — .getSampleTablePathFromConfig • pepr</title>
 
 
 <!-- jquery -->
@@ -39,7 +39,8 @@
 
 
 
-<meta property="og:title" content="Function reference" />
+<meta property="og:title" content="Get the sample table from config — .getSampleTablePathFromConfig" />
+<meta property="og:description" content="Get the sample table from config" />
 
 
 
@@ -58,7 +59,7 @@
   </head>
 
   <body data-spy="scroll" data-target="#toc">
-    <div class="container template-reference-index">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -124,151 +125,33 @@
       </header>
 
 <div class="row">
-  <div class="contents col-md-9">
+  <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Reference</h1>
+    <h1>Get the sample table from config</h1>
+    <small class="dont-index">Source: <a href='https://github.com/pepkit/pepr/blob/master/R/utils.R'><code>R/utils.R</code></a></small>
+    <div class="hidden name"><code>dot-getSampleTablePathFromConfig.Rd</code></div>
     </div>
 
-    <table class="ref-index">
+    <div class="ref-description">
+    <p>Get the sample table from config</p>
+    </div>
 
-    <colgroup>
-      
-      <col class="alias" />
-      <col class="title" />
-    </colgroup>
+    <pre class="usage"><span class='fu'>.getSampleTablePathFromConfig</span><span class='op'>(</span><span class='va'>config</span><span class='op'>)</span></pre>
 
-    <tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-pepr-api" class="hasAnchor"><a href="#section-pepr-api" class="anchor"></a>pepr API</h2>
-          <p class="section-desc"><p>Exported functions of <code>pepr</code>.</p></p>
-        </th>
-      </tr>
-      
-      
-    </tbody><tbody>
-      
-      
-      <tr>
-        
-        <td>
-          <p><code><a href="Config-class.html">Config()</a></code> </p>
-        </td>
-        <td><p>Config objects and specialized list obejcts and expand string attributes</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="Project-class.html">Project-class</a></code> </p>
-        </td>
-        <td><p>Portable Encapsulated Project object</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="Project.html">Project()</a></code> </p>
-        </td>
-        <td><p>The constructor of a class representing a Portable Encapsulated Project</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="activateAmendments.html">activateAmendments()</a></code> </p>
-        </td>
-        <td><p>Activate amendments in objects of <code>"Project"</code></p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="checkSection.html">checkSection()</a></code> </p>
-        </td>
-        <td><p>Check for existence of a section in the Project config</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="config.html">config()</a></code> </p>
-        </td>
-        <td><p>Extract <code>"Project"</code></p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="fetchSamples.html">fetchSamples()</a></code> </p>
-        </td>
-        <td><p>Collect samples fulfilling the specified requirements</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="getSample.html">getSample()</a></code> </p>
-        </td>
-        <td><p>Extract samples</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="getSubsample.html">getSubsample()</a></code> </p>
-        </td>
-        <td><p>Extract subsamples</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="listAmendments.html">listAmendments()</a></code> </p>
-        </td>
-        <td><p>List amendments</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="makeSectionsAbsolute.html">makeSectionsAbsolute()</a></code> </p>
-        </td>
-        <td><p>Make selected sections absolute using config path</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="pepr.html">pepr</a></code> </p>
-        </td>
-        <td><p>pepr</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="sampleTable.html">sampleTable()</a></code> </p>
-        </td>
-        <td><p>View samples in the objects of <code>"Project"</code></p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="select-config.html">`[`(<i>&lt;Config&gt;</i>)</a></code> <code><a href="select-config.html">`[[`(<i>&lt;Config&gt;</i>)</a></code> <code><a href="select-config.html">`$`(<i>&lt;Config&gt;</i>)</a></code> </p>
-        </td>
-        <td><p>Access <code>"Config"</code> object elements</p></td>
-      </tr>
-    </tbody><tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-utilities" class="hasAnchor"><a href="#section-utilities" class="anchor"></a>utilities</h2>
-          <p class="section-desc"><p>Extra non-exported utility functions.</p></p>
-        </th>
-      </tr>
-      
-      
-    </tbody><tbody>
-      
-      
-      <tr>
-        
-        <td>
-          <p><code><a href="dot-strformat.html">.strformat()</a></code> </p>
-        </td>
-        <td><p>Format a string like python's format method</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="dot-expandPath.html">.expandPath()</a></code> </p>
-        </td>
-        <td><p>Expand system path</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="dot-printNestedList.html">.printNestedList()</a></code> </p>
-        </td>
-        <td><p>Print a nested list</p></td>
-      </tr>
-    </tbody>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>config</th>
+      <td><p>an object of <code>"<a href='Config-class.html'>Config</a>"</code></p></td>
+    </tr>
     </table>
-  </div>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>a string which specifies a path to the sample table file</p>
+
+  </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
       <h2 data-toc-skip>Contents</h2>
