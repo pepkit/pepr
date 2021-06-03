@@ -379,11 +379,10 @@ setMethod(
         # get a copy of samples to get the dimensions
         colLen = dim(sampleTable(.Object))[1]
         for (iConst in seq_along(constants)) {
-            # create a one column data.table and appand it to the current one
+            # create a one column data.table and append it to the current one
             if(!constantsNames[iConst] %in% colnames(sampleTable(.Object))) {
                 tempDT = data.table::data.table(
-                    matrix(matrix(NA, ncol=1, nrow=colLen)))
-                tempDT[, 1] = list(constants[[iConst]])
+                    matrix(matrix(list(constants[[iConst]]), ncol=1, nrow=colLen)))
                 names(tempDT) = constantsNames[iConst]
                 .Object@samples = cbind(.Object@samples, tempDT)
             }
