@@ -357,3 +357,23 @@ fetchSamples = function(samples, attr=NULL, func=NULL, action="include") {
   return(TRUE)
 }
 
+
+#' Get the sample table from config
+#'
+#' @param config an object of \code{"\linkS4class{Config}"}
+#'
+#' @return a string which specifies a path to the sample table file
+.getSampleTablePathFromConfig = function(config){
+  if (!CFG_SAMPLE_TABLE_KEY %in% names(config)) stop("Sample table not defined in config") 
+  config[[CFG_SAMPLE_TABLE_KEY]]
+}
+
+#' Get the subsample tables from config
+#'
+#' @param config an object of \code{"\linkS4class{Config}"}
+#'
+#' @return  string/vector of strings/NULL depending on the configuration
+.getSubSampleTablePathFromConfig = function(config){
+  if (!CFG_SUBSAMPLE_TABLE_KEY %in% names(config)) return(NULL)
+  config[[CFG_SUBSAMPLE_TABLE_KEY]]
+}

@@ -1,3 +1,8 @@
+
+# Project class definition ------------------------------------------------
+
+
+
 #' Portable Encapsulated Project object
 #'
 #' Provides an in-memory representation and functions to access project
@@ -18,6 +23,9 @@ setClass("Project",
          ))
 
 
+# Project class methods ---------------------------------------------------
+
+
 setMethod("initialize", "Project", function(.Object, ...) {
     .Object = methods::callNextMethod(.Object)  # calls generic initialize
     ellipsis <- list(...)
@@ -33,6 +41,7 @@ setMethod("initialize", "Project", function(.Object, ...) {
         # if no project config file path provided, just read the sample table inm if avaialable
         if (!is.null(ellipsis$sampleTable)){
             .Object@samples = .loadSampleAnnotation(sampleTablePath=ellipsis$sampleTable)
+            .Object = .mergeAttrs(.Object, ellipsis$subSampleTables)
         }
     }
     return(.Object)
@@ -43,16 +52,17 @@ setMethod("initialize", "Project", function(.Object, ...) {
 #'
 #' This is a helper that creates the project with empty samples and config slots
 #'
-#' @param file a character specifying a path to a project configuration YAML file
-#' @param amendments a character with the amendments names to be activated
-#' @param sampleTable a character specifying a path to the sample table path. It's disregarded if the `file` argument is provided. 
+#' @param file a string specifying a path to a project configuration YAML file
+#' @param amendments a string with the amendments names to be activated
+#' @param sampleTable a string specifying a path to the sample table. It's disregarded if `file` argument is provided. 
+#' @param subSampleTables a vector of strings specifying a path to the sample table. It's disregarded if `file` argument is provided. 
 #' @examples
 #' projectConfig = system.file("extdata", "example_peps-master",
 #' "example_amendments1", "project_config.yaml", package="pepr")
 #' p=Project(projectConfig)
 #' @export
-Project = function(file = NULL, sampleTable = NULL, amendments = NULL) {
-    methods::new("Project", file = file, amendments = amendments, sampleTable = sampleTable)
+Project = function(file = NULL, sampleTable = NULL, subSampleTables = NULL, amendments = NULL) {
+    methods::new("Project", file = file, amendments = amendments, sampleTable = sampleTable, subSampleTables = subSampleTables)
 }
 
 
@@ -116,7 +126,10 @@ setMethod(
         object = .appendAttrs(object)
         object = .duplicateAttrs(object)
         object = .implyAttrs(object)
-        object = .mergeAttrs(object)
+        object = .mergeAttrs(
+            object, 
+            .getSubSampleTablePathFromConfig(config(object))
+        )
         object = .deriveAttrs(object)
         return(object)
     }
@@ -162,9 +175,9 @@ setMethod(
 )
 
 
-#' Extract samples
+#' Extract subsamples
 #' 
-#' This method extracts the samples
+#' This method extracts the subsamples
 #'
 #' @param .Object An object of Project class
 #'
@@ -199,8 +212,8 @@ setMethod(
     definition = function(.Object, sampleName, subsampleName) {
         if (is.null(.Object@samples$subsample_name))
             stop(
-                "There is no subsample_name attribute in the subannotation", 
-                " table, therefore this method cannot be called."
+                "There is no subsample_name attribute in the subsample table, ", 
+                " therefore this method cannot be called."
             )
         sampleNames = unlist(.Object@samples$sample_name)
         rowNumber = which(sampleNames == sampleName)
@@ -326,7 +339,7 @@ setMethod(
     }
 )
 
-# sample modifiers --------------------------------------------------------
+# Sample modifiers --------------------------------------------------------
 
 #' Remove attributes across all the samples
 #'
@@ -469,11 +482,6 @@ setMethod(
 }
 
 
-.getSampleTablePathFromConfig = function(config){
-    if (!CFG_SAMPLE_TABLE_KEY %in% names(config)) stop("Sample table not defined in config") 
-    config[[CFG_SAMPLE_TABLE_KEY]]
-}
-
 #' Read sample table from disk
 #'
 #' @param sampleTablePath a character string indicating a path to the sample table
@@ -497,11 +505,11 @@ setMethod(
 #' @return an object of \code{"\linkS4class{Project}"}
 .loadSubsampleAnnotation = function(.Object, path) {
     if (.safeFileExists(path)) {
-        samplesSubannotation = data.table::fread(path)
+        subsamplesTable = data.table::fread(path)
     } else{
-        samplesSubannotation = data.table::data.table()
+        subsamplesTable = data.table::data.table()
     }
-    subNames = unique(samplesSubannotation$sample_name)
+    subNames = unique(subsamplesTable$sample_name)
     samples = sampleTable(.Object)
     samples = .listifyDF(samples)
     rowNum = nrow(samples)
@@ -509,9 +517,9 @@ setMethod(
     # into the samples data.table as a column. This way the "cells"
     # in the samples table can consist of multiple elements
     for (iName in subNames) {
-        whichNames = which(samplesSubannotation$sample_name == iName)
-        subTable = samplesSubannotation[whichNames,]
-        dropCol = which(names(samplesSubannotation[whichNames,]) == "sample_name")
+        whichNames = which(subsamplesTable$sample_name == iName)
+        subTable = subsamplesTable[whichNames,]
+        dropCol = which(names(subsamplesTable[whichNames,]) == "sample_name")
         subTable = subset(subTable, select = -dropCol)
         colList = vector("list", rowNum)
         for (iColumn in seq_len(ncol(subTable))) {
@@ -545,13 +553,12 @@ setMethod(
 #' Merge samples defined in sample table with ones in subsample table(s)
 #'
 #' @param .Object an object of \code{"\linkS4class{Project}"}
+#' @param subsampleAannotationPaths a vector of strings specifying the paths to sample 
 #'
 #' @return an object of \code{"\linkS4class{Project}"}
-.mergeAttrs = function(.Object){
-    cfg = config(.Object)
-    if (!CFG_SUBSAMPLE_TABLE_KEY %in% names(cfg)) return(.Object)
-    sampleSubannotationPath = cfg[[CFG_SUBSAMPLE_TABLE_KEY]]
-    for(p in sampleSubannotationPath){
+.mergeAttrs = function(.Object, subsampleAannotationPaths){
+    if(is.null(subsampleAannotationPaths)) return(.Object)
+    for(p in subsampleAannotationPaths){
         .Object = .loadSubsampleAnnotation(.Object, p)    
     }
     return(.Object)
