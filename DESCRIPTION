@@ -17,7 +17,8 @@ Imports:
     pryr,
     data.table,
     methods,
-    RCurl
+    RCurl,
+    curl
 Suggests:
     knitr,
     testthat,
