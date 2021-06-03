@@ -2,16 +2,16 @@
 % Please edit documentation in R/project.R
 \name{.loadSampleAnnotation}
 \alias{.loadSampleAnnotation}
-\title{Read sample annotation from disk}
+\title{Read sample table from disk}
 \usage{
 .loadSampleAnnotation(sampleTablePath)
 }
 \arguments{
-\item{.Object}{an object of \code{"\linkS4class{Project}"}}
+\item{sampleTablePath}{a character string indicating a path to the sample table}
 }
 \value{
-an object of \code{"\linkS4class{Project}"}
+an data.frame with samples; one sample per row
 }
 \description{
-Read sample annotation from disk
+Read sample table from disk
 }

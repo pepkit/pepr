@@ -474,11 +474,11 @@ setMethod(
     config[[CFG_SAMPLE_TABLE_KEY]]
 }
 
-#' Read sample annotation from disk
+#' Read sample table from disk
 #'
-#' @param .Object an object of \code{"\linkS4class{Project}"}
+#' @param sampleTablePath a character string indicating a path to the sample table
 #'
-#' @return an object of \code{"\linkS4class{Project}"}
+#' @return an data.frame with samples; one sample per row
 .loadSampleAnnotation = function(sampleTablePath) {
     if(.safeFileExists(sampleTablePath)){
         samples = data.table::fread(sampleTablePath)
