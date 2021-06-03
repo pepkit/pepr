@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Read sample table from disk — .loadSampleAnnotation • pepr</title>
+<title>Determine whether the string is a valid URL — .isValidUrl • pepr</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="Read sample table from disk — .loadSampleAnnotation" />
-<meta property="og:description" content="Read sample table from disk" />
+<meta property="og:title" content="Determine whether the string is a valid URL — .isValidUrl" />
+<meta property="og:description" content="Determine whether the string is a valid URL" />
 
 
 
@@ -127,29 +127,29 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Read sample table from disk</h1>
-    <small class="dont-index">Source: <a href='https://github.com/pepkit/pepr/blob/master/R/project.R'><code>R/project.R</code></a></small>
-    <div class="hidden name"><code>dot-loadSampleAnnotation.Rd</code></div>
+    <h1>Determine whether the string is a valid URL</h1>
+    <small class="dont-index">Source: <a href='https://github.com/pepkit/pepr/blob/master/R/utils.R'><code>R/utils.R</code></a></small>
+    <div class="hidden name"><code>dot-isValidUrl.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Read sample table from disk</p>
+    <p>Determine whether the string is a valid URL</p>
     </div>
 
-    <pre class="usage"><span class='fu'>.loadSampleAnnotation</span><span class='op'>(</span><span class='va'>sampleTablePath</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>.isValidUrl</span><span class='op'>(</span><span class='va'>str</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>sampleTablePath</th>
-      <td><p>a character string indicating a path to the sample table</p></td>
+      <th>str</th>
+      <td><p>string to inspect</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>an data.frame with samples; one sample per row</p>
+    <p>logical indicating whether a string is a valid URL</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
