@@ -75,14 +75,6 @@ cfgSubtableMulti = system.file(
   package = "pepr"
 )
 
-cfgBioc = system.file(
-    "extdata",
-    paste0("example_peps-",branch),
-    "example_BiocProject",
-    "project_config.yaml",
-    package = "pepr"
-)
-
 configAppend = system.file(
     "extdata",
     paste0("example_peps-",branch),
@@ -141,10 +133,6 @@ test_that("Project throws errors", {
 
 test_that("Project creates an object of class Project", {
   expect_is(Project(cfg), 'Project')
-})
-
-test_that("Project successfully loads a config with bioconductor section", {
-    expect_true(is(Project(cfgBioc), "Project"))
 })
 
 test_that("empty Project can be created", {
