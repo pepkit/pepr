@@ -37,7 +37,7 @@ These PEPs extend the PEP2.0.0 framework and may include additional fields used 
 - example_BiocProject: defines a `bioconductor` section that is used by [`BiocProject`] to link PEPs with Bioconductor
   - [example_BiocProject](example_BiocProject)
   - [example_BiocProject_exceptions](example_BiocProject_exceptions)
-  - [example_BiocProject_remote](example_BiocProject_remote) 
+  - [example_BiocProject_remote](example_BiocProject_remote)
 ---
 ## Read PEPs in Python
 
