@@ -89,7 +89,7 @@
       <h1 data-toc-skip>Getting Started with pepr</h1>
                         <h4 class="author">Nathan Sheffield</h4>
             
-            <h4 class="date">2021-06-03</h4>
+            <h4 class="date">2021-06-04</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/pepkit/pepr/blob/master/vignettes/gettingStarted.Rmd"><code>vignettes/gettingStarted.Rmd</code></a></small>
       <div class="hidden name"><code>gettingStarted.Rmd</code></div>
@@ -129,29 +129,26 @@
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">p</span> <span class="op">=</span> <span class="fu">pepr</span><span class="fu">::</span><span class="fu"><a href="../reference/Project.html">Project</a></span><span class="op">(</span>file<span class="op">=</span><span class="va">projectConfigFile</span><span class="op">)</span></code></pre></div>
 <pre><code>## Loading config file: /Users/runner/work/_temp/Library/pepr/extdata/example_peps-master/example_basic/project_config.yaml</code></pre>
-<pre><code>## Warning in readLines(con): incomplete final line found on '/Users/
-## runner/work/_temp/Library/pepr/extdata/example_peps-master/example_basic/
-## project_config.yaml'</code></pre>
 <p>That’s it! You’ve now have a <code>Project</code> object, <em>p</em>, to interact with in <code>R</code>.</p>
 </div>
 <div id="interfacing-with-your-peprproject-object-in-r" class="section level2">
 <h2 class="hasAnchor">
 <a href="#interfacing-with-your-peprproject-object-in-r" class="anchor"></a>Interfacing with your <code>pepr::Project</code> object in R</h2>
 <p>Now you can interface with that project object to grab both sample-level and project-level metadata. Here’s how you can access the metadata. If you just run the <code>show()</code> function on your object, you’ll get a simple report telling you a few basic stats, like where the project came from and how many samples it has:</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">p</span></code></pre></div>
 <pre><code>## PEP project object. Class:  Project
 ##   file:  
 ## /Users/runner/work/_temp/Library/pepr/extdata/example_peps-master/example_basic/project_config.yaml
 ##   samples:  2</code></pre>
 <p>To get the sample table out of the project, you use the <code>samples()</code> function:</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/sampleTable.html">sampleTable</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span>
 <span class="co">##    sample_name      protocol                file</span>
 <span class="co">## 1:      frog_1 anySampleType data/frog1_data.txt</span>
 <span class="co">## 2:      frog_2 anySampleType data/frog2_data.txt</span></code></pre></div>
 <p>And you can also access the project configuration metadata with the <code><a href="../reference/config.html">config()</a></code> function:</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/config.html">config</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span></code></pre></div>
 <pre><code>## Config object. Class: Config
 ##  pep_version: 2.0.0

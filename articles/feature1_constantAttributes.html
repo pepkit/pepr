@@ -89,7 +89,7 @@
       <h1 data-toc-skip>Sample modifiers in pepr: append</h1>
                         <h4 class="author">Michal Stolarczyk</h4>
             
-            <h4 class="date">2021-06-03</h4>
+            <h4 class="date">2021-06-04</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/pepkit/pepr/blob/master/vignettes/feature1_constantAttributes.Rmd"><code>vignettes/feature1_constantAttributes.Rmd</code></a></small>
       <div class="hidden name"><code>feature1_constantAttributes.Rmd</code></div>
@@ -190,10 +190,7 @@ SINGLE
 <h2 class="hasAnchor">
 <a href="#solution" class="anchor"></a>Solution</h2>
 <p>As the name suggests the attributes in the specified attributes (here: <code>read_type</code>) can be defined as constant ones. The way how this process is carried out is indicated explicitly in the <code>project_config.yaml</code> file (presented below). The name of the column is determined in the <code>sample_modifiers.append</code> key-value pair. Note that definition of more than one constant attribute is possible.</p>
-<pre><code>  Registered S3 method overwritten by 'pryr':
-    method      from
-    print.bytes Rcpp
-   pep_version: 2.0.0
+<pre><code>   pep_version: 2.0.0
    sample_table: sample_table.csv
    sample_modifiers:
       append:
@@ -263,15 +260,14 @@ frog
 <div id="code" class="section level2">
 <h2 class="hasAnchor">
 <a href="#code" class="anchor"></a>Code</h2>
-<p>Load <code>pepr</code> and read in the project metadata by specifying the path to the <code>project_config.yaml</code>:</p>
+<p>Read in the project metadata by specifying the path to the <code>project_config.yaml</code>:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">pepr</span><span class="op">)</span>
-<span class="va">projectConfig</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span>
-<span class="st">"extdata"</span>,
-<span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"example_peps-"</span>, <span class="va">branch</span><span class="op">)</span>,
-<span class="st">"example_append"</span>,
-<span class="st">"project_config.yaml"</span>,
-package <span class="op">=</span> <span class="st">"pepr"</span>
+<code class="sourceCode R"><span class="va">projectConfig</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span>
+  <span class="st">"extdata"</span>,
+  <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"example_peps-"</span>, <span class="va">branch</span><span class="op">)</span>, 
+  <span class="st">"example_append"</span>, 
+  <span class="st">"project_config.yaml"</span>, 
+  package <span class="op">=</span> <span class="st">"pepr"</span>
 <span class="op">)</span>
 <span class="va">p</span> <span class="op">=</span> <span class="fu"><a href="../reference/Project.html">Project</a></span><span class="op">(</span><span class="va">projectConfig</span><span class="op">)</span>
 <span class="co">#&gt; Loading config file: /Users/runner/work/_temp/Library/pepr/extdata/example_peps-master/example_append/project_config.yaml</span></code></pre></div>
