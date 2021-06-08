@@ -6,19 +6,21 @@
 \usage{
 Project(
   file = NULL,
-  sampleTable = NULL,
-  subSampleTables = NULL,
-  amendments = NULL
+  amendments = NULL,
+  sampleTableIndex = SAMPLE_NAME_ATTR,
+  subSampleTableIndex = SUBSAMPLE_NAME_ATTR
 )
 }
 \arguments{
 \item{file}{a string specifying a path to a project configuration YAML file}
 
-\item{sampleTable}{a string specifying a path to the sample table. It's disregarded if `file` argument is provided.}
-
-\item{subSampleTables}{a vector of strings specifying paths to the subsample tables. It's disregarded if `file` argument is provided.}
-
 \item{amendments}{a string with the amendments names to be activated}
+
+\item{sampleNameAttr}{a string indicating the sample attribute that is used
+to index the sample table}
+
+\item{subSampleNameAttr}{a string indicating the sample attribute that is used
+to index the sample table}
 }
 \description{
 This is a helper that creates the project with empty samples and config slots

@@ -50,6 +50,7 @@ setMethod("initialize", "Project", function(.Object, ...) {
         } else {
             # provided 'file' seems to be a sample table
             .Object@samples = .loadSampleAnnotation(sampleTablePath=ellipsis$file)
+            .Object = .autoMergeDuplicatedNames(.Object)
         }
     } 
     return(.Object)
@@ -136,6 +137,7 @@ setMethod(
         object = .appendAttrs(object)
         object = .duplicateAttrs(object)
         object = .implyAttrs(object)
+        object = .autoMergeDuplicatedNames(object)
         object = .mergeAttrs(
             object, 
             .getSubSampleTablePathFromConfig(config(object))
@@ -570,5 +572,40 @@ setMethod(
     for(p in subsampleAannotationPaths){
         .Object = .loadSubsampleAnnotation(.Object, p)    
     }
+    return(.Object)
+}
+
+
+#' Merge samples with identical names
+#' 
+#' If sample table specifies samples with non-unique names, try to merge these samples
+#'
+#' @param .Object an object of \code{"\linkS4class{Project}"}
+#'
+#' @return an object of \code{"\linkS4class{Project}"}
+.autoMergeDuplicatedNames = function(.Object) {
+    s = sampleTable(.Object)
+    sampleNames = s[[.Object@sampleNameAttr]]
+    dups = duplicated(sampleNames)
+    if(!any(dups)) return(.Object)
+    duplicatedSampleNames = sampleNames[which(dups)]
+    rowsWithDuplicates = which(
+        s[[.Object@sampleNameAttr]] %in% duplicatedSampleNames)
+    dupRows = s[rowsWithDuplicates, ]
+    combinedList = list()
+    # create a list of list that combined rows with duplicated sample names 
+    for(duplicatedSampleName in duplicatedSampleNames) {
+        toCombine = s[which(sampleNames == duplicatedSampleName), ]
+        combinedList[[duplicatedSampleName]] = apply(toCombine, 2, function(x) {
+            return(list(unique(x)))
+        })
+    }
+    # remove rows that include duplicates
+    s = s[-rowsWithDuplicates, ]    
+    # insert the combined rows
+    for(combinedRow in combinedList) {
+        s = rbind(s, combinedRow)
+    }
+    .Object@samples = s
     return(.Object)
 }
