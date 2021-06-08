@@ -136,7 +136,6 @@ setMethod(
         object = .appendAttrs(object)
         object = .duplicateAttrs(object)
         object = .implyAttrs(object)
-        object = .autoMergeDuplicatedNames(object)
         object = .mergeAttrs(
             object, 
             .getSubSampleTablePathFromConfig(config(object))
