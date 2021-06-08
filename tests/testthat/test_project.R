@@ -27,22 +27,6 @@ sampleTableSubsamples = system.file(
   package = "pepr"
 )
 
-subsampleTableSubsamples = system.file(
-  "extdata",
-  paste0("example_peps-",branch),
-  "example_subsamples",
-  "subsample_table.csv",
-  package = "pepr"
-)
-
-subsampleTableSubsamples1 = system.file(
-  "extdata",
-  paste0("example_peps-",branch),
-  "example_subsamples",
-  "subsample_table1.csv",
-  package = "pepr"
-)
-
 f = yaml::yaml.load_file(system.file(
   "extdata",
   paste0("example_peps-",branch),
@@ -127,10 +111,6 @@ configRemove = system.file(
 
 context("Project object creation")
 
-test_that("Project throws errors", {
-  expect_error(Project(file = Project(cfg)@config$sample_table))
-})
-
 test_that("Project creates an object of class Project", {
   expect_is(Project(cfg), 'Project')
 })
@@ -144,14 +124,6 @@ context("Project object creation -- no config")
 test_that("Project can be instantiated with no config", {
   expect_is(Project(sampleTable = sampleTableBasic), "Project")
 })
-
-test_that("Project with subsamples can be instantiated with no config", {
-  expect_is(Project(
-    sampleTable = sampleTableBasic, 
-    subSampleTables = c(subsampleTableSubsamples, subsampleTableSubsamples1)
-    ), "Project")
-})
-
 
 context("Project object creation -- remote sample table")
 
