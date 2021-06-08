@@ -13,13 +13,19 @@
 #' @slot file character vector path to config file on disk.
 #' @slot samples a data table object holding the sample metadata
 #' @slot config a list object holding contents of the config file
+#' @slot sampleNameAttr a string indicating the sample attribute that is used
+#'  to index the sample table
+#' @slot subSampleNameAttr a string indicating the sample attribute that is used
+#'  to index the sample table
 #'
 #' @export
 setClass("Project",
          slots = c(
              file = "character",
              samples = "data.frame",
-             config = "list"
+             config = "list",
+             sampleNameAttr = "character",
+             subSampleNameAttr = "character"
          ))
 
 
@@ -29,21 +35,23 @@ setClass("Project",
 setMethod("initialize", "Project", function(.Object, ...) {
     .Object = methods::callNextMethod(.Object)  # calls generic initialize
     ellipsis <- list(...)
+    .Object@sampleNameAttr = ellipsis$sampleTableIndex
+    .Object@subSampleNameAttr = ellipsis$subSampleTableIndex
     if (!is.null(ellipsis$file)) {
-        # check if file path provided
-        .Object@file = .makeAbsPath(ellipsis$file, parent = path.expand(getwd()))
-        # instantiate config object and stick it in the config slot
-        .Object@config = Config(.Object@file, ellipsis$amendments)
-        sampleTablePath = .getSampleTablePathFromConfig(config=config(.Object))
-        .Object@samples = .loadSampleAnnotation(sampleTablePath=sampleTablePath)
-        .Object = .modifySamples(.Object)
-    } else {
-        # if no project config file path provided, just read the sample table inm if avaialable
-        if (!is.null(ellipsis$sampleTable)){
-            .Object@samples = .loadSampleAnnotation(sampleTablePath=ellipsis$sampleTable)
-            .Object = .mergeAttrs(.Object, ellipsis$subSampleTables)
+        # check if 'file' path provided
+        if(.isCfg(ellipsis$file)) {
+            # provided 'file' seems to be a config
+            .Object@file = .makeAbsPath(ellipsis$file, parent = path.expand(getwd()))
+            # instantiate config object and stick it in the config slot
+            .Object@config = Config(.Object@file, ellipsis$amendments)
+            sampleTablePath = .getSampleTablePathFromConfig(config=config(.Object))
+            .Object@samples = .loadSampleAnnotation(sampleTablePath=sampleTablePath)
+            .Object = .modifySamples(.Object)
+        } else {
+            # provided 'file' seems to be a sample table
+            .Object@samples = .loadSampleAnnotation(sampleTablePath=ellipsis$file)
         }
-    }
+    } 
     return(.Object)
 })
 
@@ -54,15 +62,17 @@ setMethod("initialize", "Project", function(.Object, ...) {
 #'
 #' @param file a string specifying a path to a project configuration YAML file
 #' @param amendments a string with the amendments names to be activated
-#' @param sampleTable a string specifying a path to the sample table. It's disregarded if `file` argument is provided. 
-#' @param subSampleTables a vector of strings specifying paths to the subsample tables. It's disregarded if `file` argument is provided. 
+#' @param sampleNameAttr a string indicating the sample attribute that is used
+#'  to index the sample table
+#' @param subSampleNameAttr a string indicating the sample attribute that is used
+#'  to index the sample table
 #' @examples
 #' projectConfig = system.file("extdata", "example_peps-master",
 #' "example_amendments1", "project_config.yaml", package="pepr")
 #' p=Project(projectConfig)
 #' @export
-Project = function(file = NULL, sampleTable = NULL, subSampleTables = NULL, amendments = NULL) {
-    methods::new("Project", file = file, amendments = amendments, sampleTable = sampleTable, subSampleTables = subSampleTables)
+Project = function(file = NULL, amendments = NULL, sampleTableIndex=SAMPLE_NAME_ATTR, subSampleTableIndex=SUBSAMPLE_NAME_ATTR) {
+    methods::new("Project", file = file, amendments = amendments, sampleTableIndex = sampleTableIndex, subSampleTableIndex = subSampleTableIndex)
 }
 
 
@@ -126,6 +136,7 @@ setMethod(
         object = .appendAttrs(object)
         object = .duplicateAttrs(object)
         object = .implyAttrs(object)
+        object = .autoMergeDuplicatedNames(object)
         object = .mergeAttrs(
             object, 
             .getSubSampleTablePathFromConfig(config(object))
@@ -165,7 +176,7 @@ setMethod(
     signature(.Object = "Project",
               sampleName = "character"),
     definition = function(.Object, sampleName) {
-        sampleNames = unlist(.Object@samples$sample_name)
+        sampleNames = unlist(.Object@samples[[.Object@sampleNameAttr]])
         rowNumber = which(sampleNames == sampleName)
         if (length(rowNumber) == 0)
             stop("Such sample name does not exist.")
@@ -210,16 +221,16 @@ setMethod(
         subsampleName = "character"
     ),
     definition = function(.Object, sampleName, subsampleName) {
-        if (is.null(.Object@samples$subsample_name))
+        if (is.null(.Object@samples[[.Object@subSampleNameAttr]]))
             stop(
                 "There is no subsample_name attribute in the subsample table, ", 
                 " therefore this method cannot be called."
             )
-        sampleNames = unlist(.Object@samples$sample_name)
+        sampleNames = unlist(.Object@samples[[.Object@sampleNameAttr]])
         rowNumber = which(sampleNames == sampleName)
         if (length(rowNumber) == 0)
             stop("Such sample name does not exist.")
-        subsampleNames = .Object@samples$subsample_name[[rowNumber]]
+        subsampleNames = .Object@samples[[.Object@subSampleNameAttr]][[rowNumber]]
         sampleNumber = which(subsampleNames == subsampleName)
         if (length(sampleNumber) == 0)
             stop("Such sample and sub sample name combination does not exist.")
@@ -288,7 +299,7 @@ setMethod(
 #' package = "pepr")
 #' p = Project(file = projectConfig)
 #' availAmendments = listAmendments(p)
-#' activateAmendments(p,availAmendments[1])
+#' activateAmendments(p, availAmendments[1])
 #' @export
 setGeneric("activateAmendments", function(.Object, amendments)
     standardGeneric("activateAmendments"))
@@ -508,7 +519,7 @@ setMethod(
     } else{
         subsamplesTable = data.table::data.table()
     }
-    subNames = unique(subsamplesTable$sample_name)
+    subNames = unique(subsamplesTable[[.Object@sampleNameAttr]])
     samples = sampleTable(.Object)
     samples = .listifyDF(samples)
     rowNum = nrow(samples)
@@ -516,9 +527,9 @@ setMethod(
     # into the samples data.table as a column. This way the "cells"
     # in the samples table can consist of multiple elements
     for (iName in subNames) {
-        whichNames = which(subsamplesTable$sample_name == iName)
+        whichNames = which(subsamplesTable[[.Object@sampleNameAttr]] == iName)
         subTable = subsamplesTable[whichNames,]
-        dropCol = which(names(subsamplesTable[whichNames,]) == "sample_name")
+        dropCol = which(names(subsamplesTable[whichNames,]) == .Object@sampleNameAttr)
         subTable = subset(subTable, select = -dropCol)
         colList = vector("list", rowNum)
         for (iColumn in seq_len(ncol(subTable))) {
@@ -531,7 +542,7 @@ setMethod(
             }
             # The column exists
             whichColSamples = which(names(samples) == colName)
-            whichRowSamples = which(samples$sample_name == iName)
+            whichRowSamples = which(samples[[.Object@sampleNameAttr]] == iName)
             if(length(whichRowSamples) < 1){
                 warning("No samples named '", iName, "'")
             } else {

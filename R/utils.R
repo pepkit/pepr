@@ -377,3 +377,27 @@ fetchSamples = function(samples, attr=NULL, func=NULL, action="include") {
   if (!CFG_SUBSAMPLE_TABLE_KEY %in% names(config)) return(NULL)
   config[[CFG_SUBSAMPLE_TABLE_KEY]]
 }
+
+#' Config file or annotation file
+#' 
+#' Determine if the input file seems to be a project
+#'  config file (based on the file extension).
+#'
+#' @param filePath a string to examine
+#'
+#' @return a boolean, TRUE if indicating the path seems to be pointing to a config, 
+#'  or FALSE if the path seems to be pointing to an annotation file.
+.isCfg = function(filePath){
+  if (endsWith(tolower(filePath), ".yaml") || endsWith(tolower(filePath), ".yml"))
+    return(TRUE)
+  if (endsWith(tolower(filePath), ".csv") || endsWith(tolower(filePath), ".tsv"))
+    return(FALSE)
+  stop("File path does not point to an annotation or a config: ", filePath)
+}
+
+
+
+
+
+
+
