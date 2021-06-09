@@ -151,7 +151,7 @@ test_that("Project can be instantiated with a remote sample table", {
 context("Nonexistant init files")
 
 test_that("Project constructor throws errors if nonexistant init files are provided", {
-  expect_error(Project(file = "test.csv"))
+  expect_warning(Project(file = "test.csv"))
   expect_error(Project(file = "test.yaml"))
 })
 
