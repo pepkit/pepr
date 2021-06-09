@@ -16,10 +16,10 @@ Project(
 
 \item{amendments}{a string with the amendments names to be activated}
 
-\item{sampleNameAttr}{a string indicating the sample attribute that is used
+\item{sampleTableIndex}{a string indicating the sample attribute that is used
 to index the sample table}
 
-\item{subSampleNameAttr}{a string indicating the sample attribute that is used
+\item{subSampleTableIndex}{a string indicating the sample attribute that is used
 to index the sample table}
 }
 \description{

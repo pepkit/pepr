@@ -63,9 +63,9 @@ setMethod("initialize", "Project", function(.Object, ...) {
 #'
 #' @param file a string specifying a path to a project configuration YAML file
 #' @param amendments a string with the amendments names to be activated
-#' @param sampleNameAttr a string indicating the sample attribute that is used
+#' @param sampleTableIndex a string indicating the sample attribute that is used
 #'  to index the sample table
-#' @param subSampleNameAttr a string indicating the sample attribute that is used
+#' @param subSampleTableIndex a string indicating the sample attribute that is used
 #'  to index the sample table
 #' @examples
 #' projectConfig = system.file("extdata", "example_peps-master",
