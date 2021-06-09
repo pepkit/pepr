@@ -589,6 +589,13 @@ setMethod(
     dups = duplicated(sampleNames)
     if(!any(dups)) return(.Object)
     duplicatedSampleNames = sampleNames[which(dups)]
+    if(!is.null(.getSubSampleTablePathFromConfig(config(.Object)))) 
+        stop(paste0(
+            "Duplicated sample names were found (", 
+            duplicatedSampleNames, 
+            ") and subsample_table is specified in the config. ", 
+            "You may use either auto-merging or subsample_table-based merging."
+        ))
     rowsWithDuplicates = which(
         s[[.Object@sampleNameAttr]] %in% duplicatedSampleNames)
     dupRows = s[rowsWithDuplicates, ]
