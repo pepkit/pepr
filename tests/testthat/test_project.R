@@ -35,6 +35,23 @@ f = yaml::yaml.load_file(system.file(
   package = "pepr"
 ))
 
+cfgAutomerge = system.file(
+  "extdata",
+  paste0("example_peps-",branch),
+  "example_automerge",
+  "project_config.yaml",
+  package = "pepr"
+)
+
+cfgAutomergeSubtable = system.file(
+  "extdata",
+  paste0("example_peps-",branch),
+  "example_subtable_automerge",
+  "project_config.yaml",
+  package = "pepr"
+)
+
+
 cfgAmend = system.file(
   "extdata",
   paste0("example_peps-",branch),
@@ -122,13 +139,23 @@ test_that("empty Project can be created", {
 context("Project object creation -- no config")
 
 test_that("Project can be instantiated with no config", {
-  expect_is(Project(sampleTable = sampleTableBasic), "Project")
+  expect_is(Project(file = sampleTableBasic), "Project")
 })
 
 context("Project object creation -- remote sample table")
 
 test_that("Project can be instantiated with a remote sample table", {
-  expect_is(Project(sampleTable = "https://raw.githubusercontent.com/pepkit/example_peps/master/example_basic/sample_table.csv"), "Project")
+  expect_is(Project(file = "https://raw.githubusercontent.com/pepkit/example_peps/master/example_basic/sample_table.csv"), "Project")
+})
+
+context("Sample automerging")
+
+test_that("Samples with duplicated names are auto-merged", {
+  expect_equal(nrow(sampleTable(Project(file = cfgAutomerge))), 3)
+})
+
+test_that("Samples with duplicated names are disallowed when subsample table is specified", {
+  expect_error(Project(file = cfgAutomergeSubtable))
 })
 
 context("Amendments")
@@ -140,7 +167,7 @@ test_that("Project succesfully activates amendments at initialization", {
 context("Modifiers: append")
 
 test_that("append modifier works", {
-    expect_equal(length(sampleTable(Project(configAppend))[["read_type"]]),4)
+    expect_equal(length(sampleTable(Project(configAppend))[["read_type"]]), 4)
 })
 
 context("Modifiers: derive")
