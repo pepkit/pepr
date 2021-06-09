@@ -148,6 +148,14 @@ test_that("Project can be instantiated with a remote sample table", {
   expect_is(Project(file = "https://raw.githubusercontent.com/pepkit/example_peps/master/example_basic/sample_table.csv"), "Project")
 })
 
+context("Nonexistant init files")
+
+test_that("Project constructor throws errors if nonexistant init files are provided", {
+  expect_error(Project(file = "test.csv"))
+  expect_error(Project(file = "test.yaml"))
+})
+
+
 context("Sample automerging")
 
 test_that("Samples with duplicated names are auto-merged", {

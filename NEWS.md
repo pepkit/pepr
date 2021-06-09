@@ -13,6 +13,7 @@
 * possibility to configure the sample and subsample table index attributes in the `Project` object constructor
 * possibility to initialize `Project` with no configuration file
 * auto initialization file detection: CSV (sample table) or YAML (project config)
+* duplicated sample auto-merging
 
 # pepr 0.4.0 - 2020-10-14
 
