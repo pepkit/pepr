@@ -4,12 +4,23 @@
 \alias{Project}
 \title{The constructor of a class representing a Portable Encapsulated Project}
 \usage{
-Project(file = NULL, amendments = NULL)
+Project(
+  file = NULL,
+  amendments = NULL,
+  sampleTableIndex = NULL,
+  subSampleTableIndex = NULL
+)
 }
 \arguments{
-\item{file}{a character with project configuration yaml file}
+\item{file}{a string specifying a path to a project configuration YAML file}
 
-\item{amendments}{a character with the amendments names to be activated}
+\item{amendments}{a string with the amendments names to be activated}
+
+\item{sampleTableIndex}{a string indicating the sample attribute that is used
+to index the sample table}
+
+\item{subSampleTableIndex}{a string indicating the sample attribute that is used
+to index the sample table}
 }
 \description{
 This is a helper that creates the project with empty samples and config slots

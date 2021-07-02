@@ -25,9 +25,10 @@ This vignette will show you how and why to use the append functionality of the `
 ## Problem/Goal
 The example below demonstrates how to use the constant attributes to **define the samples attributes in the `read_type` column** of the `sample_table.csv` file. This functionality is extremely useful when there are many samples that are characterized by identical values of certain attribute (here: value `SINGLE` in `read_type` attribute). Please consider the example below for reference:
 
-```{r ,echo=FALSE,warning=FALSE}
+```{r ,echo=FALSE,warning=FALSE,message=FALSE}
 branch = "master"
 library(knitr)
+library(pepr)
 sampleAnnotation = system.file(
 "extdata",
 paste0("example_peps-", branch),
@@ -45,7 +46,6 @@ As the name suggests the attributes in the specified attributes (here: `read_typ
 
 
 ```{r, echo=FALSE,message=TRUE,collapse=TRUE,comment=" "}
-library(pepr)
 projectConfig = system.file(
 "extdata",
 paste0("example_peps-", branch),
@@ -73,16 +73,15 @@ sampleAnnotation = system.file(
 
 ----
 ## Code
-Load `pepr` and read in the project metadata by specifying the path to the `project_config.yaml`:
+Read in the project metadata by specifying the path to the `project_config.yaml`:
 
 ```{r}
-library(pepr)
 projectConfig = system.file(
-"extdata",
-paste0("example_peps-", branch),
-"example_append",
-"project_config.yaml",
-package = "pepr"
+  "extdata",
+  paste0("example_peps-", branch), 
+  "example_append", 
+  "project_config.yaml", 
+  package = "pepr"
 )
 p = Project(projectConfig)
 ```
@@ -100,4 +99,3 @@ What is more, the `p` object consists of all the information from the project co
 ```{r}
 config(p)
 ```
-

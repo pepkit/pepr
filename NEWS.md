@@ -1,3 +1,20 @@
+# pepr 0.5.0 - unreleased
+
+## Fixed
+
+* result class of appended attributes; it's no longer wrapped in a `list`
+
+## Changed 
+
+* error message when nonexistent attribute is derived
+
+## Added
+
+* possibility to configure the sample and subsample table index attributes in the `Project` object constructor
+* possibility to initialize `Project` with no configuration file
+* auto initialization file detection: CSV (sample table) or YAML (project config)
+* duplicated sample auto-merging
+
 # pepr 0.4.0 - 2020-10-14
 
 ## Changed

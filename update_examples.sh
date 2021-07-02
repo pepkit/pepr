@@ -12,3 +12,5 @@ unzip ${branch}.zip
 rm -rf inst/extdata/example_peps-${branch} 
 mv example_peps-${branch} inst/extdata
 rm ${branch}.zip
+rm -rf inst/extdata/example_peps-${branch}/output
+rm -rf inst/extdata/example_peps-${branch}/example_BiocProject*

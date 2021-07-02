@@ -7,7 +7,7 @@
 .getSubscript(lst, i)
 }
 \arguments{
-\item{lst}{list to search subsript for}
+\item{lst}{list to search subscript for}
 
 \item{i}{character or numeric to determine final list index}
 }
