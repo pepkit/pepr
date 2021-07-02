@@ -1,7 +1,7 @@
 #' Expand system path
 #'
-#' This function expands system paths (the non-absolute paths become absolute) 
-#' and replaces the environment variables (e.g, \code{${HOME}}) 
+#' This function expands system paths (the non-absolute paths become absolute)
+#' and replaces the environment variables (e.g, \code{${HOME}})
 #' with their values.
 #'
 #' Most importantly strings that are not system paths are returned untouched
@@ -24,24 +24,27 @@
   }
   
   # helper function
-  replaceEnvVars = function(path, matches){
+  replaceEnvVars = function(path, matches) {
     # the core of the expandPath function
-    parts = unlist(regmatches(x=path, matches, invert=F))
+    parts = unlist(regmatches(x = path, matches, invert = F))
     replacements = c()
     for (i in seq_along(attr(matches[[1]], "match.length"))) {
       # get the values of the env vars
       replacements[i] = Sys.getenv(removeNonWords(parts[i]))
       undefinedID = which(replacements == "")
-      if(length(undefinedID) > 0){
+      if (length(undefinedID) > 0) {
         warning(
-          paste0("The environment variable '", parts[undefinedID],
-                 "' was not found. Created object might be invalid.")
+          paste0(
+            "The environment variable '",
+            parts[undefinedID],
+            "' was not found. Created object might be invalid."
+          )
         )
         replacements[undefinedID] = parts[undefinedID]
       }
     }
     # replace env vars with their system values
-    regmatches(x=path, matches, invert=F) = replacements
+    regmatches(x = path, matches, invert = F) = replacements
     # if UNIX, make sure the root's in the path
     if (.Platform$OS.type == "unix") {
       if (!startsWith(path, "/") && length(undefinedID) == 0) {
@@ -59,15 +62,15 @@
   
   # if it's a path, make it absolute
   path = path.expand(path)
-  # search for env vars, both bracketed and not 
-  matchesBracket = gregexpr("\\$\\{\\w+\\}", path, perl=T)
-  matches = gregexpr("\\$\\w+", path, perl=T)
+  # search for env vars, both bracketed and not
+  matchesBracket = gregexpr("\\$\\{\\w+\\}", path, perl = T)
+  matches = gregexpr("\\$\\w+", path, perl = T)
   
   # perform two rounds of env var replacement
   # this way both bracketed and not bracketed ones will be replaced
-  if(all(attr(matchesBracket[[1]], "match.length") != -1)) 
+  if (all(attr(matchesBracket[[1]], "match.length") != -1))
     path = replaceEnvVars(path, matchesBracket)
-  if(all(attr(matches[[1]], "match.length") != -1)) 
+  if (all(attr(matches[[1]], "match.length") != -1))
     path = replaceEnvVars(path, matches)
   return(path)
 }
@@ -87,7 +90,7 @@
 #' @examples
 #' .strformat("~/{VAR1}{VAR2}_file", list(VAR1="hi", VAR2="hello"))
 #' .strformat("$HOME/{VAR1}{VAR2}_file", list(VAR1="hi", VAR2="hello"))
-.strformat = function(string, args, parent=NULL) {
+.strformat = function(string, args, parent = NULL) {
   result = c()
   # if parent provided, make the path absolute and expand it.
   #  Otherwise, just expand it
@@ -101,8 +104,10 @@
     pluralID = which(argsLengths > 1)
     attrCount = sapply(argsUnlisted, length)[pluralID]
     nrows = unique(attrCount)
-    if(length(nrows) > 1) {
-      stop("If including multiple attributes with multiple values, the number of values in each attribute must be identical.")
+    if (length(nrows) > 1) {
+      stop(
+        "If including multiple attributes with multiple values, the number of values in each attribute must be identical."
+      )
     }
     for (r in seq_len(nrows)) {
       argsUnlistedCopy = argsUnlisted
@@ -122,22 +127,27 @@
 #
 #' @param perhapsRelative Path to primary target directory.
 #' @param parent a path to parent folder to use if target isn't absolute.
-#' 
-#' @export 
+#'
+#' @export
 #' @return Target itself if already absolute, else target nested within parent.
 .makeAbsPath = function(perhapsRelative, parent) {
   res = c()
-  for(pR in perhapsRelative){
-    if (!.isDefined(pR)) return(pR)
+  for (pR in perhapsRelative) {
+    if (!.isDefined(pR))
+      return(pR)
     pR = .expandPath(pR)
     if (.isAbsolute(pR)) {
       abspath = pR
     } else {
       abspath = file.path(path.expand(parent), pR)
     }
-    if (!.isAbsolute(abspath)) 
-      stop("Relative path ", pR, " and parent ", parent ,
-           " failed to create absolute path: ", abspath)
+    if (!.isAbsolute(abspath))
+      stop("Relative path ",
+           pR,
+           " and parent ",
+           parent ,
+           " failed to create absolute path: ",
+           abspath)
     res = append(res, abspath)
   }
   return(res)
@@ -154,7 +164,8 @@
 #' @param path The path to check for seeming absolute-ness.
 #' @return Flag indicating whether the \code{path} appears to be absolute.
 .isAbsolute = function(path) {
-  if (!is.character(path)) stop("The path must be character")
+  if (!is.character(path))
+    stop("The path must be character")
   return(grepl("^(/|[A-Za-z]:|\\\\|~)", path))
 }
 
@@ -175,7 +186,7 @@
 
 #' Check whether the string is a valid URL or an existing local path
 #'
-#' @param path string to be checked 
+#' @param path string to be checked
 #'
 #' @return a logical indicating whether it's an existing path or valid URL
 .safeFileExists = function(path) {
@@ -186,7 +197,7 @@
 #'
 #' This function turns each data frame column into a list,
 #' so that its cells can contain multiple elements
-#' 
+#'
 #' @param DF an object of class data.frame
 #' @return an object of class data.frame
 #'
@@ -195,9 +206,10 @@
 #' listifiedDataFrame=.listifyDF(dataFrame)
 #' @export
 .listifyDF = function(DF) {
-  if(!is.data.frame(DF)) stop("The input object must be a data.frame.")
+  if (!is.data.frame(DF))
+    stop("The input object must be a data.frame.")
   colNames =  names(DF)
-  for(iColumn in colNames){
+  for (iColumn in colNames) {
     DF[[iColumn]] = as.list(DF[[iColumn]])
   }
   return(DF)
@@ -205,24 +217,24 @@
 
 
 #' Collect samples fulfilling the specified requirements
-#' 
+#'
 #' This funciton collects the samples from a \code{\link[data.table]{data.table-class}} object that
-#' fulfill the requirements of an attribute \code{attr} specified with 
+#' fulfill the requirements of an attribute \code{attr} specified with
 #' the \code{fun} argument
-#' 
+#'
 #' The anonymous function provided in the \code{func} argument has to return an integer that indicate the rows that the \code{action} should be performed on.
 #' Core expressions which are most useful to implement the anonymous function are:
 #' \itemize{
 #' \item \code{\link[base]{which}} with inequality signs: \code{==,>,<}
 #' \item \code{\link[base]{grep}}
 #' }
-#' 
+#'
 #' @param samples an object of \code{\link[data.table]{data.table-class}} class
 #' @param attr a string specifying a column in the \code{samples}
 #' @param func an anonymous function, see Details for more information
 #' @param action a string (either \code{include} or \code{exclude}) that specifies whether the function should select the row or exclude it.
 #' @importFrom methods is
-#' @examples 
+#' @examples
 #' projectConfig = system.file("extdata", "example_peps-master",
 #' "example_amendments1", "project_config.yaml", package="pepr")
 #' p = Project(projectConfig)
@@ -231,27 +243,34 @@
 #' fetchSamples(s,attr = "sample_name", func=function(x){ which(x=="pig_0h") },action="exclude")
 #' fetchSamples(s,attr = "sample_name", func=function(x){ grep("pig_",x) },action="include")
 #' @export
-fetchSamples = function(samples, attr=NULL, func=NULL, action="include") {
-  if(!methods::is(samples, "data.table"))
+fetchSamples = function(samples,
+                        attr = NULL,
+                        func = NULL,
+                        action = "include") {
+  if (!methods::is(samples, "data.table"))
     stop("'samples' argument has to be a data.table object, got: '",
-         class(samples),"'")
-  if(!action %in% c("include","exclude"))
+         class(samples),
+         "'")
+  if (!action %in% c("include", "exclude"))
     stop("'action' argument has to be either 'include' or 'exclude', got '",
-         action,"'")
+         action,
+         "'")
   attrNames = colnames(samples)
-  if(!is.null(attr)){
-    if (!attr %in% attrNames) 
-      stop("The samples attribute '", attr,"' was not found.")
+  if (!is.null(attr)) {
+    if (!attr %in% attrNames)
+      stop("The samples attribute '", attr, "' was not found.")
     if (!is.null(func)) {
       # use the anonymous function if provided
       if (is.function(func)) {
         rowIdx = tryCatch(
-          expr = { 
-            do.call(func,list(x=samples[[attr]]))
-          }, error=function(e) {
+          expr = {
+            do.call(func, list(x = samples[[attr]]))
+          },
+          error = function(e) {
             message("Error in your function: ")
             message(e)
-          }, warning=function(w) {
+          },
+          warning = function(w) {
             message("Warning in your function: ")
             message(w)
           }
@@ -261,13 +280,13 @@ fetchSamples = function(samples, attr=NULL, func=NULL, action="include") {
       }
     }
   }
-  if ((length(rowIdx) < 1) || (!methods::is(rowIdx,"integer"))) 
-    stop("your function returned invalid indices: '", rowIdx,"'")
+  if ((length(rowIdx) < 1) || (!methods::is(rowIdx, "integer")))
+    stop("your function returned invalid indices: '", rowIdx, "'")
   # use action arg
-  if (action=="include") {
-    return(samples[rowIdx, ])
+  if (action == "include") {
+    return(samples[rowIdx,])
   } else {
-    return(samples[!rowIdx, ])
+    return(samples[!rowIdx,])
   }
 }
 
@@ -279,9 +298,9 @@ fetchSamples = function(samples, attr=NULL, func=NULL, action="include") {
 #' @return a list of all the elements after possible expansion
 .matchesAndRegexes = function(rgx) {
   res = c()
-  for(i in rgx){
+  for (i in rgx) {
     matched = Sys.glob(i)
-    if(length(matched) < 1) {
+    if (length(matched) < 1) {
       matched = i
     }
     res = c(res, matched)
@@ -316,7 +335,7 @@ fetchSamples = function(samples, attr=NULL, func=NULL, action="include") {
     item = lst[[i]]
     itemName = ns[i]
     if (class(item) == "list") {
-      if(!is.null(itemName))
+      if (!is.null(itemName))
         cat(rep(" ", level), paste0(itemName, ":"), fill = T)
       .printNestedList(item, level + 2)
     } else {
@@ -330,7 +349,7 @@ fetchSamples = function(samples, attr=NULL, func=NULL, action="include") {
 #' Check for a section existence in a nested list
 #'
 #' @param object list to inspect
-#' @param sectionNames vector or characters with sectio names to check for 
+#' @param sectionNames vector or characters with sectio names to check for
 #'
 #' @return logical indicating whether the sections where found in the list
 #' @export
@@ -340,7 +359,7 @@ fetchSamples = function(samples, attr=NULL, func=NULL, action="include") {
 #' .checkSection(l,c("a","b"))
 #' .checkSection(l,c("c","b"))
 .checkSection = function(object, sectionNames) {
-  tryToNum = function(x){
+  tryToNum = function(x) {
     convertedX = suppressWarnings(as.numeric(x))
     ifelse(!is.na(convertedX), convertedX, x)
   }
@@ -348,7 +367,7 @@ fetchSamples = function(samples, attr=NULL, func=NULL, action="include") {
   counter = 1
   while (!is.na(sectionNames[counter])) {
     item = tryToNum(sectionNames[counter])
-    if((!is.list(testList)) || is.null(testList[[item]])){
+    if ((!is.list(testList)) || is.null(testList[[item]])) {
       return(FALSE)
     }
     testList = testList[[item]]
@@ -363,8 +382,9 @@ fetchSamples = function(samples, attr=NULL, func=NULL, action="include") {
 #' @param config an object of \code{"\linkS4class{Config}"}
 #'
 #' @return a string which specifies a path to the sample table file
-.getSampleTablePathFromConfig = function(config){
-  if (!CFG_SAMPLE_TABLE_KEY %in% names(config)) stop("Sample table not defined in config") 
+.getSampleTablePathFromConfig = function(config) {
+  if (!CFG_SAMPLE_TABLE_KEY %in% names(config))
+    stop("Sample table not defined in config")
   config[[CFG_SAMPLE_TABLE_KEY]]
 }
 
@@ -373,31 +393,27 @@ fetchSamples = function(samples, attr=NULL, func=NULL, action="include") {
 #' @param config an object of \code{"\linkS4class{Config}"}
 #'
 #' @return  string/vector of strings/NULL depending on the configuration
-.getSubSampleTablePathFromConfig = function(config){
-  if (!CFG_SUBSAMPLE_TABLE_KEY %in% names(config)) return(NULL)
+.getSubSampleTablePathFromConfig = function(config) {
+  if (!CFG_SUBSAMPLE_TABLE_KEY %in% names(config))
+    return(NULL)
   config[[CFG_SUBSAMPLE_TABLE_KEY]]
 }
 
 #' Config file or annotation file
-#' 
+#'
 #' Determine if the input file seems to be a project
 #'  config file (based on the file extension).
 #'
 #' @param filePath a string to examine
 #'
-#' @return a boolean, TRUE if indicating the path seems to be pointing to a config, 
+#' @return a boolean, TRUE if indicating the path seems to be pointing to a config,
 #'  or FALSE if the path seems to be pointing to an annotation file.
-.isCfg = function(filePath){
-  if (endsWith(tolower(filePath), ".yaml") || endsWith(tolower(filePath), ".yml"))
+.isCfg = function(filePath) {
+  if (endsWith(tolower(filePath), ".yaml") ||
+      endsWith(tolower(filePath), ".yml"))
     return(TRUE)
-  if (endsWith(tolower(filePath), ".csv") || endsWith(tolower(filePath), ".tsv"))
+  if (endsWith(tolower(filePath), ".csv") ||
+      endsWith(tolower(filePath), ".tsv"))
     return(FALSE)
   stop("File path does not point to an annotation or a config: ", filePath)
 }
-
-
-
-
-
-
-

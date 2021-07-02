@@ -7,8 +7,8 @@
 Project(
   file = NULL,
   amendments = NULL,
-  sampleTableIndex = SAMPLE_NAME_ATTR,
-  subSampleTableIndex = SUBSAMPLE_NAME_ATTR
+  sampleTableIndex = NULL,
+  subSampleTableIndex = NULL
 )
 }
 \arguments{

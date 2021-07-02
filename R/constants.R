@@ -1,6 +1,8 @@
 # constant variables declarations
 CFG_SAMPLE_TABLE_KEY = "sample_table"
 CFG_SUBSAMPLE_TABLE_KEY = "subsample_table"
+CFG_SAMPLE_TABLE_INDEX_KEY = "sample_table_index"
+CFG_SUBSAMPLE_TABLE_INDEX_KEY = "subsample_table_index"
 REQ_ABS = c(CFG_SAMPLE_TABLE_KEY, CFG_SUBSAMPLE_TABLE_KEY)
 CFG_VERSION_KEY = "pep_version"
 CFG_S_MODIFIERS_KEY = "sample_modifiers"
