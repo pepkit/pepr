@@ -6,3 +6,8 @@
 ^docs$
 ^Meta$
 ^update_examples.sh$
+
+
+CNAME
+test.sh
+.github

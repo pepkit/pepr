@@ -25,7 +25,7 @@ An element held in \code{"\linkS4class{Config}"} object
 }
 \description{
 You can subset \linkS4class{Config} by identifier or by position using the
-\code{`[`}, \code{`[[`} or \code{`$`} operator. 
+\code{`[`}, \code{`[[`} or \code{`$`} operator.
 The string will be expanded if it's a path.
 }
 \examples{

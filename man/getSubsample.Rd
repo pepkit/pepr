@@ -24,9 +24,13 @@ This method extracts the subsamples
 }
 \section{Methods (by class)}{
 \itemize{
-\item \code{.Object = Project,sampleName = character,subsampleName = character}: extracts the subsamples from the \code{"\linkS4class{Project}"} object
-}}
+\item \code{getSubsample(
+  .Object = Project,
+  sampleName = character,
+  subsampleName = character
+)}: extracts the subsamples from the \code{"\linkS4class{Project}"} object
 
+}}
 \examples{
 projectConfig = system.file(
 "extdata",

@@ -10,7 +10,7 @@
 \item{filePath}{a string to examine}
 }
 \value{
-a boolean, TRUE if indicating the path seems to be pointing to a config, 
+a boolean, TRUE if indicating the path seems to be pointing to a config,
  or FALSE if the path seems to be pointing to an annotation file.
 }
 \description{

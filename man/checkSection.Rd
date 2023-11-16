@@ -12,7 +12,7 @@ checkSection(object, sectionNames)
 \arguments{
 \item{object}{object of \code{"\linkS4class{Config}"}}
 
-\item{sectionNames}{the name of the section or names of the 
+\item{sectionNames}{the name of the section or names of the
 nested sections to look for}
 }
 \value{
@@ -27,9 +27,9 @@ Element indices can be used instead of the actual names, see \code{Examples}.
 }
 \section{Methods (by class)}{
 \itemize{
-\item \code{Config}: checks for existence of a section in \code{"\linkS4class{Config}"} objects
-}}
+\item \code{checkSection(Config)}: checks for existence of a section in \code{"\linkS4class{Config}"} objects
 
+}}
 \examples{
 projectConfig = system.file("extdata", "example_peps-master",
 "example_amendments1", "project_config.yaml", package="pepr")

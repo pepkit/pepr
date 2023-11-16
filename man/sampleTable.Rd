@@ -21,9 +21,9 @@ of the \code{"\linkS4class{Project}"} class
 }
 \section{Methods (by class)}{
 \itemize{
-\item \code{Project}: extract sample table from a \code{"\linkS4class{Project}"}
-}}
+\item \code{sampleTable(Project)}: extract sample table from a \code{"\linkS4class{Project}"}
 
+}}
 \examples{
 projectConfig = system.file("extdata", "example_peps-master",
 "example_amendments1", "project_config.yaml", package="pepr")

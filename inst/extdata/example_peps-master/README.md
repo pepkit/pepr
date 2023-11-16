@@ -18,6 +18,7 @@ These PEPs demonstrate the features described in the PEP2.0.0 framework and impl
 - [example_imply](example_imply):  demonstrates `sample_modifiers.imply` feature
 - [example_derive_imply](example_derive_imply): demonstrates the combination of `sample_modifiers.imply` and `sample_modifiers.derive` features
 - [example_imports](example_imports):  demonstrates the `imports` feature
+- [example_imports2](example_imports2):  shows how to use `imports` with derived attributes
 - example_amendments: demonstrates `project_modifiers.amend` feature
   - [example_amendments1](example_amendments1)
   - [example_amendments2](example_amendments2)

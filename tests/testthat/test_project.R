@@ -145,7 +145,9 @@ test_that("Project can be instantiated with no config", {
 context("Project object creation -- remote sample table")
 
 test_that("Project can be instantiated with a remote sample table", {
-  expect_is(Project(file = "https://raw.githubusercontent.com/pepkit/example_peps/master/example_basic/sample_table.csv"), "Project")
+  if (require("curl")) {  # only if curl is installed
+    expect_is(Project(file = "https://raw.githubusercontent.com/pepkit/example_peps/master/example_basic/sample_table.csv"), "Project")
+  }
 })
 
 context("Nonexistant init files")

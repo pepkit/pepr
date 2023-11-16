@@ -25,9 +25,9 @@ of \code{"\linkS4class{Project}"} class
 }
 \section{Methods (by class)}{
 \itemize{
-\item \code{.Object = Project,amendments = character}: activate amendments in a \code{"\linkS4class{Project}"} object
-}}
+\item \code{activateAmendments(.Object = Project, amendments = character)}: activate amendments in a \code{"\linkS4class{Project}"} object
 
+}}
 \examples{
 projectConfig = system.file("extdata",
 "example_peps-master",

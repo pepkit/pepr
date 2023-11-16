@@ -24,6 +24,10 @@ Make selected sections absolute using config path
 }
 \section{Methods (by class)}{
 \itemize{
-\item \code{object = Config,sections = character,cfgPath = character}: Make selected sections absolute using config path from \code{"\linkS4class{Project}"}
-}}
+\item \code{makeSectionsAbsolute(
+  object = Config,
+  sections = character,
+  cfgPath = character
+)}: Make selected sections absolute using config path from \code{"\linkS4class{Project}"}
 
+}}

@@ -15,7 +15,7 @@
 numeric index of the requested element in the list
 }
 \description{
-Based on available list element names and subscript value determine 
+Based on available list element names and subscript value determine
 index of the element requested
 }
 \examples{

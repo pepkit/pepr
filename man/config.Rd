@@ -21,9 +21,9 @@ the \code{"\linkS4class{Project}"} class
 }
 \section{Methods (by class)}{
 \itemize{
-\item \code{Project}: Extract \code{"\linkS4class{Project}"} of the object of \code{"\linkS4class{Project}"}
-}}
+\item \code{config(Project)}: Extract \code{"\linkS4class{Project}"} of the object of \code{"\linkS4class{Project}"}
 
+}}
 \examples{
 projectConfig = system.file("extdata", "example_peps-master",
 "example_amendments1", "project_config.yaml", package="pepr")

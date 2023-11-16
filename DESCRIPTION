@@ -17,12 +17,12 @@ Imports:
     pryr,
     data.table,
     methods,
-    RCurl,
-    curl
+    RCurl
 Suggests:
     knitr,
     testthat,
-    rmarkdown
+    rmarkdown,
+    curl
 VignetteBuilder: knitr
 License: BSD_2_clause + file LICENSE
 BugReports: https://github.com/pepkit/pepr

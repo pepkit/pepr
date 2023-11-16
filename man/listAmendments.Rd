@@ -23,9 +23,9 @@ The amendments can be activated by passing their names to the  \code{\link{activ
 }
 \section{Methods (by class)}{
 \itemize{
-\item \code{Project}: list amendments in a \code{"\linkS4class{Project}"} object
-}}
+\item \code{listAmendments(Project)}: list amendments in a \code{"\linkS4class{Project}"} object
 
+}}
 \examples{
 projectConfig = system.file("extdata",
 "example_peps-master",

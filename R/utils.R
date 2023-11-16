@@ -334,7 +334,7 @@ fetchSamples = function(samples,
   for (i in seq_along(lst)) {
     item = lst[[i]]
     itemName = ns[i]
-    if (class(item) == "list") {
+    if (is.list(item)) {
       if (!is.null(itemName))
         cat(rep(" ", level), paste0(itemName, ":"), fill = T)
       .printNestedList(item, level + 2)

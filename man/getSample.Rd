@@ -22,9 +22,9 @@ This method extracts the samples
 }
 \section{Methods (by class)}{
 \itemize{
-\item \code{.Object = Project,sampleName = character}: extracts the sample from the \code{"\linkS4class{Project}"} object
-}}
+\item \code{getSample(.Object = Project, sampleName = character)}: extracts the sample from the \code{"\linkS4class{Project}"} object
 
+}}
 \examples{
 projectConfig = system.file(
 "extdata",

@@ -14,7 +14,7 @@
 \value{
 possibly updated config
 
-
+config
 }
 \description{
 Overwrite and/or add Project attributes from the amendments section
