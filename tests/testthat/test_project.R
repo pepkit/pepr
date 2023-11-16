@@ -181,7 +181,7 @@ test_that("append modifier works", {
 context("Modifiers: derive")
 
 test_that("derive modifier works", {
-  expect_true(all(lapply(sampleTable(Project(configDerive))[["file_path"]], function(x){x=="source1"}))==FALSE)
+  expect_true(all(vapply(sampleTable(Project(configDerive))[["file_path"]], function(x){x=="source1"}, TRUE))==FALSE)
 })
 
 context("Modifiers: imply")
