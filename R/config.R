@@ -319,7 +319,7 @@ setMethod(
 #'
 #' @return possibly updated config
 #'
-#' @return
+#' @return config
 .applyAmendments = function(cfg, amendments = NULL) {
   if (!is.null(amendments)) {
     for (amendment in amendments) {
