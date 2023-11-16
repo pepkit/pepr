@@ -5,7 +5,7 @@ Version: 0.4.1
 Date: 2020-10-15
 Authors@R: c(person("Nathan", "Sheffield", email = "nathan@code.databio.org",
     role = c("aut", "cph")),person("Michal","Stolarczyk",email="michal@virginia.edu",role=c("aut","cre")))
-Maintainer: Michal Stolarczyk <michal@virginia.edu>
+Maintainer: Nathan Sheffield <nathan@code.databio.org>
 Description: A PEP, or Portable Encapsulated Project, is a dataset that 
     subscribes to the PEP structure for organizing metadata. It is written using
     a simple YAML + CSV format, it is your one-stop solution to metadata 
