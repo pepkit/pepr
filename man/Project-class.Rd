@@ -19,5 +19,11 @@ Can be created with the constructor: \code{"\linkS4class{Project}"}
 \item{\code{samples}}{a data table object holding the sample metadata}
 
 \item{\code{config}}{a list object holding contents of the config file}
+
+\item{\code{sampleNameAttr}}{a string indicating the sample attribute that is used
+to index the sample table}
+
+\item{\code{subSampleNameAttr}}{a string indicating the sample attribute that is used
+to index the sample table}
 }}
 

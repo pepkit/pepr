@@ -1,4 +1,4 @@
-#' Config objects and specialized list obejcts and expand string attributes 
+#' Config objects and specialized list obejcts and expand string attributes
 #'
 #' Config objects are used with the \code{"\linkS4class{Project}"} object
 #'
@@ -25,10 +25,10 @@ setMethod("initialize", "Config", function(.Object, data) {
 #' c=Config(projectConfig)
 #' @export
 #' @rdname Config-class
-Config = function(file, amendments = NULL){
+Config = function(file, amendments = NULL) {
   message("Loading config file: ", file)
-  cfg_data = .loadConfig(filename=file, amendments=amendments)
-  config = methods::new("Config", data=cfg_data)
+  cfg_data = .loadConfig(filename = file, amendments = amendments)
+  config = methods::new("Config", data = cfg_data)
   config = makeSectionsAbsolute(config, REQ_ABS, file)
   .listAmendments(config)
   return(config)
@@ -58,19 +58,19 @@ setMethod(
 #' .expandList(x)
 #' @export
 .expandList <- function(x) {
-  if(is.list(x))
+  if (is.list(x))
     return(lapply(x, .expandList))
-  if(length(x) > 1)
+  if (length(x) > 1)
     return(unname(sapply(x, .expandList)))
   return(suppressWarnings(.expandPath(x)))
 }
 
-#' Get list subscript 
-#' 
-#' Based on available list element names and subscript value determine 
+#' Get list subscript
+#'
+#' Based on available list element names and subscript value determine
 #' index of the element requested
 #'
-#' @param lst list to search subsript for
+#' @param lst list to search subscript for
 #' @param i character or numeric to determine final list index
 #'
 #' @return numeric index of the requested element in the list
@@ -80,7 +80,8 @@ setMethod(
 #' .getSubscript(l, 1) == .getSubscript(l, "a")
 #' @export
 .getSubscript <- function(lst, i) {
-  if(is.character(i)) return(grep(paste0("^", i), names(lst)))
+  if (is.character(i))
+    return(grep(paste0("^", i, "$"), names(lst)))
   return(i)
 }
 
@@ -88,7 +89,7 @@ setMethod(
 #' Access \code{"\linkS4class{Config}"} object elements
 #'
 #' You can subset \linkS4class{Config} by identifier or by position using the
-#' \code{`[`}, \code{`[[`} or \code{`$`} operator. 
+#' \code{`[`}, \code{`[[`} or \code{`$`} operator.
 #' The string will be expanded if it's a path.
 #'
 #' @param x a \code{"\linkS4class{Config}"} object.
@@ -112,9 +113,10 @@ NULL
 #' @rdname select-config
 #' @export
 setMethod("[", c("Config"), function(x, i) {
-  xList=as(x, "list", strict=TRUE)
+  xList = as(x, "list", strict = TRUE)
   subscript = .getSubscript(x, i)
-  if(length(subscript) == 0) return(NULL)
+  if (length(subscript) == 0)
+    return(NULL)
   element = xList[subscript]
   return(.expandList(element))
 })
@@ -122,22 +124,23 @@ setMethod("[", c("Config"), function(x, i) {
 #' @rdname select-config
 #' @export
 setMethod("[[", "Config", function(x, i) {
-  xList=as(x, "list", strict=TRUE)
+  xList = as(x, "list", strict = TRUE)
   subscript = .getSubscript(x, i)
-  if(length(subscript) == 0) return(NULL)
+  if (length(subscript) == 0)
+    return(NULL)
   element = xList[[subscript]]
   return(.expandList(element))
 })
 
 
 .DollarNames.Config <- function(x, pattern = "")
-  grep(paste0("^", pattern), grep(names(x), value=TRUE))
+  grep(paste0("^", pattern), grep(names(x), value = TRUE))
 
 #' @rdname select-config
 #' @export
-setMethod("$", "Config", function(x, name){
+setMethod("$", "Config", function(x, name) {
   matches = grep(paste0("^", name), names(x))
-  if(length(matches) == 0)
+  if (length(matches) == 0)
     return(NULL)
   hits = x[[matches]]
   return(.expandList(hits))
@@ -157,17 +160,17 @@ setGeneric("makeSectionsAbsolute", function(object, sections, cfgPath)
 
 #' @describeIn makeSectionsAbsolute Make selected sections absolute using config path from \code{"\linkS4class{Project}"}
 setMethod(
-  "makeSectionsAbsolute", 
+  "makeSectionsAbsolute",
   signature = signature(
-    object="Config", 
-    sections="character", 
-    cfgPath="character"
-    ), 
+    object = "Config",
+    sections = "character",
+    cfgPath = "character"
+  ),
   definition = function(object, sections, cfgPath) {
     # Enable creation of absolute path using given parent folder path.
-    absViaParent = pryr::partial(.makeAbsPath, parent=dirname(cfgPath))
-    for(section in sections) {
-      if (section %in% names(object)) 
+    absViaParent = pryr::partial(.makeAbsPath, parent = dirname(cfgPath))
+    for (section in sections) {
+      if (section %in% names(object))
         object[[section]] = absViaParent(object[[section]])
     }
     return(object)
@@ -178,31 +181,39 @@ setMethod(
 #' Check config spec version and reformat if needed
 #'
 #' @param object an object of \code{"\linkS4class{Config}"}
-#' 
+#'
 #' @return an object of \code{"\linkS4class{Config}"}
 setGeneric(".reformat", function(object)
   standardGeneric(".reformat"))
 
 setMethod(
-  ".reformat", 
-  signature = "Config", 
+  ".reformat",
+  signature = "Config",
   definition = function(object) {
-    if (CFG_VERSION_KEY %in% names(object)){
-      split = strsplit(object[[CFG_VERSION_KEY]],"[.]")[[1]]
-      if (length(split) < 3) stop("PEP version string is not tripartite")
+    if (CFG_VERSION_KEY %in% names(object)) {
+      split = strsplit(object[[CFG_VERSION_KEY]], "[.]")[[1]]
+      if (length(split) < 3)
+        stop("PEP version string is not tripartite")
       majorVer = as.numeric(split[1])
-      if (majorVer < 2){
-        if (CFG_S_MODIFIERS_KEY %in% names(object)){
-          stop("Project configuration file subscribes to specification 
-               >= 2.0.0, since ",CFG_S_MODIFIERS_KEY," section is defined. Set ",
-               CFG_VERSION_KEY, " to 2.0.0 in your config")
+      if (majorVer < 2) {
+        if (CFG_S_MODIFIERS_KEY %in% names(object)) {
+          stop(
+            "Project configuration file subscribes to specification
+               >= 2.0.0, since ",
+            CFG_S_MODIFIERS_KEY,
+            " section is defined. Set ",
+            CFG_VERSION_KEY,
+            " to 2.0.0 in your config"
+          )
         } else{
-          stop("Config file reformatting is not supported. 
+          stop("Config file reformatting is not supported.
                Reformat the config manually.")
         }
       }
     } else{
-      stop("Config file is missing ", CFG_VERSION_KEY, " key. 
+      stop("Config file is missing ",
+           CFG_VERSION_KEY,
+           " key.
            Add it to the config manually.")
     }
     return(object)
@@ -210,18 +221,18 @@ setMethod(
 )
 
 #' Check for existence of a section in the Project config
-#' 
+#'
 #' This function checks for the section/nested sections in the config YAML file.
 #'  Returns \code{TRUE} if it exist(s) or \code{FALSE} otherwise.
-#' 
+#'
 #' Element indices can be used instead of the actual names, see \code{Examples}.
-#' 
+#'
 #' @param object object of \code{"\linkS4class{Config}"}
-#' @param sectionNames the name of the section or names of the 
+#' @param sectionNames the name of the section or names of the
 #'        nested sections to look for
-#' 
+#'
 #' @return a logical indicating whether the section exists
-#' 
+#'
 #' @examples
 #' projectConfig = system.file("extdata", "example_peps-master",
 #' "example_amendments1", "project_config.yaml", package="pepr")
@@ -237,8 +248,8 @@ setMethod(
   "checkSection",
   signature = "Config",
   definition = function(object, sectionNames) {
-    # try co convert the section name to numeric, return original name if 
-    # not possible this enables the outer method to check the sections 
+    # try co convert the section name to numeric, return original name if
+    # not possible this enables the outer method to check the sections
     # existance by index and by name at the same time
     .checkSection(object, sectionNames)
   }
@@ -251,11 +262,12 @@ setMethod(
 #'
 #' @param amendments amendments to activate
 #' @param filename file path to config file
-#' 
+#'
 #' @seealso \url{https://pep.databio.org/}
-.loadConfig = function(filename=NULL, amendments=NULL) {
+.loadConfig = function(filename = NULL,
+                       amendments = NULL) {
   if (!file.exists(filename)) {
-    stop("Config file found: ", filename)
+    stop("Config file not found: ", filename)
   }
   # Initialize config object
   cfg_data = yaml::yaml.load_file(filename)
@@ -267,29 +279,30 @@ setMethod(
   # Update based on amendments if any specified
   cfg_data = .applyAmendments(cfg_data, amendments)
   # make bioconductor$readFunPath value absolute, used in BiocProject
-  if(!is.null(cfg_data$bioconductor$readFunPath)){
-    path = gsub("\\./","",cfg_data$bioconductor$readFunPath)
-    cfg_data$bioconductor$readFunPath = 
-      .makeAbsPath(path, parent=dirname(filename))
+  if (!is.null(cfg_data$bioconductor$readFunPath)) {
+    path = gsub("\\./", "", cfg_data$bioconductor$readFunPath)
+    cfg_data$bioconductor$readFunPath =
+      .makeAbsPath(path, parent = dirname(filename))
   }
   cfg_data$name = .inferProjectName(cfg_data, filename)
   return(cfg_data)
 }
 
-.listAmendments = function(cfg, style="message") {
-  # this function can be used in object show method, where cat is preferred 
+.listAmendments = function(cfg, style = "message") {
+  # this function can be used in object show method, where cat is preferred
   # or for user information when the Project is created, where message
   # is preferred
-  if(!style == "message"){
-    printFun = pryr::partial(cat, fill=T)
-  }else{
+  if (!style == "message") {
+    printFun = pryr::partial(cat, fill = T)
+  } else{
     printFun = message
   }
   if (CFG_P_MODIFIERS_KEY %in% names(cfg) &&
       CFG_AMEND_KEY %in% names(cfg[[CFG_P_MODIFIERS_KEY]]) &&
       length(names(cfg[[CFG_P_MODIFIERS_KEY]][[CFG_AMEND_KEY]])) > 0) {
     # If there are any show a cat and return if needed
-    printFun("  amendments: ", paste0(names(cfg[[CFG_P_MODIFIERS_KEY]][[CFG_AMEND_KEY]]), collapse=","))
+    printFun("  amendments: ", paste0(names(cfg[[CFG_P_MODIFIERS_KEY]][[CFG_AMEND_KEY]]), collapse =
+                                        ","))
     invisible(names(cfg[[CFG_P_MODIFIERS_KEY]][[CFG_AMEND_KEY]]))
   } else{
     # Otherwise return NULL for testing purposes
@@ -298,20 +311,20 @@ setMethod(
 }
 
 #' Apply amendments
-#' 
+#'
 #' Overwrite and/or add Project attributes from the amendments section
 #'
 #' @param cfg config
 #' @param amendments list of amendments to apply
-#' 
-#' @return possibly updated config 
+#'
+#' @return possibly updated config
 #'
 #' @return
-.applyAmendments = function(cfg, amendments=NULL) {
+.applyAmendments = function(cfg, amendments = NULL) {
   if (!is.null(amendments)) {
-    for (amendment in amendments){
-      if (!CFG_P_MODIFIERS_KEY %in% names(cfg) || 
-          !CFG_AMEND_KEY %in% names(cfg[[CFG_P_MODIFIERS_KEY]]) || 
+    for (amendment in amendments) {
+      if (!CFG_P_MODIFIERS_KEY %in% names(cfg) ||
+          !CFG_AMEND_KEY %in% names(cfg[[CFG_P_MODIFIERS_KEY]]) ||
           is.null(cfg[[CFG_P_MODIFIERS_KEY]][[CFG_AMEND_KEY]][[amendment]])) {
         warning("Amendment not found: ", amendment)
         message("Amendment was not activated")
@@ -331,13 +344,13 @@ setMethod(
 #'
 #' @return config data enriched in imported sections, if imports existed in the
 #'  input
-.applyImports = function(cfg_data, filename){
-  if (!CFG_P_MODIFIERS_KEY %in% names(cfg_data) || 
+.applyImports = function(cfg_data, filename) {
+  if (!CFG_P_MODIFIERS_KEY %in% names(cfg_data) ||
       !CFG_IMPORT_KEY %in% names(cfg_data[[CFG_P_MODIFIERS_KEY]]))
     return(cfg_data)
-  for(externalPath in cfg_data[[CFG_P_MODIFIERS_KEY]][[CFG_IMPORT_KEY]]){
-    externalPath=.makeAbsPath(externalPath, parent = dirname(filename))
-    extCfg = .loadConfig(filename = externalPath)  
+  for (externalPath in cfg_data[[CFG_P_MODIFIERS_KEY]][[CFG_IMPORT_KEY]]) {
+    externalPath = .makeAbsPath(externalPath, parent = dirname(filename))
+    extCfg = .loadConfig(filename = externalPath)
     cfg_data = utils::modifyList(cfg_data, extCfg)
     message("  Loaded external config file: ", externalPath)
   }
@@ -345,14 +358,15 @@ setMethod(
 }
 
 #' Infer project name
-#' 
+#'
 #' Based on dedicated config section or PEP enclosing dir
 #'
 #' @param cfg config data
 #' @param filename path to the config file
 #'
 #' @return string project name
-.inferProjectName = function(cfg, filename){
-  if (!is.null(cfg$name)) return(cfg$name)
+.inferProjectName = function(cfg, filename) {
+  if (!is.null(cfg$name))
+    return(cfg$name)
   return(basename(dirname(path.expand(filename))))
 }

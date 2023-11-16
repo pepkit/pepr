@@ -36,5 +36,5 @@ projectConfig = system.file("extdata",
 package = "pepr")
 p = Project(file = projectConfig)
 availAmendments = listAmendments(p)
-activateAmendments(p,availAmendments[1])
+activateAmendments(p, availAmendments[1])
 }
