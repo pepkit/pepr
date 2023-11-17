@@ -2,7 +2,7 @@ Package: pepr
 Type: Package
 Title: Reading Portable Encapsulated Projects
 Version: 0.5.0
-Date: 2021-06-10
+Date: 2023-11-16
 Authors@R: c(person("Nathan", "Sheffield", email = "nathan@code.databio.org",
     role = c("aut", "cph","cre")),person("Michal","Stolarczyk",email="michal@virginia.edu",role=c("aut")))
 Maintainer: Nathan Sheffield <nathan@code.databio.org>
