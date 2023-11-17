@@ -3,12 +3,7 @@ on:
     branches:
       - master
   workflow_dispatch:
-    inputs:
-      branch:
-        description: 'Repo branch to checkout'
-        required: false
-        default: 'master'
-        
+
 name: Deploy-package-documentation
 
 jobs:
@@ -17,12 +12,8 @@ jobs:
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
     steps:
-      - uses: actions/checkout@v3
-        with:
-          # The branch, tag or SHA to checkout. When checking out the repository that
-          # triggered a workflow, this defaults to the reference or SHA for that event.
-          # Otherwise, uses the default branch.
-          ref: ${{ github.event.inputs.branch }}
+      - name: Running workflow from branch ${{ github.ref }}
+        uses: actions/checkout@v3
           
       - uses: r-lib/actions/setup-pandoc@v2
 
