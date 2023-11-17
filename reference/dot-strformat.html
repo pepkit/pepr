@@ -104,9 +104,9 @@ Additionally, if the string is a non-absolute path, it will be expanded.</p>
     <div id="ref-examples">
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">.strformat</span><span class="op">(</span><span class="st">"~/{VAR1}{VAR2}_file"</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>VAR1<span class="op">=</span><span class="st">"hi"</span>, VAR2<span class="op">=</span><span class="st">"hello"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "/Users/runner/hihello_file"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "/home/runner/hihello_file"</span>
 <span class="r-in"><span><span class="fu">.strformat</span><span class="op">(</span><span class="st">"$HOME/{VAR1}{VAR2}_file"</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>VAR1<span class="op">=</span><span class="st">"hi"</span>, VAR2<span class="op">=</span><span class="st">"hello"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "/Users/runner/hihello_file"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "/home/runner/hihello_file"</span>
 </code></pre></div>
     </div>
   </div>

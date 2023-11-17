@@ -137,7 +137,7 @@ file:</p>
 <p>Loading your project metadata into R is a single line of code:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">p</span> <span class="op">=</span> <span class="fu">pepr</span><span class="fu">::</span><span class="fu"><a href="../reference/Project.html">Project</a></span><span class="op">(</span>file<span class="op">=</span><span class="va">projectConfigFile</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Loading config file: /Users/runner/work/_temp/Library/pepr/extdata/example_peps-master/example_basic/project_config.yaml</span></span></code></pre>
+<pre><code><span><span class="co">## Loading config file: /home/runner/work/_temp/Library/pepr/extdata/example_peps-master/example_basic/project_config.yaml</span></span></code></pre>
 <p>That’s it! You’ve now have a <code>Project</code> object, <em>p</em>,
 to interact with in <code>R</code>.</p>
 </div>
@@ -153,7 +153,7 @@ where the project came from and how many samples it has:</p>
 <code class="sourceCode R"><span><span class="va">p</span></span></code></pre></div>
 <pre><code><span><span class="co">## PEP project object. Class:  Project</span></span>
 <span><span class="co">##   file:  </span></span>
-<span><span class="co">## /Users/runner/work/_temp/Library/pepr/extdata/example_peps-master/example_basic/project_config.yaml</span></span>
+<span><span class="co">## /home/runner/work/_temp/Library/pepr/extdata/example_peps-master/example_basic/project_config.yaml</span></span>
 <span><span class="co">##   samples:  2</span></span></code></pre>
 <p>To get the sample table out of the project, you use the
 <code>samples()</code> function:</p>
@@ -169,7 +169,7 @@ where the project came from and how many samples it has:</p>
 <pre><code><span><span class="co">## Config object. Class: Config</span></span>
 <span><span class="co">##  pep_version: 2.0.0</span></span>
 <span><span class="co">##  sample_table: </span></span>
-<span><span class="co">## /Users/runner/work/_temp/Library/pepr/extdata/example_peps-master/example_basic/sample_table.csv</span></span>
+<span><span class="co">## /home/runner/work/_temp/Library/pepr/extdata/example_peps-master/example_basic/sample_table.csv</span></span>
 <span><span class="co">##  name: example_basic</span></span></code></pre>
 <p>Follow the other vignettes for more advanced capabilities of
 <code>pepr</code>.</p>
