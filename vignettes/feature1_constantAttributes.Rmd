@@ -41,6 +41,7 @@ knitr::kable(sampleAnnotationDF, format = "html")
 ```
 
 ----
+
 ## Solution
 As the name suggests the attributes in the specified attributes (here: `read_type`) can be defined as constant ones. The way how this process is carried out is indicated explicitly in the `project_config.yaml` file (presented below). The name of the column is determined in the `sample_modifiers.append` key-value pair. Note that definition of more than one constant attribute is possible.
 
@@ -72,7 +73,9 @@ sampleAnnotation = system.file(
 ```
 
 ----
+
 ## Code
+
 Read in the project metadata by specifying the path to the `project_config.yaml`:
 
 ```{r}

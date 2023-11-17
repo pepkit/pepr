@@ -28,6 +28,7 @@ This vignette will show you how and why to use the subsample table functionality
 
 This series of examples below demonstrates how and why to use sample subannoatation functionality in multiple cases to **provide multiple input files of the same type for a single sample**.
 
+
 ## Solutions
 
 ### Example 1: basic sample subannotation table

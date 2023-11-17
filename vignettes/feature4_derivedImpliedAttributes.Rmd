@@ -34,6 +34,7 @@ sampleAnnotationDF = read.table(sampleAnnotation, sep = ",", header = T)
 knitr::kable(sampleAnnotationDF, format = "html") 
 ```
 ----
+
 ## Solution
 
 The specification of detailed file paths/names (as presented above) is cumbersome. In order to make your life easier just find the patterns that the file names in `file_path` column of `sample_table.csv` follow, imply needed attributes and derive the file names. This multi step process is orchestrated by the `project_config.yaml` file via the `sample_modifiers.derive` and `sample_modifiers.imply` sections:
@@ -67,7 +68,9 @@ sampleAnnotation = system.file(
 ```
 
 ----
+
 ## Code
+
 Load `pepr` and read in the project metadata by specifying the path to the `project_config.yaml`:
 
 ```{r collapse=TRUE}
