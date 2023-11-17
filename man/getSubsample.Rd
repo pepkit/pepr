@@ -3,7 +3,7 @@
 \name{getSubsample}
 \alias{getSubsample}
 \alias{getSubsample,Project,character,character-method}
-\title{Extract samples}
+\title{Extract subsamples}
 \usage{
 getSubsample(.Object, sampleName, subsampleName)
 
@@ -20,13 +20,17 @@ getSubsample(.Object, sampleName, subsampleName)
 data.table one row data table with the subsample associated metadata
 }
 \description{
-This method extracts the samples
+This method extracts the subsamples
 }
 \section{Methods (by class)}{
 \itemize{
-\item \code{.Object = Project,sampleName = character,subsampleName = character}: extracts the subsamples from the \code{"\linkS4class{Project}"} object
-}}
+\item \code{getSubsample(
+  .Object = Project,
+  sampleName = character,
+  subsampleName = character
+)}: extracts the subsamples from the \code{"\linkS4class{Project}"} object
 
+}}
 \examples{
 projectConfig = system.file(
 "extdata",

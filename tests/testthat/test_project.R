@@ -11,6 +11,22 @@ cfg = system.file(
     package = "pepr"
   )
 
+sampleTableBasic = system.file(
+  "extdata",
+  paste0("example_peps-",branch),
+  "example_basic",
+  "sample_table.csv",
+  package = "pepr"
+)
+
+sampleTableSubsamples = system.file(
+  "extdata",
+  paste0("example_peps-",branch),
+  "example_subsamples",
+  "sample_table.csv",
+  package = "pepr"
+)
+
 f = yaml::yaml.load_file(system.file(
   "extdata",
   paste0("example_peps-",branch),
@@ -18,6 +34,23 @@ f = yaml::yaml.load_file(system.file(
   "project_config.yaml",
   package = "pepr"
 ))
+
+cfgAutomerge = system.file(
+  "extdata",
+  paste0("example_peps-",branch),
+  "example_automerge",
+  "project_config.yaml",
+  package = "pepr"
+)
+
+cfgAutomergeSubtable = system.file(
+  "extdata",
+  paste0("example_peps-",branch),
+  "example_subtable_automerge",
+  "project_config.yaml",
+  package = "pepr"
+)
+
 
 cfgAmend = system.file(
   "extdata",
@@ -41,14 +74,6 @@ cfgSubtableMulti = system.file(
   "example_subtables",
   "project_config.yaml",
   package = "pepr"
-)
-
-cfgBioc = system.file(
-    "extdata",
-    paste0("example_peps-",branch),
-    "example_BiocProject",
-    "project_config.yaml",
-    package = "pepr"
 )
 
 configAppend = system.file(
@@ -103,20 +128,44 @@ configRemove = system.file(
 
 context("Project object creation")
 
-test_that("Project throws errors", {
-  expect_error(Project(file = Project(cfg)@config$sample_table))
-})
-
 test_that("Project creates an object of class Project", {
   expect_is(Project(cfg), 'Project')
 })
 
-test_that("Project successfully loads a config with bioconductor section", {
-    expect_true(is(Project(cfgBioc), "Project"))
+test_that("empty Project can be created", {
+  expect_is(Project(), "Project")
 })
 
-test_that("empty Project can be created", {
-  expect_is(Project(),"Project")
+context("Project object creation -- no config")
+
+test_that("Project can be instantiated with no config", {
+  expect_is(Project(file = sampleTableBasic), "Project")
+})
+
+context("Project object creation -- remote sample table")
+
+test_that("Project can be instantiated with a remote sample table", {
+  if (require("curl")) {  # only if curl is installed
+    expect_is(Project(file = "https://raw.githubusercontent.com/pepkit/example_peps/master/example_basic/sample_table.csv"), "Project")
+  }
+})
+
+context("Nonexistant init files")
+
+test_that("Project constructor throws errors if nonexistant init files are provided", {
+  expect_warning(Project(file = "test.csv"))
+  expect_error(Project(file = "test.yaml"))
+})
+
+
+context("Sample automerging")
+
+test_that("Samples with duplicated names are auto-merged", {
+  expect_equal(nrow(sampleTable(Project(file = cfgAutomerge))), 3)
+})
+
+test_that("Samples with duplicated names are disallowed when subsample table is specified", {
+  expect_error(Project(file = cfgAutomergeSubtable))
 })
 
 context("Amendments")
@@ -128,13 +177,13 @@ test_that("Project succesfully activates amendments at initialization", {
 context("Modifiers: append")
 
 test_that("append modifier works", {
-    expect_equal(length(sampleTable(Project(configAppend))[["read_type"]]),4)
+    expect_equal(length(sampleTable(Project(configAppend))[["read_type"]]), 4)
 })
 
 context("Modifiers: derive")
 
 test_that("derive modifier works", {
-  expect_true(all(lapply(sampleTable(Project(configDerive))[["file_path"]], function(x){x=="source1"}))==FALSE)
+  expect_true(all(vapply(sampleTable(Project(configDerive))[["file_path"]], function(x){x=="source1"}, TRUE))==FALSE)
 })
 
 context("Modifiers: imply")

@@ -17,7 +17,7 @@ fetchSamples(samples, attr = NULL, func = NULL, action = "include")
 }
 \description{
 This funciton collects the samples from a \code{\link[data.table]{data.table-class}} object that
-fulfill the requirements of an attribute \code{attr} specified with 
+fulfill the requirements of an attribute \code{attr} specified with
 the \code{fun} argument
 }
 \details{

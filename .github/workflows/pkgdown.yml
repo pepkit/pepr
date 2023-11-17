@@ -1,0 +1,48 @@
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: 'Repo branch to checkout'
+        required: false
+        default: 'master'
+        
+name: Deploy-package-documentation
+
+jobs:
+  pkgdown:
+    runs-on: macos-latest
+    env:
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - uses: actions/checkout@v23
+        with:
+          # The branch, tag or SHA to checkout. When checking out the repository that
+          # triggered a workflow, this defaults to the reference or SHA for that event.
+          # Otherwise, uses the default branch.
+          ref: ${{ github.event.inputs.branch }}
+          
+      - uses: r-lib/actions/setup-pandoc@v2
+
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          use-public-rspm: true
+
+      - uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          extra-packages: any::pkgdown, local::.
+          needs: website
+
+      - name: Build site
+        run: pkgdown::build_site_github_pages(new_process = FALSE, install = FALSE)
+        shell: Rscript {0}
+
+      - name: Deploy to GitHub pages
+        if: github.event_name != 'pull_request'
+        uses: JamesIves/github-pages-deploy-action@v4.4.1
+        with:
+          clean: false
+          branch: gh-pages
+          folder: docs
