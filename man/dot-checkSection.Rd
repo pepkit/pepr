@@ -22,3 +22,4 @@ l = list(a=list(b="test"))
 .checkSection(l,c("a","b"))
 .checkSection(l,c("c","b"))
 }
+\keyword{internal}

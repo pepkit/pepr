@@ -15,3 +15,4 @@ Flag indicating whether the \code{path} appears to be absolute.
 \description{
 Determine whether a path is absolute.
 }
+\keyword{internal}

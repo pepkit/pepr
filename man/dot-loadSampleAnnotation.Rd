@@ -15,3 +15,4 @@ an data.frame with samples; one sample per row
 \description{
 Read sample table from disk
 }
+\keyword{internal}

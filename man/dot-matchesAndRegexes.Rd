@@ -15,3 +15,4 @@ a list of all the elements after possible expansion
 \description{
 Create a list of matched files in the system and unmatched regular expessions
 }
+\keyword{internal}

@@ -17,3 +17,4 @@ an object of \code{"\linkS4class{Project}"}
 \description{
 Merge samples defined in sample table with ones in subsample table(s)
 }
+\keyword{internal}

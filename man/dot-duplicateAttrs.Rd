@@ -15,3 +15,4 @@ an object of \code{"\linkS4class{Project}"}
 \description{
 Duplicate a selected attribute across all the samples
 }
+\keyword{internal}

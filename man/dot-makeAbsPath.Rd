@@ -17,3 +17,4 @@ Target itself if already absolute, else target nested within parent.
 \description{
 Create an absolute path from a primary target and a parent candidate.
 }
+\keyword{internal}

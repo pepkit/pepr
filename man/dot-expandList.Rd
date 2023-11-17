@@ -19,3 +19,4 @@ Recursively try to expand list of strings
 x = list(a=list(b=list(c="~/test.txt")))
 .expandList(x)
 }
+\keyword{internal}

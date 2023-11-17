@@ -18,3 +18,4 @@ config data enriched in imported sections, if imports existed in the
 \description{
 Function for recursive config data imports
 }
+\keyword{internal}

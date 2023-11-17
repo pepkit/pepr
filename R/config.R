@@ -57,6 +57,7 @@ setMethod(
 #' x = list(a=list(b=list(c="~/test.txt")))
 #' .expandList(x)
 #' @export
+#' @keywords internal
 .expandList <- function(x) {
   if (is.list(x))
     return(lapply(x, .expandList))
@@ -79,6 +80,7 @@ setMethod(
 #' l = list(a="a", b="b")
 #' .getSubscript(l, 1) == .getSubscript(l, "a")
 #' @export
+#' @keywords internal
 .getSubscript <- function(lst, i) {
   if (is.character(i))
     return(grep(paste0("^", i, "$"), names(lst)))
@@ -183,6 +185,7 @@ setMethod(
 #' @param object an object of \code{"\linkS4class{Config}"}
 #'
 #' @return an object of \code{"\linkS4class{Config}"}
+#' @keywords internal
 setGeneric(".reformat", function(object)
   standardGeneric(".reformat"))
 
@@ -264,6 +267,7 @@ setMethod(
 #' @param filename file path to config file
 #'
 #' @seealso \url{https://pep.databio.org/}
+#' @keywords internal
 .loadConfig = function(filename = NULL,
                        amendments = NULL) {
   if (!file.exists(filename)) {
@@ -320,6 +324,7 @@ setMethod(
 #' @return possibly updated config
 #'
 #' @return config
+#' @keywords internal
 .applyAmendments = function(cfg, amendments = NULL) {
   if (!is.null(amendments)) {
     for (amendment in amendments) {
@@ -344,6 +349,7 @@ setMethod(
 #'
 #' @return config data enriched in imported sections, if imports existed in the
 #'  input
+#' @keywords internal
 .applyImports = function(cfg_data, filename) {
   if (!CFG_P_MODIFIERS_KEY %in% names(cfg_data) ||
       !CFG_IMPORT_KEY %in% names(cfg_data[[CFG_P_MODIFIERS_KEY]]))
@@ -365,6 +371,7 @@ setMethod(
 #' @param filename path to the config file
 #'
 #' @return string project name
+#' @keywords internal
 .inferProjectName = function(cfg, filename) {
   if (!is.null(cfg$name))
     return(cfg$name)

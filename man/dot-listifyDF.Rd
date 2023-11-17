@@ -20,3 +20,4 @@ so that its cells can contain multiple elements
 dataFrame=mtcars
 listifiedDataFrame=.listifyDF(dataFrame)
 }
+\keyword{internal}

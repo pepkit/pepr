@@ -24,3 +24,4 @@ Additionally, if the string is a non-absolute path, it will be expanded.
 .strformat("~/{VAR1}{VAR2}_file", list(VAR1="hi", VAR2="hello"))
 .strformat("$HOME/{VAR1}{VAR2}_file", list(VAR1="hi", VAR2="hello"))
 }
+\keyword{internal}

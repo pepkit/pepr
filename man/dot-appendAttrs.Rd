@@ -15,3 +15,4 @@ an object of \code{\link{Project-class}}
 \description{
 Append constant attributes across all the samples
 }
+\keyword{internal}

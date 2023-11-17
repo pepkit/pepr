@@ -17,3 +17,4 @@ string project name
 \description{
 Based on dedicated config section or PEP enclosing dir
 }
+\keyword{internal}

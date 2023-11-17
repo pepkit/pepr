@@ -15,3 +15,4 @@ string/vector of strings/NULL depending on the configuration
 \description{
 Get the subsample tables from config
 }
+\keyword{internal}

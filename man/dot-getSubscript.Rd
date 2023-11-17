@@ -22,3 +22,4 @@ index of the element requested
 l = list(a="a", b="b")
 .getSubscript(l, 1) == .getSubscript(l, "a")
 }
+\keyword{internal}

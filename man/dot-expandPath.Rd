@@ -27,3 +27,4 @@ string = "https://www.r-project.org/"
 path = "$HOME/my/path/string.txt"
 .expandPath(path)
 }
+\keyword{internal}

@@ -17,3 +17,4 @@ an object of \code{"\linkS4class{Project}"}
 \description{
 Load single subsample annotation
 }
+\keyword{internal}

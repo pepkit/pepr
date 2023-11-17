@@ -15,3 +15,4 @@ an object of \code{"\linkS4class{Project}"}
 \description{
 Derive attributes
 }
+\keyword{internal}

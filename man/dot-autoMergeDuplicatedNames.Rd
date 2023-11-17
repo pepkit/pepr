@@ -15,3 +15,4 @@ an object of \code{"\linkS4class{Project}"}
 \description{
 If sample table specifies samples with non-unique names, try to merge these samples
 }
+\keyword{internal}

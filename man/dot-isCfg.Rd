@@ -17,3 +17,4 @@ a boolean, TRUE if indicating the path seems to be pointing to a config,
 Determine if the input file seems to be a project
  config file (based on the file extension).
 }
+\keyword{internal}

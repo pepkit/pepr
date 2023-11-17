@@ -16,6 +16,7 @@
 #' path = "$HOME/my/path/string.txt"
 #' .expandPath(path)
 #' @export
+#' @keywords internal
 .expandPath = function(path) {
   # helper function
   removeNonWords = function(str) {
@@ -90,6 +91,7 @@
 #' @examples
 #' .strformat("~/{VAR1}{VAR2}_file", list(VAR1="hi", VAR2="hello"))
 #' .strformat("$HOME/{VAR1}{VAR2}_file", list(VAR1="hi", VAR2="hello"))
+#' @keywords internal
 .strformat = function(string, args, parent = NULL) {
   result = c()
   # if parent provided, make the path absolute and expand it.
@@ -130,6 +132,7 @@
 #'
 #' @export
 #' @return Target itself if already absolute, else target nested within parent.
+#' @keywords internal
 .makeAbsPath = function(perhapsRelative, parent) {
   res = c()
   for (pR in perhapsRelative) {
@@ -155,6 +158,7 @@
 
 # Must test for is.null first, since is.na(NULL) returns a logical(0) which is
 # not a boolean
+#' @keywords internal
 .isDefined = function(var) {
   !(is.null(var) || is.na(var))
 }
@@ -163,6 +167,7 @@
 #'
 #' @param path The path to check for seeming absolute-ness.
 #' @return Flag indicating whether the \code{path} appears to be absolute.
+#' @keywords internal
 .isAbsolute = function(path) {
   if (!is.character(path))
     stop("The path must be character")
@@ -176,6 +181,7 @@
 #' @import RCurl
 #'
 #' @return logical indicating whether a string is a valid URL
+#' @keywords internal
 .isValidUrl = function(str) {
   ans = FALSE
   if (grepl("www.|http:|https:", str)) {
@@ -189,6 +195,7 @@
 #' @param path string to be checked
 #'
 #' @return a logical indicating whether it's an existing path or valid URL
+#' @keywords internal
 .safeFileExists = function(path) {
   (.isValidUrl(path) || (!is.null(path) && file.exists(path)))
 }
@@ -205,6 +212,7 @@
 #' dataFrame=mtcars
 #' listifiedDataFrame=.listifyDF(dataFrame)
 #' @export
+#' @keywords internal
 .listifyDF = function(DF) {
   if (!is.data.frame(DF))
     stop("The input object must be a data.frame.")
@@ -296,6 +304,7 @@ fetchSamples = function(samples,
 #' @param rgx string to expand in the system
 #'
 #' @return a list of all the elements after possible expansion
+#' @keywords internal
 .matchesAndRegexes = function(rgx) {
   res = c()
   for (i in rgx) {
@@ -327,6 +336,7 @@ fetchSamples = function(samples,
 #' p = Project(file = projectConfig)
 #' .printNestedList(config(p),level=2)
 #' @export
+#' @keywords internal
 .printNestedList = function(lst, level = 0) {
   if (!is.list(lst))
     stop("The input is not a list, cannot be displayed.")
@@ -358,6 +368,7 @@ fetchSamples = function(samples,
 #' l = list(a=list(b="test"))
 #' .checkSection(l,c("a","b"))
 #' .checkSection(l,c("c","b"))
+#' @keywords internal
 .checkSection = function(object, sectionNames) {
   tryToNum = function(x) {
     convertedX = suppressWarnings(as.numeric(x))
@@ -382,6 +393,7 @@ fetchSamples = function(samples,
 #' @param config an object of \code{"\linkS4class{Config}"}
 #'
 #' @return a string which specifies a path to the sample table file
+#' @keywords internal
 .getSampleTablePathFromConfig = function(config) {
   if (!CFG_SAMPLE_TABLE_KEY %in% names(config))
     stop("Sample table not defined in config")
@@ -393,6 +405,7 @@ fetchSamples = function(samples,
 #' @param config an object of \code{"\linkS4class{Config}"}
 #'
 #' @return  string/vector of strings/NULL depending on the configuration
+#' @keywords internal
 .getSubSampleTablePathFromConfig = function(config) {
   if (!CFG_SUBSAMPLE_TABLE_KEY %in% names(config))
     return(NULL)
@@ -408,6 +421,7 @@ fetchSamples = function(samples,
 #'
 #' @return a boolean, TRUE if indicating the path seems to be pointing to a config,
 #'  or FALSE if the path seems to be pointing to an annotation file.
+#' @keywords internal
 .isCfg = function(filePath) {
   if (endsWith(tolower(filePath), ".yaml") ||
       endsWith(tolower(filePath), ".yml"))

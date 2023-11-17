@@ -31,16 +31,5 @@ articles:
     contents:
       - starts_with("feature")
 
-reference:
-  - title: "pepr API"
-    desc: "Exported functions of `pepr`."
-    contents:
-      - -matches("\\.")
-  - title: "utilities"
-    desc: "Extra non-exported utility functions."
-    contents:
-      - .strformat
-      - .expandPath
-      - .printNestedList
 news:
 - one_page: true

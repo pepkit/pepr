@@ -51,6 +51,7 @@ configConst = system.file(
     package = "pepr"
 )
 
+#' @keywords internal
 .isAbsolute = function(path) {
     if (!is.character(path)) stop("The path must be character")
     return(grepl("^(/|[A-Za-z]:|\\\\|~)", path))

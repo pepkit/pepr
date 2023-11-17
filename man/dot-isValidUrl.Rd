@@ -15,3 +15,4 @@ logical indicating whether a string is a valid URL
 \description{
 Determine whether the string is a valid URL
 }
+\keyword{internal}

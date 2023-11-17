@@ -15,3 +15,4 @@ an object of \code{"\linkS4class{Config}"}
 \description{
 Check config spec version and reformat if needed
 }
+\keyword{internal}

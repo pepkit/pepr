@@ -145,6 +145,7 @@ setMethod(
 #' @param object an object of \code{"\linkS4class{Project}"}
 #'
 #' @return modified Project object
+#' @keywords internal
 setGeneric(".modifySamples", function(object)
     standardGeneric(".modifySamples"))
 
@@ -375,6 +376,7 @@ setMethod(
 #' @param .Object an object of \code{"\linkS4class{Project}"}
 #'
 #' @return an object of \code{"\linkS4class{Project}"}
+#' @keywords internal
 .removeAttrs <- function(.Object) {
     if (!CFG_S_MODIFIERS_KEY %in% names(config(.Object)))
         return(.Object)
@@ -399,6 +401,7 @@ setMethod(
 #' @param .Object an object of \code{\link{Project-class}}
 #'
 #' @return an object of \code{\link{Project-class}}
+#' @keywords internal
 .appendAttrs <- function(.Object) {
     if (!CFG_S_MODIFIERS_KEY %in% names(config(.Object)))
         return(.Object)
@@ -432,6 +435,7 @@ setMethod(
 #' @param .Object an object of \code{"\linkS4class{Project}"}
 #'
 #' @return an object of \code{"\linkS4class{Project}"}
+#' @keywords internal
 .duplicateAttrs <- function(.Object) {
     if (!CFG_S_MODIFIERS_KEY %in% names(config(.Object)))
         return(.Object)
@@ -450,6 +454,7 @@ setMethod(
 #' @param .Object an object of \code{"\linkS4class{Project}"}
 #'
 #' @return an object of \code{"\linkS4class{Project}"}
+#' @keywords internal
 .implyAttrs = function(.Object) {
     if (!CFG_S_MODIFIERS_KEY %in% names(config(.Object)))
         return(.Object)
@@ -499,6 +504,7 @@ setMethod(
 #' @param .Object an object of \code{"\linkS4class{Project}"}
 #'
 #' @return an object of \code{"\linkS4class{Project}"}
+#' @keywords internal
 .deriveAttrs = function(.Object) {
     if (!CFG_S_MODIFIERS_KEY %in% names(config(.Object)))
         return(.Object)
@@ -539,6 +545,7 @@ setMethod(
 #' @param sampleTablePath a character string indicating a path to the sample table
 #'
 #' @return an data.frame with samples; one sample per row
+#' @keywords internal
 .loadSampleAnnotation = function(sampleTablePath) {
     if (.safeFileExists(sampleTablePath)) {
         samples = data.table::fread(sampleTablePath)
@@ -555,6 +562,7 @@ setMethod(
 #' @param path string, a path to the subsample table to read and incorporate
 #'
 #' @return an object of \code{"\linkS4class{Project}"}
+#' @keywords internal
 .loadSubsampleAnnotation = function(.Object, path) {
     if (.safeFileExists(path)) {
         subsamplesTable = data.table::fread(path)
@@ -608,6 +616,7 @@ setMethod(
 #' @param subsampleAannotationPaths a vector of strings specifying the paths to sample
 #'
 #' @return an object of \code{"\linkS4class{Project}"}
+#' @keywords internal
 .mergeAttrs = function(.Object, subsampleAannotationPaths) {
     if (is.null(subsampleAannotationPaths))
         return(.Object)
@@ -625,6 +634,7 @@ setMethod(
 #' @param .Object an object of \code{"\linkS4class{Project}"}
 #'
 #' @return an object of \code{"\linkS4class{Project}"}
+#' @keywords internal
 .autoMergeDuplicatedNames = function(.Object) {
     s = sampleTable(.Object)
     sampleNames = s[[.Object@sampleNameAttr]]
@@ -675,6 +685,7 @@ setMethod(
 #' @param .Object an object of \code{"\linkS4class{Project}"}
 #' @param stIndex character string indicating a constructor-specified sample table index
 #' @param sstIndex character string indicating a constructor-specified subsample table index
+#' @keywords internal
 .getTableIndexes <- function(.Object, stIndex, sstIndex) {
     .getIndexVal <- function(spec, config, default, key) {
         if (!is.null(spec))

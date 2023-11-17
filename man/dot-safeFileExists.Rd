@@ -15,3 +15,4 @@ a logical indicating whether it's an existing path or valid URL
 \description{
 Check whether the string is a valid URL or an existing local path
 }
+\keyword{internal}

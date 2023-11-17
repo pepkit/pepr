@@ -15,3 +15,4 @@ a string which specifies a path to the sample table file
 \description{
 Get the sample table from config
 }
+\keyword{internal}
