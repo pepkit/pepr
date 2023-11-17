@@ -19,6 +19,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -31,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pepr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.0</span>
       </span>
     </div>
 
@@ -61,17 +63,17 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/pepkit/pepr">
+  <a href="https://github.com/pepkit/pepr" class="external-link">
     <span class="fa fa-github fa-lg"></span>
      
     GitHub
   </a>
 </li>
 <li>
-  <a href="http://databio.org">Databio.org</a>
+  <a href="http://databio.org" class="external-link">Databio.org</a>
 </li>
 <li>
-  <a href="http://databio.org/software/">Software &amp; Data</a>
+  <a href="http://databio.org/software/" class="external-link">Software &amp; Data</a>
 </li>
       </ul>
 </div>
@@ -83,79 +85,94 @@
 
       
 
-      </header><script src="gettingStarted_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Getting Started with pepr</h1>
-                        <h4 class="author">Nathan Sheffield</h4>
+                        <h4 data-toc-skip class="author">Nathan
+Sheffield</h4>
             
-            <h4 class="date">2021-07-02</h4>
+            <h4 data-toc-skip class="date">2023-11-17</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/pepkit/pepr/blob/master/vignettes/gettingStarted.Rmd"><code>vignettes/gettingStarted.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/pepkit/pepr/blob/HEAD/vignettes/gettingStarted.Rmd" class="external-link"><code>vignettes/gettingStarted.Rmd</code></a></small>
       <div class="hidden name"><code>gettingStarted.Rmd</code></div>
 
     </div>
 
     
     
-<div id="introduction-to-pepr" class="section level1">
-<h1 class="hasAnchor">
-<a href="#introduction-to-pepr" class="anchor"></a>Introduction to <code>pepr</code>
-</h1>
-<p><code>pepr</code> is the official R package for the <a href="https://pep.databio.org/en/2.0.0/">pepkit</a> suite, a collection of tools that interface with <em>portable encapsulated projects</em>, or PEPs. <a href="https://pep.databio.org/en/2.0.0/">PEP format</a> defines a structure for organizing project metadata using a <code>yaml</code> file. <code>pepr</code> allows you to read any PEP-formatted project metadata (and potentially even actual sample data) into R, providing you a convenient user interface to interact with and share project metadata.</p>
-<div id="installing-pepr" class="section level2">
-<h2 class="hasAnchor">
-<a href="#installing-pepr" class="anchor"></a>Installing <code>pepr</code>
+<div class="section level2">
+<h2 id="introduction-to-pepr">Introduction to <code>pepr</code><a class="anchor" aria-label="anchor" href="#introduction-to-pepr"></a>
 </h2>
-<p>You can install <code>pepr</code> in the usual way. Currently from GitHub (but we target a CRAN release at some point).</p>
-<pre><code>devtools::install_github('pepkit/pepr')</code></pre>
+<p><code>pepr</code> is the official R package for the <a href="https://pep.databio.org/en/2.0.0/" class="external-link">pepkit</a> suite, a collection
+of tools that interface with <em>portable encapsulated projects</em>, or
+PEPs. <a href="https://pep.databio.org/en/2.0.0/" class="external-link">PEP format</a> defines
+a structure for organizing project metadata using a <code>yaml</code>
+file. <code>pepr</code> allows you to read any PEP-formatted project
+metadata (and potentially even actual sample data) into R, providing you
+a convenient user interface to interact with and share project
+metadata.</p>
+<div class="section level3">
+<h3 id="installing-pepr">Installing <code>pepr</code><a class="anchor" aria-label="anchor" href="#installing-pepr"></a>
+</h3>
+<p>You can install <code>pepr</code> in the usual way. Currently from
+GitHub (but we target a CRAN release at some point).</p>
+<pre><code><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">'pepkit/pepr'</span><span class="op">)</span></span></code></pre>
 </div>
-<div id="loading-an-example-project" class="section level2">
-<h2 class="hasAnchor">
-<a href="#loading-an-example-project" class="anchor"></a>Loading an example project</h2>
-<p>Load <code>pepr</code> and read in your project. We have provided a basic example to show you how it works. You can use this to get the file path to a built-in example project configuration <code>yaml</code> file:</p>
+<div class="section level3">
+<h3 id="loading-an-example-project">Loading an example project<a class="anchor" aria-label="anchor" href="#loading-an-example-project"></a>
+</h3>
+<p>Load <code>pepr</code> and read in your project. We have provided a
+basic example to show you how it works. You can use this to get the file
+path to a built-in example project configuration <code>yaml</code>
+file:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st">'pepr'</span><span class="op">)</span>
-<span class="co">## Registered S3 method overwritten by 'pryr':</span>
-<span class="co">##   method      from</span>
-<span class="co">##   print.bytes Rcpp</span>
-<span class="va">branch</span> <span class="op">=</span> <span class="st">"master"</span>
-<span class="va">projectConfigFile</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>,
-    <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"example_peps-"</span>, <span class="va">branch</span><span class="op">)</span>,
-    <span class="st">"example_basic"</span>,
-    <span class="st">"project_config.yaml"</span>,
-    package<span class="op">=</span><span class="st">"pepr"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st">'pepr'</span><span class="op">)</span></span>
+<span><span class="va">branch</span> <span class="op">=</span> <span class="st">"master"</span></span>
+<span><span class="va">projectConfigFile</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>,</span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"example_peps-"</span>, <span class="va">branch</span><span class="op">)</span>,</span>
+<span>    <span class="st">"example_basic"</span>,</span>
+<span>    <span class="st">"project_config.yaml"</span>,</span>
+<span>    package<span class="op">=</span><span class="st">"pepr"</span><span class="op">)</span></span></code></pre></div>
 <p>Loading your project metadata into R is a single line of code:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">p</span> <span class="op">=</span> <span class="fu">pepr</span><span class="fu">::</span><span class="fu"><a href="../reference/Project.html">Project</a></span><span class="op">(</span>file<span class="op">=</span><span class="va">projectConfigFile</span><span class="op">)</span></code></pre></div>
-<pre><code>## Loading config file: /Users/runner/work/_temp/Library/pepr/extdata/example_peps-master/example_basic/project_config.yaml</code></pre>
-<p>That’s it! You’ve now have a <code>Project</code> object, <em>p</em>, to interact with in <code>R</code>.</p>
+<code class="sourceCode R"><span><span class="va">p</span> <span class="op">=</span> <span class="fu">pepr</span><span class="fu">::</span><span class="fu"><a href="../reference/Project.html">Project</a></span><span class="op">(</span>file<span class="op">=</span><span class="va">projectConfigFile</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Loading config file: /Users/runner/work/_temp/Library/pepr/extdata/example_peps-master/example_basic/project_config.yaml</span></span></code></pre>
+<p>That’s it! You’ve now have a <code>Project</code> object, <em>p</em>,
+to interact with in <code>R</code>.</p>
 </div>
-<div id="interfacing-with-your-peprproject-object-in-r" class="section level2">
-<h2 class="hasAnchor">
-<a href="#interfacing-with-your-peprproject-object-in-r" class="anchor"></a>Interfacing with your <code>pepr::Project</code> object in R</h2>
-<p>Now you can interface with that project object to grab both sample-level and project-level metadata. Here’s how you can access the metadata. If you just run the <code>show()</code> function on your object, you’ll get a simple report telling you a few basic stats, like where the project came from and how many samples it has:</p>
+<div class="section level3">
+<h3 id="interfacing-with-your-peprproject-object-in-r">Interfacing with your <code>pepr::Project</code> object in R<a class="anchor" aria-label="anchor" href="#interfacing-with-your-peprproject-object-in-r"></a>
+</h3>
+<p>Now you can interface with that project object to grab both
+sample-level and project-level metadata. Here’s how you can access the
+metadata. If you just run the <code>show()</code> function on your
+object, you’ll get a simple report telling you a few basic stats, like
+where the project came from and how many samples it has:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">p</span></code></pre></div>
-<pre><code>## PEP project object. Class:  Project
-##   file:  
-## /Users/runner/work/_temp/Library/pepr/extdata/example_peps-master/example_basic/project_config.yaml
-##   samples:  2</code></pre>
-<p>To get the sample table out of the project, you use the <code>samples()</code> function:</p>
+<code class="sourceCode R"><span><span class="va">p</span></span></code></pre></div>
+<pre><code><span><span class="co">## PEP project object. Class:  Project</span></span>
+<span><span class="co">##   file:  </span></span>
+<span><span class="co">## /Users/runner/work/_temp/Library/pepr/extdata/example_peps-master/example_basic/project_config.yaml</span></span>
+<span><span class="co">##   samples:  2</span></span></code></pre>
+<p>To get the sample table out of the project, you use the
+<code>samples()</code> function:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/sampleTable.html">sampleTable</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span>
-<span class="co">##    sample_name      protocol                file</span>
-<span class="co">## 1:      frog_1 anySampleType data/frog1_data.txt</span>
-<span class="co">## 2:      frog_2 anySampleType data/frog2_data.txt</span></code></pre></div>
-<p>And you can also access the project configuration metadata with the <code><a href="../reference/config.html">config()</a></code> function:</p>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/sampleTable.html">sampleTable</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span></span>
+<span><span class="co">##    sample_name      protocol                file</span></span>
+<span><span class="co">## 1:      frog_1 anySampleType data/frog1_data.txt</span></span>
+<span><span class="co">## 2:      frog_2 anySampleType data/frog2_data.txt</span></span></code></pre></div>
+<p>And you can also access the project configuration metadata with the
+<code><a href="../reference/config.html">config()</a></code> function:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/config.html">config</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span></code></pre></div>
-<pre><code>## Config object. Class: Config
-##  pep_version: 2.0.0
-##  sample_table: 
-## /Users/runner/work/_temp/Library/pepr/extdata/example_peps-master/example_basic/sample_table.csv
-##  name: example_basic</code></pre>
-<p>Follow the other vignettes for more advanced capabilities of <code>pepr</code>.</p>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/config.html">config</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Config object. Class: Config</span></span>
+<span><span class="co">##  pep_version: 2.0.0</span></span>
+<span><span class="co">##  sample_table: </span></span>
+<span><span class="co">## /Users/runner/work/_temp/Library/pepr/extdata/example_peps-master/example_basic/sample_table.csv</span></span>
+<span><span class="co">##  name: example_basic</span></span></code></pre>
+<p>Follow the other vignettes for more advanced capabilities of
+<code>pepr</code>.</p>
 </div>
 </div>
   </div>
@@ -171,11 +188,13 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Nathan Sheffield, Michal Stolarczyk.</p>
+  <p></p>
+<p>Developed by Nathan Sheffield, Michal Stolarczyk.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer>
@@ -183,6 +202,8 @@
 
   
 
+
+  
 
   </body>
 </html>

@@ -23,6 +23,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-home">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -35,7 +37,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">pepr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.0</span>
       </span>
     </div>
 
@@ -65,17 +67,17 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/pepkit/pepr">
+  <a href="https://github.com/pepkit/pepr" class="external-link">
     <span class="fa fa-github fa-lg"></span>
      
     GitHub
   </a>
 </li>
 <li>
-  <a href="http://databio.org">Databio.org</a>
+  <a href="http://databio.org" class="external-link">Databio.org</a>
 </li>
 <li>
-  <a href="http://databio.org/software/">Software &amp; Data</a>
+  <a href="http://databio.org/software/" class="external-link">Software &amp; Data</a>
 </li>
       </ul>
 </div>
@@ -91,31 +93,31 @@
   <div class="contents col-md-9">
 
 
-<div id="the-pepr-package-portable-encapsulated-projects-in-r" class="section level1">
-<div class="page-header"><h1 class="hasAnchor">
-<a href="#the-pepr-package-portable-encapsulated-projects-in-r" class="anchor"></a>The <code>pepr</code> package: Portable Encapsulated Projects in R</h1></div>
-<p><code>pepr</code> is an R package for reading <a href="http://pep.databio.org/en/2.0.0/">Portable Encapsulated Projects</a>, or <strong>PEP</strong>s, in R. If you describe your project (configuration and samples) according to this format, you can load all project metadata into R using the <code>pepr</code> package. To test <code>pepr</code>, you can try loading one of the <a href="https://github.com/pepkit/example_peps">example PEPs</a>.</p>
-<p>Complete documentation and API for the <code>pepr</code> R package is at <a href="https://code.databio.org/pepr/">code.databio.org/pepr</a>.</p>
-<div id="quick-start" class="section level2">
-<h2 class="hasAnchor">
-<a href="#quick-start" class="anchor"></a>Quick start:</h2>
-<p>Install from <a href="https://CRAN.R-project.org/package=pepr">CRAN</a>:</p>
+<div class="section level1">
+<div class="page-header"><h1 id="the-pepr-package-portable-encapsulated-projects-in-r">The <code>pepr</code> package: Portable Encapsulated Projects in R<a class="anchor" aria-label="anchor" href="#the-pepr-package-portable-encapsulated-projects-in-r"></a>
+</h1></div>
+<p><code>pepr</code> is an R package for reading <a href="http://pep.databio.org/en/2.0.0/" class="external-link">Portable Encapsulated Projects</a>, or <strong>PEP</strong>s, in R. If you describe your project (configuration and samples) according to this format, you can load all project metadata into R using the <code>pepr</code> package. To test <code>pepr</code>, you can try loading one of the <a href="https://github.com/pepkit/example_peps" class="external-link">example PEPs</a>.</p>
+<p>Complete documentation and API for the <code>pepr</code> R package is at <a href="https://code.databio.org/pepr/" class="external-link">code.databio.org/pepr</a>.</p>
+<div class="section level2">
+<h2 id="quick-start">Quick start:<a class="anchor" aria-label="anchor" href="#quick-start"></a>
+</h2>
+<p>Install from <a href="https://CRAN.R-project.org/package=pepr" class="external-link">CRAN</a>:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"pepr"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"pepr"</span><span class="op">)</span></span></code></pre></div>
 <p>Load a project and explore metadata like this:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st">"pepr"</span><span class="op">)</span>
-<span class="va">cfgPath</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span>
-    <span class="st">"extdata"</span>,
-    <span class="st">"example_peps-master"</span>,
-    <span class="st">"example_basic"</span>,
-    <span class="st">"project_config.yaml"</span>,
-    package <span class="op">=</span> <span class="st">"pepr"</span>
-  <span class="op">)</span>
-<span class="va">p</span> <span class="op">=</span> <span class="fu"><a href="reference/Project.html">Project</a></span><span class="op">(</span>file <span class="op">=</span> <span class="va">cfgPath</span><span class="op">)</span>
-
-<span class="fu"><a href="reference/sampleTable.html">sampleTable</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span>
-<span class="fu"><a href="reference/config.html">config</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st">"pepr"</span><span class="op">)</span></span>
+<span><span class="va">cfgPath</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span></span>
+<span>    <span class="st">"extdata"</span>,</span>
+<span>    <span class="st">"example_peps-master"</span>,</span>
+<span>    <span class="st">"example_basic"</span>,</span>
+<span>    <span class="st">"project_config.yaml"</span>,</span>
+<span>    package <span class="op">=</span> <span class="st">"pepr"</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="va">p</span> <span class="op">=</span> <span class="fu"><a href="reference/Project.html">Project</a></span><span class="op">(</span>file <span class="op">=</span> <span class="va">cfgPath</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="reference/sampleTable.html">sampleTable</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span></span>
+<span><span class="fu"><a href="reference/config.html">config</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
 
@@ -123,51 +125,61 @@
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <div class="links">
-<h2>Links</h2>
+<h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
-<li>Download from CRAN at <br><a href="https://cloud.r-project.org/package=pepr">https://​cloud.r-project.org/​package=pepr</a>
-</li>
-<li>Browse source code at <br><a href="https://github.com/pepkit/pepr/">https://​github.com/​pepkit/​pepr/​</a>
-</li>
-<li>Report a bug at <br><a href="https://github.com/pepkit/pepr">https://​github.com/​pepkit/​pepr</a>
-</li>
+<li><a href="https://cloud.r-project.org/package=pepr" class="external-link">View on CRAN</a></li>
+<li><a href="https://github.com/pepkit/pepr/" class="external-link">Browse source code</a></li>
+<li><a href="https://github.com/pepkit/pepr" class="external-link">Report a bug</a></li>
 </ul>
 </div>
+
 <div class="license">
-<h2>License</h2>
+<h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
 <li>
-<a href="https://opensource.org/licenses/BSD-2-Clause">BSD_2_clause</a> + file <a href="LICENSE-text.html">LICENSE</a>
+<a href="https://opensource.org/licenses/BSD-2-Clause" class="external-link">BSD_2_clause</a> + file <a href="LICENSE-text.html">LICENSE</a>
 </li>
 </ul>
 </div>
+
+
+<div class="citation">
+<h2 data-toc-skip>Citation</h2>
+<ul class="list-unstyled">
+<li><a href="authors.html#citation">Citing pepr</a></li>
+</ul>
+</div>
+
 <div class="developers">
-<h2>Developers</h2>
+<h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
 <li>Nathan Sheffield <br><small class="roles"> Author, copyright holder </small>  </li>
 <li>Michal Stolarczyk <br><small class="roles"> Author, maintainer </small>  </li>
 </ul>
 </div>
 
-  <div class="dev-status">
-<h2>Dev status</h2>
+<div class="dev-status">
+<h2 data-toc-skip>Dev status</h2>
 <ul class="list-unstyled">
-<li><a href="https://cranlogs.r-pkg.org/badges/grand-total/pepr"><img src="https://cranlogs.r-pkg.org/badges/grand-total/pepr" alt="Downloads"></a></li>
-<li><a href="https://www.r-pkg.org/badges/version-last-release/pepr"><img src="https://www.r-pkg.org/badges/version-last-release/pepr" alt="CRAN"></a></li>
-<li><a href="https://codecov.io/gh/pepkit/pepr"><img src="https://codecov.io/gh/pepkit/pepr/branch/master/graph/badge.svg" alt="codecov"></a></li>
-<li><a href="https://pep.databio.org/en/2.0.0/"><img src="https://pepkit.github.io/img/PEP-compatible-green.svg" alt="PEP compatible"></a></li>
+<li><a href="https://cranlogs.r-pkg.org/badges/grand-total/pepr" class="external-link"><img src="https://cranlogs.r-pkg.org/badges/grand-total/pepr" alt="Downloads"></a></li>
+<li><a href="https://www.r-pkg.org/badges/version-last-release/pepr" class="external-link"><img src="https://www.r-pkg.org/badges/version-last-release/pepr" alt="CRAN"></a></li>
+<li><a href="https://codecov.io/gh/pepkit/pepr" class="external-link"><img src="https://codecov.io/gh/pepkit/pepr/branch/master/graph/badge.svg" alt="codecov"></a></li>
+<li><a href="https://pep.databio.org/en/2.0.0/" class="external-link"><img src="https://pepkit.github.io/img/PEP-compatible-green.svg" alt="PEP compatible"></a></li>
 </ul>
 </div>
-</div>
+
+  </div>
 </div>
 
 
       <footer><div class="copyright">
-  <p>Developed by Nathan Sheffield, Michal Stolarczyk.</p>
+  <p></p>
+<p>Developed by Nathan Sheffield, Michal Stolarczyk.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer>
@@ -175,6 +187,8 @@
 
   
 
+
+  
 
   </body>
 </html>

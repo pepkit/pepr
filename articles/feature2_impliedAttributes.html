@@ -19,6 +19,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -31,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pepr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.0</span>
       </span>
     </div>
 
@@ -61,17 +63,17 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/pepkit/pepr">
+  <a href="https://github.com/pepkit/pepr" class="external-link">
     <span class="fa fa-github fa-lg"></span>
      
     GitHub
   </a>
 </li>
 <li>
-  <a href="http://databio.org">Databio.org</a>
+  <a href="http://databio.org" class="external-link">Databio.org</a>
 </li>
 <li>
-  <a href="http://databio.org/software/">Software &amp; Data</a>
+  <a href="http://databio.org/software/" class="external-link">Software &amp; Data</a>
 </li>
       </ul>
 </div>
@@ -83,34 +85,40 @@
 
       
 
-      </header><script src="feature2_impliedAttributes_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Sample modifiers in pepr: imply</h1>
-                        <h4 class="author">Michal Stolarczyk</h4>
+                        <h4 data-toc-skip class="author">Michal
+Stolarczyk</h4>
             
-            <h4 class="date">2021-07-02</h4>
+            <h4 data-toc-skip class="date">2023-11-17</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/pepkit/pepr/blob/master/vignettes/feature2_impliedAttributes.Rmd"><code>vignettes/feature2_impliedAttributes.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/pepkit/pepr/blob/HEAD/vignettes/feature2_impliedAttributes.Rmd" class="external-link"><code>vignettes/feature2_impliedAttributes.Rmd</code></a></small>
       <div class="hidden name"><code>feature2_impliedAttributes.Rmd</code></div>
 
     </div>
 
     
     
-<div id="learn-implied-sample-modifier-in-pepr" class="section level1">
-<h1 class="hasAnchor">
-<a href="#learn-implied-sample-modifier-in-pepr" class="anchor"></a>Learn implied sample modifier in <code>pepr</code>
-</h1>
-<p>This vignette will show you how and why to use the implied attributes functionality of the <code>pepr</code> package.</p>
+<div class="section level2">
+<h2 id="learn-implied-sample-modifier-in-pepr">Learn implied sample modifier in <code>pepr</code><a class="anchor" aria-label="anchor" href="#learn-implied-sample-modifier-in-pepr"></a>
+</h2>
+<p>This vignette will show you how and why to use the implied attributes
+functionality of the <code>pepr</code> package.</p>
 <ul>
-<li><p>basic information about the PEP concept on the <a href="http://pep.databio.org/en/2.0.0">project website</a></p></li>
-<li><p>broader theoretical description in the implied attributes <a href="http://pep.databio.org/en/2.0.0/specification/#sample_modifiersimply">documentation section</a>.</p></li>
+<li><p>basic information about the PEP concept on the <a href="http://pep.databio.org/en/2.0.0" class="external-link">project website</a></p></li>
+<li><p>broader theoretical description in the implied attributes <a href="http://pep.databio.org/en/2.0.0/specification/#sample_modifiersimply" class="external-link">documentation
+section</a>.</p></li>
 </ul>
-<div id="problemgoal" class="section level2">
-<h2 class="hasAnchor">
-<a href="#problemgoal" class="anchor"></a>Problem/Goal</h2>
-<p>The example below demonstrates how and why to use implied attributes functionality to <strong>save your time and effort</strong> in case multiple sample attributes need to be defined for many samples and they <strong>follow certain patterns</strong>. Please consider the example below for reference:</p>
+<div class="section level3">
+<h3 id="problemgoal">Problem/Goal<a class="anchor" aria-label="anchor" href="#problemgoal"></a>
+</h3>
+<p>The example below demonstrates how and why to use implied attributes
+functionality to <strong>save your time and effort</strong> in case
+multiple sample attributes need to be defined for many samples and they
+<strong>follow certain patterns</strong>. Please consider the example
+below for reference:</p>
 <table class="table">
 <thead><tr>
 <th style="text-align:left;">
@@ -251,188 +259,104 @@ mm
 </tr>
 </tbody>
 </table>
-<hr>
-</div>
-<div id="solution" class="section level2">
-<h2 class="hasAnchor">
-<a href="#solution" class="anchor"></a>Solution</h2>
-<p>Noticeably, the samples with attributes <code>human</code> and <code>mouse</code> (in the <code>organism</code> column) follow two distinct patterns here. They have additional attributes in attributes <code>genome</code> and <code>genome_size</code> in the <code>sample_table.csv</code> file. Consequently you can use implied attributes to add those attributes to the sample annotations (set global, species-level attributes at the project level instead of duplicating that information for every sample that belongs to a species). The way how this process is carried out is indicated explicitly in the <code>project_config.yaml</code> file (presented below).</p>
-<pre><code>   pep_version: 2.0.0
-   sample_table: sample_table.csv
-   looper:
-      output_dir: $HOME/hello_looper_results
-   sample_modifiers:
-      imply:
-              if:
-                  organism: human
-              then:
-                  genome: hg38
-                  macs_genome_size: hs
-              if:
-                  organism: mouse
-              then:
-                  genome: mm10
-                  macs_genome_size: mm</code></pre>
-<p>Consequently, you can design <code>sample_modifiers.imply</code> - a multi-level key-value section in the <code>project_config.yaml</code> file. Note that the keys must match the column names and attributes in the <code>sample_annotations.csv</code> file.</p>
-<p>Let’s introduce a few modifications to the original <code>sample_table.csv</code> file to use the <code>sample_modifiers.imply</code> section of the config. Simply skip the attributes that will be implied and let the <code>pepr</code> do the work for you.</p>
-<table class="table">
-<thead><tr>
-<th style="text-align:left;">
-sample_name
-</th>
-<th style="text-align:left;">
-organism
-</th>
-<th style="text-align:right;">
-time
-</th>
-<th style="text-align:left;">
-file_path
-</th>
-</tr></thead>
+<table style="width:7%;" class="table">
+<colgroup><col width="6%"></colgroup>
 <tbody>
-<tr>
-<td style="text-align:left;">
-frog_0h
-</td>
-<td style="text-align:left;">
-frog
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:left;">
-data/lab/project/frog_0h.fastq
-</td>
+<tr class="odd">
+<td>## Solution Noticeably, the samples with attributes
+<code>human</code> and <code>mouse</code> (in the <code>organism</code>
+column) follow two distinct patterns here. They have additional
+attributes in attributes <code>genome</code> and
+<code>genome_size</code> in the <code>sample_table.csv</code> file.
+Consequently you can use implied attributes to add those attributes to
+the sample annotations (set global, species-level attributes at the
+project level instead of duplicating that information for every sample
+that belongs to a species). The way how this process is carried out is
+indicated explicitly in the <code>project_config.yaml</code> file
+(presented below).</td>
 </tr>
-<tr>
-<td style="text-align:left;">
-frog_1h
-</td>
-<td style="text-align:left;">
-frog
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:left;">
-data/lab/project/frog_1h.fastq
-</td>
+<tr class="even">
+<td><code>pep_version: 2.0.0 sample_table: sample_table.csv looper: output_dir: $HOME/hello_looper_results sample_modifiers: imply: if: organism: human then: genome: hg38 macs_genome_size: hs if: organism: mouse then: genome: mm10 macs_genome_size: mm</code></td>
 </tr>
-<tr>
-<td style="text-align:left;">
-human_1h
-</td>
-<td style="text-align:left;">
-human
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:left;">
-data/lab/project/human_1h.fastq
-</td>
+<tr class="odd">
+<td>Consequently, you can design <code>sample_modifiers.imply</code> - a
+multi-level key-value section in the <code>project_config.yaml</code>
+file. Note that the keys must match the column names and attributes in
+the <code>sample_annotations.csv</code> file.</td>
 </tr>
-<tr>
-<td style="text-align:left;">
-human_0h
-</td>
-<td style="text-align:left;">
-human
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:left;">
-data/lab/project/human_0h.fastq
-</td>
+<tr class="even">
+<td>Let’s introduce a few modifications to the original
+<code>sample_table.csv</code> file to use the
+<code>sample_modifiers.imply</code> section of the config. Simply skip
+the attributes that will be implied and let the <code>pepr</code> do the
+work for you.</td>
 </tr>
-<tr>
-<td style="text-align:left;">
-mouse_1h
-</td>
-<td style="text-align:left;">
-mouse
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:left;">
-data/lab/project/mouse_1h.fastq
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-mouse_0h
-</td>
-<td style="text-align:left;">
-mouse
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:left;">
-data/lab/project/mouse_1h.fastq
-</td>
+<tr class="odd">
+<td></td>
 </tr>
 </tbody>
 </table>
-<hr>
 </div>
-<div id="code" class="section level2">
-<h2 class="hasAnchor">
-<a href="#code" class="anchor"></a>Code</h2>
-<p>Rread in the project metadata by specifying the path to the <code>project_config.yaml</code>:</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">projectConfig</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span>
-<span class="st">"extdata"</span>,
-<span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"example_peps-"</span>, <span class="va">branch</span><span class="op">)</span>,
-<span class="st">"example_imply"</span>,
-<span class="st">"project_config.yaml"</span>,
-package <span class="op">=</span> <span class="st">"pepr"</span>
-<span class="op">)</span>
-<span class="va">p</span> <span class="op">=</span> <span class="fu"><a href="../reference/Project.html">Project</a></span><span class="op">(</span><span class="va">projectConfig</span><span class="op">)</span>
-<span class="co">#&gt; Loading config file: /Users/runner/work/_temp/Library/pepr/extdata/example_peps-master/example_imply/project_config.yaml</span></code></pre></div>
+<div class="section level3">
+<h3 id="code">Code<a class="anchor" aria-label="anchor" href="#code"></a>
+</h3>
+<p>Rread in the project metadata by specifying the path to the
+<code>project_config.yaml</code>:</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">projectConfig</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span></span>
+<span><span class="st">"extdata"</span>,</span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"example_peps-"</span>, <span class="va">branch</span><span class="op">)</span>,</span>
+<span><span class="st">"example_imply"</span>,</span>
+<span><span class="st">"project_config.yaml"</span>,</span>
+<span>package <span class="op">=</span> <span class="st">"pepr"</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">p</span> <span class="op">=</span> <span class="fu"><a href="../reference/Project.html">Project</a></span><span class="op">(</span><span class="va">projectConfig</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Loading config file: /Users/runner/work/_temp/Library/pepr/extdata/example_peps-master/example_imply/project_config.yaml</span></span></code></pre></div>
 <p>And inspect it:</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/sampleTable.html">sampleTable</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span></span>
+<span><span class="co">#&gt;    sample_name organism time                       file_path genome</span></span>
+<span><span class="co">#&gt; 1:     frog_0h     frog    0  data/lab/project/frog_0h.fastq       </span></span>
+<span><span class="co">#&gt; 2:     frog_1h     frog    1  data/lab/project/frog_1h.fastq       </span></span>
+<span><span class="co">#&gt; 3:    human_1h    human    1 data/lab/project/human_1h.fastq   hg38</span></span>
+<span><span class="co">#&gt; 4:    human_0h    human    0 data/lab/project/human_0h.fastq   hg38</span></span>
+<span><span class="co">#&gt; 5:    mouse_1h    mouse    1 data/lab/project/mouse_1h.fastq   mm10</span></span>
+<span><span class="co">#&gt; 6:    mouse_0h    mouse    0 data/lab/project/mouse_1h.fastq   mm10</span></span>
+<span><span class="co">#&gt;    macs_genome_size</span></span>
+<span><span class="co">#&gt; 1:                 </span></span>
+<span><span class="co">#&gt; 2:                 </span></span>
+<span><span class="co">#&gt; 3:               hs</span></span>
+<span><span class="co">#&gt; 4:               hs</span></span>
+<span><span class="co">#&gt; 5:               mm</span></span>
+<span><span class="co">#&gt; 6:               mm</span></span></code></pre></div>
+<p>As you can see, the resulting samples are annotated the same way as
+if they were read from the original annotations file with attributes in
+the two last columns manually determined.</p>
+<p>What is more, the <code>p</code> object consists of all the
+information from the project config file
+(<code>project_config.yaml</code>). Run the following line to explore
+it:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/sampleTable.html">sampleTable</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span>
-<span class="co">#&gt;    sample_name organism time                       file_path genome</span>
-<span class="co">#&gt; 1:     frog_0h     frog    0  data/lab/project/frog_0h.fastq       </span>
-<span class="co">#&gt; 2:     frog_1h     frog    1  data/lab/project/frog_1h.fastq       </span>
-<span class="co">#&gt; 3:    human_1h    human    1 data/lab/project/human_1h.fastq   hg38</span>
-<span class="co">#&gt; 4:    human_0h    human    0 data/lab/project/human_0h.fastq   hg38</span>
-<span class="co">#&gt; 5:    mouse_1h    mouse    1 data/lab/project/mouse_1h.fastq   mm10</span>
-<span class="co">#&gt; 6:    mouse_0h    mouse    0 data/lab/project/mouse_1h.fastq   mm10</span>
-<span class="co">#&gt;    macs_genome_size</span>
-<span class="co">#&gt; 1:                 </span>
-<span class="co">#&gt; 2:                 </span>
-<span class="co">#&gt; 3:               hs</span>
-<span class="co">#&gt; 4:               hs</span>
-<span class="co">#&gt; 5:               mm</span>
-<span class="co">#&gt; 6:               mm</span></code></pre></div>
-<p>As you can see, the resulting samples are annotated the same way as if they were read from the original annotations file with attributes in the two last columns manually determined.</p>
-<p>What is more, the <code>p</code> object consists of all the information from the project config file (<code>project_config.yaml</code>). Run the following line to explore it:</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/config.html">config</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span>
-<span class="co">#&gt; Config object. Class: Config</span>
-<span class="co">#&gt;  pep_version: 2.0.0</span>
-<span class="co">#&gt;  sample_table: </span>
-<span class="co">#&gt; /Users/runner/work/_temp/Library/pepr/extdata/example_peps-master/example_imply/sample_table.csv</span>
-<span class="co">#&gt;  looper:</span>
-<span class="co">#&gt;     output_dir: /Users/runner/hello_looper_results</span>
-<span class="co">#&gt;  sample_modifiers:</span>
-<span class="co">#&gt;     imply:</span>
-<span class="co">#&gt;             if:</span>
-<span class="co">#&gt;                 organism: human</span>
-<span class="co">#&gt;             then:</span>
-<span class="co">#&gt;                 genome: hg38</span>
-<span class="co">#&gt;                 macs_genome_size: hs</span>
-<span class="co">#&gt;             if:</span>
-<span class="co">#&gt;                 organism: mouse</span>
-<span class="co">#&gt;             then:</span>
-<span class="co">#&gt;                 genome: mm10</span>
-<span class="co">#&gt;                 macs_genome_size: mm</span>
-<span class="co">#&gt;  name: example_imply</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/config.html">config</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Config object. Class: Config</span></span>
+<span><span class="co">#&gt;  pep_version: 2.0.0</span></span>
+<span><span class="co">#&gt;  sample_table: </span></span>
+<span><span class="co">#&gt; /Users/runner/work/_temp/Library/pepr/extdata/example_peps-master/example_imply/sample_table.csv</span></span>
+<span><span class="co">#&gt;  looper:</span></span>
+<span><span class="co">#&gt;     output_dir: /Users/runner/hello_looper_results</span></span>
+<span><span class="co">#&gt;  sample_modifiers:</span></span>
+<span><span class="co">#&gt;     imply:</span></span>
+<span><span class="co">#&gt;             if:</span></span>
+<span><span class="co">#&gt;                 organism: human</span></span>
+<span><span class="co">#&gt;             then:</span></span>
+<span><span class="co">#&gt;                 genome: hg38</span></span>
+<span><span class="co">#&gt;                 macs_genome_size: hs</span></span>
+<span><span class="co">#&gt;             if:</span></span>
+<span><span class="co">#&gt;                 organism: mouse</span></span>
+<span><span class="co">#&gt;             then:</span></span>
+<span><span class="co">#&gt;                 genome: mm10</span></span>
+<span><span class="co">#&gt;                 macs_genome_size: mm</span></span>
+<span><span class="co">#&gt;  name: example_imply</span></span></code></pre></div>
 </div>
 </div>
   </div>
@@ -448,11 +372,13 @@ package <span class="op">=</span> <span class="st">"pepr"</span>
 
 
       <footer><div class="copyright">
-  <p>Developed by Nathan Sheffield, Michal Stolarczyk.</p>
+  <p></p>
+<p>Developed by Nathan Sheffield, Michal Stolarczyk.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer>
@@ -460,6 +386,8 @@ package <span class="op">=</span> <span class="st">"pepr"</span>
 
   
 
+
+  
 
   </body>
 </html>

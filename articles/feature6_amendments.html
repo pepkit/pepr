@@ -19,6 +19,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -31,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pepr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.0</span>
       </span>
     </div>
 
@@ -61,17 +63,17 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/pepkit/pepr">
+  <a href="https://github.com/pepkit/pepr" class="external-link">
     <span class="fa fa-github fa-lg"></span>
      
     GitHub
   </a>
 </li>
 <li>
-  <a href="http://databio.org">Databio.org</a>
+  <a href="http://databio.org" class="external-link">Databio.org</a>
 </li>
 <li>
-  <a href="http://databio.org/software/">Software &amp; Data</a>
+  <a href="http://databio.org/software/" class="external-link">Software &amp; Data</a>
 </li>
       </ul>
 </div>
@@ -83,34 +85,42 @@
 
       
 
-      </header><script src="feature6_amendments_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Amendments in pepr</h1>
-                        <h4 class="author">Michal Stolarczyk</h4>
+                        <h4 data-toc-skip class="author">Michal
+Stolarczyk</h4>
             
-            <h4 class="date">2021-07-02</h4>
+            <h4 data-toc-skip class="date">2023-11-17</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/pepkit/pepr/blob/master/vignettes/feature6_amendments.Rmd"><code>vignettes/feature6_amendments.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/pepkit/pepr/blob/HEAD/vignettes/feature6_amendments.Rmd" class="external-link"><code>vignettes/feature6_amendments.Rmd</code></a></small>
       <div class="hidden name"><code>feature6_amendments.Rmd</code></div>
 
     </div>
 
     
     
-<div id="learn-amendments-in-pepr" class="section level1">
-<h1 class="hasAnchor">
-<a href="#learn-amendments-in-pepr" class="anchor"></a>Learn amendments in <code>pepr</code>
-</h1>
-<p>This vignette will show you how and why to use the amendments functionality of the <code>pepr</code> package.</p>
+<div class="section level2">
+<h2 id="learn-amendments-in-pepr">Learn amendments in <code>pepr</code><a class="anchor" aria-label="anchor" href="#learn-amendments-in-pepr"></a>
+</h2>
+<p>This vignette will show you how and why to use the amendments
+functionality of the <code>pepr</code> package.</p>
 <ul>
-<li><p>basic information about the PEP concept on the <a href="http://pep.databio.org/en/2.0.0/">project website</a>.</p></li>
-<li><p>broader theoretical description in the amendments <a href="http://pep.databio.org/en/2.0.0/specification/#project-attribute-amendments">documentation section</a>.</p></li>
+<li><p>basic information about the PEP concept on the <a href="http://pep.databio.org/en/2.0.0/" class="external-link">project website</a>.</p></li>
+<li><p>broader theoretical description in the amendments <a href="http://pep.databio.org/en/2.0.0/specification/#project-attribute-amendments" class="external-link">documentation
+section</a>.</p></li>
 </ul>
-<div id="problemgoal" class="section level2">
-<h2 class="hasAnchor">
-<a href="#problemgoal" class="anchor"></a>Problem/Goal</h2>
-<p>The example below demonstrates how and why to use amendments project attribute to, e.g. <strong>define numerous similar projects in a single project config file</strong>. This functionality is extremely convenient when one has to define projects with small settings discreptancies, like different attributes in the annotation sheet. For example libraries <code>ABCD</code> and <code>EFGH</code> instead of the original <code>RRBS</code>.</p>
+<div class="section level3">
+<h3 id="problemgoal">Problem/Goal<a class="anchor" aria-label="anchor" href="#problemgoal"></a>
+</h3>
+<p>The example below demonstrates how and why to use amendments project
+attribute to, e.g. <strong>define numerous similar projects in a single
+project config file</strong>. This functionality is extremely convenient
+when one has to define projects with small settings discreptancies, like
+different attributes in the annotation sheet. For example libraries
+<code>ABCD</code> and <code>EFGH</code> instead of the original
+<code>RRBS</code>.</p>
 <table class="table">
 <thead><tr>
 <th style="text-align:left;">
@@ -202,10 +212,18 @@ source1
 </table>
 <hr>
 </div>
-<div id="solution" class="section level2">
-<h2 class="hasAnchor">
-<a href="#solution" class="anchor"></a>Solution</h2>
-<p>This can be achieved by using amendments section of <code>project_config.yaml</code> file (presented below). The attributes specified in the lowest levels of this section (here: <code>sample_table</code>) overwrite the original ones. Consequently, a completely new set of settings is determined with just this value changed. Moreover, multiple amendments can be defined in a single config file <em>and</em> activated at the same time. Based on the file presented below, two subprojects will be defined: <code>newLib</code> and <code>newLib2</code>.</p>
+<div class="section level3">
+<h3 id="solution">Solution<a class="anchor" aria-label="anchor" href="#solution"></a>
+</h3>
+<p>This can be achieved by using amendments section of
+<code>project_config.yaml</code> file (presented below). The attributes
+specified in the lowest levels of this section (here:
+<code>sample_table</code>) overwrite the original ones. Consequently, a
+completely new set of settings is determined with just this value
+changed. Moreover, multiple amendments can be defined in a single config
+file <em>and</em> activated at the same time. Based on the file
+presented below, two subprojects will be defined: <code>newLib</code>
+and <code>newLib2</code>.</p>
 <pre><code>   pep_version: 2.0.0
    sample_table: sample_table.csv
    output_dir: $HOME/hello_looper_results
@@ -222,8 +240,15 @@ source1
               sample_table: sample_table_newLib.csv
           newLib2:
               sample_table: sample_table_newLib2.csv</code></pre>
-<p>Obviously, the amendments functionality can be combined with other <code>pepr</code> package options, e.g. imply and derive sample modifiers. The derive modifier is used in the example considered here (<code>derive</code> key in the <code>sample_modifiers</code> section of the config file).</p>
-<p>Files <code>sample_table_newLib.csv</code> and <code>sample_table_newLib2.csv</code> introduce different the <code>library</code> attributes. They are used in the subprojects <code>newLib</code> and <code>newLib2</code>, respectively.</p>
+<p>Obviously, the amendments functionality can be combined with other
+<code>pepr</code> package options, e.g. imply and derive sample
+modifiers. The derive modifier is used in the example considered here
+(<code>derive</code> key in the <code>sample_modifiers</code> section of
+the config file).</p>
+<p>Files <code>sample_table_newLib.csv</code> and
+<code>sample_table_newLib2.csv</code> introduce different the
+<code>library</code> attributes. They are used in the subprojects
+<code>newLib</code> and <code>newLib2</code>, respectively.</p>
 <table class="table">
 <thead><tr>
 <th style="text-align:left;">
@@ -404,76 +429,93 @@ source1
 </table>
 <hr>
 </div>
-<div id="code" class="section level2">
-<h2 class="hasAnchor">
-<a href="#code" class="anchor"></a>Code</h2>
-<p>Load <code>pepr</code> and read in the project metadata by specifying the path to the <code>project_config.yaml</code>:</p>
+<div class="section level3">
+<h3 id="code">Code<a class="anchor" aria-label="anchor" href="#code"></a>
+</h3>
+<p>Load <code>pepr</code> and read in the project metadata by specifying
+the path to the <code>project_config.yaml</code>:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">projectConfig</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"example_peps-"</span>, <span class="va">branch</span><span class="op">)</span>,<span class="st">"example_amendments1"</span>, <span class="st">"project_config.yaml"</span>, package<span class="op">=</span><span class="st">"pepr"</span><span class="op">)</span>
-<span class="va">p</span><span class="op">=</span><span class="fu"><a href="../reference/Project.html">Project</a></span><span class="op">(</span><span class="va">projectConfig</span><span class="op">)</span>
-<span class="co">#&gt; Loading config file: /Users/runner/work/_temp/Library/pepr/extdata/example_peps-master/example_amendments1/project_config.yaml</span>
-<span class="co">#&gt;   amendments: newLib,newLib2</span></code></pre></div>
-<p>An appropriate message is displayed, which informs you what are the names of the amendments that you have defined in the <code>project_config.yaml</code> file. Nontheless, just the main project is “active”.</p>
+<code class="sourceCode R"><span><span class="va">projectConfig</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"example_peps-"</span>, <span class="va">branch</span><span class="op">)</span>,<span class="st">"example_amendments1"</span>, <span class="st">"project_config.yaml"</span>, package<span class="op">=</span><span class="st">"pepr"</span><span class="op">)</span></span>
+<span><span class="va">p</span><span class="op">=</span><span class="fu"><a href="../reference/Project.html">Project</a></span><span class="op">(</span><span class="va">projectConfig</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Loading config file: /Users/runner/work/_temp/Library/pepr/extdata/example_peps-master/example_amendments1/project_config.yaml</span></span>
+<span><span class="co">#&gt;   amendments: newLib,newLib2</span></span></code></pre></div>
+<p>An appropriate message is displayed, which informs you what are the
+names of the amendments that you have defined in the
+<code>project_config.yaml</code> file. Nontheless, just the main project
+is “active”.</p>
 <p>Let’s inspect it:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/sampleTable.html">sampleTable</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span>
-<span class="co">#&gt;    sample_name protocol organism time                       file_path</span>
-<span class="co">#&gt; 1:      pig_0h     RRBS      pig    0  /data/lab/project/pig_0h.fastq</span>
-<span class="co">#&gt; 2:      pig_1h     RRBS      pig    1  /data/lab/project/pig_1h.fastq</span>
-<span class="co">#&gt; 3:     frog_0h     RRBS     frog    0 /data/lab/project/frog_0h.fastq</span>
-<span class="co">#&gt; 4:     frog_1h     RRBS     frog    1 /data/lab/project/frog_1h.fastq</span></code></pre></div>
-<p>The column <code>file_path</code> was derived and the <code>library</code> column holds the original attributes: <code>RRBS</code> for each sample.</p>
-<p>To “activate” any of the amendments just pass the names of the desired amendments to the <code>amendments</code> argument in the <code>Project</code> object constructor.</p>
-<p>In case you don’t remember the subproject names run the <code><a href="../reference/listAmendments.html">listAmendments()</a></code> metohods on the <code>Project</code> object, just like that:</p>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/sampleTable.html">sampleTable</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span></span>
+<span><span class="co">#&gt;    sample_name protocol organism time                       file_path</span></span>
+<span><span class="co">#&gt; 1:      pig_0h     RRBS      pig    0  /data/lab/project/pig_0h.fastq</span></span>
+<span><span class="co">#&gt; 2:      pig_1h     RRBS      pig    1  /data/lab/project/pig_1h.fastq</span></span>
+<span><span class="co">#&gt; 3:     frog_0h     RRBS     frog    0 /data/lab/project/frog_0h.fastq</span></span>
+<span><span class="co">#&gt; 4:     frog_1h     RRBS     frog    1 /data/lab/project/frog_1h.fastq</span></span></code></pre></div>
+<p>The column <code>file_path</code> was derived and the
+<code>library</code> column holds the original attributes:
+<code>RRBS</code> for each sample.</p>
+<p>To “activate” any of the amendments just pass the names of the
+desired amendments to the <code>amendments</code> argument in the
+<code>Project</code> object constructor.</p>
+<p>In case you don’t remember the subproject names run the
+<code><a href="../reference/listAmendments.html">listAmendments()</a></code> metohods on the <code>Project</code>
+object, just like that:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/listAmendments.html">listAmendments</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span>
-<span class="co">#&gt;   amendments: newLib,newLib2</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/listAmendments.html">listAmendments</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span></span>
+<span><span class="co">#&gt;   amendments: newLib,newLib2</span></span></code></pre></div>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">pNewLib</span> <span class="op">=</span> <span class="fu"><a href="../reference/Project.html">Project</a></span><span class="op">(</span>file <span class="op">=</span> <span class="va">projectConfig</span>, amendments <span class="op">=</span> <span class="st">"newLib"</span><span class="op">)</span>
-<span class="co">#&gt; Loading config file: /Users/runner/work/_temp/Library/pepr/extdata/example_peps-master/example_amendments1/project_config.yaml</span>
-<span class="co">#&gt; Activating amendment: newLib</span>
-<span class="co">#&gt;   amendments: newLib,newLib2</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">pNewLib</span> <span class="op">=</span> <span class="fu"><a href="../reference/Project.html">Project</a></span><span class="op">(</span>file <span class="op">=</span> <span class="va">projectConfig</span>, amendments <span class="op">=</span> <span class="st">"newLib"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Loading config file: /Users/runner/work/_temp/Library/pepr/extdata/example_peps-master/example_amendments1/project_config.yaml</span></span>
+<span><span class="co">#&gt; Activating amendment: newLib</span></span>
+<span><span class="co">#&gt;   amendments: newLib,newLib2</span></span></code></pre></div>
 <p>Let’s inspect it:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/sampleTable.html">sampleTable</a></span><span class="op">(</span><span class="va">pNewLib</span><span class="op">)</span>
-<span class="co">#&gt;    sample_name protocol organism time                       file_path</span>
-<span class="co">#&gt; 1:      pig_0h     ABCD      pig    0  /data/lab/project/pig_0h.fastq</span>
-<span class="co">#&gt; 2:      pig_1h     ABCD      pig    1  /data/lab/project/pig_1h.fastq</span>
-<span class="co">#&gt; 3:     frog_0h     ABCD     frog    0 /data/lab/project/frog_0h.fastq</span>
-<span class="co">#&gt; 4:     frog_1h     ABCD     frog    1 /data/lab/project/frog_1h.fastq</span></code></pre></div>
-<p>As you can see, the <code>library</code> columns consists of new attributes (<code>ABCD</code>), which were defined in the <code>sample_table_newLib.csv</code> file.</p>
-<p>Amendments can be also activated interactively, after <code>Project</code> object has been crated. Let’s activate the second amendment this way:</p>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/sampleTable.html">sampleTable</a></span><span class="op">(</span><span class="va">pNewLib</span><span class="op">)</span></span>
+<span><span class="co">#&gt;    sample_name protocol organism time                       file_path</span></span>
+<span><span class="co">#&gt; 1:      pig_0h     ABCD      pig    0  /data/lab/project/pig_0h.fastq</span></span>
+<span><span class="co">#&gt; 2:      pig_1h     ABCD      pig    1  /data/lab/project/pig_1h.fastq</span></span>
+<span><span class="co">#&gt; 3:     frog_0h     ABCD     frog    0 /data/lab/project/frog_0h.fastq</span></span>
+<span><span class="co">#&gt; 4:     frog_1h     ABCD     frog    1 /data/lab/project/frog_1h.fastq</span></span></code></pre></div>
+<p>As you can see, the <code>library</code> columns consists of new
+attributes (<code>ABCD</code>), which were defined in the
+<code>sample_table_newLib.csv</code> file.</p>
+<p>Amendments can be also activated interactively, after
+<code>Project</code> object has been crated. Let’s activate the second
+amendment this way:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">pNewLib2</span> <span class="op">=</span> <span class="fu"><a href="../reference/activateAmendments.html">activateAmendments</a></span><span class="op">(</span><span class="va">p</span>, <span class="st">"newLib2"</span><span class="op">)</span>
-<span class="co">#&gt; Activating amendment: newLib2</span>
-<span class="fu"><a href="../reference/sampleTable.html">sampleTable</a></span><span class="op">(</span><span class="va">pNewLib2</span><span class="op">)</span>
-<span class="co">#&gt;    sample_name protocol organism time                       file_path</span>
-<span class="co">#&gt; 1:      pig_0h     EFGH      pig    0  /data/lab/project/pig_0h.fastq</span>
-<span class="co">#&gt; 2:      pig_1h     EFGH      pig    1  /data/lab/project/pig_1h.fastq</span>
-<span class="co">#&gt; 3:     frog_0h     EFGH     frog    0 /data/lab/project/frog_0h.fastq</span>
-<span class="co">#&gt; 4:     frog_1h     EFGH     frog    1 /data/lab/project/frog_1h.fastq</span></code></pre></div>
-<p>What is more, the <code>p</code> object consists of all the information from the project config file (<code>project_config.yaml</code>). Run the following line to explore it:</p>
+<code class="sourceCode R"><span><span class="va">pNewLib2</span> <span class="op">=</span> <span class="fu"><a href="../reference/activateAmendments.html">activateAmendments</a></span><span class="op">(</span><span class="va">p</span>, <span class="st">"newLib2"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Activating amendment: newLib2</span></span>
+<span><span class="fu"><a href="../reference/sampleTable.html">sampleTable</a></span><span class="op">(</span><span class="va">pNewLib2</span><span class="op">)</span></span>
+<span><span class="co">#&gt;    sample_name protocol organism time                       file_path</span></span>
+<span><span class="co">#&gt; 1:      pig_0h     EFGH      pig    0  /data/lab/project/pig_0h.fastq</span></span>
+<span><span class="co">#&gt; 2:      pig_1h     EFGH      pig    1  /data/lab/project/pig_1h.fastq</span></span>
+<span><span class="co">#&gt; 3:     frog_0h     EFGH     frog    0 /data/lab/project/frog_0h.fastq</span></span>
+<span><span class="co">#&gt; 4:     frog_1h     EFGH     frog    1 /data/lab/project/frog_1h.fastq</span></span></code></pre></div>
+<p>What is more, the <code>p</code> object consists of all the
+information from the project config file
+(<code>project_config.yaml</code>). Run the following line to explore
+it:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/config.html">config</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span>
-<span class="co">#&gt; Config object. Class: Config</span>
-<span class="co">#&gt;  pep_version: 2.0.0</span>
-<span class="co">#&gt;  sample_table: </span>
-<span class="co">#&gt; /Users/runner/work/_temp/Library/pepr/extdata/example_peps-master/example_amendments1/sample_table.csv</span>
-<span class="co">#&gt;  output_dir: /Users/runner/hello_looper_results</span>
-<span class="co">#&gt;  sample_modifiers:</span>
-<span class="co">#&gt;     derive:</span>
-<span class="co">#&gt;         attributes: file_path</span>
-<span class="co">#&gt;         sources:</span>
-<span class="co">#&gt;             source1: /data/lab/project/{organism}_{time}h.fastq</span>
-<span class="co">#&gt;             source2: </span>
-<span class="co">#&gt; /path/from/collaborator/weirdNamingScheme_{external_id}.fastq</span>
-<span class="co">#&gt;  project_modifiers:</span>
-<span class="co">#&gt;     amend:</span>
-<span class="co">#&gt;         newLib:</span>
-<span class="co">#&gt;             sample_table: sample_table_newLib.csv</span>
-<span class="co">#&gt;         newLib2:</span>
-<span class="co">#&gt;             sample_table: sample_table_newLib2.csv</span>
-<span class="co">#&gt;  name: example_amendments1</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/config.html">config</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Config object. Class: Config</span></span>
+<span><span class="co">#&gt;  pep_version: 2.0.0</span></span>
+<span><span class="co">#&gt;  sample_table: </span></span>
+<span><span class="co">#&gt; /Users/runner/work/_temp/Library/pepr/extdata/example_peps-master/example_amendments1/sample_table.csv</span></span>
+<span><span class="co">#&gt;  output_dir: /Users/runner/hello_looper_results</span></span>
+<span><span class="co">#&gt;  sample_modifiers:</span></span>
+<span><span class="co">#&gt;     derive:</span></span>
+<span><span class="co">#&gt;         attributes: file_path</span></span>
+<span><span class="co">#&gt;         sources:</span></span>
+<span><span class="co">#&gt;             source1: /data/lab/project/{organism}_{time}h.fastq</span></span>
+<span><span class="co">#&gt;             source2: </span></span>
+<span><span class="co">#&gt; /path/from/collaborator/weirdNamingScheme_{external_id}.fastq</span></span>
+<span><span class="co">#&gt;  project_modifiers:</span></span>
+<span><span class="co">#&gt;     amend:</span></span>
+<span><span class="co">#&gt;         newLib:</span></span>
+<span><span class="co">#&gt;             sample_table: sample_table_newLib.csv</span></span>
+<span><span class="co">#&gt;         newLib2:</span></span>
+<span><span class="co">#&gt;             sample_table: sample_table_newLib2.csv</span></span>
+<span><span class="co">#&gt;  name: example_amendments1</span></span></code></pre></div>
 </div>
 </div>
   </div>
@@ -489,11 +531,13 @@ source1
 
 
       <footer><div class="copyright">
-  <p>Developed by Nathan Sheffield, Michal Stolarczyk.</p>
+  <p></p>
+<p>Developed by Nathan Sheffield, Michal Stolarczyk.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer>
@@ -501,6 +545,8 @@ source1
 
   
 
+
+  
 
   </body>
 </html>

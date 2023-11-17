@@ -19,6 +19,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -31,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pepr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.0</span>
       </span>
     </div>
 
@@ -61,17 +63,17 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/pepkit/pepr">
+  <a href="https://github.com/pepkit/pepr" class="external-link">
     <span class="fa fa-github fa-lg"></span>
      
     GitHub
   </a>
 </li>
 <li>
-  <a href="http://databio.org">Databio.org</a>
+  <a href="http://databio.org" class="external-link">Databio.org</a>
 </li>
 <li>
-  <a href="http://databio.org/software/">Software &amp; Data</a>
+  <a href="http://databio.org/software/" class="external-link">Software &amp; Data</a>
 </li>
       </ul>
 </div>
@@ -83,50 +85,57 @@
 
       
 
-      </header><script src="feature5_sampleSubtable_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Subsample table in pepr</h1>
-                        <h4 class="author">Michal Stolarczyk &amp; Nathan Sheffield</h4>
+                        <h4 data-toc-skip class="author">Michal
+Stolarczyk &amp; Nathan Sheffield</h4>
             
-            <h4 class="date">2021-07-02</h4>
+            <h4 data-toc-skip class="date">2023-11-17</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/pepkit/pepr/blob/master/vignettes/feature5_sampleSubtable.Rmd"><code>vignettes/feature5_sampleSubtable.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/pepkit/pepr/blob/HEAD/vignettes/feature5_sampleSubtable.Rmd" class="external-link"><code>vignettes/feature5_sampleSubtable.Rmd</code></a></small>
       <div class="hidden name"><code>feature5_sampleSubtable.Rmd</code></div>
 
     </div>
 
     
     
-<div id="learn-sample-subannotations-in-pepr" class="section level1">
-<h1 class="hasAnchor">
-<a href="#learn-sample-subannotations-in-pepr" class="anchor"></a>Learn sample subannotations in <code>pepr</code>
-</h1>
-<p>This vignette will show you how and why to use the subsample table functionality of the <code>pepr</code> package.</p>
+<div class="section level2">
+<h2 id="learn-sample-subannotations-in-pepr">Learn sample subannotations in <code>pepr</code><a class="anchor" aria-label="anchor" href="#learn-sample-subannotations-in-pepr"></a>
+</h2>
+<p>This vignette will show you how and why to use the subsample table
+functionality of the <code>pepr</code> package.</p>
 <ul>
-<li><p>basic information about the PEP concept visit the <a href="http://pep.databio.org/en/2.0.0/">project website</a>.</p></li>
-<li><p>broader theoretical description in the subsample table <a href="http://pep.databio.org/en/2.0.0/specification/#project-attribute-subsample_table">documentation section</a>.</p></li>
+<li><p>basic information about the PEP concept visit the <a href="http://pep.databio.org/en/2.0.0/" class="external-link">project website</a>.</p></li>
+<li><p>broader theoretical description in the subsample table <a href="http://pep.databio.org/en/2.0.0/specification/#project-attribute-subsample_table" class="external-link">documentation
+section</a>.</p></li>
 </ul>
-<div id="problemgoal" class="section level2">
-<h2 class="hasAnchor">
-<a href="#problemgoal" class="anchor"></a>Problem/Goal</h2>
-<p>This series of examples below demonstrates how and why to use sample subannoatation functionality in multiple cases to <strong>provide multiple input files of the same type for a single sample</strong>.</p>
+<div class="section level3">
+<h3 id="problemgoal">Problem/Goal<a class="anchor" aria-label="anchor" href="#problemgoal"></a>
+</h3>
+<p>This series of examples below demonstrates how and why to use sample
+subannoatation functionality in multiple cases to <strong>provide
+multiple input files of the same type for a single sample</strong>.</p>
 </div>
-<div id="solutions" class="section level2">
-<h2 class="hasAnchor">
-<a href="#solutions" class="anchor"></a>Solutions</h2>
-<div id="example-1-basic-sample-subannotation-table" class="section level3">
-<h3 class="hasAnchor">
-<a href="#example-1-basic-sample-subannotation-table" class="anchor"></a>Example 1: basic sample subannotation table</h3>
-<p>This example demonstrates how the sample subannotation functionality is used. In this example, 2 samples have multiple input files that need merging (<code>frog_1</code> and <code>frog_2</code>), while 1 sample (<code>frog_3</code>) does not. Therefore, <code>frog_3</code> specifies its file in the <code>sample_table.csv</code> file, while the others leave that field blank and instead specify several files in the <code>subsample_table.csv</code> file.</p>
+<div class="section level3">
+<h3 id="solutions">Solutions<a class="anchor" aria-label="anchor" href="#solutions"></a>
+</h3>
+<div class="section level4">
+<h4 id="example-1-basic-sample-subannotation-table">Example 1: basic sample subannotation table<a class="anchor" aria-label="anchor" href="#example-1-basic-sample-subannotation-table"></a>
+</h4>
+<p>This example demonstrates how the sample subannotation functionality
+is used. In this example, 2 samples have multiple input files that need
+merging (<code>frog_1</code> and <code>frog_2</code>), while 1 sample
+(<code>frog_3</code>) does not. Therefore, <code>frog_3</code> specifies
+its file in the <code>sample_table.csv</code> file, while the others
+leave that field blank and instead specify several files in the
+<code>subsample_table.csv</code> file.</p>
 <p>This example is made up of these components:</p>
 <ul>
 <li>Project config file:</li>
 </ul>
-<pre><code>  Registered S3 method overwritten by 'pryr':
-    method      from
-    print.bytes Rcpp
-   pep_version: 2.0.0
+<pre><code>   pep_version: 2.0.0
    sample_table: sample_table.csv
    subsample_table: subsample_table.csv
    looper:
@@ -255,38 +264,39 @@ data/frog2b_data.txt
 </table>
 </li>
 </ul>
-<p>Let’s create the Project object and see if multiple files are present</p>
+<p>Let’s create the Project object and see if multiple files are
+present</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">projectConfig1</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span>
-<span class="st">"extdata"</span>,
-<span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"example_peps-"</span>, <span class="va">branch</span><span class="op">)</span>,
-<span class="st">"example_subtable1"</span>,
-<span class="st">"project_config.yaml"</span>,
-package <span class="op">=</span> <span class="st">"pepr"</span>
-<span class="op">)</span>
-<span class="va">p1</span> <span class="op">=</span> <span class="fu"><a href="../reference/Project.html">Project</a></span><span class="op">(</span><span class="va">projectConfig1</span><span class="op">)</span>
-<span class="co">#&gt; Loading config file: /Users/runner/work/_temp/Library/pepr/extdata/example_peps-master/example_subtable1/project_config.yaml</span>
-<span class="co"># Check the files</span>
-<span class="va">p1Samples</span> <span class="op">=</span> <span class="fu"><a href="../reference/sampleTable.html">sampleTable</a></span><span class="op">(</span><span class="va">p1</span><span class="op">)</span>
-<span class="va">p1Samples</span><span class="op">$</span><span class="va">file</span>
-<span class="co">#&gt; [[1]]</span>
-<span class="co">#&gt; [1] "data/frog1a_data.txt" "data/frog1b_data.txt" "data/frog1c_data.txt"</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; [[2]]</span>
-<span class="co">#&gt; [1] "data/frog2a_data.txt" "data/frog2b_data.txt"</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; [[3]]</span>
-<span class="co">#&gt; [1] "multi"</span>
-<span class="co"># Check the subsample names</span>
-<span class="va">p1Samples</span><span class="op">$</span><span class="va">subsample_name</span>
-<span class="co">#&gt; [[1]]</span>
-<span class="co">#&gt; [1] "sub_a" "sub_b" "sub_c"</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; [[2]]</span>
-<span class="co">#&gt; [1] "sub_a" "sub_b"</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; [[3]]</span>
-<span class="co">#&gt; NULL</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">projectConfig1</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span></span>
+<span><span class="st">"extdata"</span>,</span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"example_peps-"</span>, <span class="va">branch</span><span class="op">)</span>,</span>
+<span><span class="st">"example_subtable1"</span>,</span>
+<span><span class="st">"project_config.yaml"</span>,</span>
+<span>package <span class="op">=</span> <span class="st">"pepr"</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">p1</span> <span class="op">=</span> <span class="fu"><a href="../reference/Project.html">Project</a></span><span class="op">(</span><span class="va">projectConfig1</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Loading config file: /Users/runner/work/_temp/Library/pepr/extdata/example_peps-master/example_subtable1/project_config.yaml</span></span>
+<span><span class="co"># Check the files</span></span>
+<span><span class="va">p1Samples</span> <span class="op">=</span> <span class="fu"><a href="../reference/sampleTable.html">sampleTable</a></span><span class="op">(</span><span class="va">p1</span><span class="op">)</span></span>
+<span><span class="va">p1Samples</span><span class="op">$</span><span class="va">file</span></span>
+<span><span class="co">#&gt; [[1]]</span></span>
+<span><span class="co">#&gt; [1] "data/frog1a_data.txt" "data/frog1b_data.txt" "data/frog1c_data.txt"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[2]]</span></span>
+<span><span class="co">#&gt; [1] "data/frog2a_data.txt" "data/frog2b_data.txt"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[3]]</span></span>
+<span><span class="co">#&gt; [1] "multi"</span></span>
+<span><span class="co"># Check the subsample names</span></span>
+<span><span class="va">p1Samples</span><span class="op">$</span><span class="va">subsample_name</span></span>
+<span><span class="co">#&gt; [[1]]</span></span>
+<span><span class="co">#&gt; [1] "sub_a" "sub_b" "sub_c"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[2]]</span></span>
+<span><span class="co">#&gt; [1] "sub_a" "sub_b"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[3]]</span></span>
+<span><span class="co">#&gt; NULL</span></span></code></pre></div>
 <p>And inspect the whole table in <code>p1@samples</code> slot</p>
 <table class="table">
 <colgroup>
@@ -305,7 +315,8 @@ package <span class="op">=</span> <span class="st">"pepr"</span>
 <tr class="odd">
 <td align="left">frog_1</td>
 <td align="left">anySampleType</td>
-<td align="left">data/frog1a_data.txt, data/frog1b_data.txt, data/frog1c_data.txt</td>
+<td align="left">data/frog1a_data.txt, data/frog1b_data.txt,
+data/frog1c_data.txt</td>
 <td align="left">sub_a, sub_b, sub_c</td>
 </tr>
 <tr class="even">
@@ -322,18 +333,29 @@ package <span class="op">=</span> <span class="st">"pepr"</span>
 </tr>
 </tbody>
 </table>
-<p>You can also access a single subsample if you call the <code>getSubsample</code> method with appropriate <code>sample_name</code> - <code>subsample_name</code> attribute combination. Note, that this is only possible if the <code>subsample_name</code> column is defined in the <code>sub_annotation.csv</code> file.</p>
+<p>You can also access a single subsample if you call the
+<code>getSubsample</code> method with appropriate
+<code>sample_name</code> - <code>subsample_name</code> attribute
+combination. Note, that this is only possible if the
+<code>subsample_name</code> column is defined in the
+<code>sub_annotation.csv</code> file.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">sampleName</span> <span class="op">=</span> <span class="st">"frog_1"</span>
-<span class="va">subsampleName</span> <span class="op">=</span> <span class="st">"sub_a"</span>
-<span class="fu"><a href="../reference/getSubsample.html">getSubsample</a></span><span class="op">(</span><span class="va">p1</span>, <span class="va">sampleName</span>, <span class="va">subsampleName</span><span class="op">)</span>
-<span class="co">#&gt;    sample_name      protocol                 file subsample_name</span>
-<span class="co">#&gt; 1:      frog_1 anySampleType data/frog1a_data.txt          sub_a</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">sampleName</span> <span class="op">=</span> <span class="st">"frog_1"</span></span>
+<span><span class="va">subsampleName</span> <span class="op">=</span> <span class="st">"sub_a"</span></span>
+<span><span class="fu"><a href="../reference/getSubsample.html">getSubsample</a></span><span class="op">(</span><span class="va">p1</span>, <span class="va">sampleName</span>, <span class="va">subsampleName</span><span class="op">)</span></span>
+<span><span class="co">#&gt;    sample_name      protocol                 file subsample_name</span></span>
+<span><span class="co">#&gt; 1:      frog_1 anySampleType data/frog1a_data.txt          sub_a</span></span></code></pre></div>
 </div>
-<div id="example-2-subannotations-and-derived-attributes" class="section level3">
-<h3 class="hasAnchor">
-<a href="#example-2-subannotations-and-derived-attributes" class="anchor"></a>Example 2: subannotations and derived attributes</h3>
-<p>This example uses a <code>subsample_table.csv</code> file and a derived attributes to point to files. This is a rather complex example. Notice we must include the <code>file_id</code> column in the <code>sample_table.csv</code> file, and leave it blank; this is then populated by just some of the samples (<code>frog_1</code> and <code>frog_2</code>) in the <code>subsample_table.csv</code>, but is left empty for the samples that are not merged.</p>
+<div class="section level4">
+<h4 id="example-2-subannotations-and-derived-attributes">Example 2: subannotations and derived attributes<a class="anchor" aria-label="anchor" href="#example-2-subannotations-and-derived-attributes"></a>
+</h4>
+<p>This example uses a <code>subsample_table.csv</code> file and a
+derived attributes to point to files. This is a rather complex example.
+Notice we must include the <code>file_id</code> column in the
+<code>sample_table.csv</code> file, and leave it blank; this is then
+populated by just some of the samples (<code>frog_1</code> and
+<code>frog_2</code>) in the <code>subsample_table.csv</code>, but is
+left empty for the samples that are not merged.</p>
 <p>This example is made up of these components:</p>
 <ul>
 <li>Project config file:</li>
@@ -498,38 +520,48 @@ b
 </tr>
 </tbody>
 </table>
-Let’s load the project config, create the Project object and see if multiple files are present</li>
+</li>
 </ul>
+<p>Let’s load the project config, create the Project object and see if
+multiple files are present</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">projectConfig2</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span>
-<span class="st">"extdata"</span>,
-<span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"example_peps-"</span>, <span class="va">branch</span><span class="op">)</span>,
-<span class="st">"example_subtable2"</span>,
-<span class="st">"project_config.yaml"</span>,
-package <span class="op">=</span> <span class="st">"pepr"</span>
-<span class="op">)</span>
-<span class="va">p2</span> <span class="op">=</span> <span class="fu"><a href="../reference/Project.html">Project</a></span><span class="op">(</span><span class="va">projectConfig2</span><span class="op">)</span>
-<span class="co">#&gt; Loading config file: /Users/runner/work/_temp/Library/pepr/extdata/example_peps-master/example_subtable2/project_config.yaml</span>
-<span class="co">#&gt; Warning in `[&lt;-.data.frame`(x, i, j, value): replacement element 1 has 3 rows to</span>
-<span class="co">#&gt; replace 1 rows</span>
-<span class="co">#&gt; Warning in `[&lt;-.data.frame`(x, i, j, value): replacement element 1 has 2 rows to</span>
-<span class="co">#&gt; replace 1 rows</span>
-<span class="co"># Check the files</span>
-<span class="va">p2Samples</span> <span class="op">=</span> <span class="fu"><a href="../reference/sampleTable.html">sampleTable</a></span><span class="op">(</span><span class="va">p2</span><span class="op">)</span>
-<span class="va">p2Samples</span><span class="op">$</span><span class="va">file</span>
-<span class="co">#&gt; [[1]]</span>
-<span class="co">#&gt; [1] "../data/frog1a_data.txt"</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; [[2]]</span>
-<span class="co">#&gt; [1] "../data/frog2a_data.txt"</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; [[3]]</span>
-<span class="co">#&gt; [1] "../data/frog3_data.txt"</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; [[4]]</span>
-<span class="co">#&gt; [1] "../data/frog4_data.txt"</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">projectConfig2</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span></span>
+<span><span class="st">"extdata"</span>,</span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"example_peps-"</span>, <span class="va">branch</span><span class="op">)</span>,</span>
+<span><span class="st">"example_subtable2"</span>,</span>
+<span><span class="st">"project_config.yaml"</span>,</span>
+<span>package <span class="op">=</span> <span class="st">"pepr"</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">p2</span> <span class="op">=</span> <span class="fu"><a href="../reference/Project.html">Project</a></span><span class="op">(</span><span class="va">projectConfig2</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Loading config file: /Users/runner/work/_temp/Library/pepr/extdata/example_peps-master/example_subtable2/project_config.yaml</span></span>
+<span><span class="co">#&gt; Warning in `[&lt;-.data.frame`(x, i, j, value): replacement element 1 has 3 rows</span></span>
+<span><span class="co">#&gt; to replace 1 rows</span></span>
+<span><span class="co">#&gt; Warning in `[&lt;-.data.frame`(x, i, j, value): replacement element 1 has 2 rows</span></span>
+<span><span class="co">#&gt; to replace 1 rows</span></span>
+<span><span class="co"># Check the files</span></span>
+<span><span class="va">p2Samples</span> <span class="op">=</span> <span class="fu"><a href="../reference/sampleTable.html">sampleTable</a></span><span class="op">(</span><span class="va">p2</span><span class="op">)</span></span>
+<span><span class="va">p2Samples</span><span class="op">$</span><span class="va">file</span></span>
+<span><span class="co">#&gt; [[1]]</span></span>
+<span><span class="co">#&gt; [1] "../data/frog1a_data.txt"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[2]]</span></span>
+<span><span class="co">#&gt; [1] "../data/frog2a_data.txt"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[3]]</span></span>
+<span><span class="co">#&gt; [1] "../data/frog3_data.txt"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[4]]</span></span>
+<span><span class="co">#&gt; [1] "../data/frog4_data.txt"</span></span></code></pre></div>
 <p>And inspect the whole table in <code>p2@samples</code> slot</p>
 <table class="table">
+<colgroup>
+<col width="14%">
+<col width="16%">
+<col width="13%">
+<col width="28%">
+<col width="9%">
+<col width="17%">
+</colgroup>
 <thead><tr class="header">
 <th align="left">sample_name</th>
 <th align="left">protocol</th>
@@ -574,10 +606,15 @@ package <span class="op">=</span> <span class="st">"pepr"</span>
 </tbody>
 </table>
 </div>
-<div id="example-3-subannotations-and-expansion-characters" class="section level3">
-<h3 class="hasAnchor">
-<a href="#example-3-subannotations-and-expansion-characters" class="anchor"></a>Example 3: subannotations and expansion characters</h3>
-<p>This example gives the exact same results as Example 2, but in this case, uses a wildcard for <code>frog_2</code> instead of including it in the <code>subsample_table.csv</code> file. Since we can’t use a wildcard and a subannotation for the same sample, this necessitates specifying a second data source class (<code>local_files_unmerged</code>) that uses an asterisk (<code><a href="https://rdrr.io/r/base/Arithmetic.html">*</a></code>). The outcome is the same.</p>
+<div class="section level4">
+<h4 id="example-3-subannotations-and-expansion-characters">Example 3: subannotations and expansion characters<a class="anchor" aria-label="anchor" href="#example-3-subannotations-and-expansion-characters"></a>
+</h4>
+<p>This example gives the exact same results as Example 2, but in this
+case, uses a wildcard for <code>frog_2</code> instead of including it in
+the <code>subsample_table.csv</code> file. Since we can’t use a wildcard
+and a subannotation for the same sample, this necessitates specifying a
+second data source class (<code>local_files_unmerged</code>) that uses
+an asterisk (<code>*</code>). The outcome is the same.</p>
 <p>This example is made up of these components:</p>
 <ul>
 <li>Project config file:</li>
@@ -723,36 +760,45 @@ c
 </tr>
 </tbody>
 </table>
-Let’s load the project config, create the Project object and see if multiple files are present</li>
+</li>
 </ul>
+<p>Let’s load the project config, create the Project object and see if
+multiple files are present</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">projectConfig3</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span>
-<span class="st">"extdata"</span>,
-<span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"example_peps-"</span>, <span class="va">branch</span><span class="op">)</span>,
-<span class="st">"example_subtable3"</span>,
-<span class="st">"project_config.yaml"</span>,
-package <span class="op">=</span> <span class="st">"pepr"</span>
-<span class="op">)</span>
-<span class="va">p3</span> <span class="op">=</span> <span class="fu"><a href="../reference/Project.html">Project</a></span><span class="op">(</span><span class="va">projectConfig3</span><span class="op">)</span>
-<span class="co">#&gt; Loading config file: /Users/runner/work/_temp/Library/pepr/extdata/example_peps-master/example_subtable3/project_config.yaml</span>
-<span class="co">#&gt; Warning in `[&lt;-.data.frame`(x, i, j, value): replacement element 1 has 3 rows to</span>
-<span class="co">#&gt; replace 1 rows</span>
-<span class="co"># Check the files</span>
-<span class="va">p3Samples</span> <span class="op">=</span> <span class="fu"><a href="../reference/sampleTable.html">sampleTable</a></span><span class="op">(</span><span class="va">p3</span><span class="op">)</span>
-<span class="va">p3Samples</span><span class="op">$</span><span class="va">file</span>
-<span class="co">#&gt; [[1]]</span>
-<span class="co">#&gt; [1] "../data/frog1a_data.txt"</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; [[2]]</span>
-<span class="co">#&gt; [1] "../data/frog2*_data.txt"</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; [[3]]</span>
-<span class="co">#&gt; [1] "../data/frog3*_data.txt"</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; [[4]]</span>
-<span class="co">#&gt; [1] "../data/frog4*_data.txt"</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">projectConfig3</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span></span>
+<span><span class="st">"extdata"</span>,</span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"example_peps-"</span>, <span class="va">branch</span><span class="op">)</span>,</span>
+<span><span class="st">"example_subtable3"</span>,</span>
+<span><span class="st">"project_config.yaml"</span>,</span>
+<span>package <span class="op">=</span> <span class="st">"pepr"</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">p3</span> <span class="op">=</span> <span class="fu"><a href="../reference/Project.html">Project</a></span><span class="op">(</span><span class="va">projectConfig3</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Loading config file: /Users/runner/work/_temp/Library/pepr/extdata/example_peps-master/example_subtable3/project_config.yaml</span></span>
+<span><span class="co">#&gt; Warning in `[&lt;-.data.frame`(x, i, j, value): replacement element 1 has 3 rows</span></span>
+<span><span class="co">#&gt; to replace 1 rows</span></span>
+<span><span class="co"># Check the files</span></span>
+<span><span class="va">p3Samples</span> <span class="op">=</span> <span class="fu"><a href="../reference/sampleTable.html">sampleTable</a></span><span class="op">(</span><span class="va">p3</span><span class="op">)</span></span>
+<span><span class="va">p3Samples</span><span class="op">$</span><span class="va">file</span></span>
+<span><span class="co">#&gt; [[1]]</span></span>
+<span><span class="co">#&gt; [1] "../data/frog1a_data.txt"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[2]]</span></span>
+<span><span class="co">#&gt; [1] "../data/frog2*_data.txt"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[3]]</span></span>
+<span><span class="co">#&gt; [1] "../data/frog3*_data.txt"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[4]]</span></span>
+<span><span class="co">#&gt; [1] "../data/frog4*_data.txt"</span></span></code></pre></div>
 <p>And inspect the whole table in <code>p3@samples</code> slot</p>
-<table class="table">
+<table style="width:100%;" class="table">
+<colgroup>
+<col width="17%">
+<col width="20%">
+<col width="15%">
+<col width="34%">
+<col width="11%">
+</colgroup>
 <thead><tr class="header">
 <th align="left">sample_name</th>
 <th align="left">protocol</th>
@@ -792,10 +838,13 @@ package <span class="op">=</span> <span class="st">"pepr"</span>
 </tbody>
 </table>
 </div>
-<div id="example-4-subannotations-and-multiple-separate-class-inputs" class="section level3">
-<h3 class="hasAnchor">
-<a href="#example-4-subannotations-and-multiple-separate-class-inputs" class="anchor"></a>Example 4: subannotations and multiple (separate-class) inputs</h3>
-<p>Merging is for same class inputs (like, multiple files for read1). Different-class inputs (like read1 vs read2) are handled by different attributes (or columns). This example shows you how to handle paired-end data, while also merging within each.</p>
+<div class="section level4">
+<h4 id="example-4-subannotations-and-multiple-separate-class-inputs">Example 4: subannotations and multiple (separate-class) inputs<a class="anchor" aria-label="anchor" href="#example-4-subannotations-and-multiple-separate-class-inputs"></a>
+</h4>
+<p>Merging is for same class inputs (like, multiple files for read1).
+Different-class inputs (like read1 vs read2) are handled by different
+attributes (or columns). This example shows you how to handle paired-end
+data, while also merging within each.</p>
 <p>This example is made up of these components:</p>
 <ul>
 <li>Project config file:</li>
@@ -902,44 +951,46 @@ frog1b_data2.txt
 </tr>
 </tbody>
 </table>
-Let’s load the project config, create the Project object and see if multiple files are present</li>
+</li>
 </ul>
+<p>Let’s load the project config, create the Project object and see if
+multiple files are present</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">projectConfig4</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span>
-<span class="st">"extdata"</span>,
-<span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"example_peps-"</span>, <span class="va">branch</span><span class="op">)</span>,
-<span class="st">"example_subtable4"</span>,
-<span class="st">"project_config.yaml"</span>,
-package <span class="op">=</span> <span class="st">"pepr"</span>
-<span class="op">)</span>
-<span class="va">p4</span> <span class="op">=</span> <span class="fu"><a href="../reference/Project.html">Project</a></span><span class="op">(</span><span class="va">projectConfig4</span><span class="op">)</span>
-<span class="co">#&gt; Loading config file: /Users/runner/work/_temp/Library/pepr/extdata/example_peps-master/example_subtable4/project_config.yaml</span>
-<span class="co"># Check the read1 and read2 columns</span>
-<span class="va">p4Samples</span> <span class="op">=</span> <span class="fu"><a href="../reference/sampleTable.html">sampleTable</a></span><span class="op">(</span><span class="va">p4</span><span class="op">)</span>
-<span class="va">p4Samples</span><span class="op">$</span><span class="va">read1</span>
-<span class="co">#&gt; [[1]]</span>
-<span class="co">#&gt; [1] "frog1a_data.txt" "frog1b_data.txt" "frog1c_data.txt"</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; [[2]]</span>
-<span class="co">#&gt; NULL</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; [[3]]</span>
-<span class="co">#&gt; NULL</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; [[4]]</span>
-<span class="co">#&gt; NULL</span>
-<span class="va">p4Samples</span><span class="op">$</span><span class="va">read2</span>
-<span class="co">#&gt; [[1]]</span>
-<span class="co">#&gt; [1] "frog1a_data2.txt" "frog1b_data2.txt" "frog1b_data2.txt"</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; [[2]]</span>
-<span class="co">#&gt; NULL</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; [[3]]</span>
-<span class="co">#&gt; NULL</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; [[4]]</span>
-<span class="co">#&gt; NULL</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">projectConfig4</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span></span>
+<span><span class="st">"extdata"</span>,</span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"example_peps-"</span>, <span class="va">branch</span><span class="op">)</span>,</span>
+<span><span class="st">"example_subtable4"</span>,</span>
+<span><span class="st">"project_config.yaml"</span>,</span>
+<span>package <span class="op">=</span> <span class="st">"pepr"</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">p4</span> <span class="op">=</span> <span class="fu"><a href="../reference/Project.html">Project</a></span><span class="op">(</span><span class="va">projectConfig4</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Loading config file: /Users/runner/work/_temp/Library/pepr/extdata/example_peps-master/example_subtable4/project_config.yaml</span></span>
+<span><span class="co"># Check the read1 and read2 columns</span></span>
+<span><span class="va">p4Samples</span> <span class="op">=</span> <span class="fu"><a href="../reference/sampleTable.html">sampleTable</a></span><span class="op">(</span><span class="va">p4</span><span class="op">)</span></span>
+<span><span class="va">p4Samples</span><span class="op">$</span><span class="va">read1</span></span>
+<span><span class="co">#&gt; [[1]]</span></span>
+<span><span class="co">#&gt; [1] "frog1a_data.txt" "frog1b_data.txt" "frog1c_data.txt"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[2]]</span></span>
+<span><span class="co">#&gt; NULL</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[3]]</span></span>
+<span><span class="co">#&gt; NULL</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[4]]</span></span>
+<span><span class="co">#&gt; NULL</span></span>
+<span><span class="va">p4Samples</span><span class="op">$</span><span class="va">read2</span></span>
+<span><span class="co">#&gt; [[1]]</span></span>
+<span><span class="co">#&gt; [1] "frog1a_data2.txt" "frog1b_data2.txt" "frog1b_data2.txt"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[2]]</span></span>
+<span><span class="co">#&gt; NULL</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[3]]</span></span>
+<span><span class="co">#&gt; NULL</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[4]]</span></span>
+<span><span class="co">#&gt; NULL</span></span></code></pre></div>
 <p>And inspect the whole table in <code>p4@samples</code> slot</p>
 <table class="table">
 <colgroup>
@@ -959,7 +1010,8 @@ package <span class="op">=</span> <span class="st">"pepr"</span>
 <td align="left">frog_1</td>
 <td align="left">anySampleType</td>
 <td align="left">frog1a_data.txt, frog1b_data.txt, frog1c_data.txt</td>
-<td align="left">frog1a_data2.txt, frog1b_data2.txt, frog1b_data2.txt</td>
+<td align="left">frog1a_data2.txt, frog1b_data2.txt,
+frog1b_data2.txt</td>
 </tr>
 <tr class="even">
 <td align="left">frog_2</td>
@@ -997,11 +1049,13 @@ package <span class="op">=</span> <span class="st">"pepr"</span>
 
 
       <footer><div class="copyright">
-  <p>Developed by Nathan Sheffield, Michal Stolarczyk.</p>
+  <p></p>
+<p>Developed by Nathan Sheffield, Michal Stolarczyk.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer>
@@ -1009,6 +1063,8 @@ package <span class="op">=</span> <span class="st">"pepr"</span>
 
   
 
+
+  
 
   </body>
 </html>

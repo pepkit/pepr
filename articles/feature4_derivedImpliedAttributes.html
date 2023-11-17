@@ -19,6 +19,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -31,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pepr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.0</span>
       </span>
     </div>
 
@@ -61,17 +63,17 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/pepkit/pepr">
+  <a href="https://github.com/pepkit/pepr" class="external-link">
     <span class="fa fa-github fa-lg"></span>
      
     GitHub
   </a>
 </li>
 <li>
-  <a href="http://databio.org">Databio.org</a>
+  <a href="http://databio.org" class="external-link">Databio.org</a>
 </li>
 <li>
-  <a href="http://databio.org/software/">Software &amp; Data</a>
+  <a href="http://databio.org/software/" class="external-link">Software &amp; Data</a>
 </li>
       </ul>
 </div>
@@ -83,34 +85,49 @@
 
       
 
-      </header><script src="feature4_derivedImpliedAttributes_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Sample modifiers in pepr: imply and derive</h1>
-                        <h4 class="author">Michal Stolarczyk</h4>
+                        <h4 data-toc-skip class="author">Michal
+Stolarczyk</h4>
             
-            <h4 class="date">2021-07-02</h4>
+            <h4 data-toc-skip class="date">2023-11-17</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/pepkit/pepr/blob/master/vignettes/feature4_derivedImpliedAttributes.Rmd"><code>vignettes/feature4_derivedImpliedAttributes.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/pepkit/pepr/blob/HEAD/vignettes/feature4_derivedImpliedAttributes.Rmd" class="external-link"><code>vignettes/feature4_derivedImpliedAttributes.Rmd</code></a></small>
       <div class="hidden name"><code>feature4_derivedImpliedAttributes.Rmd</code></div>
 
     </div>
 
     
     
-<div id="learn-how-to-combine-implied-and-derived-attributes-in-pepr" class="section level1">
-<h1 class="hasAnchor">
-<a href="#learn-how-to-combine-implied-and-derived-attributes-in-pepr" class="anchor"></a>Learn how to combine implied and derived attributes in <code>pepr</code>
-</h1>
-<p>This vignette will show you how and why to use the derieved attributes and implied attributes functionalities concurrently of the <code>pepr</code> package.</p>
+<div class="section level2">
+<h2 id="learn-how-to-combine-implied-and-derived-attributes-in-pepr">Learn how to combine implied and derived attributes in
+<code>pepr</code><a class="anchor" aria-label="anchor" href="#learn-how-to-combine-implied-and-derived-attributes-in-pepr"></a>
+</h2>
+<p>This vignette will show you how and why to use the derieved
+attributes and implied attributes functionalities concurrently of the
+<code>pepr</code> package.</p>
 <ul>
-<li><p>For the basic information about the PEP concept on the <a href="https://pepkit.github.io/">project website</a></p></li>
-<li><p>Make sure to study the dedicated <a href="./feature3_derivedAttributes.html">derived attributes</a> and <a href="./feature2_impliedAttributes.html">implied attributes</a> vignettes prior to reading this one</p></li>
+<li><p>For the basic information about the PEP concept on the <a href="https://pepkit.github.io/" class="external-link">project website</a></p></li>
+<li><p>Make sure to study the dedicated <a href="./feature3_derivedAttributes.html">derived attributes</a> and <a href="./feature2_impliedAttributes.html">implied attributes</a>
+vignettes prior to reading this one</p></li>
 </ul>
-<div id="problemgoal" class="section level2">
-<h2 class="hasAnchor">
-<a href="#problemgoal" class="anchor"></a>Problem/Goal</h2>
-<p>While either derived attributes or implied attributes functionalities alone are often sufficient to efficiently describe your samples in PEP, the example below demonstrates how to use the derived attributes to <strong>simplify and unclutter the columns</strong> of the <code>sample_table.csv</code> file, after implying the attributes for samples that <strong>follow certain patterns</strong>. The two functionalities combined provide you with the way of building complex, yet flexible sample annotation tables effortlessly. Note that the attributes implication is always performed first - before the attributes are derived. This means that the newly created attributes (implied ones) can be used to construct the attributes in the column derivation process. Please consider the example below for reference:</p>
+<div class="section level3">
+<h3 id="problemgoal">Problem/Goal<a class="anchor" aria-label="anchor" href="#problemgoal"></a>
+</h3>
+<p>While either derived attributes or implied attributes functionalities
+alone are often sufficient to efficiently describe your samples in PEP,
+the example below demonstrates how to use the derived attributes to
+<strong>simplify and unclutter the columns</strong> of the
+<code>sample_table.csv</code> file, after implying the attributes for
+samples that <strong>follow certain patterns</strong>. The two
+functionalities combined provide you with the way of building complex,
+yet flexible sample annotation tables effortlessly. Note that the
+attributes implication is always performed first - before the attributes
+are derived. This means that the newly created attributes (implied ones)
+can be used to construct the attributes in the column derivation
+process. Please consider the example below for reference:</p>
 <table class="table">
 <thead><tr>
 <th style="text-align:left;">
@@ -185,147 +202,82 @@ data/lab/project/frog_xenTro9_treated.fastq
 </tr>
 </tbody>
 </table>
-<hr>
-</div>
-<div id="solution" class="section level2">
-<h2 class="hasAnchor">
-<a href="#solution" class="anchor"></a>Solution</h2>
-<p>The specification of detailed file paths/names (as presented above) is cumbersome. In order to make your life easier just find the patterns that the file names in <code>file_path</code> column of <code>sample_table.csv</code> follow, imply needed attributes and derive the file names. This multi step process is orchestrated by the <code>project_config.yaml</code> file via the <code>sample_modifiers.derive</code> and <code>sample_modifiers.imply</code> sections:</p>
-<pre><code>  Registered S3 method overwritten by 'pryr':
-    method      from
-    print.bytes Rcpp
-   pep_version: 2.0.0
-   sample_table: sample_table.csv
-   output_dir: $HOME/hello_looper_results
-   sample_modifiers:
-      derive:
-          attributes: file_path
-          sources:
-              source1: /data/lab/project/{organism}_{genome}_{condition}.fastq
-      imply:
-              if:
-                  organism: pig
-              then:
-                  genome: susScr11
-              if:
-                  organism: frog
-              then:
-                  genome: xenTro9
-              if:
-                  time: 0
-              then:
-                  condition: untreated
-              if:
-                  time: 1
-              then:
-                  condition: treated</code></pre>
-<p>The <code>*_untreated</code> files are clearly associated with the samples that are labeled with <code>time</code> 0. Therefore the <code>untreated</code> attribute is implied for the samples which have 0 in the <code>time</code> columns. Similarly, the codes <code>susScr11</code> and <code>xenTro9</code> are associated with the attributes in the <code>oragnism</code> column. Therefore, the column <code>condion</code> that consists of those two codes is implied from the attributes in the <code>organism</code> column according to the <code>project_config.yaml</code>.</p>
-<p>Let’s introduce a few modifications to the original <code>sample_table.csv</code> file to imply the attributes <code>genome</code> and <code>condition</code> and subsequently map the appropriate data sources from the <code>project_config.yaml</code> with attributes in the derived column - <code>[file_path]</code>:</p>
-<table class="table">
-<thead><tr>
-<th style="text-align:left;">
-sample_name
-</th>
-<th style="text-align:left;">
-organism
-</th>
-<th style="text-align:right;">
-time
-</th>
-<th style="text-align:left;">
-file_path
-</th>
-</tr></thead>
+<table style="width:7%;" class="table">
+<colgroup><col width="6%"></colgroup>
 <tbody>
-<tr>
-<td style="text-align:left;">
-pig_0h
-</td>
-<td style="text-align:left;">
-pig
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:left;">
-source1
-</td>
+<tr class="odd">
+<td>## Solution</td>
 </tr>
-<tr>
-<td style="text-align:left;">
-pig_1h
-</td>
-<td style="text-align:left;">
-pig
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:left;">
-source1
-</td>
+<tr class="even">
+<td>The specification of detailed file paths/names (as presented above)
+is cumbersome. In order to make your life easier just find the patterns
+that the file names in <code>file_path</code> column of
+<code>sample_table.csv</code> follow, imply needed attributes and derive
+the file names. This multi step process is orchestrated by the
+<code>project_config.yaml</code> file via the
+<code>sample_modifiers.derive</code> and
+<code>sample_modifiers.imply</code> sections:</td>
 </tr>
-<tr>
-<td style="text-align:left;">
-frog_0h
-</td>
-<td style="text-align:left;">
-frog
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:left;">
-source1
-</td>
+<tr class="odd">
+<td><code>pep_version: 2.0.0 sample_table: sample_table.csv output_dir: $HOME/hello_looper_results sample_modifiers: derive: attributes: file_path sources: source1: /data/lab/project/{organism}_{genome}_{condition}.fastq imply: if: organism: pig then: genome: susScr11 if: organism: frog then: genome: xenTro9 if: time: 0 then: condition: untreated if: time: 1 then: condition: treated</code></td>
 </tr>
-<tr>
-<td style="text-align:left;">
-frog_1h
-</td>
-<td style="text-align:left;">
-frog
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:left;">
-source1
-</td>
+<tr class="even">
+<td>The <code>*_untreated</code> files are clearly associated with the
+samples that are labeled with <code>time</code> 0. Therefore the
+<code>untreated</code> attribute is implied for the samples which have 0
+in the <code>time</code> columns. Similarly, the codes
+<code>susScr11</code> and <code>xenTro9</code> are associated with the
+attributes in the <code>oragnism</code> column. Therefore, the column
+<code>condion</code> that consists of those two codes is implied from
+the attributes in the <code>organism</code> column according to the
+<code>project_config.yaml</code>.</td>
+</tr>
+<tr class="odd">
+<td>Let’s introduce a few modifications to the original
+<code>sample_table.csv</code> file to imply the attributes
+<code>genome</code> and <code>condition</code> and subsequently map the
+appropriate data sources from the <code>project_config.yaml</code> with
+attributes in the derived column - <code>[file_path]</code>:</td>
+</tr>
+<tr class="even">
+<td></td>
 </tr>
 </tbody>
 </table>
-<hr>
 </div>
-<div id="code" class="section level2">
-<h2 class="hasAnchor">
-<a href="#code" class="anchor"></a>Code</h2>
-<p>Load <code>pepr</code> and read in the project metadata by specifying the path to the <code>project_config.yaml</code>:</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">pepr</span><span class="op">)</span>
-<span class="va">projectConfig</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span>
-<span class="st">"extdata"</span>,
-<span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"example_peps-"</span>, <span class="va">branch</span><span class="op">)</span>,
-<span class="st">"example_derive_imply"</span>,
-<span class="st">"project_config.yaml"</span>,
-package <span class="op">=</span> <span class="st">"pepr"</span>
-<span class="op">)</span>
-<span class="va">p</span> <span class="op">=</span> <span class="fu"><a href="../reference/Project.html">Project</a></span><span class="op">(</span><span class="va">projectConfig</span><span class="op">)</span>
-<span class="co">## Loading config file: /Users/runner/work/_temp/Library/pepr/extdata/example_peps-master/example_derive_imply/project_config.yaml</span></code></pre></div>
+<div class="section level3">
+<h3 id="code">Code<a class="anchor" aria-label="anchor" href="#code"></a>
+</h3>
+<p>Load <code>pepr</code> and read in the project metadata by specifying
+the path to the <code>project_config.yaml</code>:</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">pepr</span><span class="op">)</span></span>
+<span><span class="va">projectConfig</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span></span>
+<span><span class="st">"extdata"</span>,</span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"example_peps-"</span>, <span class="va">branch</span><span class="op">)</span>,</span>
+<span><span class="st">"example_derive_imply"</span>,</span>
+<span><span class="st">"project_config.yaml"</span>,</span>
+<span>package <span class="op">=</span> <span class="st">"pepr"</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">p</span> <span class="op">=</span> <span class="fu"><a href="../reference/Project.html">Project</a></span><span class="op">(</span><span class="va">projectConfig</span><span class="op">)</span></span>
+<span><span class="co">## Loading config file: /Users/runner/work/_temp/Library/pepr/extdata/example_peps-master/example_derive_imply/project_config.yaml</span></span></code></pre></div>
 <p>And inspect it:</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/sampleTable.html">sampleTable</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span>
-<span class="co">##    sample_name organism time                                      file_path</span>
-<span class="co">## 1:      pig_0h      pig    0 /data/lab/project/pig_susScr11_untreated.fastq</span>
-<span class="co">## 2:      pig_1h      pig    1   /data/lab/project/pig_susScr11_treated.fastq</span>
-<span class="co">## 3:     frog_0h     frog    0 /data/lab/project/frog_xenTro9_untreated.fastq</span>
-<span class="co">## 4:     frog_1h     frog    1   /data/lab/project/frog_xenTro9_treated.fastq</span>
-<span class="co">##      genome condition</span>
-<span class="co">## 1: susScr11 untreated</span>
-<span class="co">## 2: susScr11   treated</span>
-<span class="co">## 3:  xenTro9 untreated</span>
-<span class="co">## 4:  xenTro9   treated</span></code></pre></div>
-<p>As you can see, the resulting samples are annotated the same way as if they were read from the original, unwieldy, annotations file (enriched with the <code>genome</code> and <code>condition</code> attributes that were implied).</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/sampleTable.html">sampleTable</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span></span>
+<span><span class="co">##    sample_name organism time                                      file_path</span></span>
+<span><span class="co">## 1:      pig_0h      pig    0 /data/lab/project/pig_susScr11_untreated.fastq</span></span>
+<span><span class="co">## 2:      pig_1h      pig    1   /data/lab/project/pig_susScr11_treated.fastq</span></span>
+<span><span class="co">## 3:     frog_0h     frog    0 /data/lab/project/frog_xenTro9_untreated.fastq</span></span>
+<span><span class="co">## 4:     frog_1h     frog    1   /data/lab/project/frog_xenTro9_treated.fastq</span></span>
+<span><span class="co">##      genome condition</span></span>
+<span><span class="co">## 1: susScr11 untreated</span></span>
+<span><span class="co">## 2: susScr11   treated</span></span>
+<span><span class="co">## 3:  xenTro9 untreated</span></span>
+<span><span class="co">## 4:  xenTro9   treated</span></span></code></pre></div>
+<p>As you can see, the resulting samples are annotated the same way as
+if they were read from the original, unwieldy, annotations file
+(enriched with the <code>genome</code> and <code>condition</code>
+attributes that were implied).</p>
 </div>
 </div>
   </div>
@@ -341,11 +293,13 @@ package <span class="op">=</span> <span class="st">"pepr"</span>
 
 
       <footer><div class="copyright">
-  <p>Developed by Nathan Sheffield, Michal Stolarczyk.</p>
+  <p></p>
+<p>Developed by Nathan Sheffield, Michal Stolarczyk.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer>
@@ -353,6 +307,8 @@ package <span class="op">=</span> <span class="st">"pepr"</span>
 
   
 
+
+  
 
   </body>
 </html>

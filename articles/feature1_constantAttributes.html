@@ -19,6 +19,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -31,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pepr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.0</span>
       </span>
     </div>
 
@@ -61,17 +63,17 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/pepkit/pepr">
+  <a href="https://github.com/pepkit/pepr" class="external-link">
     <span class="fa fa-github fa-lg"></span>
      
     GitHub
   </a>
 </li>
 <li>
-  <a href="http://databio.org">Databio.org</a>
+  <a href="http://databio.org" class="external-link">Databio.org</a>
 </li>
 <li>
-  <a href="http://databio.org/software/">Software &amp; Data</a>
+  <a href="http://databio.org/software/" class="external-link">Software &amp; Data</a>
 </li>
       </ul>
 </div>
@@ -83,33 +85,41 @@
 
       
 
-      </header><script src="feature1_constantAttributes_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Sample modifiers in pepr: append</h1>
-                        <h4 class="author">Michal Stolarczyk</h4>
+                        <h4 data-toc-skip class="author">Michal
+Stolarczyk</h4>
             
-            <h4 class="date">2021-07-02</h4>
+            <h4 data-toc-skip class="date">2023-11-17</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/pepkit/pepr/blob/master/vignettes/feature1_constantAttributes.Rmd"><code>vignettes/feature1_constantAttributes.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/pepkit/pepr/blob/HEAD/vignettes/feature1_constantAttributes.Rmd" class="external-link"><code>vignettes/feature1_constantAttributes.Rmd</code></a></small>
       <div class="hidden name"><code>feature1_constantAttributes.Rmd</code></div>
 
     </div>
 
     
     
-<div id="learn-append-sample-modifier-in-pepr" class="section level1">
-<h1 class="hasAnchor">
-<a href="#learn-append-sample-modifier-in-pepr" class="anchor"></a>Learn append sample modifier in <code>pepr</code>
-</h1>
-<p>This vignette will show you how and why to use the append functionality of the <code>pepr</code> package.</p>
+<div class="section level2">
+<h2 id="learn-append-sample-modifier-in-pepr">Learn append sample modifier in <code>pepr</code><a class="anchor" aria-label="anchor" href="#learn-append-sample-modifier-in-pepr"></a>
+</h2>
+<p>This vignette will show you how and why to use the append
+functionality of the <code>pepr</code> package.</p>
 <ul>
-<li>basic information about this concept on the <a href="http://pep.databio.org/en/2.0.0/specification/#sample_modifiersappend">specification website</a>.</li>
+<li>basic information about this concept on the <a href="http://pep.databio.org/en/2.0.0/specification/#sample_modifiersappend" class="external-link">specification
+website</a>.</li>
 </ul>
-<div id="problemgoal" class="section level2">
-<h2 class="hasAnchor">
-<a href="#problemgoal" class="anchor"></a>Problem/Goal</h2>
-<p>The example below demonstrates how to use the constant attributes to <strong>define the samples attributes in the <code>read_type</code> column</strong> of the <code>sample_table.csv</code> file. This functionality is extremely useful when there are many samples that are characterized by identical values of certain attribute (here: value <code>SINGLE</code> in <code>read_type</code> attribute). Please consider the example below for reference:</p>
+<div class="section level3">
+<h3 id="problemgoal">Problem/Goal<a class="anchor" aria-label="anchor" href="#problemgoal"></a>
+</h3>
+<p>The example below demonstrates how to use the constant attributes to
+<strong>define the samples attributes in the <code>read_type</code>
+column</strong> of the <code>sample_table.csv</code> file. This
+functionality is extremely useful when there are many samples that are
+characterized by identical values of certain attribute (here: value
+<code>SINGLE</code> in <code>read_type</code> attribute). Please
+consider the example below for reference:</p>
 <table class="table">
 <thead><tr>
 <th style="text-align:left;">
@@ -184,113 +194,74 @@ SINGLE
 </tr>
 </tbody>
 </table>
-<hr>
-</div>
-<div id="solution" class="section level2">
-<h2 class="hasAnchor">
-<a href="#solution" class="anchor"></a>Solution</h2>
-<p>As the name suggests the attributes in the specified attributes (here: <code>read_type</code>) can be defined as constant ones. The way how this process is carried out is indicated explicitly in the <code>project_config.yaml</code> file (presented below). The name of the column is determined in the <code>sample_modifiers.append</code> key-value pair. Note that definition of more than one constant attribute is possible.</p>
-<pre><code>   pep_version: 2.0.0
-   sample_table: sample_table.csv
-   sample_modifiers:
-      append:
-          read_type: SINGLE</code></pre>
-<p>Let’s introduce a few modifications to the original <code>sample_table.csv</code> file to use the <code>sample_modifiers.append</code> section of the config. Simply skip the attributes that are set constant and let the <code>pepr</code> do the work for you.</p>
-<table class="table">
-<thead><tr>
-<th style="text-align:left;">
-sample_name
-</th>
-<th style="text-align:left;">
-organism
-</th>
-<th style="text-align:right;">
-time
-</th>
-</tr></thead>
+<table style="width:7%;" class="table">
+<colgroup><col width="6%"></colgroup>
 <tbody>
-<tr>
-<td style="text-align:left;">
-pig_0h
-</td>
-<td style="text-align:left;">
-pig
-</td>
-<td style="text-align:right;">
-0
-</td>
+<tr class="odd">
+<td>## Solution As the name suggests the attributes in the specified
+attributes (here: <code>read_type</code>) can be defined as constant
+ones. The way how this process is carried out is indicated explicitly in
+the <code>project_config.yaml</code> file (presented below). The name of
+the column is determined in the <code>sample_modifiers.append</code>
+key-value pair. Note that definition of more than one constant attribute
+is possible.</td>
 </tr>
-<tr>
-<td style="text-align:left;">
-pig_1h
-</td>
-<td style="text-align:left;">
-pig
-</td>
-<td style="text-align:right;">
-1
-</td>
+<tr class="even">
+<td><code>pep_version: 2.0.0 sample_table: sample_table.csv sample_modifiers: append: read_type: SINGLE</code></td>
 </tr>
-<tr>
-<td style="text-align:left;">
-frog_0h
-</td>
-<td style="text-align:left;">
-frog
-</td>
-<td style="text-align:right;">
-0
-</td>
+<tr class="odd">
+<td>Let’s introduce a few modifications to the original
+<code>sample_table.csv</code> file to use the
+<code>sample_modifiers.append</code> section of the config. Simply skip
+the attributes that are set constant and let the <code>pepr</code> do
+the work for you.</td>
 </tr>
-<tr>
-<td style="text-align:left;">
-frog_1h
-</td>
-<td style="text-align:left;">
-frog
-</td>
-<td style="text-align:right;">
-1
-</td>
+<tr class="even">
+<td></td>
 </tr>
 </tbody>
 </table>
-<hr>
 </div>
-<div id="code" class="section level2">
-<h2 class="hasAnchor">
-<a href="#code" class="anchor"></a>Code</h2>
-<p>Read in the project metadata by specifying the path to the <code>project_config.yaml</code>:</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">projectConfig</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span>
-  <span class="st">"extdata"</span>,
-  <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"example_peps-"</span>, <span class="va">branch</span><span class="op">)</span>, 
-  <span class="st">"example_append"</span>, 
-  <span class="st">"project_config.yaml"</span>, 
-  package <span class="op">=</span> <span class="st">"pepr"</span>
-<span class="op">)</span>
-<span class="va">p</span> <span class="op">=</span> <span class="fu"><a href="../reference/Project.html">Project</a></span><span class="op">(</span><span class="va">projectConfig</span><span class="op">)</span>
-<span class="co">#&gt; Loading config file: /Users/runner/work/_temp/Library/pepr/extdata/example_peps-master/example_append/project_config.yaml</span></code></pre></div>
+<div class="section level3">
+<h3 id="code">Code<a class="anchor" aria-label="anchor" href="#code"></a>
+</h3>
+<p>Read in the project metadata by specifying the path to the
+<code>project_config.yaml</code>:</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">projectConfig</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span></span>
+<span>  <span class="st">"extdata"</span>,</span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"example_peps-"</span>, <span class="va">branch</span><span class="op">)</span>, </span>
+<span>  <span class="st">"example_append"</span>, </span>
+<span>  <span class="st">"project_config.yaml"</span>, </span>
+<span>  package <span class="op">=</span> <span class="st">"pepr"</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">p</span> <span class="op">=</span> <span class="fu"><a href="../reference/Project.html">Project</a></span><span class="op">(</span><span class="va">projectConfig</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Loading config file: /Users/runner/work/_temp/Library/pepr/extdata/example_peps-master/example_append/project_config.yaml</span></span></code></pre></div>
 <p>And inspect it:</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/sampleTable.html">sampleTable</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span></span>
+<span><span class="co">#&gt;    sample_name organism time read_type</span></span>
+<span><span class="co">#&gt; 1:      pig_0h      pig    0    SINGLE</span></span>
+<span><span class="co">#&gt; 2:      pig_1h      pig    1    SINGLE</span></span>
+<span><span class="co">#&gt; 3:     frog_0h     frog    0    SINGLE</span></span>
+<span><span class="co">#&gt; 4:     frog_1h     frog    1    SINGLE</span></span></code></pre></div>
+<p>As you can see, the resulting samples are annotated the same way as
+if they were read from the original annotations file with attributes in
+the last column manually determined.</p>
+<p>What is more, the <code>p</code> object consists of all the
+information from the project config file
+(<code>project_config.yaml</code>). Run the following line to explore
+it:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/sampleTable.html">sampleTable</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span>
-<span class="co">#&gt;    sample_name organism time read_type</span>
-<span class="co">#&gt; 1:      pig_0h      pig    0    SINGLE</span>
-<span class="co">#&gt; 2:      pig_1h      pig    1    SINGLE</span>
-<span class="co">#&gt; 3:     frog_0h     frog    0    SINGLE</span>
-<span class="co">#&gt; 4:     frog_1h     frog    1    SINGLE</span></code></pre></div>
-<p>As you can see, the resulting samples are annotated the same way as if they were read from the original annotations file with attributes in the last column manually determined.</p>
-<p>What is more, the <code>p</code> object consists of all the information from the project config file (<code>project_config.yaml</code>). Run the following line to explore it:</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/config.html">config</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span>
-<span class="co">#&gt; Config object. Class: Config</span>
-<span class="co">#&gt;  pep_version: 2.0.0</span>
-<span class="co">#&gt;  sample_table: </span>
-<span class="co">#&gt; /Users/runner/work/_temp/Library/pepr/extdata/example_peps-master/example_append/sample_table.csv</span>
-<span class="co">#&gt;  sample_modifiers:</span>
-<span class="co">#&gt;     append:</span>
-<span class="co">#&gt;         read_type: SINGLE</span>
-<span class="co">#&gt;  name: example_append</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/config.html">config</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Config object. Class: Config</span></span>
+<span><span class="co">#&gt;  pep_version: 2.0.0</span></span>
+<span><span class="co">#&gt;  sample_table: </span></span>
+<span><span class="co">#&gt; /Users/runner/work/_temp/Library/pepr/extdata/example_peps-master/example_append/sample_table.csv</span></span>
+<span><span class="co">#&gt;  sample_modifiers:</span></span>
+<span><span class="co">#&gt;     append:</span></span>
+<span><span class="co">#&gt;         read_type: SINGLE</span></span>
+<span><span class="co">#&gt;  name: example_append</span></span></code></pre></div>
 </div>
 </div>
   </div>
@@ -306,11 +277,13 @@ frog
 
 
       <footer><div class="copyright">
-  <p>Developed by Nathan Sheffield, Michal Stolarczyk.</p>
+  <p></p>
+<p>Developed by Nathan Sheffield, Michal Stolarczyk.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer>
@@ -318,6 +291,8 @@ frog
 
   
 
+
+  
 
   </body>
 </html>
