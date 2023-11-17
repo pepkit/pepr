@@ -208,43 +208,133 @@ data/lab/project/frog_1h.fastq
 </tr>
 </tbody>
 </table>
-<table style="width:7%;" class="table">
-<colgroup><col width="6%"></colgroup>
-<tbody>
-<tr class="odd">
-<td>## Solution As the name suggests the attributes in the specified
-attributes (here: <code>file_path</code>) can be derived from other
-ones. The way how this process is carried out is indicated explicitly in
-the <code>project_config.yaml</code> file (presented below). The name of
-the column is determined in the
+<hr>
+</div>
+<div class="section level3">
+<h3 id="solution">Solution<a class="anchor" aria-label="anchor" href="#solution"></a>
+</h3>
+<p>As the name suggests the attributes in the specified attributes
+(here: <code>file_path</code>) can be derived from other ones. The way
+how this process is carried out is indicated explicitly in the
+<code>project_config.yaml</code> file (presented below). The name of the
+column is determined in the
 <code>sample_modifiers.derive.attributes</code> key-value pair, whereas
 the pattern for the attributes construction - in the
 <code>sample_modifiers.derive.sources</code> one. Note that the second
 level key (here: <code>source</code>) has to exactly match the
 attributes in the <code>file_path</code> column of the modified
-<code>sample_annotation.csv</code> (presented below).</td>
-</tr>
-<tr class="even">
-<td><code>pep_version: 2.0.0 sample_table: sample_table.csv output_dir: $HOME/hello_looper_results sample_modifiers: derive: attributes: file_path sources: source1: $HOME/data/lab/project/{organism}_{time}h.fastq source2: /path/from/collaborator/weirdNamingScheme_{external_id}.fastq</code></td>
-</tr>
-<tr class="odd">
-<td>Let’s introduce a few modifications to the original
+<code>sample_annotation.csv</code> (presented below).</p>
+<pre><code>   pep_version: 2.0.0
+   sample_table: sample_table.csv
+   output_dir: $HOME/hello_looper_results
+   sample_modifiers:
+      derive:
+          attributes: file_path
+          sources:
+              source1: $HOME/data/lab/project/{organism}_{time}h.fastq
+              source2: 
+  /path/from/collaborator/weirdNamingScheme_{external_id}.fastq</code></pre>
+<p>Let’s introduce a few modifications to the original
 <code>sample_annotation.csv</code> file to map the appropriate data
 sources from the <code>project_config.yaml</code> with attributes in the
-derived column - <code>[file_path]</code>:</td>
+derived column - <code>[file_path]</code>:</p>
+<table class="table">
+<thead><tr>
+<th style="text-align:left;">
+sample_name
+</th>
+<th style="text-align:left;">
+protocol
+</th>
+<th style="text-align:left;">
+organism
+</th>
+<th style="text-align:right;">
+time
+</th>
+<th style="text-align:left;">
+file_path
+</th>
+</tr></thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+pig_0h
+</td>
+<td style="text-align:left;">
+RRBS
+</td>
+<td style="text-align:left;">
+pig
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
+source1
+</td>
 </tr>
-<tr class="even">
-<td></td>
+<tr>
+<td style="text-align:left;">
+pig_1h
+</td>
+<td style="text-align:left;">
+RRBS
+</td>
+<td style="text-align:left;">
+pig
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+source1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+frog_0h
+</td>
+<td style="text-align:left;">
+RRBS
+</td>
+<td style="text-align:left;">
+frog
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
+source1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+frog_1h
+</td>
+<td style="text-align:left;">
+RRBS
+</td>
+<td style="text-align:left;">
+frog
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+source1
+</td>
 </tr>
 </tbody>
 </table>
+<hr>
 </div>
 <div class="section level3">
 <h3 id="code">Code<a class="anchor" aria-label="anchor" href="#code"></a>
 </h3>
 <p>Load <code>pepr</code> and read in the project metadata by specifying
 the path to the <code>project_config.yaml</code>:</p>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">pepr</span><span class="op">)</span></span>
 <span><span class="va">projectConfig</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span></span>
 <span><span class="st">"extdata"</span>,</span>
@@ -256,7 +346,7 @@ the path to the <code>project_config.yaml</code>:</p>
 <span><span class="va">p</span> <span class="op">=</span> <span class="fu"><a href="../reference/Project.html">Project</a></span><span class="op">(</span><span class="va">projectConfig</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Loading config file: /home/runner/work/_temp/Library/pepr/extdata/example_peps-master/example_derive/project_config.yaml</span></span></code></pre></div>
 <p>And inspect it:</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/sampleTable.html">sampleTable</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    sample_name protocol organism time</span></span>
 <span><span class="co">#&gt; 1:      pig_0h     RRBS      pig    0</span></span>
@@ -274,7 +364,7 @@ if they were read from the original, unwieldy, annotations file.</p>
 information from the project config file
 (<code>project_config.yaml</code>). Run the following line to explore
 it:</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/config.html">config</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Config object. Class: Config</span></span>
 <span><span class="co">#&gt;  pep_version: 2.0.0</span></span>
