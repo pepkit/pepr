@@ -87,6 +87,7 @@
 #' @param string String with variables encoded
 #' @param args named list of arguments to use to populate the string
 #' @param parent a directory that will be used to make the path absolute
+#' @return Formatted string
 #' @export
 #' @examples
 #' .strformat("~/{VAR1}{VAR2}_file", list(VAR1="hi", VAR2="hello"))
@@ -241,6 +242,7 @@
 #' @param attr a string specifying a column in the \code{samples}
 #' @param func an anonymous function, see Details for more information
 #' @param action a string (either \code{include} or \code{exclude}) that specifies whether the function should select the row or exclude it.
+#' @return an object of \code{\link[data.table]{data.table-class}} class filtered according to specified requirements
 #' @importFrom methods is
 #' @examples
 #' projectConfig = system.file("extdata", "example_peps-master",
@@ -326,7 +328,7 @@ fetchSamples = function(samples,
 #'
 #' @param lst list object to print
 #' @param level the indentation level
-#'
+#' @return No return value, called for side effects
 #' @examples
 #' projectConfig = system.file("extdata",
 #' "example_peps-master",

@@ -77,6 +77,7 @@ setMethod("initialize", "Project", function(.Object, ...) {
 #'  to index the sample table
 #' @param subSampleTableIndex a string indicating the sample attribute that is used
 #'  to index the sample table
+#' @return an object of \code{"\linkS4class{Project}"}
 #' @examples
 #' projectConfig = system.file("extdata", "example_peps-master",
 #' "example_amendments1", "project_config.yaml", package="pepr")
@@ -309,7 +310,7 @@ setMethod(
 #'
 #' @param .Object an object of class \code{"\linkS4class{Project}"}
 #' @param amendments character with the amendment name
-#'
+#' @return an object of class \code{"\linkS4class{Project}"} with activated amendments
 #' @examples
 #' projectConfig = system.file("extdata",
 #' "example_peps-master",
