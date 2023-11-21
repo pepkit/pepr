@@ -22,6 +22,9 @@ to index the sample table}
 \item{subSampleTableIndex}{a string indicating the sample attribute that is used
 to index the sample table}
 }
+\value{
+an object of \code{"\linkS4class{Project}"}
+}
 \description{
 This is a helper that creates the project with empty samples and config slots
 }

@@ -11,6 +11,9 @@
 
 \item{level}{the indentation level}
 }
+\value{
+No return value, called for side effects
+}
 \description{
 Prints a nested list in a way that looks nice
 }
