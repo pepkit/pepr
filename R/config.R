@@ -26,6 +26,11 @@ setMethod("initialize", "Config", function(.Object, data) {
 #' @export
 #' @rdname Config-class
 Config = function(file, amendments = NULL) {
+  ### if the config from the Project constructor is a list and not a filepath, it is from a PEP fetched from PEPhub
+  if (typeof(file) == 'list') {
+    config = methods::new("Config", data = file)
+    return(config)
+  }
   message("Loading config file: ", file)
   cfg_data = .loadConfig(filename = file, amendments = amendments)
   config = methods::new("Config", data = cfg_data)

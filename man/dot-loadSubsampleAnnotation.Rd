@@ -4,12 +4,14 @@
 \alias{.loadSubsampleAnnotation}
 \title{Load single subsample annotation}
 \usage{
-.loadSubsampleAnnotation(.Object, path)
+.loadSubsampleAnnotation(.Object, path = NULL, subsamplesTable = NULL)
 }
 \arguments{
 \item{.Object}{an object of \code{"\linkS4class{Project}"}}
 
 \item{path}{string, a path to the subsample table to read and incorporate}
+
+\item{subsamplesTable}{data.table, provided from constructor if PEP is fetched from API}
 }
 \value{
 an object of \code{"\linkS4class{Project}"}

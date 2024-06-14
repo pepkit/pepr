@@ -433,3 +433,134 @@ fetchSamples = function(samples,
     return(FALSE)
   stop("File path does not point to an annotation or a config: ", filePath)
 }
+
+
+
+#' Fetch a PEP from PEPhub using a registry path (namespace/project:tag)
+#'
+#' Calls the PEPhub API to fetch PEPs.
+#'
+#' @param registryPath a string for the PEP registry path (namespace/project:tag)
+#' @param raw a boolean for whether to return a raw PEP
+#'
+#' @return a list, with sublists for config, sample_list, and subsample_list for the fetched PEP
+#' @keywords internal
+fetchPEP <- function(registryPath, raw = TRUE) {
+  
+  BASE_URL <- 'https://pephub-api.databio.org/api/v1/'
+  reg_split <- strsplit(registryPath, '/|:')[[1]]
+  query_url <- paste0(BASE_URL, 'projects/', reg_split[[1]], '/', reg_split[[2]], '?tag=', reg_split[[3]], '&raw=', raw)
+  
+  jwt_path <- file.path(path.expand('~'), '.pephubclient', 'jwt.txt')
+  jwt_token <- ''
+  
+  if (file.exists(jwt_path)) {
+    if (difftime(Sys.time(), file.info(jwt_path)$mtime, units = 'days') <= 2) {
+      jwt_token <- readLines(jwt_path, warn = FALSE)
+      res <- httr::GET(query_url, httr::add_headers(authorization = jwt_token))
+    } else {
+      warning('Authentication token is more than 2 days old. Generate a new one with PEPhub Client.')
+      res <- httr::GET(query_url)
+    }
+  } else {
+    warning('No authentication token found. Generate one with PEPhub Client to access private PEPs.')
+    res <- httr::GET(query_url)
+  }
+  
+  pep <- httr::content(res, as = 'parsed')
+  
+  return(pep)
+}
+
+
+
+
+
+#' Save a modified PEP Project to a local directory
+#'
+#' This is a helper that saves a PEP Project to a local output directory
+#'
+#' @param project a PEP Project
+#' @param projectDir a string for the output directory, defaults to current working directory
+#' @param overwrite a boolean for whether to overwrite an existing project at the output directory
+#' @param sampleTableIndex a string indicating the sample attribute that is used
+#' 
+#' @return a boolean, TRUE if the save was successful and FALSE if otherwise
+#' @export
+saveProject = function(project = NULL,
+                       outputDir = getwd(),
+                       overwrite = FALSE) {
+  
+  saved = FALSE
+  
+  if (!file.exists(outputDir)) {
+    stop('Specified Project directory does not exist.')
+  }
+  
+  pattern = "^[a-zA-Z0-9_-]+/[a-zA-Z0-9_-]+:[a-zA-Z0-9_-]+$"
+  
+  if (grepl(pattern, project@file, perl = TRUE)) {
+    # if file is a registry path
+    project_name = gsub('/|:', '-', project@file)
+    project_path = file.path(outputDir, project_name)
+  } else {
+    project_path = file.path(outputDir, basename(dirname(project@file)))
+  }
+  
+  if ((!dir.exists(project_path) | overwrite)) {
+    dir.create(project_path, showWarnings = FALSE)
+    
+    samples_table <- as.data.frame(project@samples)
+    
+    subsample_cols_idx <- unname(which(sapply(samples_table, function(x) any(sapply(x, is.list)))))
+    subsample_cols_names <- names(which(sapply(samples_table, function(x) any(sapply(x, is.list)))))
+    sample_name_col_idx <- which(names(samples_table) == project@sampleNameAttr)
+    
+    samples_table_raw <- samples_table
+    subsamples_table_raw <- NULL
+    if (length(subsample_cols_idx) > 0) {
+      samples_table_raw <- samples_table[, -subsample_cols_idx]
+      subsamples_table <- samples_table[, c(sample_name_col_idx, subsample_cols_idx)]
+      subsamples_table_raw <- tidyr::unnest(subsamples_table, cols = subsample_cols_names)
+    }
+    
+    sample_table_name <- ifelse(CFG_SAMPLE_TABLE_KEY %in% names(project@config), 
+                                basename(project@config[[CFG_SAMPLE_TABLE_KEY]]),
+                                paste0(CFG_SAMPLE_TABLE_KEY, '.csv'))
+    
+    subsample_table_name <- ifelse(CFG_SUBSAMPLE_TABLE_KEY %in% names(project@config),
+                                   basename(project@config[[CFG_SUBSAMPLE_TABLE_KEY]]), 
+                                   paste0(CFG_SUBSAMPLE_TABLE_KEY, '.csv'))
+    
+    project@config[[CFG_SAMPLE_TABLE_KEY]] <- sample_table_name
+    project@config[[CFG_SUBSAMPLE_TABLE_KEY]] <- subsample_table_name
+    
+    yaml::write_yaml(project@config, file = file.path(project_path, 'project_config.yaml'))
+    if (!is.null(samples_table_raw)) {
+      data.table::fwrite(samples_table_raw, file = file.path(project_path, sample_table_name))
+    }
+    if (!is.null(subsamples_table_raw)) {
+      data.table::fwrite(subsamples_table_raw, file = file.path(project_path, subsample_table_name))
+    }
+    saved = TRUE
+  } else {
+    stop('Project directory already exists. Use overwrite = TRUE if you would like to overwrite the existing local PEP.')
+  }
+  
+  return(saved)
+}
+
+
+#' Dataframify list sublists
+#'
+#' This function turns each list sublist into a data frame
+#'
+#' @param list an object of class list
+#' @return an object of class data.frame
+#' @keywords internal
+.listOfListToListOfDT <- function(list) {
+  data.table::setDT(as.data.frame(do.call(rbind, list)))
+}
+
+
+
