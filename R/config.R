@@ -63,7 +63,7 @@ setMethod(
 #' .expandList(x)
 #' @export
 #' @keywords internal
-.expandList <- function(x) {
+.expandList = function(x) {
   if (is.list(x))
     return(lapply(x, .expandList))
   if (length(x) > 1)
@@ -86,7 +86,7 @@ setMethod(
 #' .getSubscript(l, 1) == .getSubscript(l, "a")
 #' @export
 #' @keywords internal
-.getSubscript <- function(lst, i) {
+.getSubscript = function(lst, i) {
   if (is.character(i))
     return(grep(paste0("^", i, "$"), names(lst)))
   return(i)
@@ -140,7 +140,7 @@ setMethod("[[", "Config", function(x, i) {
 })
 
 
-.DollarNames.Config <- function(x, pattern = "")
+.DollarNames.Config = function(x, pattern = "")
   grep(paste0("^", pattern), grep(names(x), value = TRUE))
 
 #' @rdname select-config

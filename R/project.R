@@ -36,7 +36,7 @@ setClass(
 
 setMethod("initialize", "Project", function(.Object, ...) {
   .Object = methods::callNextMethod(.Object)  # calls generic initialize
-  ellipsis <- list(...)
+  ellipsis = list(...)
   stIndex = ellipsis$sampleTableIndex
   sstIndex = ellipsis$subSampleTableIndex
   if (ellipsis$api) {
@@ -443,7 +443,7 @@ setMethod(
 #'
 #' @return an object of \code{"\linkS4class{Project}"}
 #' @keywords internal
-.removeAttrs <- function(.Object) {
+.removeAttrs = function(.Object) {
   if (!CFG_S_MODIFIERS_KEY %in% names(config(.Object)))
     return(.Object)
   modifiers = config(.Object)[[CFG_S_MODIFIERS_KEY]]
@@ -468,7 +468,7 @@ setMethod(
 #'
 #' @return an object of \code{\link{Project-class}}
 #' @keywords internal
-.appendAttrs <- function(.Object) {
+.appendAttrs = function(.Object) {
   if (!CFG_S_MODIFIERS_KEY %in% names(config(.Object)))
     return(.Object)
   modifiers = config(.Object)[[CFG_S_MODIFIERS_KEY]]
@@ -502,7 +502,7 @@ setMethod(
 #'
 #' @return an object of \code{"\linkS4class{Project}"}
 #' @keywords internal
-.duplicateAttrs <- function(.Object) {
+.duplicateAttrs = function(.Object) {
   if (!CFG_S_MODIFIERS_KEY %in% names(config(.Object)))
     return(.Object)
   modifiers = config(.Object)[[CFG_S_MODIFIERS_KEY]]
@@ -762,8 +762,8 @@ setMethod(
 #' @param stIndex character string indicating a constructor-specified sample table index
 #' @param sstIndex character string indicating a constructor-specified subsample table index
 #' @keywords internal
-.getTableIndexes <- function(.Object, stIndex, sstIndex) {
-  .getIndexVal <- function(spec, config, default, key) {
+.getTableIndexes = function(.Object, stIndex, sstIndex) {
+  .getIndexVal = function(spec, config, default, key) {
     if (!is.null(spec))
       return(spec)
     if (length(config))

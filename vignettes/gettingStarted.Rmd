@@ -43,7 +43,13 @@ Loading your project metadata into R is a single line of code:
 p = pepr::Project(file=projectConfigFile)
 ```
 
-That's it! You've now have a `Project` object, *p*, to interact with in `R`.
+That's it! You now have a `Project` object, *p*, to interact with in `R`. You can also use PEPhub registry paths to fetch them online:
+
+```{r}
+p2 = pepr::pullProject(registryPath='databio/example:default')
+```
+
+To fetch private PEPs, use PEPhub Client to login and generate an authentication token. You should then be able to fetch your private PEPs by registry path.
 
 ## Interfacing with your `pepr::Project` object in R
 
@@ -63,6 +69,12 @@ And you can also access the project configuration metadata with the `config()` f
 
 ```{r}
 config(p)
+```
+
+If you would like to save your project to a new directory, use the `saveProject()` function:
+
+```{r}
+saveProject(p2, outputDir=tempdir())
 ```
 
 Follow the other vignettes for more advanced capabilities of `pepr`.

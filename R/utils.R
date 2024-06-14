@@ -358,6 +358,7 @@ fetchSamples = function(samples,
   }
 }
 
+
 #' Check for a section existence in a nested list
 #'
 #' @param object list to inspect
@@ -435,7 +436,6 @@ fetchSamples = function(samples,
 }
 
 
-
 #' Fetch a PEP from PEPhub using a registry path (namespace/project:tag)
 #'
 #' Calls the PEPhub API to fetch PEPs.
@@ -445,35 +445,30 @@ fetchSamples = function(samples,
 #'
 #' @return a list, with sublists for config, sample_list, and subsample_list for the fetched PEP
 #' @keywords internal
-fetchPEP <- function(registryPath, raw = TRUE) {
+fetchPEP = function(registryPath, raw = TRUE) {
+  pathSplit = strsplit(registryPath, '/|:')[[1]]
+  queryURL = paste0(BASE_URL, 'projects/', pathSplit[[1]], '/', pathSplit[[2]], '?tag=', pathSplit[[3]], '&raw=', raw)
   
-  BASE_URL <- 'https://pephub-api.databio.org/api/v1/'
-  reg_split <- strsplit(registryPath, '/|:')[[1]]
-  query_url <- paste0(BASE_URL, 'projects/', reg_split[[1]], '/', reg_split[[2]], '?tag=', reg_split[[3]], '&raw=', raw)
+  jwtPath = file.path(path.expand('~'), '.pephubclient', 'jwt.txt')
+  jwtToken = ''
   
-  jwt_path <- file.path(path.expand('~'), '.pephubclient', 'jwt.txt')
-  jwt_token <- ''
-  
-  if (file.exists(jwt_path)) {
-    if (difftime(Sys.time(), file.info(jwt_path)$mtime, units = 'days') <= 2) {
-      jwt_token <- readLines(jwt_path, warn = FALSE)
-      res <- httr::GET(query_url, httr::add_headers(authorization = jwt_token))
+  if (file.exists(jwtPath)) {
+    if (difftime(Sys.time(), file.info(jwtPath)$mtime, units = 'days') <= 2) {
+      jwtToken = readLines(jwtPath, warn = FALSE)
+      res = httr::GET(queryURL, httr::add_headers(authorization = jwtToken))
     } else {
       warning('Authentication token is more than 2 days old. Generate a new one with PEPhub Client.')
-      res <- httr::GET(query_url)
+      res = httr::GET(queryURL)
     }
   } else {
     warning('No authentication token found. Generate one with PEPhub Client to access private PEPs.')
-    res <- httr::GET(query_url)
+    res = httr::GET(queryURL)
   }
   
-  pep <- httr::content(res, as = 'parsed')
+  pep = httr::content(res, as = 'parsed')
   
   return(pep)
 }
-
-
-
 
 
 #' Save a modified PEP Project to a local directory
@@ -490,7 +485,6 @@ fetchPEP <- function(registryPath, raw = TRUE) {
 saveProject = function(project = NULL,
                        outputDir = getwd(),
                        overwrite = FALSE) {
-  
   saved = FALSE
   
   if (!file.exists(outputDir)) {
@@ -501,46 +495,46 @@ saveProject = function(project = NULL,
   
   if (grepl(pattern, project@file, perl = TRUE)) {
     # if file is a registry path
-    project_name = gsub('/|:', '-', project@file)
-    project_path = file.path(outputDir, project_name)
+    projectName = gsub('/|:', '-', project@file)
+    projectPath = file.path(outputDir, projectName)
   } else {
-    project_path = file.path(outputDir, basename(dirname(project@file)))
+    projectPath = file.path(outputDir, basename(dirname(project@file)))
   }
   
-  if ((!dir.exists(project_path) | overwrite)) {
-    dir.create(project_path, showWarnings = FALSE)
+  if ((!dir.exists(projectPath) | overwrite)) {
+    dir.create(projectPath, showWarnings = FALSE)
     
-    samples_table <- as.data.frame(project@samples)
+    samplesTable = as.data.frame(project@samples)
     
-    subsample_cols_idx <- unname(which(sapply(samples_table, function(x) any(sapply(x, is.list)))))
-    subsample_cols_names <- names(which(sapply(samples_table, function(x) any(sapply(x, is.list)))))
-    sample_name_col_idx <- which(names(samples_table) == project@sampleNameAttr)
+    subsampleColsIdx = unname(which(sapply(samplesTable, function(x) any(sapply(x, is.list)))))
+    subsampleColsNames = names(which(sapply(samplesTable, function(x) any(sapply(x, is.list)))))
+    sampleNameColIdx = which(names(samplesTable) == project@sampleNameAttr)
     
-    samples_table_raw <- samples_table
-    subsamples_table_raw <- NULL
-    if (length(subsample_cols_idx) > 0) {
-      samples_table_raw <- samples_table[, -subsample_cols_idx]
-      subsamples_table <- samples_table[, c(sample_name_col_idx, subsample_cols_idx)]
-      subsamples_table_raw <- tidyr::unnest(subsamples_table, cols = subsample_cols_names)
+    samplesTableRaw = samplesTable
+    subsamplesTableRaw = NULL
+    if (length(subsampleColsIdx) > 0) {
+      samplesTableRaw = samplesTable[, -subsampleColsIdx]
+      subsamplesTable = samplesTable[, c(sampleNameColIdx, subsampleColsIdx)]
+      subsamplesTableRaw = tidyr::unnest(subsamplesTable, cols = subsampleColsNames)
     }
     
-    sample_table_name <- ifelse(CFG_SAMPLE_TABLE_KEY %in% names(project@config), 
+    sampleTableName = ifelse(CFG_SAMPLE_TABLE_KEY %in% names(project@config), 
                                 basename(project@config[[CFG_SAMPLE_TABLE_KEY]]),
                                 paste0(CFG_SAMPLE_TABLE_KEY, '.csv'))
     
-    subsample_table_name <- ifelse(CFG_SUBSAMPLE_TABLE_KEY %in% names(project@config),
+    subsampleTableName = ifelse(CFG_SUBSAMPLE_TABLE_KEY %in% names(project@config),
                                    basename(project@config[[CFG_SUBSAMPLE_TABLE_KEY]]), 
                                    paste0(CFG_SUBSAMPLE_TABLE_KEY, '.csv'))
     
-    project@config[[CFG_SAMPLE_TABLE_KEY]] <- sample_table_name
-    project@config[[CFG_SUBSAMPLE_TABLE_KEY]] <- subsample_table_name
+    project@config[[CFG_SAMPLE_TABLE_KEY]] = sampleTableName
+    project@config[[CFG_SUBSAMPLE_TABLE_KEY]] = subsampleTableName
     
-    yaml::write_yaml(project@config, file = file.path(project_path, 'project_config.yaml'))
-    if (!is.null(samples_table_raw)) {
-      data.table::fwrite(samples_table_raw, file = file.path(project_path, sample_table_name))
+    yaml::write_yaml(project@config, file = file.path(projectPath, 'project_config.yaml'))
+    if (!is.null(samplesTableRaw)) {
+      data.table::fwrite(samplesTableRaw, file = file.path(projectPath, sampleTableName))
     }
-    if (!is.null(subsamples_table_raw)) {
-      data.table::fwrite(subsamples_table_raw, file = file.path(project_path, subsample_table_name))
+    if (!is.null(subsamplesTableRaw)) {
+      data.table::fwrite(subsamplesTableRaw, file = file.path(projectPath, subsampleTableName))
     }
     saved = TRUE
   } else {
@@ -558,9 +552,8 @@ saveProject = function(project = NULL,
 #' @param list an object of class list
 #' @return an object of class data.frame
 #' @keywords internal
-.listOfListToListOfDT <- function(list) {
+.listOfListToListOfDT = function(list) {
   data.table::setDT(as.data.frame(do.call(rbind, list)))
 }
-
 
 
