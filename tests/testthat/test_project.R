@@ -157,6 +157,17 @@ test_that("Project constructor throws errors if nonexistant init files are provi
   expect_error(Project(file = "test.yaml"))
 })
 
+context("Pull test PEP from PEPhub")
+
+test_that("Pulling public PEP from PEPhub creates Project object", {
+  expect_is(pullProject(registryPath = "databio/example:default"), "Project")
+})
+
+context("Attempt to pull invalid registry path")
+
+test_that("pullProject throws error if invalid registry path is provided", {
+  expect_error(pullProject(registryPath = "invalid path"))
+})
 
 context("Sample automerging")
 

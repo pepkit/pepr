@@ -447,6 +447,9 @@ fetchSamples = function(samples,
 #' @keywords internal
 fetchPEP = function(registryPath, raw = TRUE) {
   pathSplit = strsplit(registryPath, '/|:')[[1]]
+  if (length(pathSplit) < 3) {
+    stop('Invalid registry path.')
+  }
   queryURL = paste0(BASE_URL, 'projects/', pathSplit[[1]], '/', pathSplit[[2]], '?tag=', pathSplit[[3]], '&raw=', raw)
   
   jwtPath = file.path(path.expand('~'), '.pephubclient', 'jwt.txt')

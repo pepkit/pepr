@@ -8,7 +8,7 @@
 #' @import yaml
 #' @import stringr
 #' @import pryr
-#' @import tidyr
+#' @importFrom tidyr unnest
 #'
 #' @references 
 #' GitHub: \url{https://github.com/pepkit/pepr}, Documentation: \url{https://code.databio.org/pepr/}
