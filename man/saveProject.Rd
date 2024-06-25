@@ -9,11 +9,9 @@ saveProject(project = NULL, outputDir = getwd(), overwrite = FALSE)
 \arguments{
 \item{project}{a PEP Project}
 
+\item{outputDir}{a string for the output directory, defaults to current working directory}
+
 \item{overwrite}{a boolean for whether to overwrite an existing project at the output directory}
-
-\item{projectDir}{a string for the output directory, defaults to current working directory}
-
-\item{sampleTableIndex}{a string indicating the sample attribute that is used}
 }
 \value{
 a boolean, TRUE if the save was successful and FALSE if otherwise

@@ -8,6 +8,7 @@
 #' @import yaml
 #' @import stringr
 #' @import pryr
+#' @import httr
 #' @importFrom tidyr unnest
 #'
 #' @references 

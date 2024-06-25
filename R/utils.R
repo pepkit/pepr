@@ -479,9 +479,8 @@ fetchPEP = function(registryPath, raw = TRUE) {
 #' This is a helper that saves a PEP Project to a local output directory
 #'
 #' @param project a PEP Project
-#' @param projectDir a string for the output directory, defaults to current working directory
+#' @param outputDir a string for the output directory, defaults to current working directory
 #' @param overwrite a boolean for whether to overwrite an existing project at the output directory
-#' @param sampleTableIndex a string indicating the sample attribute that is used
 #' 
 #' @return a boolean, TRUE if the save was successful and FALSE if otherwise
 #' @export
