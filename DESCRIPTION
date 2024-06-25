@@ -19,7 +19,8 @@ Imports:
     data.table,
     methods,
     RCurl,
-    tidyr
+    tidyr,
+    httr
 Suggests:
     knitr,
     testthat,
