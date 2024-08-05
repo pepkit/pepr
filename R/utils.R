@@ -559,3 +559,31 @@ saveProject = function(project = NULL,
 }
 
 
+
+#' Save or update JWT
+#'
+#' Save or update local authentication token to fetch private PEPs
+#'
+#' @param jwt a string for the new jwt to save
+#'
+#' @return a boolean for whether the authentication token was saved
+#' @export
+saveJWT = function(jwt) {
+  if (typeof(jwt) == 'character') {
+    jwtPath = file.path(path.expand('~'), '.pephubclient', 'jwt.txt')
+    
+    if (file.exists(jwtPath)) {
+      warning('Overwriting existing authentication token...')
+    }
+    
+    cat(jwt, file = jwtPath)
+    print(paste0('JWT saved to ', jwtPath))
+    
+    return(TRUE)
+  } else {
+    warning('Invalid authentication token provided.')
+    return(FALSE)
+  }
+}
+
+

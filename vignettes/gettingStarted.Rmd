@@ -49,7 +49,13 @@ That's it! You now have a `Project` object, *p*, to interact with in `R`. You ca
 p2 = pepr::pullProject(registryPath='databio/example:default')
 ```
 
-To fetch private PEPs, use PEPhub Client to login and generate an authentication token. You should then be able to fetch your private PEPs by registry path.
+To fetch private PEPs, use PEPhub Client to login and generate an authentication token. Or, login to PEPhub and generate a new key to save it locally:
+
+```{r}
+pepr::saveJWT('*your authetication token goes here*')
+```
+
+You should then be able to fetch your private PEPs by registry path.
 
 ## Interfacing with your `pepr::Project` object in R
 
