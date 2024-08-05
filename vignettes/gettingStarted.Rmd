@@ -51,7 +51,7 @@ p2 = pepr::pullProject(registryPath='databio/example:default')
 
 To fetch private PEPs, use PEPhub Client to login and generate an authentication token. Or, login to PEPhub and generate a new key to save it locally:
 
-```{r}
+```{r, eval=FALSE}
 pepr::saveJWT('*your authetication token goes here*')
 ```
 
