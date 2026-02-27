@@ -14,6 +14,9 @@ activateAmendments(.Object, amendments)
 
 \item{amendments}{character with the amendment name}
 }
+\value{
+an object of class \code{"\linkS4class{Project}"} with activated amendments
+}
 \description{
 This method switches between the amendments
 within the \code{"\linkS4class{Project}"} object

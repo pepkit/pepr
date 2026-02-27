@@ -13,6 +13,9 @@
 
 \item{parent}{a directory that will be used to make the path absolute}
 }
+\value{
+Formatted string
+}
 \description{
 Given a string with environment variables (encoded like \code{${VAR}} or \code{$VAR}), and
 other variables (encoded like \code{{VAR}}) this function will substitute

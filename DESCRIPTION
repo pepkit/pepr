@@ -10,7 +10,8 @@ Description: A PEP, or Portable Encapsulated Project, is a dataset that
     subscribes to the PEP structure for organizing metadata. It is written using
     a simple YAML + CSV format, it is your one-stop solution to metadata 
     management across data analysis environments. This package reads this 
-    standardized project configuration structure into R.
+    standardized project configuration structure into R. 
+    Described in Sheffield et al. (2021) <doi:10.1093/gigascience/giab077>.
 Imports:
     yaml,
     stringr,

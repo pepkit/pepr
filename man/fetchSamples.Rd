@@ -15,6 +15,9 @@ fetchSamples(samples, attr = NULL, func = NULL, action = "include")
 
 \item{action}{a string (either \code{include} or \code{exclude}) that specifies whether the function should select the row or exclude it.}
 }
+\value{
+an object of \code{\link[data.table]{data.table-class}} class filtered according to specified requirements
+}
 \description{
 This funciton collects the samples from a \code{\link[data.table]{data.table-class}} object that
 fulfill the requirements of an attribute \code{attr} specified with
