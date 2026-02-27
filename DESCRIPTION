@@ -18,15 +18,14 @@ Imports:
     data.table,
     methods,
     RCurl,
-    tidyr,
-    httr
+    httr2
 Suggests:
     knitr,
-    testthat,
+    testthat (>= 3.1.2),
     rmarkdown,
     curl
 VignetteBuilder: knitr
 License: BSD_2_clause + file LICENSE
 BugReports: https://github.com/pepkit/pepr/issues
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.3
 Encoding: UTF-8

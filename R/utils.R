@@ -451,26 +451,31 @@ fetchPEP = function(registryPath, raw = TRUE) {
   if (length(pathSplit) < 3) {
     stop('Invalid registry path.')
   }
-  queryURL = paste0(BASE_URL, 'projects/', pathSplit[[1]], '/', pathSplit[[2]], '?tag=', pathSplit[[3]], '&raw=', raw)
-  
+  queryURL = paste0(BASE_URL, 'projects/', pathSplit[[1]], '/', pathSplit[[2]], '?tag=', pathSplit[[3]], '&raw=', tolower(as.character(raw)))
+
   jwtPath = file.path(path.expand('~'), '.pephubclient', 'jwt.txt')
-  jwtToken = ''
-  
+
+  req = httr2::request(queryURL)
+
   if (file.exists(jwtPath)) {
     if (difftime(Sys.time(), file.info(jwtPath)$mtime, units = 'days') <= 2) {
       jwtToken = readLines(jwtPath, warn = FALSE)
-      res = httr::GET(queryURL, httr::add_headers(authorization = jwtToken))
+      req = req |> httr2::req_headers(authorization = jwtToken)
     } else {
       warning('Authentication token is more than 2 days old. Generate a new one with PEPhub Client.')
-      res = httr::GET(queryURL)
     }
   } else {
     warning('No authentication token found. Generate one with PEPhub Client to access private PEPs.')
-    res = httr::GET(queryURL)
   }
-  
-  pep = httr::content(res, as = 'parsed')
-  
+
+  resp = tryCatch(
+    req |> httr2::req_perform(),
+    error = function(e) {
+      stop("Unable to connect to PEPhub API. Check your internet connection. (", conditionMessage(e), ")")
+    }
+  )
+  pep = httr2::resp_body_json(resp)
+
   return(pep)
 }
 
@@ -518,7 +523,17 @@ saveProject = function(project = NULL,
     if (length(subsampleColsIdx) > 0) {
       samplesTableRaw = samplesTable[, -subsampleColsIdx]
       subsamplesTable = samplesTable[, c(sampleNameColIdx, subsampleColsIdx)]
-      subsamplesTableRaw = tidyr::unnest(subsamplesTable, cols = subsampleColsNames)
+      rows = lapply(seq_len(nrow(subsamplesTable)), function(i) {
+        row = subsamplesTable[i, ]
+        listCols = row[, subsampleColsNames, drop = FALSE]
+        maxLen = max(sapply(listCols, function(x) length(x[[1]])))
+        expanded = as.data.frame(lapply(row, function(x) {
+          if (is.list(x)) rep(unlist(x), length.out = maxLen)
+          else rep(x, maxLen)
+        }))
+        expanded
+      })
+      subsamplesTableRaw = do.call(rbind, rows)
     }
     
     sampleTableName = ifelse(CFG_SAMPLE_TABLE_KEY %in% names(project@config), 

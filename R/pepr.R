@@ -7,8 +7,7 @@
 #' @author Michal Stolarczyk, Nathan Sheffield
 #' @import yaml
 #' @import stringr
-#' @import httr
-#' @importFrom tidyr unnest
+#' @import httr2
 #'
 #' @references 
 #' GitHub: \url{https://github.com/pepkit/pepr}, Documentation: \url{https://code.databio.org/pepr/}

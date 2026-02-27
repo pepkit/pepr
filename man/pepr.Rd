@@ -14,7 +14,7 @@ GitHub: \url{https://github.com/pepkit/pepr}, Documentation: \url{https://code.d
 \seealso{
 Useful links:
 \itemize{
-  \item Report bugs at \url{https://github.com/pepkit/pepr}
+  \item Report bugs at \url{https://github.com/pepkit/pepr/issues}
 }
 
 }

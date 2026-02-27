@@ -157,16 +157,56 @@ test_that("Project constructor throws errors if nonexistant init files are provi
   expect_error(Project(file = "test.yaml"))
 })
 
-context("Pull test PEP from PEPhub")
+context("Pull PEP from PEPhub (mocked)")
 
-test_that("Pulling public PEP from PEPhub creates Project object", {
-  expect_is(pullProject(registryPath = "databio/example:default"), "Project")
+test_that("pullProject creates a Project object from mocked API response", {
+  mock_pep_response = list(
+    config = list(
+      pep_version = "2.0.0",
+      sample_table = "sample_table.csv",
+      name = "example"
+    ),
+    sample_list = list(
+      list(sample_name = "frog_1", protocol = "RRBS"),
+      list(sample_name = "frog_2", protocol = "RRBS")
+    ),
+    subsample_list = list()
+  )
+
+  with_mocked_bindings(
+    fetchPEP = function(registryPath, raw = TRUE) mock_pep_response,
+    .package = "pepr",
+    {
+      p = pullProject(registryPath = "databio/example:default")
+      expect_is(p, "Project")
+      expect_equal(nrow(sampleTable(p)), 2)
+      expect_true("sample_name" %in% colnames(sampleTable(p)))
+    }
+  )
 })
-
-context("Attempt to pull invalid registry path")
 
 test_that("pullProject throws error if invalid registry path is provided", {
   expect_error(pullProject(registryPath = "invalid path"))
+})
+
+test_that("pullProject errors when PEP does not exist in database", {
+  with_mocked_bindings(
+    fetchPEP = function(registryPath, raw = TRUE) list(detail = "Not Found"),
+    .package = "pepr",
+    {
+      expect_error(
+        pullProject(registryPath = "databio/nonexistent:default"),
+        "PEP does not exist"
+      )
+    }
+  )
+})
+
+test_that("pullProject works against live PEPhub API", {
+  skip_on_cran()
+  skip_if_offline()
+  p = pullProject(registryPath = "databio/example:default")
+  expect_is(p, "Project")
 })
 
 context("Sample automerging")
