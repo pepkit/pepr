@@ -7,7 +7,6 @@
 #' @author Michal Stolarczyk, Nathan Sheffield
 #' @import yaml
 #' @import stringr
-#' @import pryr
 #' @import httr
 #' @importFrom tidyr unnest
 #'

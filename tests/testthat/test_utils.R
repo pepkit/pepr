@@ -158,3 +158,11 @@ test_that(".printNestedList produces an output", {
     expect_output(.printNestedList(config(p)))
 })
 
+test_that(".printNestedList indentation is consistent", {
+    lst = list(a = list(b = list(c = "val")))
+    out = capture.output(.printNestedList(lst))
+    expect_match(out[1], "^a:")
+    expect_match(out[2], "^  b:")
+    expect_match(out[3], "^    c:")
+})
+
