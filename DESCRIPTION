@@ -14,7 +14,6 @@ Description: A PEP, or Portable Encapsulated Project, is a dataset that
 Imports:
     yaml,
     stringr,
-    pryr,
     data.table,
     methods,
     RCurl

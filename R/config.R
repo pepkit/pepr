@@ -170,7 +170,7 @@ setMethod(
   ),
   definition = function(object, sections, cfgPath) {
     # Enable creation of absolute path using given parent folder path.
-    absViaParent = pryr::partial(.makeAbsPath, parent = dirname(cfgPath))
+    absViaParent = function(x) .makeAbsPath(x, parent = dirname(cfgPath))
     for (section in sections) {
       if (section %in% names(object))
         object[[section]] = absViaParent(object[[section]])
@@ -297,7 +297,7 @@ setMethod(
   # or for user information when the Project is created, where message
   # is preferred
   if (!style == "message") {
-    printFun = pryr::partial(cat, fill = T)
+    printFun = function(...) cat(..., fill = TRUE)
   } else{
     printFun = message
   }
