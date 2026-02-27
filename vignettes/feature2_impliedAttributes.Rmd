@@ -20,9 +20,9 @@ knitr::opts_chunk$set(
 
 This vignette will show you how and why to use the implied attributes functionality of the `pepr` package. 
 
- - basic information about the PEP concept on the [project website](http://pep.databio.org/en/2.0.0)
+ - basic information about the PEP concept on the [project website](https://pep.databio.org)
  
- - broader theoretical description in the implied attributes [documentation section](http://pep.databio.org/en/2.0.0/specification/#sample_modifiersimply).
+ - broader theoretical description in the implied attributes [documentation section](https://pep.databio.org/spec/specification/#sample_modifiers-imply).
 
 ## Problem/Goal
 The example below demonstrates how and why to use implied attributes functionality to **save your time and effort** in case multiple sample attributes need to be defined for many samples and they **follow certain patterns**. Please consider the example below for reference:

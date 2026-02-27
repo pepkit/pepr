@@ -340,18 +340,19 @@ fetchSamples = function(samples,
 .printNestedList = function(lst, level = 0) {
   if (!is.list(lst))
     stop("The input is not a list, cannot be displayed.")
+  indent = strrep(" ", level)
   ns = names(lst)
   for (i in seq_along(lst)) {
     item = lst[[i]]
     itemName = ns[i]
     if (is.list(item)) {
       if (!is.null(itemName))
-        cat(rep(" ", level), paste0(itemName, ":"), fill = T)
+        cat(paste0(indent, itemName, ":"), fill = TRUE)
       .printNestedList(item, level + 2)
     } else {
       if (is.null(item))
         item = "null"
-      cat(rep(" ", level), paste0(itemName, ":"), item, fill = T)
+      cat(paste0(indent, itemName, ":"), item, fill = TRUE)
     }
   }
 }

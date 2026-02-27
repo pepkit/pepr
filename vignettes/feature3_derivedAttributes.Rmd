@@ -24,7 +24,7 @@ This vignette will show you how and why to use the derived attributes functional
 
  - basic information about the PEP concept on the [project website](https://pepkit.github.io/).
  
- - broader theoretical description in the derived attributes [documentation section](http://pep.databio.org/en/2.0.0/specification/#sample_modifiersderive).
+ - broader theoretical description in the derived attributes [documentation section](https://pep.databio.org/spec/specification/#sample_modifiers-derive).
 
 ## Problem/Goal
 The example below demonstrates how to use the derived attributes to **flexibly define the samples attributes the `file_path` column** of the `sample_table.csv` file to match the file names in  your project. Please consider the example below for reference:
