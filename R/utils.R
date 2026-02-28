@@ -359,6 +359,7 @@ fetchSamples = function(samples,
   }
 }
 
+
 #' Check for a section existence in a nested list
 #'
 #' @param object list to inspect
@@ -434,3 +435,171 @@ fetchSamples = function(samples,
     return(FALSE)
   stop("File path does not point to an annotation or a config: ", filePath)
 }
+
+
+#' Fetch a PEP from PEPhub using a registry path (namespace/project:tag)
+#'
+#' Calls the PEPhub API to fetch PEPs.
+#'
+#' @param registryPath a string for the PEP registry path (namespace/project:tag)
+#' @param raw a boolean for whether to return a raw PEP
+#'
+#' @return a list, with sublists for config, sample_list, and subsample_list for the fetched PEP
+#' @keywords internal
+fetchPEP = function(registryPath, raw = TRUE) {
+  pathSplit = strsplit(registryPath, '/|:')[[1]]
+  if (length(pathSplit) < 3) {
+    stop('Invalid registry path.')
+  }
+  queryURL = paste0(BASE_URL, 'projects/', pathSplit[[1]], '/', pathSplit[[2]], '?tag=', pathSplit[[3]], '&raw=', tolower(as.character(raw)))
+
+  jwtPath = file.path(path.expand('~'), '.pephubclient', 'jwt.txt')
+
+  req = httr2::request(queryURL)
+
+  if (file.exists(jwtPath)) {
+    if (difftime(Sys.time(), file.info(jwtPath)$mtime, units = 'days') <= 2) {
+      jwtToken = readLines(jwtPath, warn = FALSE)
+      req = req |> httr2::req_headers(authorization = jwtToken)
+    } else {
+      warning('Authentication token is more than 2 days old. Generate a new one with PEPhub Client.')
+    }
+  } else {
+    warning('No authentication token found. Generate one with PEPhub Client to access private PEPs.')
+  }
+
+  resp = tryCatch(
+    req |> httr2::req_perform(),
+    error = function(e) {
+      stop("Unable to connect to PEPhub API. Check your internet connection. (", conditionMessage(e), ")")
+    }
+  )
+  pep = httr2::resp_body_json(resp)
+
+  return(pep)
+}
+
+
+#' Save a modified PEP Project to a local directory
+#'
+#' This is a helper that saves a PEP Project to a local output directory
+#'
+#' @param project a PEP Project
+#' @param outputDir a string for the output directory, defaults to current working directory
+#' @param overwrite a boolean for whether to overwrite an existing project at the output directory
+#' 
+#' @return a boolean, TRUE if the save was successful and FALSE if otherwise
+#' @export
+saveProject = function(project = NULL,
+                       outputDir = getwd(),
+                       overwrite = FALSE) {
+  saved = FALSE
+  
+  if (!file.exists(outputDir)) {
+    stop('Specified Project directory does not exist.')
+  }
+  
+  pattern = "^[a-zA-Z0-9_-]+/[a-zA-Z0-9_-]+:[a-zA-Z0-9_-]+$"
+  
+  if (grepl(pattern, project@file, perl = TRUE)) {
+    # if file is a registry path
+    projectName = gsub('/|:', '-', project@file)
+    projectPath = file.path(outputDir, projectName)
+  } else {
+    projectPath = file.path(outputDir, basename(dirname(project@file)))
+  }
+  
+  if ((!dir.exists(projectPath) | overwrite)) {
+    dir.create(projectPath, showWarnings = FALSE)
+    
+    samplesTable = as.data.frame(project@samples)
+    
+    subsampleColsIdx = unname(which(sapply(samplesTable, function(x) any(sapply(x, is.list)))))
+    subsampleColsNames = names(which(sapply(samplesTable, function(x) any(sapply(x, is.list)))))
+    sampleNameColIdx = which(names(samplesTable) == project@sampleNameAttr)
+    
+    samplesTableRaw = samplesTable
+    subsamplesTableRaw = NULL
+    if (length(subsampleColsIdx) > 0) {
+      samplesTableRaw = samplesTable[, -subsampleColsIdx]
+      subsamplesTable = samplesTable[, c(sampleNameColIdx, subsampleColsIdx)]
+      rows = lapply(seq_len(nrow(subsamplesTable)), function(i) {
+        row = subsamplesTable[i, ]
+        listCols = row[, subsampleColsNames, drop = FALSE]
+        maxLen = max(sapply(listCols, function(x) length(x[[1]])))
+        expanded = as.data.frame(lapply(row, function(x) {
+          if (is.list(x)) rep(unlist(x), length.out = maxLen)
+          else rep(x, maxLen)
+        }))
+        expanded
+      })
+      subsamplesTableRaw = do.call(rbind, rows)
+    }
+    
+    sampleTableName = ifelse(CFG_SAMPLE_TABLE_KEY %in% names(project@config), 
+                                basename(project@config[[CFG_SAMPLE_TABLE_KEY]]),
+                                paste0(CFG_SAMPLE_TABLE_KEY, '.csv'))
+    
+    subsampleTableName = ifelse(CFG_SUBSAMPLE_TABLE_KEY %in% names(project@config),
+                                   basename(project@config[[CFG_SUBSAMPLE_TABLE_KEY]]), 
+                                   paste0(CFG_SUBSAMPLE_TABLE_KEY, '.csv'))
+    
+    project@config[[CFG_SAMPLE_TABLE_KEY]] = sampleTableName
+    project@config[[CFG_SUBSAMPLE_TABLE_KEY]] = subsampleTableName
+    
+    yaml::write_yaml(project@config, file = file.path(projectPath, 'project_config.yaml'))
+    if (!is.null(samplesTableRaw)) {
+      data.table::fwrite(samplesTableRaw, file = file.path(projectPath, sampleTableName))
+    }
+    if (!is.null(subsamplesTableRaw)) {
+      data.table::fwrite(subsamplesTableRaw, file = file.path(projectPath, subsampleTableName))
+    }
+    saved = TRUE
+  } else {
+    stop('Project directory already exists. Use overwrite = TRUE if you would like to overwrite the existing local PEP.')
+  }
+  
+  return(saved)
+}
+
+
+#' Dataframify list sublists
+#'
+#' This function turns each list sublist into a data frame
+#'
+#' @param list an object of class list
+#' @return an object of class data.frame
+#' @keywords internal
+.listOfListToListOfDT = function(list) {
+  data.table::setDT(as.data.frame(do.call(rbind, list)))
+}
+
+
+
+#' Save or update JWT
+#'
+#' Save or update local authentication token to fetch private PEPs
+#'
+#' @param jwt a string for the new jwt to save
+#'
+#' @return a boolean for whether the authentication token was saved
+#' @export
+saveJWT = function(jwt) {
+  if (typeof(jwt) == 'character') {
+    jwtPath = file.path(path.expand('~'), '.pephubclient', 'jwt.txt')
+    
+    if (file.exists(jwtPath)) {
+      warning('Overwriting existing authentication token...')
+    }
+    
+    cat(jwt, file = jwtPath)
+    print(paste0('JWT saved to ', jwtPath))
+    
+    return(TRUE)
+  } else {
+    warning('Invalid authentication token provided.')
+    return(FALSE)
+  }
+}
+
+

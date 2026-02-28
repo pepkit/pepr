@@ -2,7 +2,7 @@
 [![CRAN](https://www.r-pkg.org/badges/version-last-release/pepr)](https://www.r-pkg.org/badges/version-last-release/pepr)
 ![R-CMD-check](https://github.com/pepkit/pepr/workflows/R-CMD-check/badge.svg)
 [![codecov](https://codecov.io/gh/pepkit/pepr/branch/master/graph/badge.svg)](https://app.codecov.io/gh/pepkit/pepr)
-[![PEP compatible](https://pepkit.github.io/img/PEP-compatible-green.svg)](https://pep.databio.org/en/2.0.0/)
+[![PEP compatible](https://pepkit.github.io/img/PEP-compatible-green.svg)](https://pep.databio.org/)
 
 # The `pepr` package: Portable Encapsulated Projects in R
 

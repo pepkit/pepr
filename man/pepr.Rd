@@ -2,6 +2,7 @@
 % Please edit documentation in R/pepr.R
 \docType{package}
 \name{pepr}
+\alias{pepr-package}
 \alias{pepr}
 \title{pepr}
 \description{
@@ -9,6 +10,13 @@ Package documentation
 }
 \references{
 GitHub: \url{https://github.com/pepkit/pepr}, Documentation: \url{https://code.databio.org/pepr/}
+}
+\seealso{
+Useful links:
+\itemize{
+  \item Report bugs at \url{https://github.com/pepkit/pepr/issues}
+}
+
 }
 \author{
 Michal Stolarczyk, Nathan Sheffield
