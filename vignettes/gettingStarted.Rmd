@@ -29,6 +29,7 @@ Load `pepr` and read in your project. We have provided a basic example to show y
 
 ```{r,collapse=TRUE}
 library('pepr')
+NOT_CRAN <- identical(tolower(Sys.getenv("NOT_CRAN")), "true")
 branch = "master"
 projectConfigFile = system.file("extdata",
 	paste0("example_peps-", branch),
@@ -45,7 +46,7 @@ p = pepr::Project(file=projectConfigFile)
 
 That's it! You now have a `Project` object, *p*, to interact with in `R`. You can also use PEPhub registry paths to fetch them online:
 
-```{r}
+```{r, eval=NOT_CRAN}
 p2 = pepr::pullProject(registryPath='databio/example:default')
 ```
 
@@ -79,7 +80,7 @@ config(p)
 
 If you would like to save your project to a new directory, use the `saveProject()` function:
 
-```{r}
+```{r, eval=NOT_CRAN}
 saveProject(p2, outputDir=tempdir())
 ```
 
