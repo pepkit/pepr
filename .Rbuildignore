@@ -11,3 +11,4 @@
 CNAME
 test.sh
 .github
+^cran-comments\.md$

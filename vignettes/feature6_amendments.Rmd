@@ -20,9 +20,9 @@ knitr::opts_chunk$set(
 
 This vignette will show you how and why to use the amendments functionality of the `pepr` package. 
 
- - basic information about the PEP concept on the [project website](http://pep.databio.org/en/2.0.0/).
+ - basic information about the PEP concept on the [project website](https://pep.databio.org/).
 
- - broader theoretical description in the amendments [documentation section](http://pep.databio.org/en/2.0.0/specification/#project-attribute-amendments).
+ - broader theoretical description in the amendments [documentation section](https://pep.databio.org/spec/specification/#project-attribute-amendments).
 
 
 ## Problem/Goal

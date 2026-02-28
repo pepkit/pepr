@@ -12,7 +12,7 @@ vignette: >
 
 # Introduction to `pepr`
 
-`pepr` is the official R package for the [pepkit](https://pep.databio.org/en/2.0.0/) suite, a collection of tools that interface with *portable encapsulated projects*, or PEPs. [PEP format](https://pep.databio.org/en/2.0.0/) defines a structure for organizing project metadata using a `yaml` file. `pepr` allows you to read any PEP-formatted project metadata (and potentially even actual sample data) into R, providing you a convenient user interface to interact with and share project metadata. 
+`pepr` is the official R package for the [pepkit](https://pep.databio.org/) suite, a collection of tools that interface with *portable encapsulated projects*, or PEPs. [PEP format](https://pep.databio.org/) defines a structure for organizing project metadata using a `yaml` file. `pepr` allows you to read any PEP-formatted project metadata (and potentially even actual sample data) into R, providing you a convenient user interface to interact with and share project metadata. 
 
 ## Installing `pepr`
 
@@ -29,6 +29,7 @@ Load `pepr` and read in your project. We have provided a basic example to show y
 
 ```{r,collapse=TRUE}
 library('pepr')
+NOT_CRAN <- identical(tolower(Sys.getenv("NOT_CRAN")), "true")
 branch = "master"
 projectConfigFile = system.file("extdata",
 	paste0("example_peps-", branch),
@@ -43,7 +44,19 @@ Loading your project metadata into R is a single line of code:
 p = pepr::Project(file=projectConfigFile)
 ```
 
-That's it! You've now have a `Project` object, *p*, to interact with in `R`.
+That's it! You now have a `Project` object, *p*, to interact with in `R`. You can also use PEPhub registry paths to fetch them online:
+
+```{r, eval=NOT_CRAN}
+p2 = pepr::pullProject(registryPath='databio/example:default')
+```
+
+To fetch private PEPs, use PEPhub Client to login and generate an authentication token. Or, login to PEPhub and generate a new key to save it locally:
+
+```{r, eval=FALSE}
+pepr::saveJWT('*your authetication token goes here*')
+```
+
+You should then be able to fetch your private PEPs by registry path.
 
 ## Interfacing with your `pepr::Project` object in R
 
@@ -63,6 +76,12 @@ And you can also access the project configuration metadata with the `config()` f
 
 ```{r}
 config(p)
+```
+
+If you would like to save your project to a new directory, use the `saveProject()` function:
+
+```{r, eval=NOT_CRAN}
+saveProject(p2, outputDir=tempdir())
 ```
 
 Follow the other vignettes for more advanced capabilities of `pepr`.

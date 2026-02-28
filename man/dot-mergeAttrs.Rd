@@ -4,7 +4,7 @@
 \alias{.mergeAttrs}
 \title{Merge samples defined in sample table with ones in subsample table(s)}
 \usage{
-.mergeAttrs(.Object, subsampleAannotationPaths)
+.mergeAttrs(.Object, subsampleAannotationPaths, subsamplesTables = NULL)
 }
 \arguments{
 \item{.Object}{an object of \code{"\linkS4class{Project}"}}

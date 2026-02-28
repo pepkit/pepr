@@ -1,3 +1,28 @@
+# pepr 0.6.0 - 2026-02-27
+
+## Added
+
+* `pullProject()` to fetch PEPs from PEPhub API via registry paths (e.g., `databio/example:default`)
+* `saveProject()` to write a Project object to local files (config YAML + sample CSVs)
+* `saveJWT()` to store an authentication token for private PEPs
+* PEPhub integration vignette examples in Getting Started guide
+
+## Changed
+
+* Replaced `httr` with `httr2` for PEPhub API calls
+* Replaced `tidyr` dependency with base R for subsample unnesting
+* Added mocked tests for PEPhub API (CRAN-compatible)
+* Graceful error handling when PEPhub API is unreachable
+
+# pepr 0.5.1 - 2026-02-27
+
+## Changed
+
+* Removed dependency on archived `pryr` package; replaced `pryr::partial()` with base R anonymous functions
+* Fixed BugReports URL in DESCRIPTION
+* Updated all pep.databio.org URLs to current paths
+* Removed codecov badge from README
+
 # pepr 0.5.0 - 2023-11-16
 
 ## Fixed
@@ -55,7 +80,7 @@
 
 ## Changed
 
-* **project configuration file to follow [PEP2.0.0 specification](http://pep.databio.org/en/2.0.0/specification/).** Browse the specification for changes related to config format
+* **project configuration file to follow [PEP2.0.0 specification](https://pep.databio.org/spec/specification/).** Browse the specification for changes related to config format
 
 
 # pepr 0.2.2 - 2020-01-09

@@ -20,7 +20,7 @@ knitr::opts_chunk$set(
 
 This vignette will show you how and why to use the append functionality of the `pepr` package. 
 
- - basic information about this concept on the [specification website](http://pep.databio.org/en/2.0.0/specification/#sample_modifiersappend).
+ - basic information about this concept on the [specification website](https://pep.databio.org/spec/specification/#sample_modifiers-append).
 
 ## Problem/Goal
 The example below demonstrates how to use the constant attributes to **define the samples attributes in the `read_type` column** of the `sample_table.csv` file. This functionality is extremely useful when there are many samples that are characterized by identical values of certain attribute (here: value `SINGLE` in `read_type` attribute). Please consider the example below for reference:
