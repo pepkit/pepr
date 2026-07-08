@@ -16,6 +16,9 @@ an object of \code{"\linkS4class{Project}"}
 This is a helper that creates the project with empty samples and config slots
 }
 \examples{
+\dontrun{
+# Requires network access to the PEPhub API
 registryPath = 'databio/example:default'
-p=pullProject(registryPath)
+p = pullProject(registryPath)
+}
 }

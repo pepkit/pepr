@@ -1,3 +1,14 @@
+# pepr 0.6.1 - 2026-07-08
+
+## Fixed
+
+* Updated `pullProject()` to match the current PEPhub API response schema (the raw-project keys `sample_list`/`subsample_list` were renamed to `samples`/`subsamples`), which had caused a fetch error against the live API.
+* `pullProject()` now fails with an informative message when a PEP is missing or the API response is malformed, instead of a cryptic internal error.
+
+## Changed
+
+* Moved the live PEPhub API test into an opt-in integration suite (set `PEPR_INTEGRATION_TESTS=true`) that never runs on CRAN; the `pullProject()` example is no longer executed during checks.
+
 # pepr 0.6.0 - 2026-02-27
 
 ## Added

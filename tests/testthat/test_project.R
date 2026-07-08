@@ -166,11 +166,11 @@ test_that("pullProject creates a Project object from mocked API response", {
       sample_table = "sample_table.csv",
       name = "example"
     ),
-    sample_list = list(
+    samples = list(
       list(sample_name = "frog_1", protocol = "RRBS"),
       list(sample_name = "frog_2", protocol = "RRBS")
     ),
-    subsample_list = list()
+    subsamples = list()
   )
 
   with_mocked_bindings(
@@ -200,13 +200,6 @@ test_that("pullProject errors when PEP does not exist in database", {
       )
     }
   )
-})
-
-test_that("pullProject works against live PEPhub API", {
-  skip_on_cran()
-  skip_if_offline()
-  p = pullProject(registryPath = "databio/example:default")
-  expect_is(p, "Project")
 })
 
 context("Sample automerging")

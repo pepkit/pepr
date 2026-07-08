@@ -42,8 +42,9 @@ setMethod("initialize", "Project", function(.Object, ...) {
   if (ellipsis$api) {
     # called with pullProject
     rawPEP = fetchPEP(ellipsis$file, raw = TRUE)
-    if (length(rawPEP) < 3) {
-      # peps contain 3 elements, failed pep lookup will result in 1 element
+    if (is.null(rawPEP$config) || is.null(rawPEP$samples)) {
+      # a successful raw PEP contains 'config' and 'samples'; a failed lookup
+      # returns e.g. list(detail = "Not Found")
       stop('PEP does not exist in database. Did you spell it correctly?')
     }
     .Object@file = ellipsis$file
@@ -52,8 +53,8 @@ setMethod("initialize", "Project", function(.Object, ...) {
     .Object = .getTableIndexes(.Object, stIndex, sstIndex)
     sampleTablePath = rawPEP$sample_table
     
-    .Object@samples = data.table::setDT(as.data.frame(do.call(rbind, rawPEP$sample_list)))
-    subsamples = lapply(rawPEP$subsample_list, .listOfListToListOfDT)
+    .Object@samples = data.table::setDT(as.data.frame(do.call(rbind, rawPEP$samples)))
+    subsamples = lapply(rawPEP$subsamples, .listOfListToListOfDT)
     
     .Object = .modifySamplesFetched(.Object, subsamples)
     
@@ -121,8 +122,11 @@ Project = function(file = NULL,
 #' @param registryPath a string specifying a registry path from PEPhub
 #' @return an object of \code{"\linkS4class{Project}"}
 #' @examples
+#' \dontrun{
+#' # Requires network access to the PEPhub API
 #' registryPath = 'databio/example:default'
-#' p=pullProject(registryPath)
+#' p = pullProject(registryPath)
+#' }
 #' @export
 pullProject = function(registryPath = NULL) {
   methods::new(
