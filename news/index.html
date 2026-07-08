@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pepr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.6.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.6.1</span>
       </span>
     </div>
 
@@ -70,7 +70,20 @@
     </div>
 
     <div class="section level2">
-<h2 class="page-header" data-toc-text="0.6.0" id="pepr-060---2026-02-27">pepr 0.6.0 - 2026-02-27<a class="anchor" aria-label="anchor" href="#pepr-060---2026-02-27"></a></h2>
+<h2 class="page-header" data-toc-text="0.6.1" id="pepr-061---2026-07-08">pepr 0.6.1 - 2026-07-08<a class="anchor" aria-label="anchor" href="#pepr-061---2026-07-08"></a></h2>
+<div class="section level3">
+<h3 id="fixed-0-6-1">Fixed<a class="anchor" aria-label="anchor" href="#fixed-0-6-1"></a></h3>
+<ul><li>Updated <code><a href="../reference/pullProject.html">pullProject()</a></code> to match the current PEPhub API response schema (the raw-project keys <code>sample_list</code>/<code>subsample_list</code> were renamed to <code>samples</code>/<code>subsamples</code>), which had caused a fetch error against the live API.</li>
+<li>
+<code><a href="../reference/pullProject.html">pullProject()</a></code> now fails with an informative message when a PEP is missing or the API response is malformed, instead of a cryptic internal error.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="changed-0-6-1">Changed<a class="anchor" aria-label="anchor" href="#changed-0-6-1"></a></h3>
+<ul><li>Moved the live PEPhub API test into an opt-in integration suite (set <code>PEPR_INTEGRATION_TESTS=true</code>) that never runs on CRAN; the <code><a href="../reference/pullProject.html">pullProject()</a></code> example is no longer executed during checks.</li>
+</ul></div>
+</div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="0.6.0" id="pepr-060---2026-02-27">pepr 0.6.0 - 2026-02-27<small>2026-02-28</small><a class="anchor" aria-label="anchor" href="#pepr-060---2026-02-27"></a></h2>
 <div class="section level3">
 <h3 id="added-0-6-0">Added<a class="anchor" aria-label="anchor" href="#added-0-6-0"></a></h3>
 <ul><li>
@@ -247,7 +260,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
       </footer></div>
